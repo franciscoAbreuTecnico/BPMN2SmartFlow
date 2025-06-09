@@ -1,0 +1,115 @@
+@base <http://example.org/mappings/> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sf: <http://example.org/smartflow#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# 1) Map each ActionNode
+#################################################################
+<#ActionNodeMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.actionNodes[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/smartflow/actionNode/{id}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:ActionNode ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:nodeId ;
+    rr:objectMap [ rml:reference "id" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:nodeType ;
+    rr:objectMap [ rml:reference "$.type" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:title_pt ;
+    rr:objectMap [ rml:reference "$.title.pt-PT" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:title_en ;
+    rr:objectMap [ rml:reference "$.title.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:description_pt ;
+    rr:objectMap [ rml:reference "$.description.pt-PT" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:description_en ;
+    rr:objectMap [ rml:reference "$.description.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:queue ;
+    rr:objectMap [ rml:reference "$.queue" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:actionPrimary ;
+    rr:objectMap [ rml:reference "action.primary" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:actionTo ;
+    rr:objectMap [ rml:reference "action.to" ] ;
+  ] ;
+
+  # rr:predicateObjectMap [
+  #   rr:predicate sf:hasAction ;
+  #   rr:objectMap [
+  #     rr:termType rr:IRI ;
+  #     rr:template "http://example.org/smartflow/action/{name}" ;
+  #     rml:reference "actions[*].name" ;
+  #   ] ;
+  # ] ;
+  rr:predicateObjectMap [
+  rr:predicate sf:hasAction ;
+  rr:objectMap [
+    rr:termType rr:IRI ;
+    rr:template  "http://example.org/smartflow/action/{actions[*].name}" ;
+  ] ;
+] ;
+
+.
+
+#################################################################
+# 2) Map each Action
+#################################################################
+<#ActionsMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.actionNodes[*].actions[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/smartflow/action/{name}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:Action ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label ;
+    rr:objectMap [ rml:reference "name" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:to ;
+    rr:objectMap [ rml:reference "to" ] ;
+  ] ;
+.

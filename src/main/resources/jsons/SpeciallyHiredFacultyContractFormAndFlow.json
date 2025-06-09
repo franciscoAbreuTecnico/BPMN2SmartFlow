@@ -1,0 +1,2657 @@
+{
+	"name": {
+		"pt-PT": "Proposta de Pessoal Docente Especialmente Contratado",
+		"en-GB": "Proposal for Specially Hired Faculty Contract"
+	},
+	"description": {
+		"pt-PT": "Este formulário permite-lhe propor o convite ou renovação de contrato de pessoal especialmente contratado.",
+		"en-GB": "This form allows you to propose the invitation or renewal of specially hired faculty contracts."
+	},
+	"context": {
+		"requestKeywords": {
+			"fields": [
+				"user",
+				"category",
+				"department",
+				"contractStartDate",
+				"contractType"
+			],
+			"displayName": false,
+			"username": false
+		},
+		"onLock": [
+			{
+				"requestProcessor": "Check Valid Specially Hired Faculty Contract Period"
+			},
+			{
+				"requestProcessor": "Move Queue",
+				"queue": "Núcleo de Docentes e Investigadores"
+			}
+		],
+		"onValidate": [
+			{
+				"requestProcessor": "Copy Input to Outcome",
+				"mapper": {
+					"email-for-invitation": "email-for-invitation",
+					"contractDuration": "contractDuration"
+				}
+			},
+			{
+				"requestProcessor": "Choose Specially Hired Faculty Contract Email Template"
+			},
+			{
+				"requestProcessor": "Create Flow From Request",
+				"template": "specially-hired-faculty-contract",
+				"actionNodesProvider": "Specially Hired Faculty Contract Flow",
+				"setSupervisorFromRequester": true,
+				"setSectionWithRequesterInfo": true
+			},
+			{
+				"requestProcessor": "Calculate Costs For Specially Hired Faculty Contract"
+			}
+		],
+		"onResetValidate": {
+			"requestProcessor": "Cancel Flow"
+		},
+		"onConclude": [
+			{
+				"requestProcessor": "Send e-mail",
+				"template": "{{email-template}}",
+				"email": "email-for-invitation",
+				"parameters": {
+					"name": [
+						"personName",
+						"user",
+						"department",
+						"contractStartDate"
+					],
+					"department": "department"
+				}
+			},
+			{
+				"requestProcessor": "Check Has Connected Successful Flow"
+			},
+			{
+				"requestProcessor": "Copy Contract Dates to Teacher Invite Admissions Process"
+			}
+		],
+		"applicationMapper": {
+			"contractType": "contractType",
+			"regimeComposite": "regimeComposite",
+			"regime": "regime",
+			"partTimePercentage": "partTimePercentage",
+			"category": "category",
+			"withoutMonitor": "withoutMonitor",
+			"equivalentCategory": "equivalentCategory",
+			"equivalencyWihtout": "equivalencyWihtout",
+			"contractDuration": "contractDuration",
+			"financers": "financers",
+			"contractBinding": "contractBinding",
+			"campus": "campus",
+			"ecdu32A": "ecdu32A",
+			"salaryMonthlyBase": "salaryMonthlyBase",
+			"financerCommitment": "financerCommitment"
+		}
+	},
+	"inputForm": {
+		"checks": {
+			"requirePersonalInformation": true,
+			"requirePhotograph": true,
+			"requireIdentity": true
+		},
+		"pages": [
+			{
+				"title": {
+					"pt-PT": "Informação do Requerente",
+					"en-GB": "Requester Information"
+				},
+				"sections": [
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Informação Académica",
+					"en-GB": "Academic Information"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Dados para o Processo",
+							"en-GB": "Information for the Process"
+						},
+						"properties": [
+							{
+								"type": "Select",
+								"field": "campus",
+								"required": true,
+								"collapse": false,
+								"label": {
+									"pt-PT": "Campus principal",
+									"en-GB": "Main campus"
+								},
+								"description": {
+									"pt-PT": "Não limita o campus onde a atividade de docência irá decorrer.",
+									"en-GB": "This does not limit the campus where faculty activities will occur."
+								},
+								"options": [
+									{
+										"value": "alameda",
+										"label": {
+											"pt-PT": "Alameda",
+											"en-GB": "Alameda"
+										}
+									},
+									{
+										"value": "taguspark",
+										"label": {
+											"pt-PT": "Taguspark",
+											"en-GB": "Taguspark"
+										}
+									},
+									{
+										"value": "tecnologicoNuclear",
+										"label": {
+											"pt-PT": "Tecnológico e Nuclear",
+											"en-GB": "Tecnológico e Nuclear"
+										}
+									}
+								]
+							},
+							{
+								"type": "AsyncSelect",
+								"field": "department",
+								"optionsProvider": "/paper-pusher-ist/departments",
+								"required": true,
+								"allowOther": false,
+								"label": {
+									"pt-PT": "Unidade Académica",
+									"en-GB": "Academic Unit"
+								},
+								"description": {
+									"pt-PT": "Selecione a unidade académica que está a proceder à contratação.",
+									"en-GB": "Select the academic unit that is proceeding with the hiring process."
+								}
+							},
+							{
+								"type": "Array",
+								"field": "competenceCourses",
+								"required": true,
+								"label": {
+									"pt-PT": "Unidades Curriculares da Unidade Académica onde a actividade de docência será prestada",
+									"en-GB": "Curricular Units of the Academic Unit where the teaching activity will be provided"
+								},
+								"description": {
+									"pt-PT": "A Dissertação de Mestrado e os PICs são Unidades Curriculares",
+									"en-GB": "The Master's Dissertation and PICs are Curricular Units"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Unidade Curricular",
+									"en-GB": "Add Curricular Unit"
+								},
+								"properties": [
+									{
+										"type": "AsyncSelect",
+										"field": "competenceCourse",
+										"optionsProvider": "/paper-pusher-ist/competenceCourse",
+										"optionsLimitedBy": {
+											"field": "department"
+										},
+										"required": false,
+										"allowOther": false,
+										"label": {
+											"pt-PT": "Unidade Curricular",
+											"en-GB": "Curricular Unit"
+										}
+									}
+								]
+							},
+							{
+								"type": "Array",
+								"field": "otherCompetenceCourses",
+								"required": false,
+								"label": {
+									"pt-PT": "Unidades Curriculares de outras Unidades Académicas",
+									"en-GB": "Curricular Units from other Academic Units"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Unidade Curricular",
+									"en-GB": "Add Curricular Unit"
+								},
+								"properties": [
+									{
+										"type": "Composite",
+										"field": "otherCompetenceCoursesComposite",
+										"required": true,
+										"properties": [
+											{
+												"type": "AsyncSelect",
+												"field": "otherCompetenceCoursesDepartment",
+												"optionsProvider": "/paper-pusher-ist/departments",
+												"required": true,
+												"label": {
+													"pt-PT": "Unidade Académica",
+													"en-GB": "Academic Unit"
+												}
+											},
+											{
+												"type": "AsyncSelect",
+												"field": "otherCompetenceCourse",
+												"optionsProvider": "/paper-pusher-ist/competenceCourse",
+												"optionsLimitedBy": {
+													"field": "otherCompetenceCoursesDepartment"
+												},
+												"required": true,
+												"label": {
+													"pt-PT": "Unidade Curricular",
+													"en-GB": "Curricular Unit"
+												}
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Pessoa a Contratar",
+					"en-GB": "Person to Hire"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Identificação da Pessoa",
+							"en-GB": "Person Identification"
+						},
+						"description": {
+							"pt-PT": "Caso a pessoa já tenha registo indique o TécnicoID. Se não encontrar a pessoa pretendida com um TecnicoID deve usar o mecanismo 'inserir outra opção' e indicar o nome completo da pessoa a convidar.",
+							"en-GB": "In case the person is already registered indicate their TecnicoID. Otherwise use the 'insert another option' mechanism and indicate the full name of the person to invite."
+						},
+						"properties": [
+							{
+								"type": "AsyncSelect",
+								"field": "user",
+								"label": {
+									"pt-PT": "Nome / TécnicoID",
+									"en-GB": "Name / TecnicoID"
+								},
+								"optionsProvider": "/paper-pusher-ist/user",
+								"allowOther": true,
+								"collapse": true,
+								"required": true
+							},
+							{
+								"type": "Text",
+								"field": "email-for-invitation",
+								"label": {
+									"pt-PT": "Endereço de e-mail da pessoa a convidar",
+									"en-GB": "E-mail address of the person to invite"
+								},
+								"required": true,
+								"multiline": false,
+								"inputType": "email"
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Informação para o Contrato",
+					"en-GB": "Information for the Contract"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Categoria",
+							"en-GB": "Category"
+						},
+						"properties": [
+							{
+								"type": "Select",
+								"field": "category",
+								"label": {
+									"pt-PT": "Categoria",
+									"en-GB": "Category"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Professor(a) Visitante",
+											"en-GB": "Visiting Professor"
+										},
+										"value": "visitingProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Catedrático(a) Convidado(a)",
+											"en-GB": "Invited Full Professor"
+										},
+										"value": "invitedFullProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Associado(a) Convidado(a)",
+											"en-GB": "Invited Associate Professor"
+										},
+										"value": "invitedAssociateProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Auxiliar Convidado(a)",
+											"en-GB": "Invited Assistant Professor"
+										},
+										"value": "invitedAssistantProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Assistente Convidado(a)",
+											"en-GB": "Invited Teaching Assistant"
+										},
+										"value": "invitedTeachingAssistant"
+									},
+									{
+										"label": {
+											"pt-PT": "Monitor(a)",
+											"en-GB": "Junior Teaching Assistant"
+										},
+										"value": "juniorTeachingAssistant"
+									}
+								]
+							},
+							{
+								"type": "Select",
+								"field": "equivalentCategory",
+								"label": {
+									"pt-PT": "Categoria Equiparada",
+									"en-GB": "Equivalent Category"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Catedrático(a) Convidado(a)",
+											"en-GB": "Equivalent to Invited Full Professor"
+										},
+										"value": "invitedFullProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Associado(a) Convidado(a)",
+											"en-GB": "Equivalent to Invited Associate Professor"
+										},
+										"value": "invitedAssociateProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Auxiliar Convidado(a)",
+											"en-GB": "Equivalent to Invited Assistant Professor"
+										},
+										"value": "invitedAssistantProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Assistente Convidado(a)",
+											"en-GB": "Equivalent to Invited Teaching Assistant"
+										},
+										"value": "invitedTeachingAssistantEquivalence"
+									}
+								],
+								"onlyIf": {
+									"field": "category",
+									"value": {
+										"label": {
+											"pt-PT": "Professor(a) Visitante",
+											"en-GB": "Visiting Professor"
+										},
+										"value": "visitingProfessor"
+									}
+								}
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Regime do contrato",
+							"en-GB": "Contract Regime"
+						},
+						"properties": [
+							{
+								"type": "Composite",
+								"field": "regimeComposite",
+								"required": true,
+								"properties": [
+									{
+										"type": "Select",
+										"field": "regime",
+										"label": {
+											"pt-PT": "Regime",
+											"en-GB": "Regime"
+										},
+										"multiple": false,
+										"collapse": false,
+										"required": true,
+										"options": [
+											{
+												"label": {
+													"pt-PT": "Tempo parcial",
+													"en-GB": "Part Time"
+												},
+												"value": "partTime"
+											},
+											{
+												"label": {
+													"pt-PT": "Tempo integral",
+													"en-GB": "Full Time"
+												},
+												"value": "fullTime"
+											},
+											{
+												"label": {
+													"pt-PT": "Tempo integral em dedicação exclusiva",
+													"en-GB": "Full time with exclusive dedication"
+												},
+												"value": "fullTimeExclusive"
+											}
+										]
+									},
+									{
+										"type": "Quantity",
+										"field": "partTimePercentage",
+										"required": true,
+										"label": {
+											"pt-PT": "Percentagem em tempo parcial (%)",
+											"en-GB": "Part time percentage (%)"
+										},
+										"min": 0,
+										"max": 99.99,
+										"step": 0.01,
+										"description": {
+											"pt-PT": "Indicar a percentagem  do valor de tempo parcial a ser contratado.",
+											"en-GB": "Indicate the percentage of part time value to be contracted."
+										},
+										"onlyIf": {
+											"field": "regime",
+											"value": {
+												"label": {
+													"pt-PT": "Tempo parcial",
+													"en-GB": "Part Time"
+												},
+												"value": "partTime"
+											}
+										}
+									}
+								]
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Tipo de Contrato",
+							"en-GB": "Type of Contract"
+						},
+						"properties": [
+							{
+								"type": "Select",
+								"field": "contractType",
+								"description": {
+									"pt-PT": "Os novos contratos, quando remunerados (não 32-A), apenas são renováveis no caso de personalidades externas ao perímetro de consolidação do Instituto Superior Técnico, e que complementem o portfólio de competências existente no Instituto Superior Técnico.",
+									"en-GB": "The new contracts, when remunerated (not 32-A), are only renewable in the case of personalities outside the Instituto Superior Técnico consolidation perimeter, and who complement the existing portfolio of skills at Instituto Superior Técnico."
+								},
+								"label": {
+									"pt-PT": "Tipo de Contrato",
+									"en-GB": "Contract Type"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Novo Contrato",
+											"en-GB": "New Contract"
+										},
+										"value": "newContract"
+									},
+									{
+										"label": {
+											"pt-PT": "Renovação de Contrato",
+											"en-GB": "Contract Renewal"
+										},
+										"value": "contractRenewal"
+									}
+								]
+							},
+							{
+								"type": "Boolean",
+								"field": "previousYearContract",
+								"required": true,
+								"label": {
+									"pt-PT": "Houve algum contrato em algum período do ano anterior ao início desta proposta de contrato?",
+									"en-GB": "Was there a contract in any period of the year prior to the start of this contract proposal?"
+								},
+								"labelYes": {
+									"pt-PT": "Sim",
+									"en-GB": "Yes"
+								},
+								"labelNo": {
+									"pt-PT": "Não",
+									"en-GB": "No"
+								},
+								"onlyIf": {
+									"field": "contractType",
+									"value": {
+										"label": {
+											"pt-PT": "Novo Contrato",
+											"en-GB": "New Contract"
+										},
+										"value": "newContract"
+									}
+								}
+							},
+							{
+								"type": "Boolean",
+								"field": "ecdu32A",
+								"description": {
+									"pt-PT": "Estatuto da Carreira de Docente universitário (ECDU) nos termos do art.º 32.º-A.(sem  Remuneração).",
+									"en-GB": "University Teaching Career Statute under the terms of article 32.º-A.(without Salary)."
+								},
+								"label": {
+									"pt-PT": "Contrato ao Abrigo do Art. 32.A?",
+									"en-GB": "Contract under article 32.º-A?"
+								},
+								"required": true,
+								"labelNo": {
+									"pt-PT": "Não, não é um contrato ao abrigo do art.º 32.º-A",
+									"en-GB": "No, it's not a contract under article 32.º-A"
+								},
+								"labelYes": {
+									"pt-PT": "Sim, é um contrato ao abrigo do art.º 32.º-A",
+									"en-GB": "Yes, it's a contract under article 32.º-A"
+								}
+							},
+							{
+								"description": {
+									"pt-PT": "Para as contratações ao abrigo do artigo 32A do ECDU é necessário juntar um documento que garanta que estão cumpridos os requisitos necessários, nomeadamente os docentes terem uma entidade empregadora principal. A entidade empregadora principal tem que se enquadrar em alguma das situações seguintes.",
+									"en-GB": "For contracts under article 32A of the ECDU, it is necessary to attach a document that guarantees that the necessary requirements are met, namely that teachers have one  main entity employer. The main entity employer must fit into one of the following situations."
+								},
+								"field": "sctn",
+								"label": {
+									"pt-PT": "Documentos para contratações ao abrigo do artigo 32A do ECDU",
+									"en-GB": "Documents for contracting under article 32 A of the ECDU"
+								},
+								"type": "Select",
+								"required": true,
+								"onlyIf": {
+									"field": "ecdu32A",
+									"value": true,
+									"negation": false
+								},
+								"options": [
+									{
+										"label": {
+											"pt-PT": "SCTN (Sistema Cientifico Tecnológico Nacional) – IST ID ou Univ. Portuguesa (CRUP)",
+											"en-GB": "SCTN (National Scientific and Technological System) – IST ID or Portuguese university (CRUP)"
+										},
+										"value": "sctn1"
+									},
+									{
+										"label": {
+											"pt-PT": "SCTN – Unidades com autonomia (IDMEC, LIP; INESC ID, INESC MN, IT)",
+											"en-GB": "SCTN – Units with autonomy (IDMEC, LIP; INESC ID, INESC MN, IT)"
+										},
+										"value": "sctn2"
+									},
+									{
+										"label": {
+											"pt-PT": "SCTN – Outras que não 1) e 2)",
+											"en-GB": "SCTN – Other than 1) and 2)"
+										},
+										"value": "sctn3"
+									},
+									{
+										"label": {
+											"pt-PT": "Fora do SCTN",
+											"en-GB": "Outside SCTN"
+										},
+										"value": "sctn4"
+									},
+									{
+										"label": {
+											"pt-PT": "Entidades estrangeiras ou internacionais do sistema cientifico e tecnológico",
+											"en-GB": "Foreign or international entities of the scientific and technological system"
+										},
+										"value": "sctn5"
+									},
+									{
+										"label": {
+											"pt-PT": "Entidades estrangeiras ou internacionais fora dos sistema cientifico e tecnológico",
+											"en-GB": "Foreign or international entities outside the scientific and technological system"
+										},
+										"value": "sctn6"
+									}
+								]
+							},
+							{
+								"field": "autonomyUnits",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar a Declaração de consentimento/cedência do docente.",
+									"en-GB": "Attach the Declaration of consent/assignment of the teacher"
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true,
+										"negation": false
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "SCTN – Unidades com autonomia (IDMEC, LIP; INESC ID, INESC MN, IT)",
+												"en-GB": "SCTN – Units with autonomy (IDMEC, LIP; INESC ID, INESC MN, IT)"
+											},
+											"value": "sctn2"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Declaração de consentimento",
+									"en-GB": "Declaration of consent"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							},
+							{
+								"field": "otherSctn",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar Declaração de consentimento que prova a ligação do docente/investigador à entidade empregadora principal.",
+									"en-GB": "Attach Declaration of Consent that proves the link between the teacher/researcher and the main entity  employer."
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true,
+										"negation": false
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "SCTN – Outras que não 1) e 2)",
+												"en-GB": "SCTN – Other than 1) and 2)"
+											},
+											"value": "sctn3"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Declaração de consentimento",
+									"en-GB": "Declaration of consent"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							},
+							{
+								"field": "outsideSctn",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar o acordo de colaboração entre instituições.",
+									"en-GB": "Attach the colaboration agreement between institutions."
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "Fora do SCTN",
+												"en-GB": "Outside SCTN"
+											},
+											"value": "sctn4"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Acordo de colaboração",
+									"en-GB": "collaboration agreement"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							},
+							{
+								"field": "ForeignInSct",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar a declaração de consentimento.",
+									"en-GB": "Attach the declaration agreement between institutions."
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "Entidades estrangeiras ou internacionais do sistema cientifico e tecnológico",
+												"en-GB": "Foreign or international entities of the scientific and technological system"
+											},
+											"value": "sctn5"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Declaração de consentimento",
+									"en-GB": "Declaration of consent"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							},
+							{
+								"field": "ForeignOutSct",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar o acordo de colaboração.",
+									"en-GB": "Attach the colaboration agreement between institutions."
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "Entidades estrangeiras ou internacionais fora dos sistema cientifico e tecnológico",
+												"en-GB": "Foreign or international entities outside the scientific and technological system"
+											},
+											"value": "sctn6"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Acordo de colaboração",
+									"en-GB": "collaboration agreement"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Vigência do Contrato",
+							"en-GB": "Contract Term"
+						},
+						"description": {
+							"pt-PT": "As datas inseridas só devem ser aceites se verificarem as seguintes condições:\n1. A proposta de contratação deverá ser entregue com uma antecedência mínima de 2 meses relativamente à data de início do contrato.\n2.  Todos os contratos que não sejam anuais, não podem abranger 2 anos lectivos diferentes.\n3. Para PDECs contratados como ASC e MNT, só são admissíveis durações de contrato múltiplas de 2.75 meses ou anuais (12 meses).\n3.1 Cada período de contratação com a duração acima mencionado cobre obrigatoriamente todas as semanas letivas de cada quarter e de avaliação em época normal integrando:\n* um período de tempo anterior ao início das semanas letivas para a fase de preparação;\n* as semanas letivas;\n* um período de tempo após o fim das semanas letivas para a fase de avaliação.\n3.2 A época de recurso dos quarters pares deve integrar o período coberto pelo contrato. ",
+							"en-GB": "As datas inseridas só devem ser aceites se verificarem as seguintes condições:\n1. A proposta de contratação deverá ser entregue com uma antecedência mínima de 2 meses relativamente à data de início do contrato.\n2.  Todos os contratos que não sejam anuais, não podem abranger 2 anos lectivos diferentes.\n3. Para PDECs contratados como ASC e MNT, só são admissíveis durações de contrato múltiplas de 2.75 meses ou anuais (12 meses).\n3.1 Cada período de contratação com a duração acima mencionado cobre obrigatoriamente todas as semanas letivas de cada quarter e de avaliação em época normal integrando:\n* um período de tempo anterior ao início das semanas letivas para a fase de preparação;\n* as semanas letivas;\n* um período de tempo após o fim das semanas letivas para a fase de avaliação.\n3.2 A época de recurso dos quarters pares deve integrar o período coberto pelo contrato. "
+						},
+						"properties": [
+							{
+								"type": "Composite",
+								"field": "contractDuration",
+								"required": true,
+								"properties": [
+									{
+										"type": "DateTime",
+										"field": "contractStartDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Início",
+											"en-GB": "Begin Date"
+										}
+									},
+									{
+										"type": "DateTime",
+										"field": "contractEndDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Fim",
+											"en-GB": "End Date"
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Financiamento",
+					"en-GB": "Financement"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Imputação de Custos",
+							"en-GB": "Coverage of Costs"
+						},
+						"description": {
+							"pt-PT": "A informação de entidade pagadora só se aplica quando o contrato não é um contrato nos termos do art.º 32.º-A.(sem  Remuneração). Quando aplicável, deve selecionar a unidade pagadora e a percentagem a praticar. Para a categoria de Monitor a percentagem é igual a 100, para a categoria de Assistente convidado o limite maxímo é de 59 %.",
+							"en-GB": "The information of the paying entity only applies when the contract is not a contract under the terms of article 32-A. (without Remuneration). When applicable, you must select the paying unit and the percentage to be charged. For the Monitor category the percentage is equal to 100 and for the Guest Assistant category the maximum limit is 59 %."
+						},
+						"properties": [
+							{
+								"type": "Array",
+								"field": "financers",
+								"required": true,
+								"label": {
+									"pt-PT": "Unidades Pagadoras",
+									"en-GB": "Paying Entities"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Unidade Pagadora",
+									"en-GB": "Add Paying Entity"
+								},
+								"onlyIf": {
+									"field": "ecdu32A",
+									"value": false,
+									"negation": false
+								},
+								"properties": [
+									{
+										"type": "Composite",
+										"field": "financerPeriodComposite",
+										"properties": [
+											{
+												"type": "DateTime",
+												"field": "financerStartDate",
+												"required": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Início do Financiamento",
+													"en-GB": "Finance Begin Date"
+												}
+											},
+											{
+												"type": "DateTime",
+												"field": "financerEndDate",
+												"required": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Fim do Financiamento",
+													"en-GB": "Finance End Date"
+												}
+											}
+										]
+									},
+									{
+										"type": "AsyncSelect",
+										"field": "financerUnit",
+										"label": {
+											"pt-PT": "Unidade Pagadora",
+											"en-GB": "Financing Unit"
+										},
+										"required": true,
+										"allowOther": false,
+										"optionsProvider": "/paper-pusher-ist/financeUnit"
+									},
+									{
+										"type": "Quantity",
+										"field": "financerUnitPercentage",
+										"required": true,
+										"step": 0.01,
+										"label": {
+											"pt-PT": "Percentagem a financiar",
+											"en-GB": "Percentage to finance"
+										},
+										"min": 0,
+										"max": 100
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Documentos",
+					"en-GB": "Documents"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Documentos a submeter",
+							"en-GB": "Documents to submit"
+						},
+						"description": {
+							"pt-PT": "Os documentos submeter variam em função do tipo de contrato.",
+							"en-GB": "The documents to submit differ depending on the type of contract."
+						},
+						"properties": [
+							{
+								"field": "curriculumVitae",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar o Curriculum Vitae.",
+									"en-GB": "Attach the Curriculum Vitae."
+								},
+								"label": {
+									"pt-PT": "Curriculum Vitae",
+									"en-GB": "Curriculum Vitae"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									}
+								]
+							},
+							{
+								"field": "previousYearContractActivityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Relatório de atividades do PDEC relativo ao período de contrato anterior.",
+									"en-GB": "PDEC activity report for the prior contract."
+								},
+								"label": {
+									"pt-PT": "Relatório de atividades",
+									"en-GB": "Activitity Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									},
+									{
+										"field": "previousYearContract",
+										"value": true
+									}
+								]
+							},
+							{
+								"field": "renewalActivityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Relatório de atividades do PDEC relativo ao período de contrato anterior.",
+									"en-GB": "PDEC activity report for the prior contract."
+								},
+								"label": {
+									"pt-PT": "Relatório de atividades",
+									"en-GB": "Activitity Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"label": {
+												"pt-PT": "Renovação de Contrato",
+												"en-GB": "Contract Renewal"
+											},
+											"value": "contractRenewal"
+										}
+									}
+								]
+							},
+							{
+								"field": "newContractEspecialityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar a Proposta/Relatório fundamentado por, pelo menos, dois professores da especialidade, que deverá ter em atenção o curriculum vitae da individualidade a convidar e referir o período de contratação proposto, a categoria a que é equiparado por via contratual, bem como a respetiva percentagem contratual.",
+									"en-GB": "Attach the Proposal/Report substantiated by at least two professors of the specialty, which must take into account the curriculum vitae of the individual to be invited and refer to the proposed period of hiring, the category to which it is equivalent by contractual means, as well as the respective contractual percentage."
+								},
+								"label": {
+									"pt-PT": "Proposta/Relatório Fundamentado",
+									"en-GB": "Proposal/Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									},
+									{
+										"field": "previousYearContract",
+										"value": false
+									}
+								]
+							},
+							{
+								"field": "previousYearContractEspecialityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar a Proposta/Relatório fundamentado por, pelo menos, dois professores da especialidade, que deverá ter em atenção o curriculum vitae, o relatório de atividades do período anterior e incluir parecer sobre o desempenho docente no referido período. Este relatório deve ainda mencionar explicitamente qual o período de contratação proposto, a categoria a que é equiparado por via contratual, bem como a respetiva percentagem contratual.",
+									"en-GB": "Attach the Proposal/Report substantiated by at least two professors of the specialty, which should take into account the curriculum vitae, the activity report of the previous period and include an opinion on the teaching performance in said period. This report must also explicitly mention the proposed hiring period, the category to which it is equivalent by contractual means, as well as the respective contractual percentage."
+								},
+								"label": {
+									"pt-PT": "Proposta/Relatório Fundamentado",
+									"en-GB": "Proposal/Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									},
+									{
+										"field": "previousYearContract",
+										"value": true
+									}
+								]
+							},
+							{
+								"field": "renewalEspecialityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar a Proposta/Relatório fundamentado por, pelo menos, dois professores da especialidade, que deverá ter em atenção o relatório de atividades do período anterior e incluir parecer sobre o desempenho docente (nomeadamente pedagógico) no referido período. Este relatório deve mencionar explicitamente qual o período de contratação proposto, a categoria a que é equiparado por via contratual, bem como a respetiva percentagem contratual.",
+									"en-GB": "Attach the Proposal/Report substantiated by at least two professors of the specialty, which should take into account the curriculum vitae, the activity report of the previous period and include an opinion on the teaching performance in said period. This report must also explicitly mention the proposed hiring period, the category to which it is equivalent by contractual means, as well as the respective contractual percentage."
+								},
+								"label": {
+									"pt-PT": "Proposta/Relatório Fundamentado",
+									"en-GB": "Proposal/Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"label": {
+												"pt-PT": "Renovação de Contrato",
+												"en-GB": "Contract Renewal"
+											},
+											"value": "contractRenewal"
+										}
+									}
+								]
+							},
+							{
+								"field": "previousYearContractProofEvaluationReport",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar o Comprovativo da avaliação dos QUC`s dos anos anteriores (disponível na página de execução das disciplinas).",
+									"en-GB": "Attach proof of evaluation of QUC`s from previous years (available on the course execution page)."
+								},
+								"label": {
+									"pt-PT": "Comprovativo da avaliação QUC",
+									"en-GB": "Proof of evaluation QUC"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									},
+									{
+										"field": "previousYearContract",
+										"value": true
+									}
+								]
+							},
+							{
+								"field": "renewalProofEvaluationReport",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar o Comprovativo da avaliação dos QUC`s dos anos anteriores (disponível na página de execução das disciplinas).",
+									"en-GB": "Attach proof of evaluation of QUC`s from previous years (available on the course execution page)."
+								},
+								"label": {
+									"pt-PT": "Comprovativo da avaliação QUC",
+									"en-GB": "Proof of evaluation QUC"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"label": {
+												"pt-PT": "Renovação de Contrato",
+												"en-GB": "Contract Renewal"
+											},
+											"value": "contractRenewal"
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"outcomeForm": {
+		"canEditResponseAfterConclude": true,
+		"pages": [
+			{
+				"title": {
+					"pt-PT": "Envio do Convite",
+					"en-GB": "Invitation Information"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Destinatário do Convite",
+							"en-GB": "Invitation Target"
+						},
+						"properties": [
+							{
+								"type": "Text",
+								"field": "email-for-invitation",
+								"label": {
+									"pt-PT": "Endereço de e-mail da pessoa a convidar",
+									"en-GB": "E-mail address of the person to invite"
+								},
+								"required": true,
+								"multiline": false,
+								"inputType": "email"
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Vigência do Contrato",
+					"en-GB": "Contract Term"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Vigência do Contrato",
+							"en-GB": "Contract Term"
+						},
+						"properties": [
+							{
+								"type": "Composite",
+								"field": "contractDuration",
+								"required": true,
+								"properties": [
+									{
+										"type": "DateTime",
+										"field": "contractStartDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Início",
+											"en-GB": "Begin Date"
+										}
+									},
+									{
+										"type": "DateTime",
+										"field": "contractEndDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Fim",
+											"en-GB": "End Date"
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"cost": {
+	},
+	"flowTemplate": {
+		"name": "specially-hired-faculty-contract",
+		"title": {
+			"pt-PT": "Processo de Proposta de Contrato de Pessoal Docente Especialmente Contratado",
+			"en-GB": "Contract Proposal Process for Specially Hired Faculty"
+		},
+		"description": {
+			"pt-PT": "Processo de Proposta de Contrato de Pessoal Docente Especialmente Contratado",
+			"en-GB": "Contract Proposal Process for Specially Hired Faculty"
+		},
+		"config": {
+			"actionProcessor": {
+				"onSuccess": [
+				],
+				"onFailure": [
+					{
+						"flowProcessor": "Return Flow Rejected To Request"
+					}
+				],
+				"onActionTransition": [
+				],
+				"onCancel": [
+					{
+						"flowProcessor": "Cancel Connected Requests"
+					}
+				]
+			},
+			"flowProcessors": [
+				{
+					"handle": "move-queue-plenary",
+					"flowProcessor": "Move Queue",
+					"flowQueue": "Plenário do Conselho Científico",
+					"url": "https://fenix.tecnico.ulisboa.pt/fenixedu-smart-flow/flows/{{flowId}}/form-data"
+				},
+				{
+					"handle": "revert-move-queue-plenary",
+					"flowProcessor": "Move Queue",
+					"flowQueue": "Conselho Científico",
+					"url": "https://fenix.tecnico.ulisboa.pt/fenixedu-smart-flow/flows/{{flowId}}/form-data"
+				}
+			],
+			"forms": [
+				{
+					"id": "cost-allocation",
+					"title": {
+						"pt-PT": "Imputação de custos",
+						"en-GB": "Cost allocation"
+					},
+					"form": {
+						"pages": [
+							{
+								"title": {
+									"pt-PT": "Informação de Encargos",
+									"en-GB": "Charges Information"
+								},
+								"sections": [
+									{
+										"title": {
+											"pt-PT": "Encargos Definitivos",
+											"en-GB": "Definitive Costs"
+										},
+										"properties": [
+											{
+												"type": "Quantity",
+												"field": "salaryMonthlyBase",
+												"required": true,
+												"label": {
+													"pt-PT": "Remuneração Base Mensal (€)",
+													"en-GB": "Monthly Base Salary (€)"
+												},
+												"min": 0,
+												"step": 0.01
+											},
+											{
+												"type": "Array",
+												"field": "costsByYear",
+												"description": {
+													"pt-PT": "Indique os encargos suportados pelo(s) elemento(s) PEP(s) e a respective percentagem.",
+													"en-GB": "Indicate the costs suported by the PEP element(s) and the respective percentage."
+												},
+												"required": true,
+												"label": {
+													"pt-PT": "Ano Económico e Intervalo",
+													"en-GB": "Economic Year and Interval"
+												},
+												"labelAddElement": {
+													"pt-PT": "Adicionar Ano Económico",
+													"en-GB": "Add Economic Year"
+												},
+												"properties": [
+													{
+														"type": "Quantity",
+														"field": "economicYear",
+														"required": true,
+														"label": {
+															"pt-PT": "Ano Económico para os Encargos",
+															"en-GB": "Economic Year for the Costs"
+														},
+														"inputType": "plain",
+														"step": 1,
+														"min": 2023,
+														"max": 2046
+													},
+													{
+														"type": "Composite",
+														"field": "costInterval",
+														"required": true,
+														"description": {
+															"pt-PT": "Indique a data de início e fim dos encargos.",
+															"en-GB": "Indicate the start and end date of costs."
+														},
+														"properties": [
+															{
+																"type": "DateTime",
+																"field": "costIntervalStartDate",
+																"required": true,
+																"date": true,
+																"time": false,
+																"label": {
+																	"pt-PT": "Data de Início dos Encargos",
+																	"en-GB": "Begin Date of the Costs"
+																}
+															},
+															{
+																"type": "DateTime",
+																"field": "costIntervalEndDate",
+																"required": true,
+																"date": true,
+																"time": false,
+																"label": {
+																	"pt-PT": "Data de Fim dos Encargos",
+																	"en-GB": "End Date of the Costs"
+																}
+															}
+														]
+													},
+													{
+														"type": "Quantity",
+														"field": "salaryBase",
+														"description": {
+															"pt-PT": "Indique o total da remuneração base no periodo.",
+															"en-GB": "Indicate the total base remuneration in the period."
+														},
+														"required": true,
+														"label": {
+															"pt-PT": "a. Remuneração Base para o Período (€)",
+															"en-GB": "a. Base Salary for the Period (€)"
+														},
+														"min": 0,
+														"step": 0.01
+													},
+													{
+														"type": "Quantity",
+														"field": "salaryFoodSubsidy",
+														"required": true,
+														"label": {
+															"pt-PT": "b. Subsídio de Alimentação (€)",
+															"en-GB": "b. Food Subsidy (€)"
+														},
+														"min": 0,
+														"step": 0.01
+													},
+													{
+														"type": "Quantity",
+														"field": "salaryVacationSubsidy",
+														"required": true,
+														"label": {
+															"pt-PT": "c. Subsídio de Férias (€)",
+															"en-GB": "c. Vacation Subsidy (€)"
+														},
+														"min": 0,
+														"step": 0.01
+													},
+													{
+														"type": "Quantity",
+														"field": "salaryChristmasSubsidy",
+														"required": true,
+														"label": {
+															"pt-PT": "d. Subsídio de Natal (€)",
+															"en-GB": "d. Christmas Subsidy (€)"
+														},
+														"min": 0,
+														"step": 0.01
+													},
+													{
+														"type": "Composite",
+														"field": "tsu",
+														"description": {
+															"pt-PT": "Indique a percentagem da taxa da TSU a aplicar no ano económico e o valor calculado sobre esta.",
+															"en-GB": "Indicate the TSU rate to be applied in the financial year and the value calculated on the rate."
+														},
+														"properties": [
+															{
+																"type": "Quantity",
+																"field": "tsuPercentage",
+																"label": {
+																	"pt-PT": "TSU (%)",
+																	"en-GB": "TSU (%)"
+																},
+																"min": 0,
+																"step": 0.01
+															},
+															{
+																"type": "Quantity",
+																"field": "tsuValue",
+																"required": true,
+																"label": {
+																	"pt-PT": "e. Valor da TSU (€)",
+																	"en-GB": "e. TSU Value (€)"
+																},
+																"min": 0,
+																"step": 0.01
+															}
+														]
+													},
+													{
+														"type": "Quantity",
+														"field": "salarySubTotal",
+														"required": true,
+														"label": {
+															"pt-PT": "Sub-Total de encargos para o período (€)",
+															"en-GB": "Sub-Total of expenses for the period (€)"
+														},
+														"description": {
+															"pt-PT": "Calculado sumando os campos a, b, c, d e e para o ano económico.",
+															"en-GB": "Calculated adding values a, b, c, d and e for the economic year."
+														},
+														"min": 0,
+														"step": 0.01
+													},
+													{
+														"type": "Composite",
+														"field": "caducidade",
+														"properties": [
+															{
+																"type": "Quantity",
+																"field": "caducidadeDay",
+																"required": true,
+																"label": {
+																	"pt-PT": "Compensação por Caducidade em dias",
+																	"en-GB": "Compensation for termination in days"
+																},
+																"min": 0,
+																"step": 0.01
+															},
+															{
+																"type": "Quantity",
+																"field": "caducidadeValue",
+																"required": true,
+																"label": {
+																	"pt-PT": "Valor de Caducidade (€)",
+																	"en-GB": "Termination Value (€)"
+																},
+																"min": 0,
+																"step": 0.01
+															}
+														]
+													},
+													{
+														"type": "Composite",
+														"field": "unusedVacation",
+														"properties": [
+															{
+																"type": "Quantity",
+																"field": "unusedVacationDay",
+																"required": true,
+																"label": {
+																	"pt-PT": "Férias não gozadas em dias",
+																	"en-GB": "Unused Vacation in days"
+																},
+																"min": 0,
+																"step": 0.01
+															},
+															{
+																"type": "Quantity",
+																"field": "unusedVacationValue",
+																"required": true,
+																"label": {
+																	"pt-PT": "Valor Férias Não Gozadas (€)",
+																	"en-GB": "Value of Unused Vacation (€)"
+																},
+																"min": 0,
+																"step": 0.01
+															}
+														]
+													},
+													{
+														"type": "Quantity",
+														"field": "otherVacationSubsidy",
+														"required": true,
+														"label": {
+															"pt-PT": "Subsídio de férias vincendas (€)",
+															"en-GB": "Unused Vacation Subsidy (€)"
+														},
+														"min": 0,
+														"step": 0.01
+													},
+													{
+														"type": "Composite",
+														"field": "expiredVacation",
+														"properties": [
+															{
+																"type": "Quantity",
+																"field": "expiredVacationDay",
+																"required": true,
+																"label": {
+																	"pt-PT": "Férias Vincendas em dias",
+																	"en-GB": "Expired Vacation in days"
+																},
+																"min": 0,
+																"step": 0.01
+															},
+															{
+																"type": "Quantity",
+																"field": "expiredVacationValue",
+																"required": true,
+																"label": {
+																	"pt-PT": "Valor Férias Vincendas (€)",
+																	"en-GB": "Expired Vacation Value (€)"
+																},
+																"min": 0,
+																"step": 0.01
+															}
+														]
+													},
+													{
+														"type": "Composite",
+														"field": "otherTsu",
+														"description": {
+															"pt-PT": "Indique a percentagem da taxa da TSU a aplicar no ano económico e o valor calculado sobre esta.",
+															"en-GB": "Indicate the TSU rate to be applied in the financial year and the value calculated on the rate."
+														},
+														"properties": [
+															{
+																"type": "Quantity",
+																"field": "otherTsuPercentage",
+																"label": {
+																	"pt-PT": "Outro TSU (%)",
+																	"en-GB": "Other TSU (%)"
+																},
+																"min": 0,
+																"step": 0.01
+															},
+															{
+																"type": "Quantity",
+																"field": "otherTsuValue",
+																"required": true,
+																"label": {
+																	"pt-PT": "Valor Outro TSU (€)",
+																	"en-GB": "Other TSU Value (€)"
+																},
+																"min": 0,
+																"step": 0.01
+															}
+														]
+													},
+													{
+														"type": "Quantity",
+														"field": "totalCosts",
+														"required": true,
+														"label": {
+															"pt-PT": "Total do Encargo para o Período (€)",
+															"en-GB": "Total Expenses for the Period (€)"
+														},
+														"min": 0,
+														"step": 0.01
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				},
+				{
+					"id": "fund-reservation",
+					"title": {
+						"pt-PT": "Reserva de Fundos",
+						"en-GB": "Reserve Funds"
+					},
+					"form": {
+						"pages": [
+							{
+								"title": {
+									"pt-PT": "Direção de Projetos e Execução Orçamental",
+									"en-GB": "Projects and Budget Execution Department"
+								},
+								"sections": [
+									{
+										"title": {
+											"pt-PT": "Reserva/Cabimento",
+											"en-GB": "Reserve/Fund Allocation"
+										},
+										"properties": [
+											{
+												"type": "Array",
+												"field": "reserveFundAllocationCommitments",
+												"required": true,
+												"label": {
+													"pt-PT": "Encargos Financeiros",
+													"en-GB": "Financial Costs"
+												},
+												"labelAddElement": {
+													"pt-PT": "Adicionar encargo financeiro",
+													"en-GB": "Add financial cost"
+												},
+												"properties": [
+													{
+														"type": "AsyncSelect",
+														"field": "financerConfig",
+														"label": {
+															"pt-PT": "Elemento Financiador",
+															"en-GB": "Funding Element"
+														},
+														"required": true,
+														"allowOther": false,
+														"optionsProvider": "/paper-pusher-ist/financeUnitFlowConfig/{{flowId}}/financers"
+													},
+													{
+														"type": "Text",
+														"field": "fundReservationNumber",
+														"required": false,
+														"label": {
+															"pt-PT": "Número de Reserva",
+															"en-GB": "Fund Reservation Number"
+														},
+														"multiline": false,
+														"inputType": "plain"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				},
+				{
+					"id": "fund-information",
+					"title": {
+						"pt-PT": "Informação Financeira Lida do SAP",
+						"en-GB": "Financial Information from SAP"
+					},
+					"form": {
+						"pages": [
+							{
+								"title": {
+									"pt-PT": "Reservas e Cabimentos",
+									"en-GB": "Reservations and Fund Allocation"
+								},
+								"sections": [
+									{
+										"title": {
+											"pt-PT": "Detalhes",
+											"en-GB": "Details"
+										},
+										"properties": [
+											{
+												"type": "Array",
+												"field": "financialInformation",
+												"required": false,
+												"readonly": true,
+												"label": {
+													"pt-PT": "Informação do SAP",
+													"en-GB": "Information from SAP"
+												},
+												"properties": [
+													{
+														"type": "Text",
+														"field": "documentType",
+														"required": false,
+														"readonly": true,
+														"label": {
+															"pt-PT": "Tipo de Documento",
+															"en-GB": "Document Type"
+														}
+													},
+													{
+														"type": "Text",
+														"field": "documentId",
+														"required": false,
+														"readonly": true,
+														"label": {
+															"pt-PT": "Número do Documento",
+															"en-GB": "Document Number"
+														}
+													},
+													{
+														"type": "Text",
+														"field": "operator",
+														"required": false,
+														"readonly": true,
+														"label": {
+															"pt-PT": "Operador",
+															"en-GB": "Operator"
+														}
+													},
+													{
+														"type": "Text",
+														"field": "entryDate",
+														"required": false,
+														"readonly": true,
+														"label": {
+															"pt-PT": "Data de Entrada",
+															"en-GB": "Entry Date"
+														}
+													},
+													{
+														"type": "Text",
+														"field": "documentDate",
+														"required": false,
+														"readonly": true,
+														"label": {
+															"pt-PT": "Data no Documento",
+															"en-GB": "Date in Document"
+														}
+													},
+													{
+														"type": "Text",
+														"field": "documentReleaseDate",
+														"required": false,
+														"readonly": true,
+														"label": {
+															"pt-PT": "Data de Lançamento no Documento",
+															"en-GB": "Release Date in Document"
+														}
+													},
+													{
+														"type": "Array",
+														"field": "documents",
+														"required": false,
+														"readonly": true,
+														"label": {
+															"pt-PT": "Documentos do SAP",
+															"en-GB": "Documentos do SAP"
+														},
+														"properties": [
+															{
+																"type": "Text",
+																"field": "documentType",
+																"required": false,
+																"readonly": true,
+																"label": {
+																	"pt-PT": "Tipo de Documento",
+																	"en-GB": "Document Type"
+																}
+															},
+															{
+																"type": "Text",
+																"field": "documentId",
+																"required": false,
+																"readonly": true,
+																"label": {
+																	"pt-PT": "Número do Documento",
+																	"en-GB": "Document Number"
+																}
+															},
+															{
+																"type": "Text",
+																"field": "operator",
+																"required": false,
+																"readonly": true,
+																"label": {
+																	"pt-PT": "Operador",
+																	"en-GB": "Operator"
+																}
+															},
+															{
+																"type": "Text",
+																"field": "entryDate",
+																"required": false,
+																"readonly": true,
+																"label": {
+																	"pt-PT": "Data de Entrada",
+																	"en-GB": "Entry Date"
+																}
+															},
+															{
+																"type": "Text",
+																"field": "documentDate",
+																"required": false,
+																"readonly": true,
+																"label": {
+																	"pt-PT": "Data no Documento",
+																	"en-GB": "Date in Document"
+																}
+															},
+															{
+																"type": "Text",
+																"field": "documentReleaseDate",
+																"required": false,
+																"readonly": true,
+																"label": {
+																	"pt-PT": "Data de Lançamento no Documento",
+																	"en-GB": "Release Date in Document"
+																}
+															},
+															{
+																"type": "Array",
+																"field": "items",
+																"required": false,
+																"readonly": true,
+																"label": {
+																	"pt-PT": "Itens do Documento",
+																	"en-GB": "Document Items"
+																},
+																"properties": [
+																	{
+																		"type": "Text",
+																		"field": "value",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Valor",
+																			"en-GB": "Value"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "description",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Descrição",
+																			"en-GB": "Description"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "financialCentre",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Centro Financeiro",
+																			"en-GB": "Financial Centre"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "funds",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Fundos",
+																			"en-GB": "Funds"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "functionalArea",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Área Funcional",
+																			"en-GB": "Functional Area"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "pepElement",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Elemento PEP",
+																			"en-GB": "PEP Element"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "supplierName",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Nome do Fornecedor",
+																			"en-GB": "Supplier Name"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "supplierTin",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "NIF do Fornecedor",
+																			"en-GB": "Supplier TIN"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "expiryDate",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Data de Validade",
+																			"en-GB": "Expiry Date"
+																		}
+																	}
+																]
+															},
+															{
+																"type": "Array",
+																"field": "documents",
+																"required": false,
+																"readonly": true,
+																"label": {
+																	"pt-PT": "Documentos do SAP",
+																	"en-GB": "Documentos do SAP"
+																},
+																"properties": [
+																	{
+																		"type": "Text",
+																		"field": "documentType",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Tipo de Documento",
+																			"en-GB": "Document Type"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "documentId",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Número do Documento",
+																			"en-GB": "Document Number"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "operator",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Operador",
+																			"en-GB": "Operator"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "entryDate",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Data de Entrada",
+																			"en-GB": "Entry Date"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "documentDate",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Data no Documento",
+																			"en-GB": "Date in Document"
+																		}
+																	},
+																	{
+																		"type": "Text",
+																		"field": "documentReleaseDate",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Data de Lançamento no Documento",
+																			"en-GB": "Release Date in Document"
+																		}
+																	},
+																	{
+																		"type": "Array",
+																		"field": "items",
+																		"required": false,
+																		"readonly": true,
+																		"label": {
+																			"pt-PT": "Itens do Documento",
+																			"en-GB": "Document Items"
+																		},
+																		"properties": [
+																			{
+																				"type": "Text",
+																				"field": "value",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "Valor",
+																					"en-GB": "Value"
+																				}
+																			},
+																			{
+																				"type": "Text",
+																				"field": "description",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "Descrição",
+																					"en-GB": "Description"
+																				}
+																			},
+																			{
+																				"type": "Text",
+																				"field": "financialCentre",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "Centro Financeiro",
+																					"en-GB": "Financial Centre"
+																				}
+																			},
+																			{
+																				"type": "Text",
+																				"field": "funds",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "Fundos",
+																					"en-GB": "Funds"
+																				}
+																			},
+																			{
+																				"type": "Text",
+																				"field": "functionalArea",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "Área Funcional",
+																					"en-GB": "Functional Area"
+																				}
+																			},
+																			{
+																				"type": "Text",
+																				"field": "pepElement",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "Elemento PEP",
+																					"en-GB": "PEP Element"
+																				}
+																			},
+																			{
+																				"type": "Text",
+																				"field": "supplierName",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "Nome do Fornecedor",
+																					"en-GB": "Supplier Name"
+																				}
+																			},
+																			{
+																				"type": "Text",
+																				"field": "supplierTin",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "NIF do Fornecedor",
+																					"en-GB": "Supplier TIN"
+																				}
+																			},
+																			{
+																				"type": "Text",
+																				"field": "expiryDate",
+																				"required": false,
+																				"readonly": true,
+																				"label": {
+																					"pt-PT": "Data de Validade",
+																					"en-GB": "Expiry Date"
+																				}
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				}
+			],
+			"actionNodes": [
+				{
+					"id": "step-1",
+					"type": "generic",
+					"comment": true,
+					"title": {
+						"pt-PT": "O/A Presidente do Departamento",
+						"en-GB": "The Department President"
+					},
+					"description": {
+						"pt-PT": "Parecer do/a presidente do departamento.",
+						"en-GB": "Deliberation of the presidente of the department."
+					},
+					"commentLabel": {
+						"pt-PT": "Parecer do/a presidente do departamento.",
+						"en-GB": "Deliberation of the presidente of the department."
+					},
+					"actions": {
+						"SIGN": {
+							"primary": true,
+							"to": "{{next-step}}",
+							"label": {
+								"pt-PT": "Autorizar",
+								"en-GB": "Authorise"
+							}
+						},
+						"REJECT": {
+							"primary": false,
+							"to": "FAILURE",
+							"label": {
+								"pt-PT": "Rejeitar",
+								"en-GB": "Reject"
+							}
+						}
+					},
+					"queue": "{{step1-queue}}"
+				},
+				{
+					"id": "step-2",
+					"type": "withForms",
+					"comment": false,
+					"title": {
+						"pt-PT": "Imputação de custos",
+						"en-GB": "Cost allocation"
+					},
+					"description": {
+						"pt-PT": "Processamento pela Direção de Recursos Humanos",
+						"en-GB": "Processing by the Human Resources Department"
+					},
+					"buttons": [
+						{
+							"id": "submit-form",
+							"primary": true,
+							"label": {
+								"pt-PT": "Imputação de custos",
+								"en-GB": "Cost allocation"
+							},
+							"handlers": {
+								"form": "cost-allocation",
+								"action": "RESERVE_FUNDS"
+							}
+						},
+						{
+							"id": "reject",
+							"primary": false,
+							"label": {
+								"pt-PT": "Rejeitar",
+								"en-GB": "Rejeitar"
+							},
+							"handlers": {
+								"action": "REJECT"
+							}
+						}
+					],
+					"actions": {
+						"RESERVE_FUNDS": {
+							"primary": true,
+							"to": "step-3.1-fund-reservation",
+							"label": {
+								"pt-PT": "Reservar Fundos",
+								"en-GB": "Reserve Funds"
+							}
+						},
+						"REJECT": {
+							"primary": false,
+							"to": "FAILURE",
+							"label": {
+								"pt-PT": "Rejeitar",
+								"en-GB": "Reject"
+							}
+						}
+					},
+					"queue": "Núcleo de Remunerações e Proteção Social - Geral",
+					"blockUndo": true
+				},
+				{
+					"id": "{{step-3}}-fund-reservation",
+					"type": "withForms",
+					"comment": false,
+					"title": {
+						"pt-PT": "Reservar Fundos",
+						"en-GB": "Allocate Funds"
+					},
+					"description": {
+						"pt-PT": "Alocação de Verbas para Garantir a Possibilidade de Pagamento",
+						"en-GB": "Budget Allocation to Ensure the Possibility of Payment"
+					},
+					"buttons": [
+						{
+							"id": "fund-reservation-form",
+							"primary": true,
+							"label": {
+								"pt-PT": "Confirmar Reserva de Fundos",
+								"en-GB": "Confirm Fund Reservation"
+							},
+							"handlers": {
+								"form": "fund-reservation",
+								"action": "RESERVE_FUNDS"
+							}
+						},
+						{
+							"id": "reject",
+							"primary": false,
+							"label": {
+								"pt-PT": "Rejeitar",
+								"en-GB": "Reject"
+							},
+							"handlers": {
+								"action": "REJECT"
+							}
+						}
+					],
+					"actions": {
+						"RESERVE_FUNDS": {
+							"primary": true,
+							"to": "{{next-step}}",
+							"label": {
+								"pt-PT": "Confirmar Reserva de Fundos",
+								"en-GB": "Confirm Fund Reservation"
+							}
+						},
+						"REJECT": {
+							"primary": false,
+							"to": "step-3.1-fund-undo-reservation",
+							"label": {
+								"pt-PT": "Rejeitar",
+								"en-GB": "Reject"
+							}
+						}
+					},
+					"actionProcessor": {
+						"onActionTransition": [
+							{
+								"applyOn": "RESERVE_FUNDS",
+								"flowProcessor": "Sync Funds Allocation Info"
+							}
+						]
+					},
+					"queue": "{{step3-queue}}"
+				},
+				{
+					"id": "step-4-fund-allocation",
+					"type": "generic",
+					"comment": false,
+					"title": {
+						"pt-PT": "Cabimento de Fundos",
+						"en-GB": "Fund Allocation"
+					},
+					"description": {
+						"pt-PT": "Alocação de Verbas para Garantir a Possibilidade de Pagamento",
+						"en-GB": "Budget Allocation to Ensure the Possibility of Payment"
+					},
+					"actions": {
+						"ALLOCATE_FUNDS": {
+							"primary": true,
+							"to": "step-5-scientificCouncil",
+							"label": {
+								"pt-PT": "Confirmar Alocação de Fundos",
+								"en-GB": "Confirm Fund Allocation"
+							}
+						},
+						"REJECT": {
+							"primary": false,
+							"to": "step-3.1-fund-undo-reservation",
+							"label": {
+								"pt-PT": "Rejeitar",
+								"en-GB": "Reject"
+							}
+						}
+					},
+					"actionProcessor": {
+						"onActionTransition": [
+							{
+								"applyOn": "ALLOCATE_FUNDS",
+								"flowProcessor": "Sync Funds Allocation Info"
+							}
+						]
+					},
+					"queuesAllowedToChangeTo": [
+						"Área de Contabilidade - Geral",
+						"Núcleo de Execução Orçamental - Geral",
+						"Núcleo de Contabilidade - Geral"
+					],
+					"queue": "Núcleo de Execução Orçamental - Geral",
+					"blockUndo": false
+				},
+				{
+					"id": "step-5-scientificCouncil",
+					"type": "withButtons",
+					"comment": true,
+					"title": {
+						"pt-PT": "Conselho Científico",
+						"en-GB": "Scientific Council"
+					},
+					"description": {
+						"pt-PT": "Deliberação do Conselho Científico.",
+						"en-GB": "Deliberation of the Scientific Council."
+					},
+					"commentLabel": {
+						"pt-PT": "Deliberação do Conselho Científico.",
+						"en-GB": "Deliberation of the Scientific Council."
+					},
+                    "buttons": [
+                      {
+                        "label": {
+                          "pt-PT": "Enviar para Plenário",
+                          "en-GB": "Send to Plenary"
+                        },
+                        "handler": "process:move-queue-plenary"
+                      },
+                      {
+						"primary": true,
+                        "label": {
+                          "pt-PT": "Autorizar",
+                          "en-GB": "Authorise"
+                        },
+                        "handler": "action:SIGN"
+                      },
+                      {
+						  "label": {
+							  "pt-PT": "Requerer Revisão de Documentos",
+							  "en-GB": "Request Changes do Documents"
+						  },
+						  "handler": "action:REQUEST_REVIEW_DOCUMENTS"
+					  },
+                      {
+                        "label": {
+                          "pt-PT": "Rejeitar",
+                          "en-GB": "Reject"
+                        },
+                        "handler": "action:REJECT"
+                      },
+					  {
+							"label": {
+								"pt-PT": "Reverter envio para Plenário",
+								"en-GB": "Revert Send to Plenary"
+							},
+							"handler": "process:revert-move-queue-plenary"
+					  }
+					],
+					"actions": {
+						"SIGN": {
+							"primary": true,
+							"to": "step-6-administrator",
+							"label": {
+								"pt-PT": "Autorizar",
+								"en-GB": "Authorise"
+							}
+						},
+						"REQUEST_REVIEW_DOCUMENTS": {
+							"primary": false,
+							"to": "step-5-request-document-changes",
+							"label": {
+								"pt-PT": "Requerer Revisão de Documentos",
+								"en-GB": "Request Changes do Documents"
+							}
+						},
+						"REJECT": {
+							"primary": false,
+							"to": "step-4-fund-undo-allocation",
+							"label": {
+								"pt-PT": "Rejeitar",
+								"en-GB": "Reject"
+							}
+						}
+					},
+					"queue": "Conselho Científico - Comissão Contratação"
+				},
+				{
+					"id": "step-5-request-document-changes",
+					"type": "withForms",
+					"comment": false,
+					"title": {
+						"pt-PT": "Rever Documentação",
+						"en-GB": "Review Documents"
+					},
+					"description": {
+						"pt-PT": "Completar e retificar documentação",
+						"en-GB": "Complete e correct documentation"
+					},
+					"buttons": [
+						{
+							"id": "review-documents-form",
+							"primary": true,
+							"label": {
+								"pt-PT": "Rever Documentação",
+								"en-GB": "Review Documents"
+							},
+							"handlers": {
+								"form": "review-documents-form",
+								"action": "RESERVE_FUNDS"
+							}
+						}
+					],
+					"actions": {
+						"SUBMIT": {
+							"primary": true,
+							"to": "step-5-scientificCouncil",
+							"label": {
+								"pt-PT": "Rever Documentação",
+								"en-GB": "Review Documents"
+							}
+						},
+						"FINISH_WAITING": {
+							"primary": false,
+							"to": "step-5-scientificCouncil",
+							"label": {
+								"pt-PT": "Nenhuma Informação Adicional Prestada",
+								"en-GB": "No Additional Information was Provided"
+							}
+						}
+					},
+					"queue": "{{requester-workplace-unit}}",
+					"blockUndo": true,
+					"actionProcessor": {
+						"onEnterNode": [
+							{
+								"flowProcessor": "Send e-mail",
+								"template": "email-request-pdec-document-revision",
+								"notifyFlowMembers": true,
+								"sender": "1696378937945233",
+								"parameters": {
+								}
+							},
+							{
+								"flowProcessor": "Do Flow Action After Time Passes",
+								"flowAction": "FINISH_WAITING",
+								"user": "fenix",
+								"when": {
+									"plusWorkingDays": "5"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": "step-6-administrator",
+					"type": "generic",
+					"comment": true,
+					"title": {
+						"pt-PT": "O/A Presidente do Instituto Superior Técnico",
+						"en-GB": "The President of Instituto Superior Técnico"
+					},
+					"description": {
+						"pt-PT": "Despacho do/a Presidente do Instituto Superior Técnico.",
+						"en-GB": "Dispatch by the President of Instituto Superior Técnico."
+					},
+					"commentLabel": {
+						"pt-PT": "Despacho do/a Presidente do Instituto Superior Técnico.",
+						"en-GB": "Dispatch by the President of Instituto Superior Técnico."
+					},
+					"actions": {
+						"SIGN": {
+							"primary": true,
+							"to": "SUCCESS",
+							"label": {
+								"pt-PT": "Autorizar",
+								"en-GB": "Authorise"
+							}
+						},
+						"REJECT": {
+							"primary": false,
+							"to": "step-4-fund-undo-allocation",
+							"label": {
+								"pt-PT": "Rejeitar",
+								"en-GB": "Reject"
+							}
+						}
+					},
+					"queue": "Presidência do Instituto Superior Técnico",
+					"actionProcessor": {
+						"onSuccess": [
+							{
+								"applyOn": "SIGN",
+								"flowProcessor": "Return Flow Approved To Request"
+							}
+						]
+					}
+				},
+				{
+					"id": "step-4-fund-undo-allocation",
+					"type": "generic",
+					"comment": false,
+					"title": {
+						"pt-PT": "Libertar Cabimento de Fundos",
+						"en-GB": "Undo Fund Allocation"
+					},
+					"description": {
+						"pt-PT": "Cancelar Alocação de Verbas",
+						"en-GB": "Undo Budget Allocation"
+					},
+					"actions": {
+						"UNDO_ALLOCATE_FUNDS": {
+							"primary": true,
+							"to": "step-3.1-fund-undo-reservation",
+							"label": {
+								"pt-PT": "Confirmar Cancelamento de Alocação de Fundos",
+								"en-GB": "Confirm Undo Fund Allocation"
+							}
+						}
+					},
+					"actionProcessor": {
+						"onActionTransition": [
+							{
+								"applyOn": "UNDO_ALLOCATE_FUNDS",
+								"flowProcessor": "Sync Funds Allocation Info"
+							}
+						]
+					},
+					"queuesAllowedToChangeTo": [
+						"Área de Contabilidade - Geral",
+						"Núcleo de Execução Orçamental - Geral",
+						"Núcleo de Contabilidade - Geral"
+					],
+					"queue": "Núcleo de Execução Orçamental - Geral",
+					"blockUndo": false
+				},
+				{
+					"id": "{{step-3}}-fund-undo-reservation",
+					"type": "generic",
+					"comment": false,
+					"title": {
+						"pt-PT": "Libertar Reserva de Fundos",
+						"en-GB": "Undo Fund Allocation"
+					},
+					"description": {
+						"pt-PT": "Cancelar Alocação de Verbas",
+						"en-GB": "Undo Budget Allocation"
+					},
+					"actions": {
+						"UNDO_RESERVE_FUNDS": {
+							"primary": true,
+							"to": "{{next-step}}",
+							"label": {
+								"pt-PT": "Confirmar Cancelamento da Reserva de Fundos",
+								"en-GB": "Confirm Undo Fund Reservation"
+							}
+						}
+					},
+					"actionProcessor": {
+						"onActionTransition": [
+							{
+								"applyOn": "UNDO_RESERVE_FUNDS",
+								"flowProcessor": "Sync Funds Allocation Info"
+							}
+						]
+					},
+					"queue": "{{step3-queue-undo}}"
+				}
+			]
+		}
+	}
+}

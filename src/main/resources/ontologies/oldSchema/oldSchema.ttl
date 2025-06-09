@@ -1,0 +1,229 @@
+@prefix : <http://example.org/ontologies/SmartFlow#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/ontologies/SmartFlow> a owl:Ontology ;
+    rdfs:label "SmartFlow Ontology" ;
+    rdfs:comment "Ontology for the SmartFlow workflow, representing the flow structure, nodes, actions, forms, buttons and associated processors." .
+
+################################################################
+# Classes
+################################################################
+:Flow a owl:Class ;
+    rdfs:label "Flow" ;
+    rdfs:comment "Represents a workflow template or process definition." .
+
+:Form a owl:Class ;
+    rdfs:label "Form" ;
+    rdfs:comment "A form used to collect input at certain steps in the flow." .
+
+:AuthorizationChainNode a owl:Class ;
+    rdfs:label "Authorization Chain Node" ;
+    rdfs:comment "Nodes used to notify and require authorization from a chain of responsible parties." .
+
+:ActionNode a owl:Class ;
+    rdfs:label "ActionNode" ;
+    rdfs:comment "A node (step) within the workflow." .
+# :GenericActionNode a owl:Class ;
+#     rdfs:subClassOf :ActionNode ;
+#     rdfs:label "GenericActionNode" ;
+#     rdfs:comment "An action node representing a generic step without form input." .
+# :WithFormsActionNode a owl:Class ;
+#     rdfs:subClassOf :ActionNode ;
+#     rdfs:label "WithFormsActionNode" ;
+#     rdfs:comment "An action node that includes a form for user input." .
+# :WithButtonsActionNode a owl:Class ;
+#     rdfs:subClassOf :ActionNode ;
+#     rdfs:label     "WithButtonsActionNode" ;
+#     rdfs:comment   "An action node whose buttons array contains direct handler URLs (no forms)." .
+:TerminalNode a owl:Class ;
+    # rdfs:subClassOf :ActionNode ;
+    rdfs:label "TerminalNode" ;
+    rdfs:comment "A terminal (end) node indicating the end of the flow (success or failure or cancel)." .
+
+:Action a owl:Class ;
+    rdfs:label "Action" ;
+    rdfs:comment "An action or transition available at a node (e.g., a user decision or automatic transition)." .
+
+:Queue a owl:Class ;
+    rdfs:label "Queue" ;
+    rdfs:comment "A work queue or assignment target (e.g., a user, group, or system) responsible for processing a node." .
+
+:Button a owl:Class ;
+    rdfs:label "Button" ;
+    rdfs:comment "A UI button that triggers a form submission and an action at a node." .
+
+:ActionProcessor a owl:Class ;
+    rdfs:label "ActionProcessor" ;
+    rdfs:comment "Specify what should be done when a pre-determined action is performed." .
+
+:Transition a owl:Class ;
+    rdfs:label "Transition" ;
+    rdfs:comment "Connects one ActionNode to the next, threading through an ActionProcessor when present." .
+
+################################################################
+# Object Properties
+################################################################
+:has_actionNode a owl:ObjectProperty ;
+    rdfs:domain :Flow ;
+    rdfs:range :ActionNode ;
+    rdfs:label "has_actionNode" ;
+    rdfs:comment "Associates a flow with one of its action nodes (steps)." .
+:has_action a owl:ObjectProperty ;
+    rdfs:domain :ActionNode ;
+    rdfs:range :Action ;
+    rdfs:label "has_action" ;
+    rdfs:comment "Associates an action node with an action that can be performed at that node." .
+:has_button a owl:ObjectProperty ;
+    rdfs:domain :ActionNode ;
+    rdfs:range :Button ;
+    rdfs:label "has_button" ;
+    rdfs:comment "Associates an action node with a UI button for form submission." .
+:has_actionProcessor a owl:ObjectProperty ;
+    rdfs:domain :ActionNode ;
+    rdfs:range :ActionProcessor ;
+    rdfs:label "has_actionProcessor" ;
+    rdfs:comment "Associates an action node with a flow processor that handles the action." .
+:has_queue a owl:ObjectProperty ;
+    rdfs:domain :ActionNode ;
+    rdfs:range :Queue ;
+    rdfs:label "has_queue" ;
+    rdfs:comment "Specifies the queue (responsible party or system) for tasks at this action node." .
+:has_transitionsTo a owl:ObjectProperty ;
+    rdfs:domain :Action ;
+    rdfs:range :ActionNode ;
+    rdfs:label "has_transitionsTo" ;
+    rdfs:comment "Indicates the target action node that an action leads to (transition). Terminal end states are also modeled as action nodes." .
+
+:has_associatedForm a owl:ObjectProperty ;
+    rdfs:domain :Button ;
+    rdfs:range :Form ;
+    rdfs:label "has_associatedForm" ;
+    rdfs:comment "Links a form button to the form that it launches." .
+:has_applyOn  a owl:ObjectProperty ;
+    rdfs:domain :ActionProcessor ;
+    rdfs:range  :Action ;
+    rdfs:label "has_applyOn" ;
+    rdfs:comment "When clicked, this button fires the given Action." .
+:has_handlersAction a owl:ObjectProperty ;
+    rdfs:domain :Button ;
+    rdfs:range :Action ;
+    rdfs:label "has_handlersAction" ;
+    rdfs:comment "If type=withForms, the action this button invokes." .
+
+:sourceNode
+    a               owl:ObjectProperty ;
+    rdfs:domain     :Transition ;
+    rdfs:range      :ActionNode ;
+    rdfs:comment    "The step from which this transition leaves." .
+:targetNode
+    a               owl:ObjectProperty ;
+    rdfs:domain     :Transition ;
+    rdfs:range      :ActionNode ;
+    rdfs:comment    "The step to which this transition goes." .
+
+################################################################
+# Datatype Properties
+################################################################
+:nodeId a owl:DatatypeProperty ;
+    rdfs:domain :ActionNode ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Unique identifier of the action node." .
+:nodeType a owl:DatatypeProperty ;
+    rdfs:domain :ActionNode ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Type of the action node (generic, withForms, withButtons)." .
+:queueName a owl:DatatypeProperty ;
+    rdfs:domain :ActionNode ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Name of the queue or assignee." .
+:actionId a owl:DatatypeProperty ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Unique identifier of the action." .
+:actionName a owl:DatatypeProperty ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Internal code/name of the action." .
+:isPrimaryAction a owl:DatatypeProperty ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "True if action is primary." .
+:isPrimaryButton a owl:DatatypeProperty ;
+    rdfs:domain :Button ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "True if button is primary." .
+:buttonId        a owl:DatatypeProperty ;
+    rdfs:domain :Button ;
+    rdfs:range  xsd:string ;
+    rdfs:comment "Identifier of the button." .
+
+:flowProcessorName a owl:DatatypeProperty ;
+    rdfs:domain :ActionProcessor ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Name of the flow processor that handles the action." .
+
+################################################################
+# Disjointness
+################################################################
+# :GenericActionNode     owl:disjointWith :WithFormsActionNode, :WithButtonsActionNode .
+# :WithFormsActionNode   owl:disjointWith :WithButtonsActionNode .
+# :TerminalNode          owl:disjointWith :GenericActionNode, :WithFormsActionNode, :WithButtonsActionNode .
+
+# :ActionNode
+#     a owl:Class ;
+#     owl:equivalentClass [
+#       a owl:Class ;
+#       owl:unionOf (
+#         :GenericActionNode
+#         :WithFormsActionNode
+#         :WithButtonsActionNode
+#         :TerminalNode
+#       )
+#     ] .
+
+################################################################
+# Annotations Properties
+################################################################
+:titlePT a owl:AnnotationProperty ;
+    rdfs:comment "Title in Portuguese (pt-PT)" .
+:titleEN a owl:AnnotationProperty ;
+    rdfs:comment "Title in English (en-GB)" .
+:descriptionPT a owl:AnnotationProperty ;
+    rdfs:comment "Description in Portuguese (pt-PT)" .
+:descriptionEN a owl:AnnotationProperty ;
+    rdfs:comment "Description in English (en-GB)" .
+:labelPT a owl:AnnotationProperty ;
+    rdfs:comment "Label in Portuguese (pt-PT)" .
+:labelEN a owl:AnnotationProperty ;
+    rdfs:comment "Label in English (en-GB)" .
+
+############################################################################
+# Transitions
+############################################################################
+
+# Case A: direct transitions (ActionNode → hasAction → Action → hasTransitionsTo → NextNode)
+:nextNode
+    a                   owl:ObjectProperty ;
+    rdfs:domain         :ActionNode ;
+    rdfs:range          :ActionNode ;
+    owl:propertyChainAxiom (
+      :has_action
+      :has_transitionsTo
+    ) ;
+    rdfs:comment        "Direct step-to-step transition." .
+
+# Case B: via a processor (ActionNode → hasActionProcessor → Processor → hasApplyOn → Action → hasTransitionsTo → NextNode)
+:nextNode
+    owl:propertyChainAxiom (
+      :has_actionProcessor
+      :has_applyOn
+      :has_transitionsTo
+    ) ;
+    rdfs:comment        "Processor-driven transition." .
+
+################################################################
+# Individuals (defined in individuals.ttl)
+################################################################

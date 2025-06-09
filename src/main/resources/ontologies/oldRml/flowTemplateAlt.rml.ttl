@@ -1,0 +1,103 @@
+@prefix rr:  <http://www.w3.org/ns/r2rml#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql:  <http://semweb.mmlab.be/ns/ql#> .
+@prefix sf:  <http://example.org/smartflow#> .
+@prefix map: <http://example.org/mappings#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# 1) Map each ActionNode
+#################################################################
+map:ActionNodeMap
+  a rml:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[*]"
+  ] ;
+  rr:subjectMap [
+    rr:template  "http://example.org/smartflow/actionNode/{$.id}" ;
+    rr:class     sf:ActionNode
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:nodeId ;
+    rr:objectMap [ rml:reference "$.id" ]
+  ] ;
+  rr:predicateObjectMap [ 
+    rr:predicate sf:nodeType; 
+    rr:objectMap [ rml:reference "$.type" ] 
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:title_pt;
+    rr:objectMap [ rml:reference "$.title.pt-PT" ]
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:title_en;
+    rr:objectMap [ rml:reference "$.title.en-GB" ]
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:description_pt;
+    rr:objectMap [ rml:reference "$.description.pt-PT" ]
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:description_en;
+    rr:objectMap [ rml:reference "$.description.en-GB" ]
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:queue;
+    rr:objectMap [ rml:reference "$.queue" ]
+  ] .
+
+#################################################################
+# 2) Map each nested action under its parent node
+#################################################################
+map:ActionMap
+  a rml:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[*].actions.*"
+  ] ;
+
+  # 1) Subject = a fresh blank node per action
+  rr:subjectMap [
+    rr:termType rr:BlankNode ;
+    rr:class    sf:Action
+  ] ;
+
+  # 2) belongsToNode → build the IRI from the PARENT id via template + parent‐ref
+  rr:predicateObjectMap [
+    rr:predicate sf:belongsToNode ;
+    rr:objectMap [
+      rr:parentTriplesMap map:ActionNodeMap ;
+      rr:joinCondition [
+        rr:child  "$.to" ;    # <-- grab the parent node’s “id” field
+        rr:parent "$.id"       # <-- match it against the ActionNodeMap’s $.id
+      ]
+    ]
+  ] ;
+
+  # 3) to → join against the ActionNodeMap as before
+  rr:predicateObjectMap [
+    rr:predicate sf:to ;
+    rr:objectMap [
+      rr:parentTriplesMap map:ActionNodeMap ;
+      rr:joinCondition [
+        rr:child  "$.to" ;
+        rr:parent "$.id"
+      ]
+    ]
+  ] ;
+
+  # 4) other action‐props
+  rr:predicateObjectMap [
+    rr:predicate sf:label_en ;
+    rr:objectMap [ rml:reference "$.label.en-GB" ]
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:primary ;
+    rr:objectMap [
+      rml:reference "$.primary" ;
+      rr:datatype   xsd:boolean
+    ]
+  ] .

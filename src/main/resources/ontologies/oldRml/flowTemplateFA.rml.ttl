@@ -1,0 +1,474 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sf: <http://example.org/ontologies/SmartFlow#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@base <http://example.org/mappings/> .
+
+#################################################################
+# Map each ActionNode
+#################################################################
+<#ActionNodeMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.actionNodes[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/ActionNode/{id}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:ActionNode ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:nodeId ;
+    rr:objectMap [
+      rml:reference "id" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate   rdf:type ;
+    rr:objectMap   [ rr:constant sf:ActionNode ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titlePT ;
+    rr:objectMap [
+      rml:reference "title.pt-PT" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titleEN ;
+    rr:objectMap [
+      rml:reference "title.en-GB" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:descriptionPT ;
+    rr:objectMap [
+      rml:reference "description.pt-PT" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:descriptionEN ;
+    rr:objectMap [
+      rml:reference "description.en-GB" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:queueName ;
+    rr:objectMap [
+      rml:reference "queue" ;
+    ] ;
+  ] ;
+ 
+  rr:predicateObjectMap [
+    rr:predicate sf:has_action ;
+    rr:objectMap [
+      rr:template "http://example.org/ontologies/SmartFlow/Action/{actions[*].id}" ;
+      rr:termType rr:IRI ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_button ;
+    rr:objectMap [
+      rr:template    "http://example.org/ontologies/SmartFlow/Button/{buttons[*].id}" ;
+      rr:termType    rr:IRI ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_actionProcessor ;
+    rr:objectMap [
+      rr:template    "http://example.org/ontologies/SmartFlow/ActionProcessor/{actionProcessor[*].id}" ;
+      rr:termType    rr:IRI ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_queue ;
+    rr:objectMap [
+      rr:template   "http://example.org/ontologies/SmartFlow/Queue/{queue}" ;
+      rr:termType   rr:IRI ;
+    ] ;
+  ] ;
+.
+
+<#GenericActionNodeMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    # filter so only type=="generic"
+    rml:iterator          "$.flowTemplate.config.actionNodes[?(@.type=='generic')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template   "http://example.org/ontologies/SmartFlow/ActionNode/{id}" ;
+    rr:termType   rr:IRI ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate   rdf:type ;
+    rr:objectMap   [ rr:constant sf:GenericActionNode ] ;
+  ] ;
+.
+<#WithFormsActionNodeMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[?(@.type=='withForms')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template   "http://example.org/ontologies/SmartFlow/ActionNode/{id}" ;
+    rr:termType   rr:IRI ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate   rdf:type ;
+    rr:objectMap   [ rr:constant sf:WithFormsActionNode ] ;
+  ] ;
+.
+<#WithButtonsActionNodeMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[?(@.type=='withButtons')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template   "http://example.org/ontologies/SmartFlow/ActionNode/{id}" ;
+    rr:termType   rr:IRI ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate   rdf:type ;
+    rr:objectMap   [ rr:constant sf:WithButtonsActionNode ] ;
+  ] ;
+.
+
+#################################################################
+# Map each TerminalNode (e.g. SUCCESS, FAILURE, CANCEL)
+#################################################################
+<#TerminalNodeMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.actionNodes[*].actions[?(@.to=='SUCCESS' || @.to=='FAILURE' || @.to=='CANCEL')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template   "http://example.org/ontologies/SmartFlow/ActionNode/{to}" ;
+    rr:termType   rr:IRI ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate   rdf:type;
+    rr:objectMap   [ rr:constant sf:ActionNode] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate   rdf:type ;
+    rr:objectMap   [ rr:constant sf:TerminalNode ] ;
+  ] ;
+
+  # preserve its nodeId
+  rr:predicateObjectMap [
+    rr:predicate   sf:nodeId ;
+    rr:objectMap   [ rml:reference "to" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate   sf:titleEN ;
+    rr:objectMap [
+      rr:template   "{to} State" ;
+      rr:termType   rr:Literal ;
+    ] ;
+  ] ;
+.
+
+
+#################################################################
+# Map each Action associated with an ActionNode
+#################################################################
+<#ActionsMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[*].actions[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/Action/{id}" ;
+    rr:termType  rr:IRI ;
+    rr:class     sf:Action ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:actionId ;
+    rr:objectMap [
+      rml:reference "id" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:actionName ;
+    rr:objectMap [
+      rml:reference "name" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:isPrimaryAction ;
+    rr:objectMap [
+      rml:reference "primary" ;
+      rr:datatype   xsd:boolean ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelPT ;
+    rr:objectMap [
+      rml:reference "label.pt-PT" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelEN ;
+    rr:objectMap [
+      rml:reference "label.en-GB" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_transitionsTo ;
+    rr:objectMap [
+      rr:template    "http://example.org/ontologies/SmartFlow/ActionNode/{to}" ;
+      rr:termType    rr:IRI ;
+    ] ;
+  ] ;
+.
+
+
+#################################################################
+# Map each Button associated with an ActionNode
+#################################################################
+<#ButtonMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[*].buttons[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/Button/{id}" ;
+    rr:termType  rr:IRI ;
+    rr:class     sf:Button ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:buttonId ;
+    rr:objectMap [
+      rml:reference "id" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:isPrimaryButton ;
+      rr:objectMap [
+        rml:reference "primary" ;
+        rr:datatype   xsd:boolean ;
+      ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelPT ;
+    rr:objectMap [
+      rml:reference "label.pt-PT" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelEN ;
+    rr:objectMap [
+      rml:reference "label.en-GB" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_handlersAction ;
+    rr:objectMap [
+      rr:template "http://example.org/ontologies/SmartFlow/Action/{handlers.action}" ;
+      rr:termType rr:IRI ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_associatedForm ;
+    rr:objectMap [
+      rr:template "http://example.org/ontologies/SmartFlow/Form/{handlers.form}" ;
+      rr:termType rr:IRI ;
+    ] ;
+  ] ;
+.
+
+#################################################################
+# Map each ActionProcessor associated with an ActionNode
+#################################################################
+<#ActionProcessorMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.actionNodes[*].actionProcessor[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/ActionProcessor/{id}" ;
+    rr:termType  rr:IRI ;
+    rr:class     sf:ActionProcessor ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:actionProcessorId ;
+    rr:objectMap [
+      rml:reference "id" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:actionProcessorName ;
+    rr:objectMap [
+      rml:reference "name" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_applyOn ;
+    rr:objectMap [
+      rr:template "http://example.org/ontologies/SmartFlow/Action/{applyOn}" ;
+      rr:termType rr:IRI ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:flowProcessorName ;
+    rr:objectMap [
+      rml:reference "flowProcessor" ;
+    ] ;
+  ] ;
+.
+
+#################################################################
+# Map each Flow Form
+#################################################################
+<#FormMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/Form/{id}" ;
+    rr:termType  rr:IRI ;
+    rr:class     sf:Form ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:formId ;
+    rr:objectMap [
+      rml:reference "id" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titlePT ;
+    rr:objectMap [
+      rml:reference "title.pt-PT" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titleEN ;
+    rr:objectMap [
+      rml:reference "title.en-GB" ;
+    ] ;
+  ] ;
+.
+
+<#QueueMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template   "http://example.org/ontologies/SmartFlow/Queue/{queue}" ;
+    rr:termType   rr:IRI ;
+    rr:class      sf:Queue ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate  sf:queueName ;
+    rr:objectMap  [ rml:reference "queue" ] ;
+  ] ;
+.
+
+#################################################################
+# Direct Transitions (no Processor)
+#################################################################
+<#DirectTransitionMap>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[*].actions[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/Transition/{id}-TO-{to}" ;
+    rr:termType  rr:IRI ;
+    rr:class     sf:Transition ;
+  ] ;
+
+  # join back to the parent ActionNodeMapping to get the source
+  rr:predicateObjectMap [
+    rr:predicate sf:sourceNode ;
+    rr:objectMap [
+      rr:parentTriplesMap <#ActionNodeMapping> ;
+      rr:joinCondition [
+        rr:child  "parentId" ;
+        rr:parent "id" ;
+      ] ;
+      rr:termType rr:IRI ;
+    ] ;
+  ] ;
+
+  # targetNode still comes from "to"
+  rr:predicateObjectMap [
+    rr:predicate sf:targetNode ;
+    rr:objectMap [
+      rr:template   "http://example.org/ontologies/SmartFlow/ActionNode/{to}" ;
+      rr:termType   rr:IRI ;
+    ] ;
+  ] ;
+.

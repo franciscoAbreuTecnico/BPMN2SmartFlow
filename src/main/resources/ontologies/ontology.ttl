@@ -1,0 +1,103 @@
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix sff:    <http://example.org/ontology/smartformflow/sff#> .
+@prefix map:    <http://example.org/ontology/smartformflow-bpmn-mapping#> .
+@prefix bpmn:   <http://example.org/ontology/bpmn#> .
+
+###############################################################################
+# Ontology metadata
+###############################################################################
+
+<> rdf:type       owl:Ontology ;
+   rdfs:comment   "Mapping between SmartForm/SmartFlow and BPMN 2.0 elements" ;
+   owl:versionIRI <http://example.org/ontology/smartformflow-bpmn-mapping/sff-v1.0> .
+
+###############################################################################
+# SmartForm/SmartFlow model classes
+###############################################################################
+
+sff:Request    rdf:type owl:Class ;
+    rdfs:comment "Root of a SmartForm request (Request)." .
+
+sff:Context              rdf:type owl:Class ;
+    rdfs:comment "SmartForm context (Context)." .
+
+sff:FlowTemplate         rdf:type owl:Class ;
+    rdfs:comment "SmartFlow template (FlowTemplate)." .
+
+sff:Config               rdf:type owl:Class ;
+    rdfs:comment "FlowTemplate configuration (Configuration)." .
+
+sff:ActionNode           rdf:type owl:Class ;
+    rdfs:comment "A FlowTemplate step (ActionNode)." .
+
+sff:Action               rdf:type owl:Class ;
+    rdfs:comment "An outgoing button/action (Action)." .
+
+###############################################################################
+# BPMN 2.0 classes
+###############################################################################
+
+bpmn:Collaboration        rdf:type owl:Class ;
+    rdfs:comment "BPMN Collaboration (pool)." .
+
+bpmn:Participant          rdf:type owl:Class ;
+    rdfs:comment "BPMN Participant representing an actor." .
+
+bpmn:Process              rdf:type owl:Class ;
+    rdfs:comment "BPMN Process element." .
+
+bpmn:Lane                 rdf:type owl:Class ;
+    rdfs:comment "BPMN Lane within a Process." .
+
+bpmn:UserTask             rdf:type owl:Class ;
+    rdfs:comment "BPMN UserTask." .
+
+bpmn:SequenceFlow         rdf:type owl:Class ;
+    rdfs:comment "BPMN SequenceFlow between flow nodes." .
+
+bpmn:StartEvent           rdf:type owl:Class ;
+    rdfs:comment "BPMN StartEvent." .
+
+bpmn:EndEvent             rdf:type owl:Class ;
+    rdfs:comment "BPMN EndEvent." .
+
+###############################################################################
+# Class Equivalence
+###############################################################################
+
+sff:ActionNode  owl:equivalentClass  bpmn:UserTask .
+
+###############################################################################
+# Property Equivalence
+###############################################################################
+
+sff:ActionNode_id
+    a owl:DatatypeProperty ;
+    owl:equivalentProperty bpmn:UserTask_id .
+
+sff:ActionNode_title  
+    a owl:DatatypeProperty ;
+    owl:equivalentProperty bpmn:UserTask_name .
+
+sff:ActionNode_description  
+    a owl:DatatypeProperty ;
+    owl:equivalentProperty bpmn:UserTask_description .
+
+bpmn:UserTask_id         
+    a owl:DatatypeProperty ;
+    rdfs:domain   bpmn:UserTask ;
+    rdfs:range    xsd:string .
+
+bpmn:UserTask_name       
+    a owl:DatatypeProperty ;
+    rdfs:domain   bpmn:UserTask ;
+    rdfs:range    xsd:string .
+
+bpmn:UserTask_description
+    a owl:DatatypeProperty ;
+    rdfs:domain   bpmn:UserTask ;
+    rdfs:range    xsd:string .

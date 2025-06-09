@@ -1,0 +1,1297 @@
+{
+	"name": {
+		"pt-PT": "Proposta de Pessoal Docente Especialmente Contratado",
+		"en-GB": "Proposal for Specially Hired Faculty Contract"
+	},
+	"description": {
+		"pt-PT": "Este formulário permite-lhe propor o convite ou renovação de contrato de pessoal especialmente contratado.",
+		"en-GB": "This form allows you to propose the invitation or renewal of specially hired faculty contracts."
+	},
+	"context": {
+		"requestKeywords": {
+			"fields": [
+				"user",
+				"category",
+				"department",
+				"contractStartDate",
+				"contractType"
+			],
+			"displayName": false,
+			"username": false
+		},
+		"onLock": [
+			{
+				"requestProcessor": "Check Valid Specially Hired Faculty Contract Period"
+			},
+			{
+				"requestProcessor": "Move Queue",
+				"queue": "Núcleo de Docentes e Investigadores"
+			}
+		],
+		"onValidate": [
+			{
+				"requestProcessor": "Copy Input to Outcome",
+				"mapper": {
+					"email-for-invitation": "email-for-invitation",
+					"contractDuration": "contractDuration"
+				}
+			},
+			{
+				"requestProcessor": "Choose Specially Hired Faculty Contract Email Template"
+			},
+			{
+				"requestProcessor": "Create Flow From Request",
+				"template": "specially-hired-faculty-contract",
+				"actionNodesProvider": "Specially Hired Faculty Contract Flow",
+				"setSupervisorFromRequester": true,
+				"setSectionWithRequesterInfo": true
+			},
+			{
+				"requestProcessor": "Calculate Costs For Specially Hired Faculty Contract"
+			}
+		],
+		"onResetValidate": {
+			"requestProcessor": "Cancel Flow"
+		},
+		"onConclude": [
+			{
+				"requestProcessor": "Send e-mail",
+				"template": "{{email-template}}",
+				"email": "email-for-invitation",
+				"parameters": {
+					"name": [
+						"personName",
+						"user",
+						"department",
+						"contractStartDate"
+					],
+					"department": "department"
+				}
+			},
+			{
+				"requestProcessor": "Check Has Connected Successful Flow"
+			},
+			{
+				"requestProcessor": "Copy Contract Dates to Teacher Invite Admissions Process"
+			}
+		],
+		"applicationMapper": {
+			"contractType": "contractType",
+			"regimeComposite": "regimeComposite",
+			"regime": "regime",
+			"partTimePercentage": "partTimePercentage",
+			"category": "category",
+			"withoutMonitor": "withoutMonitor",
+			"equivalentCategory": "equivalentCategory",
+			"equivalencyWihtout": "equivalencyWihtout",
+			"contractDuration": "contractDuration",
+			"financers": "financers",
+			"contractBinding": "contractBinding",
+			"campus": "campus",
+			"ecdu32A": "ecdu32A",
+			"salaryMonthlyBase": "salaryMonthlyBase",
+			"financerCommitment": "financerCommitment"
+		}
+	},
+	"inputForm": {
+		"checks": {
+			"requirePersonalInformation": true,
+			"requirePhotograph": true,
+			"requireIdentity": true
+		},
+		"pages": [
+			{
+				"title": {
+					"pt-PT": "Informação do Requerente",
+					"en-GB": "Requester Information"
+				},
+				"sections": [
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Informação Académica",
+					"en-GB": "Academic Information"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Dados para o Processo",
+							"en-GB": "Information for the Process"
+						},
+						"properties": [
+							{
+								"type": "Select",
+								"field": "campus",
+								"required": true,
+								"collapse": false,
+								"label": {
+									"pt-PT": "Campus principal",
+									"en-GB": "Main campus"
+								},
+								"description": {
+									"pt-PT": "Não limita o campus onde a atividade de docência irá decorrer.",
+									"en-GB": "This does not limit the campus where faculty activities will occur."
+								},
+								"options": [
+									{
+										"value": "alameda",
+										"label": {
+											"pt-PT": "Alameda",
+											"en-GB": "Alameda"
+										}
+									},
+									{
+										"value": "taguspark",
+										"label": {
+											"pt-PT": "Taguspark",
+											"en-GB": "Taguspark"
+										}
+									},
+									{
+										"value": "tecnologicoNuclear",
+										"label": {
+											"pt-PT": "Tecnológico e Nuclear",
+											"en-GB": "Tecnológico e Nuclear"
+										}
+									}
+								]
+							},
+							{
+								"type": "AsyncSelect",
+								"field": "department",
+								"optionsProvider": "/paper-pusher-ist/departments",
+								"required": true,
+								"allowOther": false,
+								"label": {
+									"pt-PT": "Unidade Académica",
+									"en-GB": "Academic Unit"
+								},
+								"description": {
+									"pt-PT": "Selecione a unidade académica que está a proceder à contratação.",
+									"en-GB": "Select the academic unit that is proceeding with the hiring process."
+								}
+							},
+							{
+								"type": "Array",
+								"field": "competenceCourses",
+								"required": true,
+								"label": {
+									"pt-PT": "Unidades Curriculares da Unidade Académica onde a actividade de docência será prestada",
+									"en-GB": "Curricular Units of the Academic Unit where the teaching activity will be provided"
+								},
+								"description": {
+									"pt-PT": "A Dissertação de Mestrado e os PICs são Unidades Curriculares",
+									"en-GB": "The Master's Dissertation and PICs are Curricular Units"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Unidade Curricular",
+									"en-GB": "Add Curricular Unit"
+								},
+								"properties": [
+									{
+										"type": "AsyncSelect",
+										"field": "competenceCourse",
+										"optionsProvider": "/paper-pusher-ist/competenceCourse",
+										"optionsLimitedBy": {
+											"field": "department"
+										},
+										"required": false,
+										"allowOther": false,
+										"label": {
+											"pt-PT": "Unidade Curricular",
+											"en-GB": "Curricular Unit"
+										}
+									}
+								]
+							},
+							{
+								"type": "Array",
+								"field": "otherCompetenceCourses",
+								"required": false,
+								"label": {
+									"pt-PT": "Unidades Curriculares de outras Unidades Académicas",
+									"en-GB": "Curricular Units from other Academic Units"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Unidade Curricular",
+									"en-GB": "Add Curricular Unit"
+								},
+								"properties": [
+									{
+										"type": "Composite",
+										"field": "otherCompetenceCoursesComposite",
+										"required": true,
+										"properties": [
+											{
+												"type": "AsyncSelect",
+												"field": "otherCompetenceCoursesDepartment",
+												"optionsProvider": "/paper-pusher-ist/departments",
+												"required": true,
+												"label": {
+													"pt-PT": "Unidade Académica",
+													"en-GB": "Academic Unit"
+												}
+											},
+											{
+												"type": "AsyncSelect",
+												"field": "otherCompetenceCourse",
+												"optionsProvider": "/paper-pusher-ist/competenceCourse",
+												"optionsLimitedBy": {
+													"field": "otherCompetenceCoursesDepartment"
+												},
+												"required": true,
+												"label": {
+													"pt-PT": "Unidade Curricular",
+													"en-GB": "Curricular Unit"
+												}
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Pessoa a Contratar",
+					"en-GB": "Person to Hire"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Identificação da Pessoa",
+							"en-GB": "Person Identification"
+						},
+						"description": {
+							"pt-PT": "Caso a pessoa já tenha registo indique o TécnicoID. Se não encontrar a pessoa pretendida com um TecnicoID deve usar o mecanismo 'inserir outra opção' e indicar o nome completo da pessoa a convidar.",
+							"en-GB": "In case the person is already registered indicate their TecnicoID. Otherwise use the 'insert another option' mechanism and indicate the full name of the person to invite."
+						},
+						"properties": [
+							{
+								"type": "AsyncSelect",
+								"field": "user",
+								"label": {
+									"pt-PT": "Nome / TécnicoID",
+									"en-GB": "Name / TecnicoID"
+								},
+								"optionsProvider": "/paper-pusher-ist/user",
+								"allowOther": true,
+								"collapse": true,
+								"required": true
+							},
+							{
+								"type": "Text",
+								"field": "email-for-invitation",
+								"label": {
+									"pt-PT": "Endereço de e-mail da pessoa a convidar",
+									"en-GB": "E-mail address of the person to invite"
+								},
+								"required": true,
+								"multiline": false,
+								"inputType": "email"
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Informação para o Contrato",
+					"en-GB": "Information for the Contract"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Categoria",
+							"en-GB": "Category"
+						},
+						"properties": [
+							{
+								"type": "Select",
+								"field": "category",
+								"label": {
+									"pt-PT": "Categoria",
+									"en-GB": "Category"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Professor(a) Visitante",
+											"en-GB": "Visiting Professor"
+										},
+										"value": "visitingProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Catedrático(a) Convidado(a)",
+											"en-GB": "Invited Full Professor"
+										},
+										"value": "invitedFullProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Associado(a) Convidado(a)",
+											"en-GB": "Invited Associate Professor"
+										},
+										"value": "invitedAssociateProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Auxiliar Convidado(a)",
+											"en-GB": "Invited Assistant Professor"
+										},
+										"value": "invitedAssistantProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Assistente Convidado(a)",
+											"en-GB": "Invited Teaching Assistant"
+										},
+										"value": "invitedTeachingAssistant"
+									},
+									{
+										"label": {
+											"pt-PT": "Monitor(a)",
+											"en-GB": "Junior Teaching Assistant"
+										},
+										"value": "juniorTeachingAssistant"
+									}
+								]
+							},
+							{
+								"type": "Select",
+								"field": "equivalentCategory",
+								"label": {
+									"pt-PT": "Categoria Equiparada",
+									"en-GB": "Equivalent Category"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Catedrático(a) Convidado(a)",
+											"en-GB": "Equivalent to Invited Full Professor"
+										},
+										"value": "invitedFullProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Associado(a) Convidado(a)",
+											"en-GB": "Equivalent to Invited Associate Professor"
+										},
+										"value": "invitedAssociateProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Auxiliar Convidado(a)",
+											"en-GB": "Equivalent to Invited Assistant Professor"
+										},
+										"value": "invitedAssistantProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Assistente Convidado(a)",
+											"en-GB": "Equivalent to Invited Teaching Assistant"
+										},
+										"value": "invitedTeachingAssistantEquivalence"
+									}
+								],
+								"onlyIf": {
+									"field": "category",
+									"value": {
+										"label": {
+											"pt-PT": "Professor(a) Visitante",
+											"en-GB": "Visiting Professor"
+										},
+										"value": "visitingProfessor"
+									}
+								}
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Regime do contrato",
+							"en-GB": "Contract Regime"
+						},
+						"properties": [
+							{
+								"type": "Composite",
+								"field": "regimeComposite",
+								"required": true,
+								"properties": [
+									{
+										"type": "Select",
+										"field": "regime",
+										"label": {
+											"pt-PT": "Regime",
+											"en-GB": "Regime"
+										},
+										"multiple": false,
+										"collapse": false,
+										"required": true,
+										"options": [
+											{
+												"label": {
+													"pt-PT": "Tempo parcial",
+													"en-GB": "Part Time"
+												},
+												"value": "partTime"
+											},
+											{
+												"label": {
+													"pt-PT": "Tempo integral",
+													"en-GB": "Full Time"
+												},
+												"value": "fullTime"
+											},
+											{
+												"label": {
+													"pt-PT": "Tempo integral em dedicação exclusiva",
+													"en-GB": "Full time with exclusive dedication"
+												},
+												"value": "fullTimeExclusive"
+											}
+										]
+									},
+									{
+										"type": "Quantity",
+										"field": "partTimePercentage",
+										"required": true,
+										"label": {
+											"pt-PT": "Percentagem em tempo parcial (%)",
+											"en-GB": "Part time percentage (%)"
+										},
+										"min": 0,
+										"max": 99.99,
+										"step": 0.01,
+										"description": {
+											"pt-PT": "Indicar a percentagem  do valor de tempo parcial a ser contratado.",
+											"en-GB": "Indicate the percentage of part time value to be contracted."
+										},
+										"onlyIf": {
+											"field": "regime",
+											"value": {
+												"label": {
+													"pt-PT": "Tempo parcial",
+													"en-GB": "Part Time"
+												},
+												"value": "partTime"
+											}
+										}
+									}
+								]
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Tipo de Contrato",
+							"en-GB": "Type of Contract"
+						},
+						"properties": [
+							{
+								"type": "Select",
+								"field": "contractType",
+								"description": {
+									"pt-PT": "Os novos contratos, quando remunerados (não 32-A), apenas são renováveis no caso de personalidades externas ao perímetro de consolidação do Instituto Superior Técnico, e que complementem o portfólio de competências existente no Instituto Superior Técnico.",
+									"en-GB": "The new contracts, when remunerated (not 32-A), are only renewable in the case of personalities outside the Instituto Superior Técnico consolidation perimeter, and who complement the existing portfolio of skills at Instituto Superior Técnico."
+								},
+								"label": {
+									"pt-PT": "Tipo de Contrato",
+									"en-GB": "Contract Type"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Novo Contrato",
+											"en-GB": "New Contract"
+										},
+										"value": "newContract"
+									},
+									{
+										"label": {
+											"pt-PT": "Renovação de Contrato",
+											"en-GB": "Contract Renewal"
+										},
+										"value": "contractRenewal"
+									}
+								]
+							},
+							{
+								"type": "Boolean",
+								"field": "previousYearContract",
+								"required": true,
+								"label": {
+									"pt-PT": "Houve algum contrato em algum período do ano anterior ao início desta proposta de contrato?",
+									"en-GB": "Was there a contract in any period of the year prior to the start of this contract proposal?"
+								},
+								"labelYes": {
+									"pt-PT": "Sim",
+									"en-GB": "Yes"
+								},
+								"labelNo": {
+									"pt-PT": "Não",
+									"en-GB": "No"
+								},
+								"onlyIf": {
+									"field": "contractType",
+									"value": {
+										"label": {
+											"pt-PT": "Novo Contrato",
+											"en-GB": "New Contract"
+										},
+										"value": "newContract"
+									}
+								}
+							},
+							{
+								"type": "Boolean",
+								"field": "ecdu32A",
+								"description": {
+									"pt-PT": "Estatuto da Carreira de Docente universitário (ECDU) nos termos do art.º 32.º-A.(sem  Remuneração).",
+									"en-GB": "University Teaching Career Statute under the terms of article 32.º-A.(without Salary)."
+								},
+								"label": {
+									"pt-PT": "Contrato ao Abrigo do Art. 32.A?",
+									"en-GB": "Contract under article 32.º-A?"
+								},
+								"required": true,
+								"labelNo": {
+									"pt-PT": "Não, não é um contrato ao abrigo do art.º 32.º-A",
+									"en-GB": "No, it's not a contract under article 32.º-A"
+								},
+								"labelYes": {
+									"pt-PT": "Sim, é um contrato ao abrigo do art.º 32.º-A",
+									"en-GB": "Yes, it's a contract under article 32.º-A"
+								}
+							},
+							{
+								"description": {
+									"pt-PT": "Para as contratações ao abrigo do artigo 32A do ECDU é necessário juntar um documento que garanta que estão cumpridos os requisitos necessários, nomeadamente os docentes terem uma entidade empregadora principal. A entidade empregadora principal tem que se enquadrar em alguma das situações seguintes.",
+									"en-GB": "For contracts under article 32A of the ECDU, it is necessary to attach a document that guarantees that the necessary requirements are met, namely that teachers have one  main entity employer. The main entity employer must fit into one of the following situations."
+								},
+								"field": "sctn",
+								"label": {
+									"pt-PT": "Documentos para contratações ao abrigo do artigo 32A do ECDU",
+									"en-GB": "Documents for contracting under article 32 A of the ECDU"
+								},
+								"type": "Select",
+								"required": true,
+								"onlyIf": {
+									"field": "ecdu32A",
+									"value": true,
+									"negation": false
+								},
+								"options": [
+									{
+										"label": {
+											"pt-PT": "SCTN (Sistema Cientifico Tecnológico Nacional) – IST ID ou Univ. Portuguesa (CRUP)",
+											"en-GB": "SCTN (National Scientific and Technological System) – IST ID or Portuguese university (CRUP)"
+										},
+										"value": "sctn1"
+									},
+									{
+										"label": {
+											"pt-PT": "SCTN – Unidades com autonomia (IDMEC, LIP; INESC ID, INESC MN, IT)",
+											"en-GB": "SCTN – Units with autonomy (IDMEC, LIP; INESC ID, INESC MN, IT)"
+										},
+										"value": "sctn2"
+									},
+									{
+										"label": {
+											"pt-PT": "SCTN – Outras que não 1) e 2)",
+											"en-GB": "SCTN – Other than 1) and 2)"
+										},
+										"value": "sctn3"
+									},
+									{
+										"label": {
+											"pt-PT": "Fora do SCTN",
+											"en-GB": "Outside SCTN"
+										},
+										"value": "sctn4"
+									},
+									{
+										"label": {
+											"pt-PT": "Entidades estrangeiras ou internacionais do sistema cientifico e tecnológico",
+											"en-GB": "Foreign or international entities of the scientific and technological system"
+										},
+										"value": "sctn5"
+									},
+									{
+										"label": {
+											"pt-PT": "Entidades estrangeiras ou internacionais fora dos sistema cientifico e tecnológico",
+											"en-GB": "Foreign or international entities outside the scientific and technological system"
+										},
+										"value": "sctn6"
+									}
+								]
+							},
+							{
+								"field": "autonomyUnits",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar a Declaração de consentimento/cedência do docente.",
+									"en-GB": "Attach the Declaration of consent/assignment of the teacher"
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true,
+										"negation": false
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "SCTN – Unidades com autonomia (IDMEC, LIP; INESC ID, INESC MN, IT)",
+												"en-GB": "SCTN – Units with autonomy (IDMEC, LIP; INESC ID, INESC MN, IT)"
+											},
+											"value": "sctn2"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Declaração de consentimento",
+									"en-GB": "Declaration of consent"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							},
+							{
+								"field": "otherSctn",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar Declaração de consentimento que prova a ligação do docente/investigador à entidade empregadora principal.",
+									"en-GB": "Attach Declaration of Consent that proves the link between the teacher/researcher and the main entity  employer."
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true,
+										"negation": false
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "SCTN – Outras que não 1) e 2)",
+												"en-GB": "SCTN – Other than 1) and 2)"
+											},
+											"value": "sctn3"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Declaração de consentimento",
+									"en-GB": "Declaration of consent"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							},
+							{
+								"field": "outsideSctn",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar o acordo de colaboração entre instituições.",
+									"en-GB": "Attach the colaboration agreement between institutions."
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "Fora do SCTN",
+												"en-GB": "Outside SCTN"
+											},
+											"value": "sctn4"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Acordo de colaboração",
+									"en-GB": "collaboration agreement"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							},
+							{
+								"field": "ForeignInSct",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar a declaração de consentimento.",
+									"en-GB": "Attach the declaration agreement between institutions."
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "Entidades estrangeiras ou internacionais do sistema cientifico e tecnológico",
+												"en-GB": "Foreign or international entities of the scientific and technological system"
+											},
+											"value": "sctn5"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Declaração de consentimento",
+									"en-GB": "Declaration of consent"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							},
+							{
+								"field": "ForeignOutSct",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar o acordo de colaboração.",
+									"en-GB": "Attach the colaboration agreement between institutions."
+								},
+								"onlyIf": [
+									{
+										"field": "ecdu32A",
+										"value": true
+									},
+									{
+										"field": "sctn",
+										"value": {
+											"label": {
+												"pt-PT": "Entidades estrangeiras ou internacionais fora dos sistema cientifico e tecnológico",
+												"en-GB": "Foreign or international entities outside the scientific and technological system"
+											},
+											"value": "sctn6"
+										}
+									}
+								],
+								"label": {
+									"pt-PT": "Acordo de colaboração",
+									"en-GB": "collaboration agreement"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Vigência do Contrato",
+							"en-GB": "Contract Term"
+						},
+						"description": {
+							"pt-PT": "As datas inseridas só devem ser aceites se verificarem as seguintes condições:\n1. A proposta de contratação deverá ser entregue com uma antecedência mínima de 2 meses relativamente à data de início do contrato.\n2.  Todos os contratos que não sejam anuais, não podem abranger 2 anos lectivos diferentes.\n3. Para PDECs contratados como ASC e MNT, só são admissíveis durações de contrato múltiplas de 2.75 meses ou anuais (12 meses).\n3.1 Cada período de contratação com a duração acima mencionado cobre obrigatoriamente todas as semanas letivas de cada quarter e de avaliação em época normal integrando:\n* um período de tempo anterior ao início das semanas letivas para a fase de preparação;\n* as semanas letivas;\n* um período de tempo após o fim das semanas letivas para a fase de avaliação.\n3.2 A época de recurso dos quarters pares deve integrar o período coberto pelo contrato. ",
+							"en-GB": "As datas inseridas só devem ser aceites se verificarem as seguintes condições:\n1. A proposta de contratação deverá ser entregue com uma antecedência mínima de 2 meses relativamente à data de início do contrato.\n2.  Todos os contratos que não sejam anuais, não podem abranger 2 anos lectivos diferentes.\n3. Para PDECs contratados como ASC e MNT, só são admissíveis durações de contrato múltiplas de 2.75 meses ou anuais (12 meses).\n3.1 Cada período de contratação com a duração acima mencionado cobre obrigatoriamente todas as semanas letivas de cada quarter e de avaliação em época normal integrando:\n* um período de tempo anterior ao início das semanas letivas para a fase de preparação;\n* as semanas letivas;\n* um período de tempo após o fim das semanas letivas para a fase de avaliação.\n3.2 A época de recurso dos quarters pares deve integrar o período coberto pelo contrato. "
+						},
+						"properties": [
+							{
+								"type": "Composite",
+								"field": "contractDuration",
+								"required": true,
+								"properties": [
+									{
+										"type": "DateTime",
+										"field": "contractStartDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Início",
+											"en-GB": "Begin Date"
+										}
+									},
+									{
+										"type": "DateTime",
+										"field": "contractEndDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Fim",
+											"en-GB": "End Date"
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Financiamento",
+					"en-GB": "Financement"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Imputação de Custos",
+							"en-GB": "Coverage of Costs"
+						},
+						"description": {
+							"pt-PT": "A informação de entidade pagadora só se aplica quando o contrato não é um contrato nos termos do art.º 32.º-A.(sem  Remuneração). Quando aplicável, deve selecionar a unidade pagadora e a percentagem a praticar. Para a categoria de Monitor a percentagem é igual a 100, para a categoria de Assistente convidado o limite maxímo é de 59 %.",
+							"en-GB": "The information of the paying entity only applies when the contract is not a contract under the terms of article 32-A. (without Remuneration). When applicable, you must select the paying unit and the percentage to be charged. For the Monitor category the percentage is equal to 100 and for the Guest Assistant category the maximum limit is 59 %."
+						},
+						"properties": [
+							{
+								"type": "Array",
+								"field": "financers",
+								"required": true,
+								"label": {
+									"pt-PT": "Unidades Pagadoras",
+									"en-GB": "Paying Entities"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Unidade Pagadora",
+									"en-GB": "Add Paying Entity"
+								},
+								"onlyIf": {
+									"field": "ecdu32A",
+									"value": false,
+									"negation": false
+								},
+								"properties": [
+									{
+										"type": "Composite",
+										"field": "financerPeriodComposite",
+										"properties": [
+											{
+												"type": "DateTime",
+												"field": "financerStartDate",
+												"required": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Início do Financiamento",
+													"en-GB": "Finance Begin Date"
+												}
+											},
+											{
+												"type": "DateTime",
+												"field": "financerEndDate",
+												"required": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Fim do Financiamento",
+													"en-GB": "Finance End Date"
+												}
+											}
+										]
+									},
+									{
+										"type": "AsyncSelect",
+										"field": "financerUnit",
+										"label": {
+											"pt-PT": "Unidade Pagadora",
+											"en-GB": "Financing Unit"
+										},
+										"required": true,
+										"allowOther": false,
+										"optionsProvider": "/paper-pusher-ist/financeUnit"
+									},
+									{
+										"type": "Quantity",
+										"field": "financerUnitPercentage",
+										"required": true,
+										"step": 0.01,
+										"label": {
+											"pt-PT": "Percentagem a financiar",
+											"en-GB": "Percentage to finance"
+										},
+										"min": 0,
+										"max": 100
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Documentos",
+					"en-GB": "Documents"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Documentos a submeter",
+							"en-GB": "Documents to submit"
+						},
+						"description": {
+							"pt-PT": "Os documentos submeter variam em função do tipo de contrato.",
+							"en-GB": "The documents to submit differ depending on the type of contract."
+						},
+						"properties": [
+							{
+								"field": "curriculumVitae",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar o Curriculum Vitae.",
+									"en-GB": "Attach the Curriculum Vitae."
+								},
+								"label": {
+									"pt-PT": "Curriculum Vitae",
+									"en-GB": "Curriculum Vitae"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									}
+								]
+							},
+							{
+								"field": "previousYearContractActivityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Relatório de atividades do PDEC relativo ao período de contrato anterior.",
+									"en-GB": "PDEC activity report for the prior contract."
+								},
+								"label": {
+									"pt-PT": "Relatório de atividades",
+									"en-GB": "Activitity Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									},
+									{
+										"field": "previousYearContract",
+										"value": true
+									}
+								]
+							},
+							{
+								"field": "renewalActivityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Relatório de atividades do PDEC relativo ao período de contrato anterior.",
+									"en-GB": "PDEC activity report for the prior contract."
+								},
+								"label": {
+									"pt-PT": "Relatório de atividades",
+									"en-GB": "Activitity Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"label": {
+												"pt-PT": "Renovação de Contrato",
+												"en-GB": "Contract Renewal"
+											},
+											"value": "contractRenewal"
+										}
+									}
+								]
+							},
+							{
+								"field": "newContractEspecialityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar a Proposta/Relatório fundamentado por, pelo menos, dois professores da especialidade, que deverá ter em atenção o curriculum vitae da individualidade a convidar e referir o período de contratação proposto, a categoria a que é equiparado por via contratual, bem como a respetiva percentagem contratual.",
+									"en-GB": "Attach the Proposal/Report substantiated by at least two professors of the specialty, which must take into account the curriculum vitae of the individual to be invited and refer to the proposed period of hiring, the category to which it is equivalent by contractual means, as well as the respective contractual percentage."
+								},
+								"label": {
+									"pt-PT": "Proposta/Relatório Fundamentado",
+									"en-GB": "Proposal/Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									},
+									{
+										"field": "previousYearContract",
+										"value": false
+									}
+								]
+							},
+							{
+								"field": "previousYearContractEspecialityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar a Proposta/Relatório fundamentado por, pelo menos, dois professores da especialidade, que deverá ter em atenção o curriculum vitae, o relatório de atividades do período anterior e incluir parecer sobre o desempenho docente no referido período. Este relatório deve ainda mencionar explicitamente qual o período de contratação proposto, a categoria a que é equiparado por via contratual, bem como a respetiva percentagem contratual.",
+									"en-GB": "Attach the Proposal/Report substantiated by at least two professors of the specialty, which should take into account the curriculum vitae, the activity report of the previous period and include an opinion on the teaching performance in said period. This report must also explicitly mention the proposed hiring period, the category to which it is equivalent by contractual means, as well as the respective contractual percentage."
+								},
+								"label": {
+									"pt-PT": "Proposta/Relatório Fundamentado",
+									"en-GB": "Proposal/Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									},
+									{
+										"field": "previousYearContract",
+										"value": true
+									}
+								]
+							},
+							{
+								"field": "renewalEspecialityReport",
+								"type": "File",
+								"required": true,
+								"description": {
+									"pt-PT": "Anexar a Proposta/Relatório fundamentado por, pelo menos, dois professores da especialidade, que deverá ter em atenção o relatório de atividades do período anterior e incluir parecer sobre o desempenho docente (nomeadamente pedagógico) no referido período. Este relatório deve mencionar explicitamente qual o período de contratação proposto, a categoria a que é equiparado por via contratual, bem como a respetiva percentagem contratual.",
+									"en-GB": "Attach the Proposal/Report substantiated by at least two professors of the specialty, which should take into account the curriculum vitae, the activity report of the previous period and include an opinion on the teaching performance in said period. This report must also explicitly mention the proposed hiring period, the category to which it is equivalent by contractual means, as well as the respective contractual percentage."
+								},
+								"label": {
+									"pt-PT": "Proposta/Relatório Fundamentado",
+									"en-GB": "Proposal/Report"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"label": {
+												"pt-PT": "Renovação de Contrato",
+												"en-GB": "Contract Renewal"
+											},
+											"value": "contractRenewal"
+										}
+									}
+								]
+							},
+							{
+								"field": "previousYearContractProofEvaluationReport",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar o Comprovativo da avaliação dos QUC`s dos anos anteriores (disponível na página de execução das disciplinas).",
+									"en-GB": "Attach proof of evaluation of QUC`s from previous years (available on the course execution page)."
+								},
+								"label": {
+									"pt-PT": "Comprovativo da avaliação QUC",
+									"en-GB": "Proof of evaluation QUC"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"value": "newContract",
+											"label": {
+												"pt-PT": "Novo Contrato",
+												"en-GB": "New Contract"
+											}
+										}
+									},
+									{
+										"field": "previousYearContract",
+										"value": true
+									}
+								]
+							},
+							{
+								"field": "renewalProofEvaluationReport",
+								"type": "File",
+								"required": false,
+								"description": {
+									"pt-PT": "Anexar o Comprovativo da avaliação dos QUC`s dos anos anteriores (disponível na página de execução das disciplinas).",
+									"en-GB": "Attach proof of evaluation of QUC`s from previous years (available on the course execution page)."
+								},
+								"label": {
+									"pt-PT": "Comprovativo da avaliação QUC",
+									"en-GB": "Proof of evaluation QUC"
+								},
+								"allowedFileTypes": [
+									".pdf"
+								],
+								"maxSizeMB": 25,
+								"onlyIf": [
+									{
+										"field": "contractType",
+										"value": {
+											"label": {
+												"pt-PT": "Renovação de Contrato",
+												"en-GB": "Contract Renewal"
+											},
+											"value": "contractRenewal"
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"outcomeForm": {
+		"canEditResponseAfterConclude": true,
+		"pages": [
+			{
+				"title": {
+					"pt-PT": "Envio do Convite",
+					"en-GB": "Invitation Information"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Destinatário do Convite",
+							"en-GB": "Invitation Target"
+						},
+						"properties": [
+							{
+								"type": "Text",
+								"field": "email-for-invitation",
+								"label": {
+									"pt-PT": "Endereço de e-mail da pessoa a convidar",
+									"en-GB": "E-mail address of the person to invite"
+								},
+								"required": true,
+								"multiline": false,
+								"inputType": "email"
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Vigência do Contrato",
+					"en-GB": "Contract Term"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Vigência do Contrato",
+							"en-GB": "Contract Term"
+						},
+						"properties": [
+							{
+								"type": "Composite",
+								"field": "contractDuration",
+								"required": true,
+								"properties": [
+									{
+										"type": "DateTime",
+										"field": "contractStartDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Início",
+											"en-GB": "Begin Date"
+										}
+									},
+									{
+										"type": "DateTime",
+										"field": "contractEndDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Fim",
+											"en-GB": "End Date"
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"cost": {
+	}
+}

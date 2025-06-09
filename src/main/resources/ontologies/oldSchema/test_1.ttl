@@ -1,0 +1,276 @@
+@prefix : <http://example.org/ontologies/SmartFlow-BBO-Alignment#SmartFlow-BBO-Alignment> .
+@prefix sf: <http://example.org/ontologies/SmartFlow#> .
+@prefix bbo: <https://www.irit.fr/recherches/MELODI/ontologies/BBO#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://example.org/ontologies/SmartFlow-BBO-Alignment#SmartFlow-BBO-Alignment> .
+
+<http://example.org/ontologies/SmartFlow-BBO-Alignment#SmartFlow-BBO-Alignment> rdf:type owl:Ontology ;
+                                                                                 owl:imports <http://example.org/ontologies/SmartFlow> ,
+                                                                                             <https://www.irit.fr/recherches/MELODI/ontologies/BBO> ;
+                                                                                 rdfs:comment "Align SmartFlow with BBO" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://example.org/ontologies/SmartFlow#actionCode
+sf:actionCode rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#descriptionEN
+sf:descriptionEN rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#descriptionPT
+sf:descriptionPT rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#hasAction
+sf:hasAction rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#hasSource
+sf:hasSource rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#hasTarget
+sf:hasTarget rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#isPrimaryAction
+sf:isPrimaryAction rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#labelEN
+sf:labelEN rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#labelPT
+sf:labelPT rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#nodeType
+sf:nodeType rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#queueName
+sf:queueName rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#titleEN
+sf:titleEN rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#titlePT
+sf:titlePT rdf:type owl:AnnotationProperty .
+
+
+###  http://example.org/ontologies/SmartFlow#transitionsTo
+sf:transitionsTo rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2002/07/owl#minQualifiedCardinality
+owl:minQualifiedCardinality rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://example.org/ontologies/SmartFlow-BBO-Alignment#hasSource
+<http://example.org/ontologies/SmartFlow-BBO-Alignment#hasSource> rdf:type owl:ObjectProperty ;
+                                                                  owl:equivalentProperty bbo:has_source ;
+                                                                  rdfs:domain <http://example.org/ontologies/SmartFlow-BBO-Alignment#SequenceFlow> ;
+                                                                  rdfs:range sf:ActionNode ;
+                                                                  rdfs:comment "The node where the sequence flow begins." .
+
+
+###  http://example.org/ontologies/SmartFlow-BBO-Alignment#hasTarget
+<http://example.org/ontologies/SmartFlow-BBO-Alignment#hasTarget> rdf:type owl:ObjectProperty ;
+                                                                  owl:equivalentProperty bbo:has_target ;
+                                                                  rdfs:domain <http://example.org/ontologies/SmartFlow-BBO-Alignment#SequenceFlow> ;
+                                                                  rdfs:range sf:ActionNode ;
+                                                                  rdfs:comment "The node where the sequence flow ends." .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://example.org/ontologies/SmartFlow#nodeId
+sf:nodeId rdf:type owl:DatatypeProperty ;
+          owl:equivalentProperty bbo:id .
+
+
+###  http://example.org/ontologies/SmartFlow#nodeName
+sf:nodeName rdf:type owl:DatatypeProperty ;
+            owl:equivalentProperty bbo:name ;
+            rdfs:comment "SmartFlow node name aligned to BBO name." .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://example.org/ontologies/SmartFlow#Action
+sf:Action rdf:type owl:Class .
+
+
+###  http://example.org/ontologies/SmartFlow#ActionNode
+sf:ActionNode rdf:type owl:Class ;
+              owl:equivalentClass bbo:UserTask ;
+              rdfs:comment "User‐level task in SmartFlow aligned to BBO’s UserTask." .
+
+
+###  http://example.org/ontologies/SmartFlow#BranchingNode
+sf:BranchingNode rdf:type owl:Class ;
+                 owl:equivalentClass [ owl:intersectionOf ( sf:ActionNode
+                                                            <http://org.semanticweb.owlapi/error#Error4>
+                                                          ) ;
+                                       rdf:type owl:Class
+                                     ] ;
+                 rdfs:subClassOf bbo:ExclusiveGateway ;
+                 rdfs:comment "Exactly those ActionNodes with two or more outgoing actions (an ExclusiveGateway)." .
+
+
+###  http://example.org/ontologies/SmartFlow#SequenceFlow
+sf:SequenceFlow rdf:type owl:Class .
+
+
+###  http://example.org/ontologies/SmartFlow-BBO-Alignment#SequenceFlow
+<http://example.org/ontologies/SmartFlow-BBO-Alignment#SequenceFlow> rdf:type owl:Class ;
+                                                                     owl:equivalentClass bbo:SequenceFlow ;
+                                                                     rdfs:comment "A flow linking two ActionNodes (SmartFlow SequenceFlow ≡ BBO SequenceFlow)." .
+
+
+###  http://org.semanticweb.owlapi/error#Error4
+<http://org.semanticweb.owlapi/error#Error4> rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry
+<http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry> rdf:type owl:NamedIndividual ,
+                                                                                  sf:ActionNode ;
+                                                                         sf:descriptionEN "About to Marry" ;
+                                                                         sf:descriptionPT "Em Vias de Casar" ;
+                                                                         sf:hasAction <http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry/Action/REJECT> ,
+                                                                                      <http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry/Action/SIGN> ;
+                                                                         sf:nodeId "step-about-to-marry" ;
+                                                                         sf:nodeType "generic" ;
+                                                                         sf:queueName "Sistema FenixEdu" ;
+                                                                         sf:titleEN "About to Marry" ;
+                                                                         sf:titlePT "Em Vias de Casar" .
+
+
+###  http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing
+<http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing> rdf:type owl:NamedIndividual ,
+                                                                                 sf:ActionNode ;
+                                                                        sf:descriptionEN "Processing by the Human Resources Department" ;
+                                                                        sf:descriptionPT "Processamento pela Direção de Recursos Humanos" ;
+                                                                        sf:hasAction <http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing/Action/SIGN> ;
+                                                                        sf:nodeId "step-hr-processing" ;
+                                                                        sf:nodeType "generic" ;
+                                                                        sf:queueName "Núcleo de Prestação de Trabalho - Geral" ;
+                                                                        sf:titleEN "The Human Resources Department" ;
+                                                                        sf:titlePT "A Direção de Recursos Humanos" .
+
+
+###  http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate
+<http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate> rdf:type owl:NamedIndividual ,
+                                                                                               sf:ActionNode ;
+                                                                                      sf:descriptionEN "Submission of the Marriage Certificate" ;
+                                                                                      sf:descriptionPT "Apresentação da Certidão de Casamento" ;
+                                                                                      sf:hasAction <http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate/Action/SIGN> ;
+                                                                                      sf:nodeId "step-upload-marriage-certificate" ;
+                                                                                      sf:nodeType "withForms" ;
+                                                                                      sf:queueName "{{requester-username}}" ;
+                                                                                      sf:titleEN "Submission of the Marriage Certificate" ;
+                                                                                      sf:titlePT "Apresentação da Certidão de Casamento" .
+
+
+###  http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry/Action/REJECT
+<http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry/Action/REJECT> rdf:type owl:NamedIndividual ,
+                                                                                                sf:Action ;
+                                                                                       sf:actionCode "REJECT" ;
+                                                                                       sf:isPrimaryAction "false"^^xsd:boolean ;
+                                                                                       sf:labelEN "Conditions Not Fulfilled" ;
+                                                                                       sf:labelPT "Condições Não Confirmadas" ;
+                                                                                       sf:transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/FAILURE> .
+
+
+###  http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry/Action/SIGN
+<http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry/Action/SIGN> rdf:type owl:NamedIndividual ,
+                                                                                              sf:Action ;
+                                                                                     sf:actionCode "SIGN" ;
+                                                                                     sf:isPrimaryAction "true"^^xsd:boolean ;
+                                                                                     sf:labelEN "Conditions Fulfilled" ;
+                                                                                     sf:labelPT "Condições Confirmadas" ;
+                                                                                     sf:transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate> .
+
+
+###  http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing/Action/SIGN
+<http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing/Action/SIGN> rdf:type owl:NamedIndividual ,
+                                                                                             sf:Action ;
+                                                                                    sf:actionCode "SIGN" ;
+                                                                                    sf:isPrimaryAction "true"^^xsd:boolean ;
+                                                                                    sf:labelEN "Mark as Processed" ;
+                                                                                    sf:labelPT "Marcar como Processado" ;
+                                                                                    sf:transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/SUCCESS> .
+
+
+###  http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate/Action/SIGN
+<http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate/Action/SIGN> rdf:type owl:NamedIndividual ,
+                                                                                                           sf:Action ;
+                                                                                                  sf:actionCode "SIGN" ;
+                                                                                                  sf:isPrimaryAction "true"^^xsd:boolean ;
+                                                                                                  sf:labelEN "Confirm Submission" ;
+                                                                                                  sf:labelPT "Confirmar Submissão" ;
+                                                                                                  sf:transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing> .
+
+
+###  http://example.org/ontologies/SmartFlow/SequenceFlow/step-about-to-marry_to_FAILURE
+<http://example.org/ontologies/SmartFlow/SequenceFlow/step-about-to-marry_to_FAILURE> rdf:type owl:NamedIndividual ,
+                                                                                               sf:SequenceFlow ;
+                                                                                      sf:hasSource <http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry> ;
+                                                                                      sf:hasTarget <http://example.org/ontologies/SmartFlow/ActionNode/FAILURE> .
+
+
+###  http://example.org/ontologies/SmartFlow/SequenceFlow/step-about-to-marry_to_step-upload-marriage-certificate
+<http://example.org/ontologies/SmartFlow/SequenceFlow/step-about-to-marry_to_step-upload-marriage-certificate> rdf:type owl:NamedIndividual ,
+                                                                                                                        sf:SequenceFlow ;
+                                                                                                               sf:hasSource <http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry> ;
+                                                                                                               sf:hasTarget <http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate> .
+
+
+###  http://example.org/ontologies/SmartFlow/SequenceFlow/step-hr-processing_to_SUCCESS
+<http://example.org/ontologies/SmartFlow/SequenceFlow/step-hr-processing_to_SUCCESS> rdf:type owl:NamedIndividual ,
+                                                                                              sf:SequenceFlow ;
+                                                                                     sf:hasSource <http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing> ;
+                                                                                     sf:hasTarget <http://example.org/ontologies/SmartFlow/ActionNode/SUCCESS> .
+
+
+###  http://example.org/ontologies/SmartFlow/SequenceFlow/step-upload-marriage-certificate_to_step-hr-processing
+<http://example.org/ontologies/SmartFlow/SequenceFlow/step-upload-marriage-certificate_to_step-hr-processing> rdf:type owl:NamedIndividual ,
+                                                                                                                       sf:SequenceFlow ;
+                                                                                                              sf:hasSource <http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate> ;
+                                                                                                              sf:hasTarget <http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing> .
+
+
+[ owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger
+] .
+
+#################################################################
+#    Annotations
+#################################################################
+
+sf:nodeId rdfs:comment "SmartFlow node identifier aligned to BBO id." .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

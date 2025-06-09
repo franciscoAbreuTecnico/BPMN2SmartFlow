@@ -1,0 +1,41 @@
+# Ignore Maven's target directory (compiled output)
+target/
+
+# Ensure everything inside target/ is ignored
+target/**
+
+# Ignore general output folders
+output/
+
+# Ignore text files
+*.txt
+
+# Ignore Graphviz .dot files
+*.dot
+
+# Ignore specific resources directories
+
+# Ignore IDE and OS-specific files
+.idea/
+*.iml
+*.log
+.DS_Store
+Thumbs.db
+
+# Ignore dependency directories
+.mvn/
+*.m2/
+
+# Ignore compiled Java classes
+**/*.class
+
+*.class
+
+# Ignore temporary files
+*.swp
+*.swo
+
+# Ignore build artifacts
+*.jar
+*.war
+*.ear

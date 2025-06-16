@@ -1,0 +1,106 @@
+{
+  "flowTemplate" : {
+    "name" : "holidays-scheduling",
+    "title" : {
+      "pt-PT" : "Processo de Marcação de Férias",
+      "en-GB" : "Holiday Scheduling Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Marcação de Férias",
+      "en-GB" : "Holiday Scheduling Process"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onSuccess" : [
+          {
+            "flowProcessor" : "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure" : [
+          {
+            "applyOn" : "REJECT",
+            "flowProcessor" : "Set Request Outcome Form",
+            "outcomeFormValues" : {
+              "response" : {
+                "value" : "denied",
+                "label" : {
+                  "pt-PT" : "O pedido foi rejeitado.",
+                  "en-GB" : "The request was denied."
+                }
+              }
+            }
+          },
+          {
+            "flowProcessor" : "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition" : [ ],
+        "onCancel" : [
+          {
+            "flowProcessor" : "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors" : [ ],
+      "actionNodes" : [
+        {
+          "id" : "step-hr-processing",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "A Direção de Recursos Humanos",
+            "en-GB" : "The Human Resources Department"
+          },
+          "description" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Marcar como Processado",
+                "en-GB" : "Mark as Processed"
+              },
+              "id" : "SIGN-step-hr-processing",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-hr-processing",
+              "name" : "REJECT"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "SIGN-step-hr-processing",
+              "flowProcessor" : "Set Request Outcome Form",
+              "outcomeFormValues" : {
+                "response" : {
+                  "value" : "processed",
+                  "label" : {
+                    "pt-PT" : "O pedido foi registado.",
+                    "en-GB" : "The request was registered."
+                  }
+                }
+              },
+              "id" : "onSuccess-step-hr-processing-Set_Request_Outcome_Form",
+              "name" : "onSuccess"
+            }
+          ],
+          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral"
+        }
+      ]
+    }
+  }
+}

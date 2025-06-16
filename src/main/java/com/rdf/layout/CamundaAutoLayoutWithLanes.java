@@ -21,7 +21,6 @@ import org.camunda.bpm.model.bpmn.instance.Association;
 import org.camunda.bpm.model.bpmn.instance.BpmnModelElementInstance;
 import org.camunda.bpm.model.bpmn.instance.Collaboration;
 import org.camunda.bpm.model.bpmn.instance.Definitions;
-import org.camunda.bpm.model.bpmn.instance.EndEvent;
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
 import org.camunda.bpm.model.bpmn.instance.Gateway;
 import org.camunda.bpm.model.bpmn.instance.Lane;
@@ -239,6 +238,7 @@ public class CamundaAutoLayoutWithLanes {
             break;
           }
         }
+        System.out.println("Merged rows: " + merged);
       } while(merged);
 
       return map;
@@ -247,118 +247,102 @@ public class CamundaAutoLayoutWithLanes {
     /**
      * Orchestrates full layout then injects DI + enhanced routing.
      */
-public void layout(BpmnModelInstance mi, LayoutConfig cfg) {
-  // 0) Find process & laneSet
-  Process proc = mi.getModelElementsByType(Process.class)
-                   .stream().findFirst().orElse(null);
-  if (proc == null) return;
-  LaneSet ls = proc.getChildElementsByType(LaneSet.class)
-                   .stream().findFirst().orElse(null);
-  if (ls == null) return;
+    public void layout(BpmnModelInstance mi, LayoutConfig cfg) {
+      Process proc = mi.getModelElementsByType(Process.class)
+          .stream()
+          .findFirst()
+          .orElse(null);
+      if(proc==null){ System.err.println("Process not found"); return; }
+      LaneSet ls = proc.getChildElementsByType(LaneSet.class)
+                      .stream().findFirst().orElse(null);
+      if(ls==null){ System.err.println("No lanes"); return; }
 
-  // 1) Grid each lane
-  List<Lane> lanes = new ArrayList<>(ls.getLanes());
-  Map<Lane,Map<FlowNode,LayoutData>> byLane = new LinkedHashMap<>();
-  Map<Lane,Integer> maxR = new HashMap<>();
-  occupied.clear();
-  globalLayout.clear();
+      System.out.println("Starting BPMN auto-layout with lanes...");
 
-  for (Lane lane : lanes) {
-    Map<FlowNode,LayoutData> laneLayout = layoutLane(lane.getFlowNodeRefs(), cfg);
-    byLane.put(lane, laneLayout);
-    laneLayout.forEach(globalLayout::put);
-    maxR.put(lane,
-      laneLayout.values().stream().mapToInt(ld -> ld.gridRow).max().orElse(0));
-  }
-
-  // 2) Column widths & X positions
-  int computedMaxCol = globalLayout.values().stream()
-                         .mapToInt(ld -> ld.gridCol).max().orElse(0);
-  double[] colW = new double[computedMaxCol + 1];
-  globalLayout.forEach((n, ld) -> {
-    ld.width = cfg.defaultWidth(n.getElementType().getTypeName());
-    colW[ld.gridCol] = Math.max(colW[ld.gridCol], ld.width);
-  });
-  colX = new double[colW.length];
-  colX[0] = cfg.marginLeft + cfg.column0Offset;
-  for (int c = 1; c < colX.length; c++) {
-    colX[c] = colX[c - 1] + colW[c - 1] + cfg.horizontalGap;
-  }
-
-  // 3) Bump EndEvents to column (computedMaxCol+1)
-  int endCol = computedMaxCol + 1;
-  double endX  = colX[computedMaxCol] + colW[computedMaxCol] + cfg.horizontalGap;
-  double endW  = cfg.defaultWidth("EndEvent");
-  mi.getModelElementsByType(EndEvent.class).forEach(end -> {
-    LayoutData ld = globalLayout.get(end);
-    if (ld != null) {
-      ld.gridCol = endCol;
-      ld.x       = endX;
-      ld.width   = endW;
-    }
-  });
-
-  // 4) Figure out the overall right‐most X so lanes/pool expand fully
-  double globalRight = globalLayout.values().stream()
-                          .mapToDouble(ld -> ld.x + ld.width)
-                          .max()
-                          .orElse(endX + endW);
-
-  // 5) Compute Y positions and laneBounds
-  double curY = cfg.marginTop;
-  Map<Lane, Double[]> laneBounds = new LinkedHashMap<>();
-
-  for (Lane lane : lanes) {
-    Map<FlowNode,LayoutData> m = byLane.get(lane);
-    if (m.isEmpty()) continue;
-
-    // build row heights
-    int maxRow = maxR.get(lane);
-    double[] rowH = new double[maxRow + 1];
-    m.forEach((n, ld) -> {
-      ld.height = cfg.defaultHeight(n.getElementType().getTypeName());
-      rowH[ld.gridRow] = Math.max(rowH[ld.gridRow], ld.height);
-    });
-
-    // Y for each row within this lane
-    double[] rowY = new double[maxRow + 1];
-    rowY[0] = curY;
-    for (int r = 1; r <= maxRow; r++) {
-      rowY[r] = rowY[r - 1] + rowH[r - 1] + cfg.verticalGap;
-    }
-
-    // assign x,y for each node
-    m.forEach((n, ld) -> {
-      if (!(n instanceof EndEvent)) {
-        ld.x = colX[ld.gridCol]
-             + (cfg.defaultWidth(n.getElementType().getTypeName()) - ld.width) / 2
-             + cfg.laneLabelOffset;
+      // 1) grid each lane
+      List<Lane> lanes = new ArrayList<>(ls.getLanes());
+      Map<Lane,Map<FlowNode,LayoutData>> byLane = new LinkedHashMap<>();
+      Map<Lane,Integer> maxC=new HashMap<>(), maxR=new HashMap<>();
+      for(Lane lane:lanes){
+        System.out.println("Processing lane: " + lane.getName() + " (" + lane.getId() + ")");
+        var m=layoutLane(lane.getFlowNodeRefs(),cfg);
+        System.out.println("Lane " + lane.getName() + " has " + m.size() + " nodes");
+        byLane.put(lane,m);
+        m.forEach(globalLayout::put);
+        maxC.put(lane,m.values().stream().mapToInt(ld->ld.gridCol).max().orElse(0));
+        maxR.put(lane,m.values().stream().mapToInt(ld->ld.gridRow).max().orElse(0));
       }
-      ld.y = rowY[ld.gridRow]
-           + (rowH[ld.gridRow] - ld.height) / 2;
-    });
 
-    // lane width spans from left margin to globalRight
-    double laneW = (globalRight - cfg.marginLeft) + cfg.laneLabelOffset;
-    // lane height = contentHeight + top/bottom padding
-    double contentH = rowY[maxRow] + rowH[maxRow] - curY;
-    double laneH    = contentH + cfg.lanePadding * 2;
+      System.out.println("Lanes grid layout computed: " + byLane.size() + " lanes");
 
-    laneBounds.put(lane, new Double[]{
-      cfg.marginLeft,
-      curY - cfg.lanePadding,
-      laneW,
-      laneH
-    });
+      // 2) compute columns
+      globalMaxCol = maxC.values().stream().max(Integer::compareTo).orElse(0);
+      double[] colW = new double[globalMaxCol+1];
+      byLane.values().forEach(m->m.forEach((n,ld)->{
+        ld.width = cfg.defaultWidth(n.getElementType().getTypeName());
+        colW[ld.gridCol] = Math.max(colW[ld.gridCol],ld.width);
+      }));
+      colX = new double[colW.length];
+      colX[0] = cfg.marginLeft + cfg.column0Offset;
+      for (int c = 1; c < colX.length; c++) {
+        colX[c] = colX[c - 1] + colW[c - 1] + cfg.horizontalGap;
+      }
 
-    // <<< key change: only use laneGap between lanes, no verticalGap here >>>
-    curY += contentH + cfg.lanePadding * 2 + cfg.laneGap;
+      System.out.println("Columns computed: " + colX.length + " columns");
+
+      // 3) absolute x,y & bounds
+      double curY = cfg.marginTop;
+Map<Lane,Double[]> laneBounds = new LinkedHashMap<>();
+
+for (Lane lane : lanes) {
+  Map<FlowNode,LayoutData> m = byLane.get(lane);
+  if (m.isEmpty()) continue;
+
+  int maxRow = maxR.get(lane);
+  double[] rowH = new double[maxRow+1];
+  m.forEach((n,ld) -> {
+    ld.height = cfg.defaultHeight(n.getElementType().getTypeName());
+    rowH[ld.gridRow] = Math.max(rowH[ld.gridRow], ld.height);
+  });
+
+  double[] rowY = new double[maxRow+1];
+  rowY[0] = curY;
+  for (int r = 1; r < rowY.length; r++) {
+    rowY[r] = rowY[r-1] + rowH[r-1] + cfg.verticalGap;
   }
 
-  // 6) Inject DI shapes & edges as before
-  addBPMNDI(mi, globalLayout, laneBounds, cfg);
+  // position each element
+  m.values().forEach(ld -> {
+    ld.x = colX[ld.gridCol] + (colW[ld.gridCol] - ld.width)/2 + cfg.laneLabelOffset;
+    ld.y = rowY[ld.gridRow] + (rowH[ld.gridRow] - ld.height)/2;
+  });
+
+  // compute raw width & height of lanes’ contents
+  double w = (colX[globalMaxCol] + colW[globalMaxCol] - cfg.marginLeft)
+           + cfg.column0Offset + cfg.laneLabelOffset;
+  double h = rowY[maxRow] + rowH[maxRow] - curY;
+
+  // *** inflate by lanePadding above & below ***
+  double pad = cfg.lanePadding;
+  double laneY = curY - pad;
+  double laneH = h + pad*2;
+
+  laneBounds.put(lane, new Double[]{
+    cfg.marginLeft,
+    laneY,
+    w,
+    laneH
+  });
+
+  // advance cursor by content height + padding + inter‑lane gap
+  curY += h + cfg.laneGap + pad*2;
 }
 
+    System.out.println("Entering BPMN DI injection phase...");
+
+      // 4) inject DI + enhanced edge routing
+      addBPMNDI(mi,globalLayout,laneBounds,cfg);
+    }
 
     private void addBPMNDI(
   BpmnModelInstance mi,
@@ -718,7 +702,7 @@ public void layout(BpmnModelInstance mi, LayoutConfig cfg) {
     new AutoLayoutEngine().layout(model, cfg);
 
     // Write to file
-    try (FileWriter w = new FileWriter("src/main/resources/output/testDiagramLayout.bpmn")) {
+    try (FileWriter w = new FileWriter("resources/output/testDiagramLayout.bpmn")) {
         w.write(Bpmn.convertToString(model));
         System.out.println("diagram.bpmn written.");
     }

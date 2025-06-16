@@ -1,0 +1,1913 @@
+{
+    "name": {
+        "pt-PT": "Parentalidade",
+        "en-GB": "Parental Leave"
+    },
+    "description": {
+        "pt-PT": "Este formulário permite-lhe solicitar licenças relacionadas com a parentalidade e a dispensa de serviço pós-licença de parentalidade.",
+        "en-GB": "This form allows you to request parental leave."
+    },
+    "context": {
+        "requestKeywords": {
+            "fields": [
+                "leaveType",
+                "exemptionService",
+                "startDate",
+                "endDate"
+            ],
+            "displayName": false,
+            "username": false
+        },
+        "onLock": {
+            "requestProcessor": "Move Queue",
+            "queue": "Núcleo de Docentes e Investigadores"
+        },
+        "onValidate": {
+            "requestProcessor": "Create Flow From Request",
+            "template": "parental-leave-exemption-flow",
+            "actionNodesProvider": "Collaborator Authorization Flow",
+            "queuesToRemove": [
+                "Gestão Administrativa",
+                "Presidência do Instituto Superior Técnico"
+            ],
+            "completeAuthorizationChain": true,
+            "setSectionWithRequesterInfo": true,
+            "setSupervisorFromRequester": true
+        },
+        "onResetValidate": {
+            "requestProcessor": "Cancel Flow"
+        },
+        "queuesAllowedToChangeTo": [
+            "Núcleo de Prestação de Trabalho",
+            "Núcleo de Docentes e Investigadores"
+        ],
+        "onConclude": {
+            "requestProcessor": "Check Has Connected Successful Flow"
+        }
+    },
+    "inputForm": {
+        "checks": {
+            "requirePersonalInformation": true,
+            "requirePhotograph": false,
+            "requireIdentity": true
+        },
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Informação para o Pedido de Licença de Parentalidade",
+                    "en-GB": "Information for the Parental Leave Request"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Informação da(s) Criança(s)",
+                            "en-GB": "Information about the Child(ren)"
+                        },
+                        "properties": [
+                            {
+                                "type": "Boolean",
+                                "field": "multipleBirthsOrAdoptions",
+                                "required": false,
+                                "label": {
+                                    "pt-PT": "Houve nascimentos ou adoções múltiplos?",
+                                    "en-GB": "Did multiple births or adoptions occur?"
+                                },
+                                "labelYes": {
+                                    "pt-PT": "Sim",
+                                    "en-GB": "Yes"
+                                },
+                                "labelNo": {
+                                    "pt-PT": "Não",
+                                    "en-GB": "No"
+                                }
+                            },
+                            {
+                                "type": "Composite",
+                                "field": "nameAndBirthDate",
+                                "required": true,
+                                "properties": [
+                                    {
+                                        "type": "Text",
+                                        "field": "name",
+                                        "required": false,
+                                        "label": {
+                                            "pt-PT": "Nome da Criança",
+                                            "en-GB": "Name of the Child"
+                                        },
+                                        "onlyIf": {
+                                            "field": "multipleBirthsOrAdoptions",
+                                            "negation": false,
+                                            "value": false
+                                        }
+                                    },
+                                    {
+                                        "type": "DateTime",
+                                        "field": "birthDate",
+                                        "required": true,
+                                        "date": true,
+                                        "time": false,
+                                        "label": {
+                                            "pt-PT": "Data de Nascimento",
+                                            "en-GB": "Date of Birth"
+                                        },
+                                        "onlyIf": {
+                                            "field": "multipleBirthsOrAdoptions",
+                                            "negation": false,
+                                            "value": false
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Array",
+                                "field": "childrenBirthsOrAdoptions",
+                                "required": true,
+                                "label": {
+                                    "pt-PT": "Informação das Crianças",
+                                    "en-GB": "Information about the Children"
+                                },
+                                "labelAddElement": {
+                                    "pt-PT": "Adicionar criança",
+                                    "en-GB": "Add child"
+                                },
+                                "onlyIf": {
+                                    "field": "multipleBirthsOrAdoptions",
+                                    "negation": false,
+                                    "value": true
+                                },
+                                "min": 2,
+                                "properties": [
+                                    {
+                                        "type": "Composite",
+                                        "field": "nameAndBirthDateArray",
+                                        "required": false,
+                                        "properties": [
+                                            {
+                                                "type": "Text",
+                                                "field": "name",
+                                                "required": false,
+                                                "label": {
+                                                    "pt-PT": "Nome da Criança",
+                                                    "en-GB": "Name of the Child"
+                                                }
+                                            },
+                                            {
+                                                "type": "DateTime",
+                                                "field": "birthDate",
+                                                "required": true,
+                                                "date": true,
+                                                "time": false,
+                                                "label": {
+                                                    "pt-PT": "Data de Nascimento",
+                                                    "en-GB": "Date of Birth"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Informação Adicional",
+                            "en-GB": "Additional Information"
+                        },
+                        "properties": [
+                            {
+                                "type": "Text",
+                                "field": "observations",
+                                "required": false,
+                                "label": {
+                                    "pt-PT": "Observações",
+                                    "en-GB": "Observations"
+                                },
+                                "multiline": true,
+                                "inputType": "plain"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": {
+                    "pt-PT": "Informação da Licença",
+                    "en-GB": "Leave Information"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Tipo de Licença",
+                            "en-GB": "Type of Leave"
+                        },
+                        "description": {
+                            "pt-PT": "Ao abrigo do Código do Trabalho, aprovado pela Lei n.º 7/2009, de 12 de fevereiro, na sua redação atual.",
+                            "en-GB": "In accordance with the Labour Code (CT), as approved by Law No. 7/2009, of 12th February, in its current wording."
+                        },
+                        "properties": [
+                            {
+                                "type": "Array",
+                                "field": "leaveInformation",
+                                "label": {
+                                    "pt-PT": "Tipo(s) da(s) Licença(s)",
+                                    "en-GB": "Type(s) of Leave(s)"
+                                },
+                                "required": true,
+                                "labelAddElement": {
+                                    "pt-PT": "Adicionar tipo de licença",
+                                    "en-GB": "Add type of leave"
+                                },
+                                "properties": [
+                                    {
+                                        "type": "Select",
+                                        "field": "leaveType",
+                                        "required": true,
+                                        "allowOther": false,
+                                        "multiple": false,
+                                        "collapsed": false,
+                                        "label": {
+                                            "pt-PT": "Tipo de Licença",
+                                            "en-GB": "Type of Leave"
+                                        },
+                                        "options": [
+                                            {
+                                                "value": "initial",
+                                                "label": {
+                                                    "pt-PT": "1) Licença Parental Inicial - n.º 1 e 2, art.º 40.º do Código de Trabalho (CT)",
+                                                    "en-GB": "1) Initial Parental Leave - Nos. 1 and 2, Article 40 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "shared",
+                                                "label": {
+                                                    "pt-PT": "2) Licença Parental Inicial Partilhada - n.º 3, art.º 40.º do Código de Trabalho (CT)",
+                                                    "en-GB": "2) Shared Initial Parental Leave - No. 3, Article 40 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "hospitalization",
+                                                "label": {
+                                                    "pt-PT": "3) Licença Parental Inicial por Motivo de Internamento Hospitalar da Criança - art.º 40.º do Código de Trabalho (CT)",
+                                                    "en-GB": "3) Initial Parental Leave Due to Hospitalization of the Child - Article 40 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "motherExclusive",
+                                                "label": {
+                                                    "pt-PT": "4) Licença Parental Inicial Exclusiva da Mãe - art.º 41.º do Código de Trabalho (CT)",
+                                                    "en-GB": "4) Initial Parental Leave Exclusive to the Mother - Article 41 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "motherInability",
+                                                "label": {
+                                                    "pt-PT": "5) Licença Parental Inicial a Gozar pelo Pai por Impossibilidade da Mãe - art.º 42.º do Código de Trabalho (CT)",
+                                                    "en-GB": "5) Initial Parental Leave to be Taken by the Father Due to the Mother's Inability - Article 42 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "fatherExclusive",
+                                                "label": {
+                                                    "pt-PT": "6) Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                                    "en-GB": "6) Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "adoption",
+                                                "label": {
+                                                    "pt-PT": "7) Licença por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                    "en-GB": "7) Adoption Leave - Article 44 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "adoptionFatherExclusive",
+                                                "label": {
+                                                    "pt-PT": "8) Licença Parental Exclusiva do Pai por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                    "en-GB": "8) Adoption Leave Exclusive to the Father - Article 44 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "complementary",
+                                                "label": {
+                                                    "pt-PT": "9) Licença Parental Complementar - art.º 51.º do Código de Trabalho (CT)",
+                                                    "en-GB": "9) Complementary Parental Leave - Article 51 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "childCare",
+                                                "label": {
+                                                    "pt-PT": "10) Licença para Assistência a Filho - art.º 52.º do Código de Trabalho (CT)",
+                                                    "en-GB": "10) Leave for Child Care - Article 52 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "childIllness",
+                                                "label": {
+                                                    "pt-PT": "11) Licença para Assistência a Filho com Deficiência, Doença Crónica ou Doença Oncológica - art.º 53.º do Código de Trabalho (CT)",
+                                                    "en-GB": "11) Leave for Assistance to a Child with Disability, Chronic Illness, or Cancer - Article 53 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            {
+                                                "value": "other",
+                                                "label": {
+                                                    "pt-PT": "12) Outra Licença",
+                                                    "en-GB": "12) Other Leave"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Boolean",
+                                        "field": "isPremature",
+                                        "required": true,
+                                        "label": {
+                                            "pt-PT": "Houve nascimento de bebé prematuro até às 33 semanas?",
+                                            "en-GB": "Was there the birth of a premature baby before 33 weeks?"
+                                        },
+                                        "description": {
+                                            "pt-PT": "A informar no prazo de 7 dias após o nascimento. É necessário anexar o assento de nascimento e, no caso da Segurança Social, o comprovativo do pedido. Caso a licença parental não seja partilhada, o progenitor que gozar a licença informa o respetivo empregador, juntando declaração do outro progenitor da qual conste que o mesmo exerce atividade profissional e que não goza da licença parental inicial. Na falta da declaração, a licença é obrigatoriamente gozada pela mãe.",
+                                            "en-GB": "To be reported within 7 days after the birth. It is necessary to attach the Birth Certificate and, in the case of Social Security, proof of the request. If parental leave is not shared, the parent taking the leave must inform the respective employer, attaching a declaration from the other parent stating that they are employed and not taking the initial parental leave. In the absence of the declaration, the leave must be taken by the mother."
+                                        },
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": {
+                                                "value": "hospitalization",
+                                                "label": {
+                                                    "pt-PT": "4) Licença Parental Inicial Exclusiva da Mãe - art.º 41.º do Código de Trabalho (CT)",
+                                                    "en-GB": "4) Initial Parental Leave Exclusive to the Mother - Article 41 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            "negation": false
+                                        },
+                                        "labelYes": {
+                                            "pt-PT": "Sim",
+                                            "en-GB": "Yes"
+                                        },
+                                        "labelNo": {
+                                            "pt-PT": "Não",
+                                            "en-GB": "No"
+                                        }
+                                    },
+                                    {
+                                        "type": "Select",
+                                        "field": "daysRR",
+                                        "required": true,
+                                        "multiple": false,
+                                        "collapse": false,
+                                        "allowOther": false,
+                                        "label": {
+                                            "pt-PT": "Duração",
+                                            "en-GB": "Duration"
+                                        },
+                                        "description": {
+                                            "pt-PT": "A informar no prazo de 7 dias após o nascimento. É necessário anexar o assento de nascimento e, no caso da Segurança Social, o comprovativo do pedido. Caso a licença parental não seja partilhada, o progenitor que gozar a licença informa o respetivo empregador, juntando declaração do outro progenitor da qual conste que o mesmo exerce atividade profissional e que não goza da licença parental inicial. Na falta da declaração, a licença é obrigatoriamente gozada pela mãe.",
+                                            "en-GB": "To be reported within 7 days after the birth. It is necessary to attach the Birth Certificate and, in the case of Social Security, proof of the request. If parental leave is not shared, the parent taking the leave must inform the respective employer, attaching a declaration from the other parent stating that they are employed and not taking the initial parental leave. In the absence of the declaration, the leave must be taken by the mother."
+                                        },
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": [
+                                                {
+                                                    "value": "initial",
+                                                    "label": {
+                                                        "pt-PT": "1) Licença Parental Inicial - n.º 1 e 2, art.º 40.º do Código de Trabalho (CT)",
+                                                        "en-GB": "1) Initial Parental Leave - Nos. 1 and 2, Article 40 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "motherExclusive",
+                                                    "label": {
+                                                        "pt-PT": "4) Licença Parental Inicial Exclusiva da Mãe - art.º 41.º do Código de Trabalho (CT)",
+                                                        "en-GB": "4) Initial Parental Leave Exclusive to the Mother - Article 41 of the Labour Code (CT)"
+                                                    }
+                                                }
+                                            ],
+                                            "negation": false
+                                        },
+                                        "options": [
+                                            {
+                                                "value": "120Days",
+                                                "label": {
+                                                    "pt-PT": "120 Dias (100% da Remuneração de Referência)",
+                                                    "en-GB": "120 Days (100% of the Reference Income)"
+                                                }
+                                            },
+                                            {
+                                                "value": "150Days",
+                                                "label": {
+                                                    "pt-PT": "150 Dias (80% da Remuneração de Referência)",
+                                                    "en-GB": "150 Days (80% of the Reference Income)"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Select",
+                                        "field": "sharedLeaveDays",
+                                        "required": true,
+                                        "multiple": false,
+                                        "collapse": false,
+                                        "allowOther": false,
+                                        "label": {
+                                            "pt-PT": "Duração",
+                                            "en-GB": "Duration"
+                                        },
+                                        "description": {
+                                            "pt-PT": "A informar no prazo de 7 dias após o nascimento. É necessário anexar o assento de nascimento e, no caso da Segurança Social, o comprovativo do pedido. Caso a licença parental não seja partilhada, o progenitor que gozar a licença informa o respetivo empregador, juntando declaração do outro progenitor da qual conste que o mesmo exerce atividade profissional e que não goza da licença parental inicial. Na falta da declaração, a licença é obrigatoriamente gozada pela mãe.",
+                                            "en-GB": "To be reported within 7 days after the birth. It is necessary to attach the Birth Certificate and, in the case of Social Security, proof of the request. If parental leave is not shared, the parent taking the leave must inform the respective employer, attaching a declaration from the other parent stating that they are employed and not taking the initial parental leave. In the absence of the declaration, the leave must be taken by the mother."
+                                        },
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": {
+                                                "value": "shared",
+                                                "label": {
+                                                    "pt-PT": "2) Licença Parental Inicial Partilhada - n.º 3, art.º 40.º do Código de Trabalho (CT)",
+                                                    "en-GB": "2) Shared Initial Parental Leave - No. 3, Article 40 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            "negation": false
+                                        },
+                                        "options": [
+                                            {
+                                                "value": "120Days",
+                                                "label": {
+                                                    "pt-PT": "120 + 30 Dias (100% da Remuneração de Referência)",
+                                                    "en-GB": "120 + 30 Days (100% of the Reference Income)"
+                                                }
+                                            },
+                                            {
+                                                "value": "150Days",
+                                                "label": {
+                                                    "pt-PT": "150 + 30 Dias (83% da Remuneração de Referência)",
+                                                    "en-GB": "150 + 30 Days (83% of the Reference Income)"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Select",
+                                        "field": "daysNR",
+                                        "required": true,
+                                        "multiple": false,
+                                        "collapse": false,
+                                        "allowOther": false,
+                                        "label": {
+                                            "pt-PT": "Duração",
+                                            "en-GB": "Duration"
+                                        },
+                                        "description": {
+                                            "pt-PT": "O pai informa o empregador, logo que possível e, consoante a situação, apresenta atestado médico comprovativo ou certidão de óbito e, sendo caso disso, declara o período de licença já gozado pela mãe.",
+                                            "en-GB": "The father informs the employer as soon as possible and, depending on the situation, provides a medical certificate or death certificate, and if applicable, declares the period of leave already taken by the mother."
+                                        },
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": [
+                                                {
+                                                    "value": "motherInability",
+                                                    "label": {
+                                                        "pt-PT": "5) Licença Parental Inicial a Gozar pelo Pai por Impossibilidade da Mãe - art.º 42.º do Código de Trabalho (CT)",
+                                                        "en-GB": "5) Initial Parental Leave to be Taken by the Father Due to the Mother's Inability - Article 42 of the Labour Code (CT)"
+                                                    }
+                                                }
+                                            ],
+                                            "negation": false
+                                        },
+                                        "options": [
+                                            {
+                                                "value": "120Days",
+                                                "label": {
+                                                    "pt-PT": "120 Dias",
+                                                    "en-GB": "120 Days"
+                                                }
+                                            },
+                                            {
+                                                "value": "150Days",
+                                                "label": {
+                                                    "pt-PT": "150 Dias",
+                                                    "en-GB": "150 Days"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Select",
+                                        "field": "adoptionDaysNR",
+                                        "required": true,
+                                        "multiple": false,
+                                        "collapse": false,
+                                        "allowOther": false,
+                                        "label": {
+                                            "pt-PT": "Duração",
+                                            "en-GB": "Duration"
+                                        },
+                                        "description": {
+                                            "pt-PT": "A comunicar com antecedência de 10 dias. É necessário anexar prova da confiança judicial ou administrativa do adotando e da idade deste, do início e do termo dos períodos a gozar por cada um, entregando para o efeito uma declaração conjunta.",
+                                            "en-GB": "Notify with 10 days' notice. It is necessary to attach proof of the judicial or administrative custody of the adopted child and their age, as well as the start and end dates of the leave periods to be taken by each parent, submitting a joint declaration for this purpose."
+                                        },
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": [
+                                                {
+                                                    "value": "adoption",
+                                                    "label": {
+                                                        "pt-PT": "7) Licença por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                        "en-GB": "7) Adoption Leave - Article 44 of the Labour Code (CT)"
+                                                    }
+                                                }
+                                            ],
+                                            "negation": false
+                                        },
+                                        "options": [
+                                            {
+                                                "value": "120Days",
+                                                "label": {
+                                                    "pt-PT": "120 Dias",
+                                                    "en-GB": "120 Days"
+                                                }
+                                            },
+                                            {
+                                                "value": "150Days",
+                                                "label": {
+                                                    "pt-PT": "150 Dias",
+                                                    "en-GB": "150 Days"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Select",
+                                        "field": "fatherExclusiveInfoType",
+                                        "required": true,
+                                        "multiple": false,
+                                        "collapse": false,
+                                        "allowOther": false,
+                                        "label": {
+                                            "pt-PT": "Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                            "en-GB": "Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                        },
+                                        "description": {
+                                            "pt-PT": "Licença de 28 dias seguidos ou interpolados: os 28 dias de licença parental são obrigatoriamente gozados nos 42 dias seguintes ao nascimento da criança, 7 dos quais a gozar de modo consecutivo imediatamente a seguir a este, devendo o trabalhador informar a entidade empregadora pública com a antecedência de 5 dias relativamente ao início do período, consecutivo ou interpolado, de licença ou, em caso de urgência comprovada, logo que possível. Licença de 7 dias seguidos ou interpolados: O pai tem, se quiser, direito a mais 7 dias, seguidos ou não, desde que gozados em simultâneo com a licença parental inicial da mãe.",
+                                            "en-GB": "28 days of continuous or intermittent leave: the 28 days of parental leave must be taken within the 42 days following the birth of the child, 7 of which must be taken consecutively immediately after the birth. The employee must inform the public employer 5 days in advance of the start of the leave period, whether continuous or intermittent, or as soon as possible in case of proven urgency. 7 days of continuous or intermittent leave: the father is entitled to an additional 7 days, whether consecutive or not, provided these are taken simultaneously with the mother’s initial parental leave."
+                                        },
+                                        "onlyIf": [
+                                            {
+                                                "field": "leaveType",
+                                                "value": {
+                                                    "value": "fatherExclusive",
+                                                    "label": {
+                                                        "pt-PT": "6) Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                                        "en-GB": "6) Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                "negation": false
+                                            },
+                                            {
+                                                "field": "leaveType",
+                                                "value": {
+                                                    "value": "adoptionFatherExclusive",
+                                                    "label": {
+                                                        "pt-PT": "8) Licença Parental Exclusiva do Pai por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                        "en-GB": "8) Adoption Leave Exclusive to the Father - Article 44 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                "negation": false
+                                            }
+                                        ],
+                                        "options": [
+                                            {
+                                                "value": "mandatory",
+                                                "label": {
+                                                    "pt-PT": "Obrigatória",
+                                                    "en-GB": "Mandatory"
+                                                }
+                                            },
+                                            {
+                                                "value": "optional",
+                                                "label": {
+                                                    "pt-PT": "Facultativa",
+                                                    "en-GB": "Optional"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Select",
+                                        "field": "fatherExclusiveInfoDays",
+                                        "required": true,
+                                        "description": {
+                                            "pt-PT": "No caso de nascimento de gémeos, o pai tem direito, por cada gémeo além do primeiro, a mais 2 dias que acrescem aos 28 dias obrigatórios, e mais dois dias que acrescem aos 7 dias facultativos, os quais têm que ser gozados imediatamente após os referidos períodos.",
+                                            "en-GB": "In the case of the birth of twins, the father is entitled to an additional 2 days for each twin beyond the first, which are added to the mandatory 28 days, as well as an additional 2 days added to the 7 optional days. These extra days must be taken immediately after the aforementioned periods."
+                                        },
+                                        "multiple": false,
+                                        "collapse": false,
+                                        "allowOther": false,
+                                        "onlyIf": [
+                                            {
+                                                "field": "leaveType",
+                                                "value": {
+                                                    "value": "fatherExclusive",
+                                                    "label": {
+                                                        "pt-PT": "6) Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                                        "en-GB": "6) Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                "negation": false
+                                            },
+                                            {
+                                                "field": "leaveType",
+                                                "value": {
+                                                    "value": "adoptionFatherExclusive",
+                                                    "label": {
+                                                        "pt-PT": "8) Licença Parental Exclusiva do Pai por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                        "en-GB": "8) Adoption Leave Exclusive to the Father - Article 44 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                "negation": false
+                                            }
+                                        ],
+                                        "options": [
+                                            {
+                                                "value": "28Days",
+                                                "label": {
+                                                    "pt-PT": "28 Dias Úteis, Seguidos ou Interpolados",
+                                                    "en-GB": "28 Working Days, Consecutive or Intermittent"
+                                                }
+                                            },
+                                            {
+                                                "value": "7Days",
+                                                "label": {
+                                                    "pt-PT": "7 Dias Úteis, Seguidos ou Interpolados (Facultativos)",
+                                                    "en-GB": "7 Working Days, Consecutive or Intermittent (Optional)"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Select",
+                                        "field": "complementaryTime",
+                                        "required": true,
+                                        "allowOther": false,
+                                        "multiple": false,
+                                        "collapsed": false,
+                                        "label": {
+                                            "pt-PT": "Licença Parental Complementar - art.º 51.º do Código de Trabalho (CT)",
+                                            "en-GB": "Complementary Parental Leave - Article 51 of the Labour Code (CT)"
+                                        },
+                                        "description": {
+                                            "pt-PT": "A informar o empregador, por escrito com a antecedência de 30 dias relativamente ao início da licença.",
+                                            "en-GB": "The employer must be notified in writing 30 days in advance of the start of the leave."
+                                        },
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": {
+                                                "value": "complementary",
+                                                "label": {
+                                                    "pt-PT": "9) Licença Parental Complementar - art.º 51.º do Código de Trabalho (CT)",
+                                                    "en-GB": "9) Complementary Parental Leave - Article 51 of the Labour Code (CT)"
+                                                }
+                                            },
+                                            "negation": false
+                                        },
+                                        "options": [
+                                            {
+                                                "value": "extended",
+                                                "label": {
+                                                    "pt-PT": "Alargada (3 Meses)",
+                                                    "en-GB": "Extended (3 Months)"
+                                                }
+                                            },
+                                            {
+                                                "value": "partTime",
+                                                "label": {
+                                                    "pt-PT": "Tempo Parcial (12 Meses)",
+                                                    "en-GB": "Part-time (12 Months)"
+                                                }
+                                            },
+                                            {
+                                                "value": "intermittent",
+                                                "label": {
+                                                    "pt-PT": "Períodos Intercalados",
+                                                    "en-GB": "Intermittent Periods"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Text",
+                                        "field": "otherLeaveType",
+                                        "required": true,
+                                        "multiline": false,
+                                        "inputType": "plain",
+                                        "label": {
+                                            "pt-PT": "Qual?",
+                                            "en-GB": "Which?"
+                                        },
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": {
+                                                "value": "other",
+                                                "label": {
+                                                    "pt-PT": "Outra Licença",
+                                                    "en-GB": "Other Leave"
+                                                }
+                                            },
+                                            "negation": false
+                                        }
+                                    },
+                                    {
+                                        "type": "Array",
+                                        "field": "datesForChildCareLeave",
+                                        "required": true,
+                                        "description": {
+                                            "pt-PT": "A informar o empregador, por escrito com a antecedência de 30 dias relativamente ao início da licença.",
+                                            "en-GB": "The employer must be notified in writing 30 days in advance of the start of the leave."
+                                        },
+                                        "label": {
+                                            "pt-PT": "Datas de Início e Fim dos Vários Períodos",
+                                            "en-GB": "Start and End Dates of the Various Periods"
+                                        },
+                                        "labelAddElement": {
+                                            "pt-PT": "Adicionar período",
+                                            "en-GB": "Add period"
+                                        },
+                                        "min": 1,
+                                        "negation": false,
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": {
+                                                "value": "childCare",
+                                                "label": {
+                                                    "pt-PT": "10) Licença para Assistência a Filho - art.º 52.º do Código de Trabalho (CT)",
+                                                    "en-GB": "10) Leave for Child Care - Article 52 of the Labour Code (CT)"
+                                                }
+                                            }
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Composite",
+                                                "field": "duration",
+                                                "required": true,
+                                                "properties": [
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "startDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Início",
+                                                            "en-GB": "Start Date"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "endDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Fim",
+                                                            "en-GB": "End Date"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Array",
+                                        "field": "datesForChildIllnessLeave",
+                                        "required": true,
+                                        "description": {
+                                            "pt-PT": "Licença até 6 meses, prorrogável até 4 anos. A necessidade de assistência tem de ser confirmada pela apresentação de atestado médico. Pode ser prorrogável até ao limite máximo de 6 anos, nas situações de necessidade de prolongamento da assistência, confirmada por atestado médico. O limite máximo não é aplicável no caso de filhos com doença prolongada em estado terminal, confirmada por atestado médico.",
+                                            "en-GB": "Leave for up to 6 months, extendable up to 4 years. The need for assistance must be verified by providing a medical certificate. It can be extended up to a maximum of 6 years in cases where continued assistance is required, confirmed by a medical certificate. The maximum limit does not apply in the case of children with a prolonged terminal illness, confirmed by a medical certificate."
+                                        },
+                                        "label": {
+                                            "pt-PT": "Datas de Início e Fim dos Vários Períodos",
+                                            "en-GB": "Start and End Dates of the Various Periods"
+                                        },
+                                        "labelAddElement": {
+                                            "pt-PT": "Adicionar período",
+                                            "en-GB": "Add period"
+                                        },
+                                        "min": 1,
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "negation": false,
+                                            "value": {
+                                                "value": "childIllness",
+                                                "label": {
+                                                    "pt-PT": "11) Licença para Assistência a Filho com Deficiência, Doença Crónica ou Doença Oncológica - art.º 53.º do Código de Trabalho (CT)",
+                                                    "en-GB": "11) Leave for Assistance to a Child with Disability, Chronic Illness, or Cancer - Article 53 of the Labour Code (CT)"
+                                                }
+                                            }
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Composite",
+                                                "field": "duration",
+                                                "required": true,
+                                                "properties": [
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "startDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Início",
+                                                            "en-GB": "Start Date"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "endDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Fim",
+                                                            "en-GB": "End Date"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Boolean",
+                                        "field": "30ExtraDays",
+                                        "required": true,
+                                        "label": {
+                                            "pt-PT": "Pretende gozar os 30 dias de acréscimo por cada criança além da primeira? (100% da Remuneração de Referência)",
+                                            "en-GB": "Would you like to take the extra 30 days for each child in addition to the first? (100% of the Reference Income)"
+                                        },
+                                        "labelYes": {
+                                            "pt-PT": "Sim",
+                                            "en-GB": "Yes"
+                                        },
+                                        "labelNo": {
+                                            "pt-PT": "Não",
+                                            "en-GB": "No"
+                                        },
+                                        "onlyIf": [
+                                            {
+                                                "field": "multipleBirthsOrAdoptions",
+                                                "negation": false,
+                                                "value": true
+                                            },
+                                            {
+                                                "field": "leaveType",
+                                                "negation": false,
+                                                "value": [
+                                                    {
+                                                        "value": "initial",
+                                                        "label": {
+                                                            "pt-PT": "1) Licença Parental Inicial - n.º 1 e 2, art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "1) Initial Parental Leave - Nos. 1 and 2, Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "shared",
+                                                        "label": {
+                                                            "pt-PT": "2) Licença Parental Inicial Partilhada - n.º 3, art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "2) Shared Initial Parental Leave - No. 3, Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "hospitalization",
+                                                        "label": {
+                                                            "pt-PT": "3) Licença Parental Inicial por Motivo de Internamento Hospitalar da Criança - art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "3) Initial Parental Leave Due to Hospitalization of the Child - Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "motherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "4) Licença Parental Inicial Exclusiva da Mãe - art.º 41.º do Código de Trabalho (CT)",
+                                                            "en-GB": "4) Initial Parental Leave Exclusive to the Mother - Article 41 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "motherInability",
+                                                        "label": {
+                                                            "pt-PT": "5) Licença Parental Inicial a Gozar pelo Pai por Impossibilidade da Mãe - art.º 42.º do Código de Trabalho (CT)",
+                                                            "en-GB": "5) Initial Parental Leave to be Taken by the Father Due to the Mother's Inability - Article 42 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "fatherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "6) Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                                            "en-GB": "6) Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "adoption",
+                                                        "label": {
+                                                            "pt-PT": "7) Licença por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                            "en-GB": "7) Adoption Leave - Article 44 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "adoptionFatherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "8) Licença Parental Exclusiva do Pai por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                            "en-GB": "8) Adoption Leave Exclusive to the Father - Article 44 of the Labour Code (CT)"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Boolean",
+                                        "field": "father2ExtraDays28MandatoryDays",
+                                        "required": true,
+                                        "label": {
+                                            "pt-PT": "O pai pretende gozar os 2 dias de acréscimo ao período de 28 dias obrigatórios da licença exclusiva do pai por cada criança além da primeira?",
+                                            "en-GB": "Would the father like to take the extra 2 days in addition to the 28-day mandatory father-exclusive parental leave for each child after the first?"
+                                        },
+                                        "labelYes": {
+                                            "pt-PT": "Sim",
+                                            "en-GB": "Yes"
+                                        },
+                                        "labelNo": {
+                                            "pt-PT": "Não",
+                                            "en-GB": "No"
+                                        },
+                                        "onlyIf": [
+                                            {
+                                                "field": "multipleBirthsOrAdoptions",
+                                                "negation": false,
+                                                "value": true
+                                            },
+                                            {
+                                                "field": "leaveType",
+                                                "negation": false,
+                                                "value": [
+                                                    {
+                                                        "value": "initial",
+                                                        "label": {
+                                                            "pt-PT": "1) Licença Parental Inicial - n.º 1 e 2, art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "1) Initial Parental Leave - Nos. 1 and 2, Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "shared",
+                                                        "label": {
+                                                            "pt-PT": "2) Licença Parental Inicial Partilhada - n.º 3, art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "2) Shared Initial Parental Leave - No. 3, Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "hospitalization",
+                                                        "label": {
+                                                            "pt-PT": "3) Licença Parental Inicial por Motivo de Internamento Hospitalar da Criança - art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "3) Initial Parental Leave Due to Hospitalization of the Child - Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "motherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "4) Licença Parental Inicial Exclusiva da Mãe - art.º 41.º do Código de Trabalho (CT)",
+                                                            "en-GB": "4) Initial Parental Leave Exclusive to the Mother - Article 41 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "motherInability",
+                                                        "label": {
+                                                            "pt-PT": "5) Licença Parental Inicial a Gozar pelo Pai por Impossibilidade da Mãe - art.º 42.º do Código de Trabalho (CT)",
+                                                            "en-GB": "5) Initial Parental Leave to be Taken by the Father Due to the Mother's Inability - Article 42 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "fatherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "6) Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                                            "en-GB": "6) Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "adoption",
+                                                        "label": {
+                                                            "pt-PT": "7) Licença por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                            "en-GB": "7) Adoption Leave - Article 44 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "adoptionFatherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "8) Licença Parental Exclusiva do Pai por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                            "en-GB": "8) Adoption Leave Exclusive to the Father - Article 44 of the Labour Code (CT)"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Boolean",
+                                        "field": "father2ExtraDays7OptionalDays",
+                                        "required": true,
+                                        "label": {
+                                            "pt-PT": "O pai pretende gozar os 2 dias de acréscimo ao período de 7 dias facultativos da licença exclusiva do pai por cada criança além da primeira?",
+                                            "en-GB": "Would the father like to take the extra 2 days in addition to the 7-day optional father-exclusive parental leave for each child after the first?"
+                                        },
+                                        "labelYes": {
+                                            "pt-PT": "Sim",
+                                            "en-GB": "Yes"
+                                        },
+                                        "labelNo": {
+                                            "pt-PT": "Não",
+                                            "en-GB": "No"
+                                        },
+                                        "onlyIf": [
+                                            {
+                                                "field": "multipleBirthsOrAdoptions",
+                                                "negation": false,
+                                                "value": true
+                                            },
+                                            {
+                                                "field": "leaveType",
+                                                "negation": false,
+                                                "value": [
+                                                    {
+                                                        "value": "initial",
+                                                        "label": {
+                                                            "pt-PT": "1) Licença Parental Inicial - n.º 1 e 2, art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "1) Initial Parental Leave - Nos. 1 and 2, Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "shared",
+                                                        "label": {
+                                                            "pt-PT": "2) Licença Parental Inicial Partilhada - n.º 3, art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "2) Shared Initial Parental Leave - No. 3, Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "hospitalization",
+                                                        "label": {
+                                                            "pt-PT": "3) Licença Parental Inicial por Motivo de Internamento Hospitalar da Criança - art.º 40.º do Código de Trabalho (CT)",
+                                                            "en-GB": "3) Initial Parental Leave Due to Hospitalization of the Child - Article 40 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "motherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "4) Licença Parental Inicial Exclusiva da Mãe - art.º 41.º do Código de Trabalho (CT)",
+                                                            "en-GB": "4) Initial Parental Leave Exclusive to the Mother - Article 41 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "motherInability",
+                                                        "label": {
+                                                            "pt-PT": "5) Licença Parental Inicial a Gozar pelo Pai por Impossibilidade da Mãe - art.º 42.º do Código de Trabalho (CT)",
+                                                            "en-GB": "5) Initial Parental Leave to be Taken by the Father Due to the Mother's Inability - Article 42 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "fatherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "6) Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                                            "en-GB": "6) Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "adoption",
+                                                        "label": {
+                                                            "pt-PT": "7) Licença por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                            "en-GB": "7) Adoption Leave - Article 44 of the Labour Code (CT)"
+                                                        }
+                                                    },
+                                                    {
+                                                        "value": "adoptionFatherExclusive",
+                                                        "label": {
+                                                            "pt-PT": "8) Licença Parental Exclusiva do Pai por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                            "en-GB": "8) Adoption Leave Exclusive to the Father - Article 44 of the Labour Code (CT)"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Array",
+                                        "field": "datesForLeave",
+                                        "required": true,
+                                        "label": {
+                                            "pt-PT": "Datas de Início e Fim dos Vários Períodos",
+                                            "en-GB": "Start and End Dates of the Various Periods"
+                                        },
+                                        "labelAddElement": {
+                                            "pt-PT": "Adicionar período",
+                                            "en-GB": "Add period"
+                                        },
+                                        "min": 1,
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "negation": true,
+                                            "value": [
+                                                {
+                                                    "value": "hospitalization",
+                                                    "label": {
+                                                        "pt-PT": "3) Licença Parental Inicial por Motivo de Internamento Hospitalar da Criança - art.º 40.º do Código de Trabalho (CT)",
+                                                        "en-GB": "3) Initial Parental Leave Due to Hospitalization of the Child - Article 40 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "fatherExclusive",
+                                                    "label": {
+                                                        "pt-PT": "6) Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                                        "en-GB": "6) Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "adoptionFatherExclusive",
+                                                    "label": {
+                                                        "pt-PT": "8) Licença Parental Exclusiva do Pai por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                        "en-GB": "8) Adoption Leave Exclusive to the Father - Article 44 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "childCare",
+                                                    "label": {
+                                                        "pt-PT": "10) Licença para Assistência a Filho - art.º 52.º do Código de Trabalho (CT)",
+                                                        "en-GB": "10) Leave for Child Care - Article 52 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "childIllness",
+                                                    "label": {
+                                                        "pt-PT": "11) Licença para Assistência a Filho com Deficiência, Doença Crónica ou Doença Oncológica - art.º 53.º do Código de Trabalho (CT)",
+                                                        "en-GB": "11) Leave for Assistance to a Child with Disability, Chronic Illness, or Cancer - Article 53 of the Labour Code (CT)"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Composite",
+                                                "field": "duration",
+                                                "required": true,
+                                                "properties": [
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "startDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Início",
+                                                            "en-GB": "Start Date"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "endDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Fim",
+                                                            "en-GB": "End Date"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Array",
+                                        "field": "datesForHospitalizationLeave",
+                                        "required": true,
+                                        "description": {
+                                            "pt-PT": "A informar no prazo de 7 dias após o nascimento. É necessário anexar o assento de nascimento e, no caso da Segurança Social, o comprovativo do pedido. Caso a licença parental não seja partilhada, o progenitor que gozar a licença informa o respetivo empregador, juntando declaração do outro progenitor da qual conste que o mesmo exerce atividade profissional e que não goza da licença parental inicial. Na falta da declaração, a licença é obrigatoriamente gozada pela mãe.",
+                                            "en-GB": "To be reported within 7 days after the birth. It is necessary to attach the Birth Certificate and, in the case of Social Security, proof of the request. If parental leave is not shared, the parent taking the leave must inform the respective employer, attaching a declaration from the other parent stating that they are employed and not taking the initial parental leave. In the absence of the declaration, the leave must be taken by the mother."
+                                        },
+                                        "label": {
+                                            "pt-PT": "Datas de Início e Fim dos Vários Períodos",
+                                            "en-GB": "Start and End Dates of the Various Periods"
+                                        },
+                                        "labelAddElement": {
+                                            "pt-PT": "Adicionar período",
+                                            "en-GB": "Add period"
+                                        },
+                                        "min": 1,
+                                        "negation": false,
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": {
+                                                "value": "hospitalization",
+                                                "label": {
+                                                    "pt-PT": "3) Licença Parental Inicial por Motivo de Internamento Hospitalar da Criança - art.º 40.º do Código de Trabalho (CT)",
+                                                    "en-GB": "3) Initial Parental Leave Due to Hospitalization of the Child - Article 40 of the Labour Code (CT)"
+                                                }
+                                            }
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Composite",
+                                                "field": "duration",
+                                                "required": true,
+                                                "properties": [
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "startDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Início",
+                                                            "en-GB": "Start Date"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "endDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Fim",
+                                                            "en-GB": "End Date"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Array",
+                                        "field": "datesForFatherExclusiveLeave",
+                                        "required": true,
+                                        "description": {
+                                            "pt-PT": "Licença de 28 dias seguidos ou interpolados: Os 28 dias de licença parental são obrigatoriamente gozados nos 42 dias seguintes ao nascimento da criança, 7 dos quais a gozar de modo consecutivo imediatamente a seguir a este, devendo o trabalhador informar a entidade empregadora pública com a antecedência de 5 dias relativamente ao início do período, consecutivo ou interpolado, de licença ou, em caso de urgência comprovada, logo que possível. \nLicença de 7 dias seguidos ou interpolados: O pai tem, se quiser, direito a mais 7 dias, seguidos ou não, desde que gozados em simultâneo com a licença parental inicial da mãe.",
+                                            "en-GB": "28 days of continuous or intermittent leave: The 28 days of parental leave must be taken within the 42 days following the birth of the child, 7 of which must be taken consecutively immediately after the birth. The employee must inform the public employer 5 days in advance of the start of the leave period, whether continuous or intermittent, or as soon as possible in case of proven urgency. \n7 days of continuous or intermittent leave: The father is entitled to an additional 7 days, whether consecutive or not, provided these are taken simultaneously with the mother’s initial parental leave."
+                                        },
+                                        "label": {
+                                            "pt-PT": "Datas de Início e Fim dos Vários Períodos",
+                                            "en-GB": "Start and End Dates of the Various Periods"
+                                        },
+                                        "labelAddElement": {
+                                            "pt-PT": "Adicionar período",
+                                            "en-GB": "Add period"
+                                        },
+                                        "min": 1,
+                                        "negation": false,
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": {
+                                                "value": "fatherExclusive",
+                                                "label": {
+                                                    "pt-PT": "6) Licença Parental Exclusiva do Pai - art.º 43.º do Código de Trabalho (CT)",
+                                                    "en-GB": "6) Parental Leave Exclusive to the Father - Article 43 of the Labour Code (CT)"
+                                                }
+                                            }
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Composite",
+                                                "field": "duration",
+                                                "required": true,
+                                                "properties": [
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "startDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Início",
+                                                            "en-GB": "Start Date"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "endDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Fim",
+                                                            "en-GB": "End Date"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Array",
+                                        "field": "datesForAdoptionFatherExclusiveeLeave",
+                                        "required": true,
+                                        "description": {
+                                            "pt-PT": "A comunicar com antecedência de 10 dias. É necessário anexar prova da confiança judicial ou administrativa do adotando e da idade deste, do início e do termo dos períodos a gozar por cada um, entregando para o efeito uma declaração conjunta.",
+                                            "en-GB": "Notify with 10 days' notice. It is necessary to attach proof of the judicial or administrative custody of the adopted child and their age, as well as the start and end dates of the leave periods to be taken by each parent, submitting a joint declaration for this purpose."
+                                        },
+                                        "label": {
+                                            "pt-PT": "Datas de Início e Fim dos Vários Períodos",
+                                            "en-GB": "Start and End Dates of the Various Periods"
+                                        },
+                                        "labelAddElement": {
+                                            "pt-PT": "Adicionar período",
+                                            "en-GB": "Add period"
+                                        },
+                                        "min": 1,
+                                        "negation": false,
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": {
+                                                "value": "adoptionFatherExclusive",
+                                                "label": {
+                                                    "pt-PT": "8) Licença Parental Exclusiva do Pai por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                    "en-GB": "8) Adoption Leave Exclusive to the Father - Article 44 of the Labour Code (CT)"
+                                                }
+                                            }
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Composite",
+                                                "field": "duration",
+                                                "required": true,
+                                                "properties": [
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "startDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Início",
+                                                            "en-GB": "Start Date"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "DateTime",
+                                                        "field": "endDate",
+                                                        "required": true,
+                                                        "date": true,
+                                                        "time": false,
+                                                        "label": {
+                                                            "pt-PT": "Data de Fim",
+                                                            "en-GB": "End Date"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "Select",
+                                        "field": "exemptionService",
+                                        "required": true,
+                                        "allowOther": false,
+                                        "multiple": false,
+                                        "collapsed": false,
+                                        "label": {
+                                            "pt-PT": "Dispensa de Serviço Docente",
+                                            "en-GB": "Exemption Teacher Service"
+                                        },
+                                        "description": {
+                                            "pt-PT": "O gozo da licença selecionada concede automaticamente, e no semestre letivo imediatamente seguinte ao término da licença parental, a Dispensa de Serviço Docente Pós-Licença de Parentalidade prevista neste regulamento",
+                                            "en-GB": "Taking the selected leave automatically grants, and in the academic semester immediately following the end of parental leave, the Post-Parental Leave Teaching Service Exemption provided for in this regulation."
+                                        },
+                                        "onlyIf": {
+                                            "field": "leaveType",
+                                            "value": [
+                                                {
+                                                    "value": "initial",
+                                                    "label": {
+                                                        "pt-PT": "1) Licença Parental Inicial - n.º 1 e 2, art.º 40.º do Código de Trabalho (CT)",
+                                                        "en-GB": "1) Initial Parental Leave - Nos. 1 and 2, Article 40 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "shared",
+                                                    "label": {
+                                                        "pt-PT": "2) Licença Parental Inicial Partilhada - n.º 3, art.º 40.º do Código de Trabalho (CT)",
+                                                        "en-GB": "2) Shared Initial Parental Leave - No. 3, Article 40 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "motherExclusive",
+                                                    "label": {
+                                                        "pt-PT": "4) Licença Parental Inicial Exclusiva da Mãe - art.º 41.º do Código de Trabalho (CT)",
+                                                        "en-GB": "4) Initial Parental Leave Exclusive to the Mother - Article 41 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "motherInability",
+                                                    "label": {
+                                                        "pt-PT": "5) Licença Parental Inicial a Gozar pelo Pai por Impossibilidade da Mãe - art.º 42.º do Código de Trabalho (CT)",
+                                                        "en-GB": "5) Initial Parental Leave to be Taken by the Father Due to the Mother's Inability - Article 42 of the Labour Code (CT)"
+                                                    }
+                                                },
+                                                {
+                                                    "value": "adoption",
+                                                    "label": {
+                                                        "pt-PT": "7) Licença por Adoção - art.º 44.º do Código de Trabalho (CT)",
+                                                        "en-GB": "7) Adoption Leave - Article 44 of the Labour Code (CT)"
+                                                    }
+                                                }
+                                            ],
+                                            "negation": false
+                                        },
+                                        "options": [
+                                            {
+                                                "value": "yes",
+                                                "label": {
+                                                    "pt-PT": "Pretendo usufruir da dispensa de serviço docente",
+                                                    "en-GB": "I intend to take advantage of the exemption from teaching service"
+                                                }
+                                            },
+                                            {
+                                                "value": "no",
+                                                "label": {
+                                                    "pt-PT": "Prescindo da dispensa de serviço docente",
+                                                    "en-GB": "I waive the exemption from teaching service"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "File",
+                                        "field": "workPlanExemptiom",
+                                        "required": true,
+                                        "description": {
+                                            "pt-PT": "Submete o plano de trabalhos das atividades a desenvolver (até uma página A4), que inclua a justificação da necessidade da dispensa de serviço docente para a prossecução/relançamento dos trabalhos de investigação.",
+                                            "en-GB": "Submit the work plan of the activities to be developed (up to one A4 page), which includes the justification for the need to exempt teaching services to carry out/relaunch the research work."
+                                        },
+                                        "label": {
+                                            "pt-PT": "Plano de trabalhos",
+                                            "en-GB": "Works plan"
+                                        },
+                                        "allowedFileTypes": [
+                                            ".pdf"
+                                        ],
+                                        "maxSizeMB": 10,
+                                        "onlyIf": {
+                                            "field": "exemptionService",
+                                            "value": {
+                                                "value": "yes",
+                                                "label": {
+                                                    "pt-PT": "Pretendo usufruir da dispensa de serviço docente",
+                                                    "en-GB": "I intend to take advantage of the exemption from teaching service"
+                                                }
+                                            },
+                                            "negation": false
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": {
+                    "pt-PT": "Beneficiários da ADSE",
+                    "en-GB": "ADSE Beneficiaries"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Beneficiários da ADSE",
+                            "en-GB": "ADSE Beneficiaries"
+                        },
+                        "description": {
+                            "pt-PT": "Os descontos para a ADSE, previstos no art.º 46 da Lei n.º 118/83 de 25 de fevereiro, na sua redação atual, têm lugar mesmo quando não haja prestação de trabalho e pagamento da remuneração, como nos casos de licença parental. Estes descontos mantêm o valor que teriam se o beneficiário se encontrasse ao serviço.",
+                            "en-GB": "The contributions to ADSE, as outlined in Article 46 of Law No. 118/83 of 25th February, in its current wording, are required even when there is no work performed and no remuneration paid, such as in cases of parental leave. These contributions maintain the same value as if the beneficiary were still in service."
+                        },
+                        "properties": [
+                            {
+                                "type": "Boolean",
+                                "field": "isADSEBeneficiary",
+                                "required": true,
+                                "label": {
+                                    "pt-PT": "É beneficiário/a da ADSE?",
+                                    "en-GB": "Are you a beneficiary of ADSE?"
+                                },
+                                "labelYes": {
+                                    "pt-PT": "Sim",
+                                    "en-GB": "Yes"
+                                },
+                                "labelNo": {
+                                    "pt-PT": "Não",
+                                    "en-GB": "No"
+                                }
+                            },
+                            {
+                                "type": "Boolean",
+                                "field": "contributionsOption",
+                                "required": true,
+                                "onlyIf": {
+                                    "field": "isADSEBeneficiary",
+                                    "value": true,
+                                    "negation": false
+                                },
+                                "label": {
+                                    "pt-PT": "Opção de Contribuição para a ADSE durante a Licença",
+                                    "en-GB": "Contribution Option for ADSE During Leave"
+                                },
+                                "description": {
+                                    "pt-PT": "Para que possa manter os descontos, deve optar por um dos procedimentos seguintes.",
+                                    "en-GB": "To continue your ADSE contributions, you must choose one of the following procedures."
+                                },
+                                "labelYes": {
+                                    "pt-PT": "Opto por efetuar os descontos em falta, de uma só vez, após regressar ao serviço.",
+                                    "en-GB": "I opt to pay the outstanding contributions in full after returning to work."
+                                },
+                                "labelNo": {
+                                    "pt-PT": "Opto por pagar mensalmente os descontos junto da ADSE (o pagamento é realizado diretamente pelo beneficiário, com base em documento de cobrança que obterá na ADSE Direta).",
+                                    "en-GB": "I choose to pay the contributions monthly to ADSE (the payment is made directly by the beneficiary, based on the payment document obtained through ADSE Direta)."
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": {
+                    "pt-PT": "Documentação",
+                    "en-GB": "Documentation"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Assento de Nascimento",
+                            "en-GB": "Birth Certificate"
+                        },
+                        "description": {
+                            "pt-PT": "Este documento é obrigatório para as licenças parentais numeradas de 1 a 6.",
+                            "en-GB": "This document is required for parental leaves numbered 1 to 6."
+                        },
+                        "properties": [
+                            {
+                                "type": "File",
+                                "field": "birthCertificate",
+                                "required": false,
+                                "label": {
+                                    "pt-PT": "Assento de Nascimento",
+                                    "en-GB": "Birth Certificate"
+                                },
+                                "allowedFileTypes": [
+                                    ".pdf"
+                                ],
+                                "maxSizeMB": 10
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Segurança Social",
+                            "en-GB": "Social Security"
+                        },
+                        "description": {
+                            "pt-PT": "O comprovativo da licença parental só é aplicável para os beneficiários da Segurança Social.",
+                            "en-GB": "The proof of parental leave is only applicable to beneficiaries of Social Security."
+                        },
+                        "properties": [
+                            {
+                                "type": "File",
+                                "field": "socialSecurityFile",
+                                "required": false,
+                                "label": {
+                                    "pt-PT": "Declaração da Segurança Social",
+                                    "en-GB": "Social Security Declaration"
+                                },
+                                "allowedFileTypes": [
+                                    ".pdf"
+                                ],
+                                "maxSizeMB": 10
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Outros Documentos",
+                            "en-GB": "Other Documents"
+                        },
+                        "description": {
+                            "pt-PT": "Exemplos de documentos a anexar: atestado médico comprovativo, certidão de óbito, prova da confiança judicial ou administrativa, etc.",
+                            "en-GB": "Examples of attachments: medical certificate, death certificate, proof of the judicial or administrative custody, etc."
+                        },
+                        "properties": [
+                            {
+                                "type": "Array",
+                                "field": "otherDocuments",
+                                "label": {
+                                    "pt-PT": "Anexos",
+                                    "en-GB": "Attachments"
+                                },
+                                "required": false,
+                                "labelAddElement": {
+                                    "pt-PT": "Adicionar documento",
+                                    "en-GB": "Add document"
+                                },
+                                "properties": [
+                                    {
+                                        "type": "File",
+                                        "field": "document",
+                                        "required": false,
+                                        "label": {
+                                            "pt-PT": "Anexo",
+                                            "en-GB": "Attachment"
+                                        },
+                                        "allowedFileTypes": [
+                                            ".pdf"
+                                        ],
+                                        "maxSizeMB": 10
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "outcomeForm": {
+        "canEditResponseAfterConclude": false,
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Resposta",
+                    "en-GB": "Response"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Resposta",
+                            "en-GB": "Response"
+                        },
+                        "properties": [
+                            {
+                                "type": "Select",
+                                "field": "response",
+                                "required": true,
+                                "collapse": false,
+                                "readonly": false,
+                                "label": {
+                                    "pt-PT": "Resposta",
+                                    "en-GB": "Response"
+                                },
+                                "options": [
+                                    {
+                                        "value": "processed",
+                                        "label": {
+                                            "pt-PT": "O pedido foi registado.",
+                                            "en-GB": "The request has been registered."
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "cost": {},
+    "flowTemplate": {
+        "name": "parental-leave-exemption-flow",
+        "title": {
+            "pt-PT": "Processo de Pedido de Licença de Parentalidade",
+            "en-GB": "Parental Leave Request Process"
+        },
+        "description": {
+            "pt-PT": "Processo de Pedido de Licença de Parentalidade",
+            "en-GB": "Parental Leave Request Process"
+        },
+        "config": {
+            "authorizationChainNodes": {
+                "title": {
+                    "pt-PT": "Envio de Notificação",
+                    "en-GB": "Send Notification"
+                },
+                "description": {
+                    "pt-PT": "Envio de notificação para o/a responsável",
+                    "en-GB": "Send notification to the person in charge"
+                },
+                "comment": false,
+                "actions": {
+                    "NOTIFY": {
+                        "primary": true,
+                        "to": "SUCCESS",
+                        "label": {
+                            "pt-PT": "Enviar Notificação",
+                            "en-GB": "Send Notification"
+                        }
+                    }
+                },
+                "actionProcessor": {
+                    "onEnterNode": [
+                        {
+                          "flowProcessor": "Send e-mail",
+                          "template": "email-notification-paternity",
+                          "notifyFlowMembers": true,
+                          "registered": true,
+                          "sender": "1977853914648083",
+                          "parameters": {
+                            "startDate": "startDate",
+                            "endDate": "endDate"
+                          }
+                        },
+                        {
+                          "flowProcessor": "Do Flow Action",
+                          "flowAction": "NOTIFY"
+                        }
+                  ]
+                },
+                "blockUndo": true
+            },
+            "forms": [
+                {
+                    "id": "human-resources-verification-form",
+                    "title": {
+                        "pt-PT": "Verificação de Elegibilidade a Dispensa de Serviço Docente Pós-Licença de Parentalidade ",
+                        "en-GB": "Verification of Conditions"
+                    },
+                    "form": {
+                        "pages": [
+                            {
+                                "title": {
+                                    "pt-PT": "Verificação de Elegibilidade a Dispensa de Serviço Docente Pós-Licença de Parentalidade ",
+                                    "en-GB": "Verification of Conditions"
+                                },
+                                "sections": [
+                                    {
+                                        "title": {
+                                            "pt-PT": "Verificação de Elegibilidade a Dispensa de Serviço Docente Pós-Licença de Parentalidade ",
+                                            "en-GB": "Verification of Conditions"
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Boolean",
+                                                "field": "eligibilityVerify",
+                                                "label": {
+                                                    "pt-PT": "Verica-se a elegibilidade a dipensa de serviço docente pós-licença de parentalidade?",
+                                                    "en-GB": "Is eligibility for exemption from teaching service after parental leave verified?"
+                                                },
+                                                "labelYes": {
+                                                    "pt-PT": "Sim",
+                                                    "en-GB": "Yes"
+                                                },
+                                                "labelNo": {
+                                                    "pt-PT": "Não",
+                                                    "en-GB": "No"
+                                                }
+                                            },
+                                            {
+                                                "type": "DateTime",
+                                                "field": "endDateExemption",
+                                                "date": true,
+                                                "time": false,
+                                                "label": {
+                                                    "pt-PT": "Data de fim da dispensa de serviço",
+                                                    "en-GB": "Work Plan"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ],
+            "actionProcessor": {
+                "onSuccess": [
+                    {
+                        "flowProcessor": "Return Flow Approved To Request"
+                    }
+                ],
+                "onFailure": [
+                    {
+                        "flowProcessor": "Return Flow Rejected To Request"
+                    }
+                ],
+                "onActionTransition": [],
+                "onCancel": [
+                    {
+                        "flowProcessor": "Cancel Connected Requests"
+                    }
+                ]
+            },
+            "flowProcessors": [],
+            "actionNodes": [
+                {
+                    "id": "step-0-hr-verification",
+                    "type": "withForms",
+                    "comment": false,
+                    "title": {
+                        "pt-PT": "Verificação de elegibilidade a dispensa de serviço docente pós-licença de parentalidade ",
+                        "en-GB": "Verification of Conditions"
+                    },
+                    "description": {
+                        "pt-PT": "Processamento pela Direção de Recursos Humanos",
+                        "en-GB": "Processing by the Human Resources Department"
+                    },
+                    "buttons": [
+                        {
+                            "id": "submit-form",
+                            "primary": true,
+                            "label": {
+                                "pt-PT": "Verificar Elegibilidade",
+                                "en-GB": "Verify Conditions"
+                            },
+                            "handlers": {
+                                "form": "human-resources-verification-form",
+                                "action": "FINAL_REPORT"
+                            }
+                        },
+                        {
+                            "id": "reject",
+                            "primary": false,
+                            "label": {
+                                "pt-PT": "Rejeitar",
+                                "en-GB": "Rejeitar"
+                            },
+                            "handlers": {
+                                "action": "REJECT"
+                            }
+                        }
+                    ],
+                    "actions": {
+                        "WORK_PLAN_REPORT": {
+                            "primary": true,
+                            "to": "step-hr-processing",
+                            "label": {
+                                "pt-PT": "Dispensa de serviço docente pós-licença de prentalidade aprovada",
+                                "en-GB": "Dispensa de serviço docente pós-licença de prentalidade aprovada"
+                            }
+                        },
+                        "REJECT": {
+                            "primary": false,
+                            "to": "FAILURE",
+                            "label": {
+                                "pt-PT": "Dispensa de serviço docente pós-licença de prentalidade não aprovada",
+                                "en-GB": "Dispensa de serviço docente pós-licença de prentalidade não aprovada"
+                            }
+                        }
+                    },
+                    "actionProcessor": {
+                    "onActionTransition": [
+                     {
+                       "applyOn": "FINAL_REPORT",
+                       "flowProcessor": "Add node to flow"
+                     }
+                   ]
+                 },
+                    "blockUndo": true,
+                    "queue": "Núcleo de Técnicos & Administrativos e Bolseiros - Geral"
+                },
+                {
+                    "id": "step-hr-processing",
+                    "type": "generic",
+                    "comment": false,
+                    "title": {
+                        "pt-PT": "A Direção de Recursos Humanos",
+                        "en-GB": "The Human Resources Department"
+                    },
+                    "description": {
+                        "pt-PT": "Processamento pela Direção de Recursos Humanos",
+                        "en-GB": "Processing by the Human Resources Department"
+                    },
+                    "commentLabel": {
+                        "pt-PT": "Processamento pela Direção de Recursos Humanos",
+                        "en-GB": "Processing by the Human Resources Department"
+                    },
+                    "actions": {
+                        "SIGN": {
+                            "primary": true,
+                            "to": "SUCCESS",
+                            "label": {
+                                "pt-PT": "Marcar como Processado",
+                                "en-GB": "Mark as Processed"
+                            }
+                        }
+                    },
+                    "actionProcessor": {
+                        "onSuccess": [
+                            {
+                                "applyOn": "SIGN",
+                                "flowProcessor": "Set Request Outcome Form",
+                                "outcomeFormValues": {
+                                    "response": {
+                                        "value": "processed",
+                                        "label": {
+                                            "pt-PT": "O pedido foi registado.",
+                                            "en-GB": "The request has been registered."
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "queue": "Núcleo de Docentes e Investigadores - Geral"
+                }
+            ]
+        }
+    }
+}

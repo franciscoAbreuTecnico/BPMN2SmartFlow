@@ -1,0 +1,81 @@
+{
+  "name": {
+    "pt-PT": "Contrato Prestação Serviço Assinado",
+    "en-GB": "Signed Service Provision Contract"
+  },
+  "description": {
+    "pt-PT": "Formulário de apresentação do Contrato de prestação de servioço assinado",
+    "en-GB": "Signed service provision contract presentation form"
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+      ],
+      "displayName": true,
+      "username": true
+    },
+    "onLock": {
+      "requestProcessor": "Change Flow Queue",
+      "currentFlowNode": "step-upload-signed-service-provision-contract"
+    },
+    "onValidate": {
+      "requestProcessor": "Call Flow Action",
+      "flowAction": "SIGN"
+    },
+    "onReject": {
+      "requestProcessor": "Call Flow Action",
+      "flowAction": "REJECT"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informação do Remetente",
+          "en-GB": "Sender Information"
+        },
+        "sections": [
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Informação do Contrato de Prestação de Serviço",
+          "en-GB": "Service Provision Contract Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Contrato de Prestação de Serviço",
+              "en-GB": "Service Provision Contract"
+            },
+            "properties": [
+              {
+                "type": "File",
+                "field": "serviceProvisionContract",
+                "required": false,
+                "label": {
+                  "pt-PT": "Contrato de Prestação de Serviço",
+                  "en-GB": "Service Provision Contract"
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ],
+                "maxSizeMB": 10
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false
+  },
+  "cost": {
+  }
+}

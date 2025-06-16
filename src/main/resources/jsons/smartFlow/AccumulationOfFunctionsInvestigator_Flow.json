@@ -1,0 +1,105 @@
+{
+  "flowTemplate" : {
+    "name" : "accumulation-of-investigator-functions",
+    "title" : {
+      "pt-PT" : "Acumulação de Funções",
+      "en-GB" : "Accumulation of Functions"
+    },
+    "description" : {
+      "pt-PT" : "Fluxo de trabalho para pedido de acumulação de funções",
+      "en-GB" : "Workflow for requesting accumulation of functions"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onSuccess" : [ {
+          "flowProcessor" : "Return Flow Approved To Request"
+        } ],
+        "onFailure" : [ {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ {
+          "flowProcessor" : "Cancel Connected Requests"
+        } ]
+      },
+      "flowProcessors" : [ {
+        "handle" : "upload-signed-service-provision-contract",
+        "flowProcessor" : "Create Request From Flow",
+        "RequestType" : "Contrato Prestação Serviço Assinado",
+        "mapper" : { }
+      } ],
+      "actionNodes" : [ {
+        "id" : "step-hr-processing",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "A Direção de Recursos Humanos",
+          "en-GB" : "The Department of Human Resources "
+        },
+        "description" : {
+          "pt-PT" : "Processamento pela Direção de Recursos Humanos.",
+          "en-GB" : "Processing by the Department of Human Resources."
+        },
+        "commentLabel" : {
+          "pt-PT" : "Processamento pela Direção de Recursos Humanos.",
+          "en-GB" : "Processing by the Department of Human Resources."
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "step-upload-signed-service-provision-contract",
+            "label" : {
+              "pt-PT" : "Marcar como Processado",
+              "en-GB" : "Mark as Processed"
+            }
+          }
+        },
+        "queue" : "Núcleo de Prestação de Trabalho - Geral"
+      }, {
+        "id" : "step-upload-signed-service-provision-contract",
+        "type" : "withButtons",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "O/A Colaborador(a)",
+          "en-GB" : "The Colaborator"
+        },
+        "description" : {
+          "pt-PT" : "Contrato de Prestação de Serviço Assinado.",
+          "en-GB" : "Signed service provision contract."
+        },
+        "commentLabel" : {
+          "pt-PT" : "Contrato de Prestação de Serviço Assinado.",
+          "en-GB" : "Signed service provision contract."
+        },
+        "buttons" : [ {
+          "primary" : true,
+          "label" : {
+            "pt-PT" : "Apresentar Contrato de Prestação de Serviço Assinado",
+            "en-GB" : "Present a Signed Service Provision Contract"
+          },
+          "handler" : "process:upload-signed-service-provision-contract"
+        } ],
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Validar Documento",
+              "en-GB" : "Validate Document"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar Documento",
+              "en-GB" : "Reject Document"
+            }
+          }
+        },
+        "queue" : "{{requester-username}}",
+        "blockUndo" : true
+      } ]
+    }
+  }
+}

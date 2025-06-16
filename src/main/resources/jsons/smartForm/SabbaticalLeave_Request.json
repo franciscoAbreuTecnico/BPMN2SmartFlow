@@ -1,0 +1,204 @@
+{
+  "name" : {
+    "pt-PT" : "Licença Sabática",
+    "en-GB" : "Sabbatical Leave"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar uma licença sabática.",
+    "en-GB" : "This form allows you to request a sabbatical leave."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "period", "startDate" ],
+      "displayName" : true,
+      "username" : true
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Docentes e Investigadores"
+    },
+    "onValidate" : [ {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "sabbatical-leave-flow",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "queuesToRemove" : [ "Conselho Científico", "Gestão Administrativa", "Presidência do Instituto Superior Técnico" ],
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    } ],
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    },
+    "onReject" : { },
+    "applicationMapper" : {
+      "period" : "period",
+      "startDate" : "startDate"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação do Remetente",
+        "en-GB" : "Sender Information"
+      },
+      "sections" : [ ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação da Licença Sabática",
+        "en-GB" : "Sabbatical Leave Information"
+      },
+      "description" : {
+        "pt-PT" : "Solicita a V. Exa. com base no art.º 77.º do Decreto-Lei n.º 448/79, de 13 de novembro, alterado e republicado pelo Decreto-Lei n.º 205/2009, de 31 de agosto, licença sabática, pelo período de:",
+        "en-GB" : "I hereby request, pursuant to Article 77 of Decree-Law No. 448/79 of 13 November, as amended and republished by Decree-Law No. 205/2009 of 31 August, sabbatical leave for the period of:"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Âmbito e Período da Licença",
+          "en-GB" : "Period"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "sabbaticalLeaveScope",
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "required" : true,
+          "label" : {
+            "pt-PT" : "A licença sabática é requerida no âmbito do Programa Shaping the Future?",
+            "en-GB" : "Is sabbatical leave required under the Shaping the Future Program?"
+          },
+          "options" : [ {
+            "label" : {
+              "pt-PT" : "Sim, a licença sabática é requerida no âmbito do Programa Shaping the Future.",
+              "en-GB" : "Yes, sabbatical leave is required under the Shaping the Future Program."
+            },
+            "value" : "yes"
+          }, {
+            "label" : {
+              "pt-PT" : "Não, a licença sabática não é requerida no âmbito do Programa Shaping the Future.",
+              "en-GB" : "No, sabbatical leave is not required under the Shaping the Future Program.."
+            },
+            "value" : "no"
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "period",
+          "required" : true,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Período da Licença",
+            "en-GB" : "Leave Period"
+          },
+          "options" : [ {
+            "value" : "6Months",
+            "label" : {
+              "pt-PT" : "6 Meses",
+              "en-GB" : "6 Months"
+            }
+          }, {
+            "value" : "1Year",
+            "label" : {
+              "pt-PT" : "1 Ano",
+              "en-GB" : "1 Year"
+            }
+          } ]
+        }, {
+          "type" : "DateTime",
+          "field" : "startDate",
+          "required" : true,
+          "date" : true,
+          "time" : false,
+          "label" : {
+            "pt-PT" : "Data de Início",
+            "en-GB" : "Start Date"
+          }
+        }, {
+          "type" : "Text",
+          "field" : "company",
+          "required" : false,
+          "multiline" : false,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Instituição",
+            "en-GB" : "Institution"
+          },
+          "description" : {
+            "pt-PT" : "Instituição onde vai ser desenvolvida a atividade.",
+            "en-GB" : "Institution where the activity will be carried out."
+          }
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Documentos",
+        "en-GB" : "Documents"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Documentos",
+          "en-GB" : "Documents"
+        },
+        "properties" : [ {
+          "field" : "workPlan",
+          "type" : "File",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Plano de Trabalhos",
+            "en-GB" : "Work Plan"
+          },
+          "description" : {
+            "pt-PT" : "Plano de trabalhos para o período de licença incluindo: os objetivos a que se propõe e indicadores de sucesso, de acordo com o ponto 3.1. da Deliberação do CC de 2015.01.05.",
+            "en-GB" : "Work plan for the period of leave, including: the objectives to be achieved and success indicators, in accordance with point 3.1 of the CC Resolution dated 5 January 2015."
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        }, {
+          "field" : "opinions",
+          "type" : "File",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Pareceres",
+            "en-GB" : "Opinions"
+          },
+          "description" : {
+            "pt-PT" : "Pareceres do/a Coordenador(a) da Área Científica e do/a Presidente do Departamento, de acordo com o ponto 4 da Deliberação.",
+            "en-GB" : "Opinions of the Scientific Area Coordinator and the President of the Department, in accordance with point 4 of the Resolution."
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        }, {
+          "type" : "Array",
+          "field" : "otherDocuments",
+          "label" : {
+            "pt-PT" : "Outros Documentos",
+            "en-GB" : "Other Documents"
+          },
+          "required" : false,
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar documento",
+            "en-GB" : "Add document"
+          },
+          "properties" : [ {
+            "type" : "File",
+            "field" : "document",
+            "required" : false,
+            "allowedFileTypes" : [ ".pdf" ],
+            "maxSizeMB" : 10
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ ]
+  },
+  "cost" : { }
+}

@@ -1,0 +1,76 @@
+{
+  "flowTemplate" : {
+    "name" : "absences-justification",
+    "title" : {
+      "pt-PT" : "Processo de Pedido de Justificação de Faltas",
+      "en-GB" : "Absences Justification Request Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Justificação de Faltas",
+      "en-GB" : "Absences Justification Request Process"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onSuccess" : [
+          {
+            "flowProcessor" : "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure" : [
+          {
+            "flowProcessor" : "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition" : [ ],
+        "onCancel" : [
+          {
+            "flowProcessor" : "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors" : [ ],
+      "actionNodes" : [
+        {
+          "id" : "step-hr-processing",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "A Direção de Recursos Humanos",
+            "en-GB" : "The Human Resources Department"
+          },
+          "description" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Marcar como Processado",
+                "en-GB" : "Mark as Processed"
+              },
+              "id" : "PROCESS-step-hr-processing",
+              "name" : "PROCESS"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-hr-processing",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Nucleo-de-Prestacao-de-Trabalho-Geral"
+        }
+      ]
+    }
+  }
+}

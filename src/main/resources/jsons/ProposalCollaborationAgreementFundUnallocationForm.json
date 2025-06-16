@@ -1,0 +1,435 @@
+{
+	"name": {
+		"pt-PT": "Libertação de Fundos da Proposta de Acordo de Colaboração",
+		"en-GB": "Fund Unallocation of Proposal for Collaboration Agreement"
+	},
+	"description": {
+		"pt-PT": "Formulário para ordem de Libertação de Fundos da Proposta de Acordo de Colaboração.",
+		"en-GB": "Request form for Fund Unallocation of Proposal for Collaboration Agreement."
+	},
+	"context": {
+	"requestKeywords": {
+		"fields": [
+			"user",
+			"workPlace",
+			"startDate"
+		],
+		"displayName": false,
+		"username": false
+	},
+	"onValidate": {
+	},
+	"onLock": [
+	],
+	"queuesAllowedToChangeTo": [
+		"Execução Orçamental",
+		"Projetos"
+	]
+},
+"inputForm": {
+	"checks": {
+		"requirePersonalInformation": true,
+		"requirePhotograph": true,
+		"requireIdentity": true
+	},
+	"pages": [
+		{
+			"title": {
+				"pt-PT": "Informação do Requerente",
+				"en-GB": "Requester Information"
+			},
+			"sections": [
+			]
+		},
+		{
+			"title": {
+				"pt-PT": "Informação do Acordo de Colaboração",
+				"en-GB": "Collaboration Agreement Information"
+			},
+			"sections": [
+				{
+					"title": {
+						"pt-PT": "Entidade Proponente",
+						"en-GB": "Proposing Entity"
+					},
+					"properties": [
+						{
+							"type": "AsyncSelect",
+							"field": "workPlace",
+							"optionsProvider": "/paper-pusher-ist/workingUnits?forAuthenticatedUser",
+							"required": true,
+							"allowOther": false,
+							"label": {
+								"pt-PT": "Unidade de Investigação / Departamento / Área Científica",
+								"en-GB": "Working Place"
+							},
+							"readonly": true
+						}
+					]
+				},
+				{
+					"title": {
+						"pt-PT": "Imputação de Custos",
+						"en-GB": "Coverage of Costs"
+					},
+					"properties": [
+						{
+							"type": "AsyncSelect",
+							"field": "financerUnit",
+							"label": {
+								"pt-PT": "Unidade Financeira",
+								"en-GB": "Financing Unit"
+							},
+							"description": {
+								"pt-PT": "A relevância desta informação prende-se com a obrigatoriedade de subscrição de um seguro de acidentes pessoais.",
+								"en-EN": "The relevance of this information is related to the obligation to take out personal accident insurance."
+							},
+							"required": true,
+							"allowOther": false,
+							"optionsProvider": "/paper-pusher-ist/financeUnit",
+							"readonly": true
+						}
+					]
+				},
+				{
+					"title": {
+						"pt-PT": "Vigência do Acordo",
+						"en-GB": "Agreement Term"
+					},
+					"properties": [
+						{
+							"type": "Composite",
+							"field": "collaborationDuration",
+							"required": true,
+							"label": {
+								"pt-PT": "Duração do acordo",
+								"en-GB": "Activity ending date"
+							},
+							"readonly": true,
+							"properties": [
+								{
+									"type": "DateTime",
+									"field": "startDate",
+									"required": true,
+									"date": true,
+									"time": false,
+									"label": {
+										"pt-PT": "Data de início",
+										"en-GB": "Starting date"
+									}
+								},
+								{
+									"type": "DateTime",
+									"field": "endDate",
+									"required": true,
+									"date": true,
+									"time": false,
+									"label": {
+										"pt-PT": "Data de fim",
+										"en-GB": "Ending date"
+									}
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"title": {
+				"pt-PT": "Informação do Seguro",
+				"en-GB": "Research Scholarship Information"
+			},
+			"sections": [
+				{
+					"title": {
+						"pt-PT": "Encargos Financeiros",
+						"en-GB": "Financer Charges"
+					},
+					"properties": [
+						{
+							"type": "Quantity",
+							"field": "insurancePerMonth",
+							"description": {
+								"pt-PT": "Indica o valor mensal do seguro de acidentes pessoais.",
+								"en-GB": "Indicates the monthly amount of personal accident insurance."
+							},
+							"label": {
+								"pt-PT": "Montante mensal do seguro de acidentes pessoais",
+								"en-GB": "Monthly amount of personal accident insurance"
+							},
+							"required": true,
+							"step": "0.01",
+							"readonly": true
+						},
+						{
+							"type": "Quantity",
+							"field": "totalFunds",
+							"description": {
+								"pt-PT": "Indica o valor total dos Encargos.",
+								"en-GB": "Indicates the total amount of Charges."
+							},
+							"label": {
+								"pt-PT": "Total dos Encargos",
+								"en-GB": "Total Charges"
+							},
+							"required": false,
+							"step": "0.01",
+							"readonly": true
+						}
+					]
+				}
+			]
+		}
+	]
+},
+"outcomeForm": {
+	"pages": [
+		{
+			"title": {
+				"pt-PT": "Informação do Acordo de Colaboração",
+				"en-GB": "Collaboration Agreement Information"
+			},
+			"sections": [
+				{
+					"title": {
+						"pt-PT": "Entidade Proponente",
+						"en-GB": "Proposing Entity"
+					},
+					"properties": [
+						{
+							"type": "AsyncSelect",
+							"field": "workPlace",
+							"optionsProvider": "/paper-pusher-ist/workingUnits?forAuthenticatedUser",
+							"required": true,
+							"allowOther": false,
+							"label": {
+								"pt-PT": "Unidade de Investigação / Departamento / Área Científica",
+								"en-GB": "Working Place"
+							},
+							"readonly": true
+						},
+						{
+							"type": "Composite",
+							"field": "collaborationDuration",
+							"required": true,
+							"label": {
+								"pt-PT": "Duração do acordo",
+								"en-GB": "Activity ending date"
+							},
+							"readonly": true,
+							"properties": [
+								{
+									"type": "DateTime",
+									"field": "startDate",
+									"required": true,
+									"date": true,
+									"time": false,
+									"label": {
+										"pt-PT": "Data de início",
+										"en-GB": "Starting date"
+									}
+								},
+								{
+									"type": "DateTime",
+									"field": "endDate",
+									"required": true,
+									"date": true,
+									"time": false,
+									"label": {
+										"pt-PT": "Data de fim",
+										"en-GB": "Ending date"
+									}
+								}
+							]
+						},
+						{
+							"type": "Quantity",
+							"field": "totalFunds",
+							"description": {
+								"pt-PT": "Indica o valor total dos Encargos.",
+								"en-GB": "Indicates the total amount of Charges."
+							},
+							"label": {
+								"pt-PT": "Total dos Encargos",
+								"en-GB": "Total Charges"
+							},
+							"required": false,
+							"step": "0.01",
+							"readonly": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"title": {
+				"pt-PT": "Reservas, Cabimentos e Compromissos",
+				"en-GB": "Reserves, Fund Allocations and Commitments"
+			},
+			"sections": [
+				{
+					"title": {
+						"pt-PT": "Reserva e Cabimento",
+						"en-GB": "Reserve, Fund Allocation"
+					},
+					"properties": [
+						{
+							"type": "AsyncSelect",
+							"field": "financerConfig",
+							"label": {
+								"pt-PT": "Elemento Financiador",
+								"en-GB": "Financing Element"
+							},
+							"required": true,
+							"allowOther": false,
+							"readonly": true,
+							"optionsProvider": "/paper-pusher-ist/financeUnit"
+						},
+						{
+							"type": "Quantity",
+							"field": "financeSubUnitPercentage",
+							"required": true,
+							"step": 0.01,
+							"readonly": true,
+							"label": {
+								"pt-PT": "Percentagem Rubrica Financeira",
+								"en-GB": "Percentage of Financial Item"
+							},
+							"min": 0,
+							"max": 100
+						},
+						{
+							"type": "AsyncSelect",
+							"field": "financeSubUnit",
+							"optionsProvider": "/paper-pusher-ist/financeSubUnit",
+							"required": true,
+							"readonly": true,
+							"label": {
+								"pt-PT": "Rubrica Financeira / Elemento PEP",
+								"en-GB": "Financial Item / PEP Element"
+							}
+						},
+						{
+							"type": "Text",
+							"field": "financerReserve",
+							"required": true,
+							"readonly": true,
+							"label": {
+								"pt-PT": "Reserva",
+								"en-GB": "Reserve"
+							}
+						},
+						{
+							"type": "Text",
+							"field": "financerCenter",
+							"label": {
+								"pt-PT": "Centro Financeiro",
+								"en-GB": "Financer center"
+							},
+							"required": true
+						},
+						{
+							"type": "Text",
+							"field": "financerFucionalArea",
+							"required": true,
+							"readonly": true,
+							"label": {
+								"pt-PT": "Área Funcional",
+								"en-GB": "Functional area"
+							}
+						},
+						{
+							"type": "Text",
+							"field": "financerFund",
+							"required": true,
+							"readonly": true,
+							"label": {
+								"pt-PT": "Fundo",
+								"en-GB": "Fund"
+							}
+						},
+						{
+							"type": "Text",
+							"field": "financerFundAllocation",
+							"label": {
+								"pt-PT": "Cabimento",
+								"en-GB": "Fund allocation"
+							},
+							"readonly": true,
+							"required": true
+						}
+					]
+				},
+				{
+					"title": {
+						"pt-PT": "Compromisso",
+						"en-GB": "Commitment"
+					},
+					"description": {
+						"pt-PT": "Nota: As contabilidades autónomas são responsáveis pela obtenção do nº de compromisso.",
+						"en-GB": "Note: The autonomous accounts are responsible for obtaining the commitment number."
+					},
+					"properties": [
+						{
+							"type": "Text",
+							"field": "financerCommitment",
+							"required": true,
+							"readonly": true,
+							"label": {
+								"pt-PT": "Número de Compromisso",
+								"en-GB": "Commitment Number"
+							}
+						},
+						{
+							"type": "DateTime",
+							"field": "commitmentRegistryDate",
+							"required": true,
+							"date": true,
+							"time": false,
+							"readonly": true,
+							"label": {
+								"pt-PT": "Data de registo do compromisso",
+								"en-GB": "Commitment registry date"
+							}
+						},
+						{
+							"type": "DateTime",
+							"field": "commitmentReleaseDate",
+							"required": true,
+							"date": true,
+							"time": false,
+							"label": {
+								"pt-PT": "Data de libertação do compromisso",
+								"en-GB": "Commitment release date"
+							}
+						},
+						{
+							"type": "Text",
+							"field": "financerFundUnallocation",
+							"label": {
+								"pt-PT": "Cabimento Libertado",
+								"en-GB": "Fund unallocation"
+							},
+							"required": true
+						},
+						{
+							"type": "DateTime",
+							"field": "financerReserveReleaseDate",
+							"required": true,
+							"date": true,
+							"time": false,
+							"label": {
+								"pt-PT": "Data de libertação da reserva",
+								"en-GB": "Reserve release date"
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+},
+"cost": {
+}
+}

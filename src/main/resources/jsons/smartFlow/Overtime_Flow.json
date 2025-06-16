@@ -1,0 +1,191 @@
+{
+  "flowTemplate" : {
+    "name" : "overtime-flow",
+    "title" : {
+      "pt-PT" : "Processo de Pedido de Trabalho Suplementar",
+      "en-GB" : "Overtime Request Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Trabalho Suplementar",
+      "en-GB" : "Overtime Request Process"
+    },
+    "config" : {
+      "authorizationChainNodes" : {
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "SIGN",
+            "flowProcessor" : "Skip Next Queue",
+            "queue-field-key" : "hr-authorization-step"
+          } ]
+        }
+      },
+      "actionProcessor" : {
+        "onSuccess" : [ {
+          "flowProcessor" : "Return Flow Approved To Request"
+        } ],
+        "onFailure" : [ {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ {
+          "flowProcessor" : "Cancel Connected Requests"
+        } ]
+      },
+      "flowProcessors" : [ ],
+      "actionNodes" : [ {
+        "id" : "step-administrator",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "O/A Administrador(a)",
+          "en-GB" : "The Administrator"
+        },
+        "description" : {
+          "pt-PT" : "Parecer do/a Administrador(a)",
+          "en-GB" : "Opinion of the Administrator"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Parecer do/a Administrador(a)",
+          "en-GB" : "Opinion of the Administrator"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "step-president",
+            "label" : {
+              "pt-PT" : "Concordar",
+              "en-GB" : "Agree"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar",
+              "en-GB" : "Reject"
+            }
+          }
+        },
+        "queue" : "Gestão Administrativa",
+        "replaceTitleWithRole" : true,
+        "hr-final-authorization-step" : "true",
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "SIGN",
+            "flowProcessor" : "Skip Next Nodes",
+            "node-field-key" : "hr-final-authorization-step"
+          } ]
+        }
+      }, {
+        "id" : "step-president",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "O/A Presidente",
+          "en-GB" : "The President"
+        },
+        "description" : {
+          "pt-PT" : "Parecer do/a Presidente",
+          "en-GB" : "Opinion of the President"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Parecer do/a Presidente",
+          "en-GB" : "Opinion of the President"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "step-collaborators-notification",
+            "label" : {
+              "pt-PT" : "Concordar",
+              "en-GB" : "Agree"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar",
+              "en-GB" : "Reject"
+            }
+          }
+        },
+        "queue" : "Presidência do Instituto Superior Técnico",
+        "replaceTitleWithRole" : true,
+        "hr-final-authorization-step" : "true"
+      }, {
+        "id" : "step-collaborators-notification",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Envio de Notificação",
+          "en-GB" : "Send Notification"
+        },
+        "description" : {
+          "pt-PT" : "Envio de notificação para o(s)/a(s) colaborador(es)",
+          "en-GB" : "Send notification to collaborator(s)"
+        },
+        "actions" : {
+          "NOTIFY" : {
+            "primary" : true,
+            "to" : "step-overtime-work-record",
+            "label" : {
+              "pt-PT" : "Enviar Notificação",
+              "en-GB" : "Send Notification"
+            }
+          }
+        },
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Do Flow Action",
+            "flowAction" : "NOTIFY"
+          }, {
+            "flowProcessor" : "Send e-mail",
+            "template" : "email-notification-overtime",
+            "sender" : "1977853914648083",
+            "notifyUsersFromRequest" : true,
+            "registered" : true,
+            "parameters" : {
+              "startDate" : "startDate",
+              "endDate" : "endDate",
+              "workPlace" : "workPlace",
+              "expectedHoursOfWork" : "expectedHoursOfWork",
+              "expectedHoursWorkingDays" : "expectedHoursWorkingDays",
+              "expectedHoursSupplementaryRestDaysAndHolidays" : "expectedHoursSupplementaryRestDaysAndHolidays",
+              "expectedHoursStatutoryRestDays" : "expectedHoursStatutoryRestDays"
+            }
+          } ]
+        },
+        "queue" : "Núcleo de Prestação de Trabalho - Geral"
+      }, {
+        "id" : "step-overtime-work-record",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Registo de Trabalho Suplementar",
+          "en-GB" : "Overtime Work Record"
+        },
+        "description" : {
+          "pt-PT" : "Registo de Trabalho Suplementar",
+          "en-GB" : "Overtime Work Record"
+        },
+        "actions" : {
+          "FINISH" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Terminar Trabalho Suplementar",
+              "en-GB" : "Finish Overtime Work"
+            }
+          }
+        },
+        "queue" : "Sistema FenixEdu",
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Create Overtime Subflows"
+          } ]
+        }
+      } ]
+    }
+  }
+}

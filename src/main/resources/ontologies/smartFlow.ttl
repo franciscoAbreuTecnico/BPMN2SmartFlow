@@ -23,6 +23,10 @@ sf:Form a owl:Class ;
     rdfs:label "Form" ;
     rdfs:comment "A form used to collect input at certain steps in the flow." .
 
+sf:Field a owl:Class ;
+    rdfs:label "Field" ;
+    rdfs:comment "A field in a form, representing a piece of data to be collected." .
+
 sf:AuthorizationChainNode a owl:Class ;
     rdfs:label "Authorization Chain Node" ;
     rdfs:comment "Nodes used to notify and require authorization from a chain of responsible parties." .
@@ -132,6 +136,11 @@ sf:has_associatedForm a owl:ObjectProperty ;
     rdfs:range sf:Form ;
     rdfs:label "has_associatedForm" ;
     rdfs:comment "Links a form button to the form that it launches." .
+sf:has_fields a owl:ObjectProperty ;
+    rdfs:domain sf:Form ;
+    rdfs:range sf:Field ;
+    rdfs:label "has_fields" ;
+    rdfs:comment "The fields in the form, represented as a list of field names." .
 sf:has_applyOn  a owl:ObjectProperty ;
     rdfs:domain sf:ActionProcessor ;
     rdfs:range  sf:Action ;
@@ -198,6 +207,18 @@ sf:has_nextNode
     ) ;
     rdfs:comment
       "Logical next‐step in the flow, whether direct or via a processor." .
+
+sf:has_association
+    a           owl:ObjectProperty ;
+    rdfs:domain sf:Element ;
+    rdfs:range  sf:Field ;
+    owl:propertyChainAxiom (
+      sf:has_button
+      sf:has_associatedForm
+      sf:has_fields
+    ) ;
+    rdfs:comment
+      "Associates a field with an element, e.g., a form field with an action node." .
 
 # ############################################################################
 # # 2) Direct hops: ActionNode → has_action → Action → has_transitionsTo → ActionNode

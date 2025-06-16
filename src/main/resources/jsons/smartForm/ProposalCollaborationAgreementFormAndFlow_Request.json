@@ -1,0 +1,394 @@
+{
+  "name" : {
+    "pt-PT" : "Proposta de Acordo de Colaboração",
+    "en-GB" : "Proposal for Collaboration Agreement"
+  },
+  "description" : {
+    "pt-PT" : "Proposta de Acordo de colaboração.",
+    "en-GB" : "Proposal for Collaboration Agreement."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "user", "workPlace", "startDate", "endDate", "newOrRenewal" ],
+      "displayName" : false,
+      "username" : false
+    },
+    "onLock" : [ {
+      "requestProcessor" : "Copy Input to Outcome",
+      "mapper" : {
+        "collaborator-email" : "collaborator-email",
+        "collaborationDuration" : "collaborationDuration",
+        "affectedness" : "affectedness"
+      }
+    }, {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Docentes e Investigadores"
+    } ],
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "proposal-collaboration-agreement",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "completeAuthorizationChain" : true,
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true,
+      "mapper" : {
+        "email" : "collaborator-email"
+      }
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : [ {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }, {
+      "requestProcessor" : "Send e-mail",
+      "template" : "proposal-for-collaboration-agreement",
+      "email" : "collaborator-email",
+      "parameters" : {
+        "name" : [ "user", "workPlace", "startDate", "endDate", "collaborator-email" ]
+      }
+    }, {
+      "requestProcessor" : "Create Collaboration Agreement Admissions Process"
+    } ],
+    "applicationMapper" : {
+      "collaborationDuration" : "collaborationDuration",
+      "financerUnit" : "financerUnit",
+      "startDate" : "startDate",
+      "endDate" : "endDate",
+      "affectedness" : "affectedness",
+      "workPlace" : "workPlace",
+      "activities" : "activities",
+      "grounding" : "grounding",
+      "workPlan" : "workPlan",
+      "newOrRenewal" : "newOrRenewal"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação do Requerente",
+        "en-GB" : "Requester Information"
+      },
+      "sections" : [ ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação do Acordo de Colaboração",
+        "en-GB" : "Collaboration Agreement Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Tipo de acordo",
+          "en-GB" : "Agreement type"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "newOrRenewal",
+          "label" : {
+            "pt-PT" : "Tipo de Acordo",
+            "en-GB" : "Type of Agreement"
+          },
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "options" : [ {
+            "label" : {
+              "pt-PT" : "Novo acordo",
+              "en-GB" : "New Agreement"
+            },
+            "value" : "newAgreement"
+          }, {
+            "label" : {
+              "pt-PT" : "Renovação",
+              "en-GB" : "Renewal"
+            },
+            "value" : "renewalAgreement"
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Entidade Proponente",
+          "en-GB" : "Proposing Entity"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "field" : "workPlace",
+          "optionsProvider" : "/paper-pusher-ist/workingUnits?forAuthenticatedUser=false",
+          "required" : true,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Unidade de Investigação / Departamento / Área Científica",
+            "en-GB" : "Working Place"
+          }
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Vigência do Acordo",
+          "en-GB" : "Agreement Term"
+        },
+        "description" : {
+          "pt-PT" : "A duração do acordo de colaboração tem um limite maxímo de dois anos.",
+          "en-GB" : "The duration of the collaboration agreement has a maximum limit of two years."
+        },
+        "properties" : [ {
+          "type" : "Composite",
+          "field" : "collaborationDuration",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Duração do acordo",
+            "en-GB" : "Activity ending date"
+          },
+          "properties" : [ {
+            "type" : "DateTime",
+            "field" : "startDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de início",
+              "en-GB" : "Starting date"
+            }
+          }, {
+            "type" : "DateTime",
+            "field" : "endDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de fim",
+              "en-GB" : "Ending date"
+            }
+          } ]
+        }, {
+          "type" : "Quantity",
+          "field" : "affectedness",
+          "description" : {
+            "pt-PT" : "A colaboração corresponderá a uma dedicação média em percentagem ( % ) do tempo integral, considerando este como 35 horas de trabalho por semana.",
+            "en-GB" : "Collaboration will correspond to an average dedication as a percentage (%) of full time, considering this as 35 hours of work per week."
+          },
+          "required" : true,
+          "step" : 0.01,
+          "label" : {
+            "pt-PT" : "Afetação %",
+            "en-GB" : "Affectedness %"
+          },
+          "min" : 0,
+          "max" : 100
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação do(a) Colaborador(a)",
+        "en-GB" : "Collaborator Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Identificação do(a) Colaborador(a)",
+          "en-GB" : "Collaborator Identification"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "field" : "user",
+          "label" : {
+            "pt-PT" : "Nome / TécnicoID",
+            "en-GB" : "Name / TecnicoID"
+          },
+          "optionsProvider" : "/paper-pusher-ist/user",
+          "allowOther" : false,
+          "collapse" : true,
+          "required" : true
+        }, {
+          "type" : "Text",
+          "field" : "collaborator-email",
+          "label" : {
+            "pt-PT" : "Endereço de e-mail do(a) colaborador(a)",
+            "en-GB" : "E-mail address of the person to invite"
+          },
+          "required" : true,
+          "multiline" : false,
+          "inputType" : "email"
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação de Atividade a Desenvolver",
+        "en-GB" : "Activity Information to be Developed"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Atividade(s)",
+          "en-GB" : "Activity"
+        },
+        "description" : {
+          "pt-PT" : "Atividade a desenvolver pelo/a colaborador/a, detalhada no plano de trabalhos anexo.",
+          "en-GB" : "Activity to be developed by the collaborator, detailed in the attached work plan."
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "activities",
+          "label" : {
+            "pt-PT" : "Atividade",
+            "en-GB" : "Activity"
+          },
+          "multiple" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "required" : true,
+          "options" : [ {
+            "label" : {
+              "pt-PT" : "Orientar dissertações de mestrado e de teses de doutoramento;",
+              "en-GB" : "Supervise master's dissertations and doctoral theses;"
+            },
+            "value" : "supervise"
+          }, {
+            "label" : {
+              "pt-PT" : "Investigar em instituições de ensino superior ou de investigação científica;",
+              "en-GB" : "Research in higher education or scientific research institutions;"
+            },
+            "value" : "research"
+          }, {
+            "label" : {
+              "pt-PT" : "Lecionar, em situações excecionais, não podendo, contudo, satisfazer necessidades permanentes de serviço docente.",
+              "en-GB" : "Teaching in exceptional situations, however, not being able to satisfy permanent teaching service needs."
+            },
+            "value" : "teaching"
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Fundamentação do Acordo de colaboração",
+          "en-GB" : "Grounding for the Collaboration Agreement"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "grounding",
+          "locales" : [ "pt-PT", "en-GB" ],
+          "description" : {
+            "pt-PT" : "Fundamentar a proposta de celebração do acordo de colaboração.",
+            "en-GB" : "Substantiate the proposal to conclude the collaboration agreement."
+          },
+          "label" : {
+            "pt-PT" : "Fundamentação do Acordo de Colaboração",
+            "en-GB" : "Rationale for the Collaboration Agreement"
+          },
+          "required" : true,
+          "multiline" : true
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Documentos",
+        "en-GB" : "Documents"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Documentos a submeter",
+          "en-GB" : "Documents to submit"
+        },
+        "properties" : [ {
+          "field" : "workPlan",
+          "type" : "File",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Anexar Plano de Trabalho.",
+            "en-GB" : "Attach Work Plan."
+          },
+          "label" : {
+            "pt-PT" : "Plano de Trabalho",
+            "en-GB" : "Work Plan"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : true,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Envio da Proposta do Acordo de Colaboração",
+        "en-GB" : "Invitation Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Destinatário da Proposta do Acordo de Colaboração",
+          "en-GB" : "Invitation Target"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "collaborator-email",
+          "label" : {
+            "pt-PT" : "Endereço de e-mail do(a) colaborador(a)",
+            "en-GB" : "E-mail address of the person to invite"
+          },
+          "required" : true,
+          "multiline" : false,
+          "inputType" : "email"
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Vigência do Acordo",
+        "en-GB" : "Agreement Term"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Vigência do Acordo",
+          "en-GB" : "Agreement Term"
+        },
+        "properties" : [ {
+          "type" : "Composite",
+          "field" : "collaborationDuration",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Duração do acordo",
+            "en-GB" : "Activity ending date"
+          },
+          "properties" : [ {
+            "type" : "DateTime",
+            "field" : "startDate",
+            "required" : false,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de início",
+              "en-GB" : "Starting date"
+            }
+          }, {
+            "type" : "DateTime",
+            "field" : "endDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de fim",
+              "en-GB" : "Ending date"
+            }
+          } ]
+        }, {
+          "type" : "Quantity",
+          "field" : "affectedness",
+          "description" : {
+            "pt-PT" : "A colaboração corresponderá a uma dedicação média em percentagem ( % ) do tempo integral, considerando este como 35 horas de trabalho por semana.",
+            "en-GB" : "Collaboration will correspond to an average dedication as a percentage (%) of full time, considering this as 35 hours of work per week."
+          },
+          "required" : false,
+          "step" : 0.01,
+          "label" : {
+            "pt-PT" : "Afetação %",
+            "en-GB" : "Affectedness %"
+          },
+          "min" : 0,
+          "max" : 100
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

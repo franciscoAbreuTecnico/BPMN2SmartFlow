@@ -1,0 +1,661 @@
+{
+  "flowTemplate" : {
+    "name" : "exemption-service-position-flow",
+    "title" : {
+      "pt-PT" : "Pedido de Dispensa de Serviço",
+      "en-GB" : "Exemption Service Request"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Dispensa de Serviço",
+      "en-GB" : "Exemption Service Request Process"
+    },
+    "config" : {
+      "authorizationChainNodes" : {
+        "actionProcessor" : {
+          "onActionTransition" : [
+            {
+              "applyOn" : "SIGN",
+              "flowProcessor" : "Skip Next Queue",
+              "queue-field-key" : "hr-authorization-step"
+            }
+          ]
+        }
+      },
+      "actionProcessor" : {
+        "onSuccess" : [
+          {
+            "flowProcessor" : "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure" : [
+          {
+            "flowProcessor" : "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition" : [ ],
+        "onCancel" : [
+          {
+            "flowProcessor" : "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors" : [ ],
+      "forms" : [
+        {
+          "id" : "human-resources-processing-form",
+          "title" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Informação Adicional",
+                  "en-GB" : "Additional Information"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Informação da categoria",
+                      "en-GB" : "Category"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Select",
+                        "field" : "category",
+                        "label" : {
+                          "pt-PT" : "Categoria",
+                          "en-GB" : "Category"
+                        },
+                        "multiple" : false,
+                        "collapse" : false,
+                        "allowOther" : false,
+                        "required" : true,
+                        "options" : [
+                          {
+                            "label" : {
+                              "pt-PT" : "Professor(a) Catedrático/a",
+                              "en-GB" : "Full Professor"
+                            },
+                            "value" : "fullProfessor"
+                          },
+                          {
+                            "label" : {
+                              "pt-PT" : "Professor(a) Associado/a",
+                              "en-GB" : "Associate Professor"
+                            },
+                            "value" : "associateProfessor"
+                          },
+                          {
+                            "label" : {
+                              "pt-PT" : "Professor(a) Auxiliar",
+                              "en-GB" : "Assistant Professor"
+                            },
+                            "value" : "assistantProfessor"
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "DateTime",
+                        "field" : "categoryStartDate",
+                        "label" : {
+                          "pt-PT" : "Desde",
+                          "en-GB" : "Since"
+                        },
+                        "required" : true,
+                        "date" : true,
+                        "time" : false
+                      }
+                    ]
+                  },
+                  {
+                    "title" : {
+                      "pt-PT" : "Informação de dispensa de prestação de serviço na instituição de origem Anterior",
+                      "en-GB" : "Information on the Previous Sabbatical Leave"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Select",
+                        "field" : "previousExemptionService",
+                        "multiple" : false,
+                        "collapse" : false,
+                        "allowOther" : false,
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem?",
+                          "en-GB" : "Has a sabbatical leave been granted previously?"
+                        },
+                        "options" : [
+                          {
+                            "label" : {
+                              "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem através do sistema.",
+                              "en-GB" : "Yes, a sabbatical leave was previously granted through the system."
+                            },
+                            "value" : "previousExemptionServiceThroughSystem"
+                          },
+                          {
+                            "label" : {
+                              "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem.",
+                              "en-GB" : "Yes, a sabbatical leave was granted previously."
+                            },
+                            "value" : "yesPreviousExemptionService"
+                          },
+                          {
+                            "label" : {
+                              "pt-PT" : "Não, não foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem.",
+                              "en-GB" : "No, a sabbatical leave was not granted previously."
+                            },
+                            "value" : "noPreviousExemptionService"
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "AsyncSelect",
+                        "field" : "previousExemptionServiceOnSystem",
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Dispensa de prestação de serviço na instituição de origem anterior",
+                          "en-GB" : "Previous Sabbatical Leave"
+                        },
+                        "optionsProvider" : "/paper-pusher-ist/previousExemptionService/{{flowId}}",
+                        "allowOther" : false,
+                        "negation" : false,
+                        "onlyIf" : {
+                          "field" : "previousExemptionService",
+                          "value" : {
+                            "label" : {
+                              "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem através do sistema.",
+                              "en-GB" : "Yes, a sabbatical leave was previously granted through the system."
+                            },
+                            "value" : "previousExemptionServiceThroughSystem"
+                          }
+                        }
+                      },
+                      {
+                        "type" : "DateTime",
+                        "field" : "exemptionServiceStartDate",
+                        "required" : true,
+                        "date" : true,
+                        "time" : false,
+                        "label" : {
+                          "pt-PT" : "Data de Início da prestação de serviço anterior",
+                          "en-GB" : "Start Date of the Previous exemption service"
+                        },
+                        "onlyIf" : [
+                          {
+                            "field" : "previousExemptionService",
+                            "value" : {
+                              "label" : {
+                                "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem.",
+                                "en-GB" : "Yes, a sabbatical leave was granted previously."
+                              },
+                              "value" : "yesPreviousExemptionService"
+                            },
+                            "negation" : false
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "DateTime",
+                        "field" : "exemptionServiceEndDate",
+                        "required" : true,
+                        "date" : true,
+                        "time" : false,
+                        "label" : {
+                          "pt-PT" : "Data de Fim da prestação de serviço anterio",
+                          "en-GB" : "End Date of the Previous Sabbatical Leave"
+                        },
+                        "onlyIf" : [
+                          {
+                            "field" : "previousExemptionService",
+                            "value" : {
+                              "label" : {
+                                "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem.",
+                                "en-GB" : "Yes, a sabbatical leave was granted previously."
+                              },
+                              "value" : "yesPreviousExemptionService"
+                            },
+                            "negation" : false
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "Boolean",
+                        "field" : "reportDelivery",
+                        "label" : {
+                          "pt-PT" : "Houve entrega de relatório?",
+                          "en-GB" : "Has a report been delivered?"
+                        },
+                        "required" : true,
+                        "labelYes" : {
+                          "pt-PT" : "Sim, houve entrega de relatório.",
+                          "en-GB" : "Yes, a report was submitted."
+                        },
+                        "labelNo" : {
+                          "pt-PT" : "Não, não houve entrega de relatório.",
+                          "en-GB" : "No, a report was not submitted."
+                        },
+                        "onlyIf" : [
+                          {
+                            "field" : "previousExemptionService",
+                            "value" : {
+                              "label" : {
+                                "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem.",
+                                "en-GB" : "Yes, a sabbatical leave was granted previously."
+                              },
+                              "value" : "yesPreviousExemptionService"
+                            },
+                            "negation" : false
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "DateTime",
+                        "field" : "reportDeliveryDate",
+                        "label" : {
+                          "pt-PT" : "Data de Entrega",
+                          "en-GB" : "Delivery Date"
+                        },
+                        "required" : true,
+                        "date" : true,
+                        "time" : false,
+                        "onlyIf" : [
+                          {
+                            "field" : "reportDelivery",
+                            "value" : true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title" : {
+                      "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+                      "en-GB" : "Processing by the Human Resources Department"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Boolean",
+                        "field" : "inCondition",
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "A pessoa reúne as condições para ser concedida a dispensa na data pretendida e pelo período pretendido?",
+                          "en-GB" : "Does the person meet the conditions to be granted sabbatical leave?"
+                        },
+                        "labelYes" : {
+                          "pt-PT" : "Sim",
+                          "en-GB" : "Yes"
+                        },
+                        "labelNo" : {
+                          "pt-PT" : "Não",
+                          "en-GB" : "No"
+                        }
+                      },
+                      {
+                        "field" : "justification",
+                        "type" : "Text",
+                        "multiline" : true,
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Fundamentação",
+                          "en-GB" : "Justification"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id" : "upload-exemption-service",
+          "title" : {
+            "pt-PT" : "Envio de Relatório Final da Dispensa de Prestação de Serviço na Instituição de Origem",
+            "en-GB" : "Submission of the Sabbatical Leave Final Report"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Relatório Final do Trabalho Desenvolvido",
+                  "en-GB" : "Sabbatical Leave Final Report"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Anexar Documentos",
+                      "en-GB" : "Attach Documents"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "File",
+                        "field" : "workResults",
+                        "label" : {
+                          "pt-PT" : "Relatório",
+                          "en-GB" : "Report"
+                        },
+                        "description" : {
+                          "pt-PT" : "Relatório que inclua os resultados do trabalho desenvolvido.",
+                          "en-GB" : "Report including the work results and a self-evaluation (in accordance with point 5.1 of the SC Resolution of 2015.01.05)."
+                        },
+                        "required" : true,
+                        "allowedFileTypes" : [
+                          ".pdf"
+                        ],
+                        "maxSizeMB" : 25
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "actionNodes" : [
+        {
+          "id" : "step-hr-verification-conditions",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Verificação de Condições",
+            "en-GB" : "Verification of Conditions"
+          },
+          "description" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "buttons" : [
+            {
+              "id" : "submit-form",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Verificar Condições",
+                "en-GB" : "Verify Conditions"
+              },
+              "handlers" : {
+                "form" : "human-resources-processing-form",
+                "action" : "SIGN-step-hr-verification-conditions"
+              }
+            },
+            {
+              "id" : "reject",
+              "primary" : false,
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Rejeitar"
+              },
+              "handlers" : {
+                "action" : "REJECT-step-hr-verification-conditions"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-scientific-council",
+              "label" : {
+                "pt-PT" : "Marcar como Processado",
+                "en-GB" : "Mark as Processed"
+              },
+              "id" : "SIGN-step-hr-verification-conditions",
+              "name" : "SIGN"
+            }
+          ],
+          "blockUndo" : true,
+          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral"
+        },
+        {
+          "id" : "step-scientific-council",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "Conselho Científico",
+            "en-GB" : "Scientific Council"
+          },
+          "description" : {
+            "pt-PT" : "Parecer do Conselho Científico",
+            "en-GB" : "Deliberation of the Scientific Council"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Parecer do Conselho Científico",
+            "en-GB" : "Deliberation of the Scientific Council"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-administrator",
+              "label" : {
+                "pt-PT" : "Autotizar",
+                "en-GB" : "Approve"
+              },
+              "id" : "SIGN-step-scientific-council",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-scientific-council",
+              "name" : "REJECT"
+            }
+          ],
+          "blockUndo" : true,
+          "queue" : "Conselho-Cientifico"
+        },
+        {
+          "id" : "step-administrator",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "O/A Administrador(a)",
+            "en-GB" : "The Administrator"
+          },
+          "description" : {
+            "pt-PT" : "Parecer do/a Administrador(a)",
+            "en-GB" : "Opinion of the Administrator"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Parecer do/a Administrador(a)",
+            "en-GB" : "Opinion of the Administrator"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-president",
+              "label" : {
+                "pt-PT" : "Autorizar",
+                "en-GB" : "Authorise"
+              },
+              "id" : "SIGN-step-administrator",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-administrator",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Gestao-Administrativa",
+          "replaceTitleWithRole" : true,
+          "hr-final-authorization-step" : "true",
+          "actionProcessor" : [
+            {
+              "applyOn" : "SIGN-step-administrator",
+              "flowProcessor" : "Skip Next Nodes",
+              "node-field-key" : "hr-final-authorization-step",
+              "id" : "onActionTransition-step-administrator-Skip_Next_Nodes",
+              "name" : "onActionTransition"
+            }
+          ]
+        },
+        {
+          "id" : "step-president",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "O/A Presidente",
+            "en-GB" : "The President"
+          },
+          "description" : {
+            "pt-PT" : "Parecer do/a Presidente",
+            "en-GB" : "Opinion of the President"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Parecer do/a Presidente",
+            "en-GB" : "Opinion of the President"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-wait-exemption-service-reports",
+              "label" : {
+                "pt-PT" : "Autorizar",
+                "en-GB" : "Authorise"
+              },
+              "id" : "SIGN-step-president",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-president",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Presidencia-do-Instituto-Superior-Tecnico",
+          "replaceTitleWithRole" : true,
+          "hr-final-authorization-step" : "true"
+        },
+        {
+          "id" : "step-wait-exemption-service-reports",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Em Espera da Conclusão da Dispensa de Prestação de Serviço",
+            "en-GB" : "Waiting of the Sabbatical Leave Final Report"
+          },
+          "description" : {
+            "pt-PT" : "Em Espera da Conclusão da Dispensa de Prestação de Serviço",
+            "en-GB" : "Waiting of the final sabbatical Leave"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-upload-exemption-service-reports",
+              "label" : {
+                "pt-PT" : "Terminar espera da conclusão da dispensa de prestação de serviço",
+                "en-GB" : "Finish Waiting for the Sabbatical Leave Final Report"
+              },
+              "id" : "FINISH_WAITING-step-wait-exemption-service-reports",
+              "name" : "FINISH_WAITING"
+            }
+          ],
+          "queue" : "Sistema-FenixEdu",
+          "actionProcessor" : [
+            {
+              "flowProcessor" : "Do Flow Action After Time Passes",
+              "flowAction" : "FINISH_WAITING",
+              "user" : "fenix",
+              "when" : {
+                "field" : "startDate",
+                "plusDays" : "1"
+              },
+              "id" : "onEnterNode-step-wait-exemption-service-reports-Do_Flow_Action_After_Time_Passes",
+              "name" : "onEnterNode"
+            }
+          ],
+          "blockUndo" : true
+        },
+        {
+          "id" : "step-upload-exemption-service-reports",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "O/A Colaborador(a)",
+            "en-GB" : "The Collaborator"
+          },
+          "description" : {
+            "pt-PT" : "Envio de Relatório Final do Trabalho Desenvolvido",
+            "en-GB" : "Submission of the Sabbatical Leave Final Report"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Envio de Relatório Final do Trabalho Desenvolvido",
+            "en-GB" : "Submission of the Sabbatical Leave Final Report"
+          },
+          "buttons" : [
+            {
+              "id" : "upload-exemption-service",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Submeter Relatório Tranalho Desenvolvido",
+                "en-GB" : "Submit Final Report"
+              },
+              "handlers" : {
+                "form" : "upload-exemption-service",
+                "action" : "SIGN-step-upload-exemption-service-reports"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-hr-processing",
+              "label" : {
+                "pt-PT" : "Confirmar Submissão",
+                "en-GB" : "Confirm Submission"
+              },
+              "id" : "SIGN-step-upload-exemption-service-reports",
+              "name" : "SIGN"
+            }
+          ],
+          "queue" : "requester-username"
+        },
+        {
+          "id" : "step-hr-processing",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "A Direção de Recursos Humanos",
+            "en-GB" : "The Human Resources Department"
+          },
+          "description" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Marcar como Processado",
+                "en-GB" : "Mark as Processed"
+              },
+              "id" : "SIGN-step-hr-processing",
+              "name" : "SIGN"
+            }
+          ],
+          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral"
+        }
+      ]
+    }
+  }
+}

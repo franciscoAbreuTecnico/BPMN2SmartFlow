@@ -1,0 +1,1046 @@
+{
+  "flowTemplate" : {
+    "name" : "remote-work-report-submission-template",
+    "title" : {
+      "pt-PT" : "Processo de Submissão do Relatório de Teletrabalho",
+      "en-GB" : "Process of Remote Work Report Submission"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Submissão do Relatório de Teletrabalho",
+      "en-GB" : "Process of Remote Work Report Submission"
+    },
+    "config" : {
+      "authorizationChainNodesRenewal" : {
+        "type" : "generic",
+        "title" : {
+          "pt-PT" : "Parecer do/a Responsável",
+          "en-GB" : "Opinion of The Person in Charge"
+        },
+        "description" : {
+          "pt-PT" : "Declaro que o/a trabalhador(a) preenche todos os requisitos dispostos no actual regulamento de teletrabalho.",
+          "en-GB" : "I declare that the employee fulfils all the the requirements set out in the current remote work regulations."
+        },
+        "comment" : true,
+        "commentLabel" : {
+          "pt-PT" : "Parecer do/a Responsável",
+          "en-GB" : "Opinion of The Person in Charge"
+        },
+        "actions" : {
+          "RENEW" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Concordo com a renovação",
+              "en-GB" : "I agree with the renewal"
+            }
+          },
+          "DONT_RENEW" : {
+            "primary" : false,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Discordo com a renovação",
+              "en-GB" : "I disagree with the renewal"
+            }
+          }
+        },
+        "blockUndo" : false
+      },
+      "authorizationChainNodesWithoutRenewal" : {
+        "type" : "generic",
+        "title" : {
+          "pt-PT" : "Parecer do/a Responsável",
+          "en-GB" : "Opinion of The Person in Charge"
+        },
+        "description" : {
+          "pt-PT" : "Parecer do/a Responsável",
+          "en-GB" : "Opinion of The Person in Charge"
+        },
+        "comment" : true,
+        "commentLabel" : {
+          "pt-PT" : "Parecer do/a Responsável",
+          "en-GB" : "Opinion of The Person in Charge"
+        },
+        "actions" : {
+          "DONT_RENEW" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Concordar",
+              "en-GB" : "Agree"
+            }
+          }
+        },
+        "actionProcessor" : { },
+        "blockUndo" : false
+      },
+      "actionProcessor" : {
+        "onSuccess" : [ ],
+        "onFailure" : [
+          {
+            "flowProcessor" : "Return Flow Rejected To Main Flow"
+          }
+        ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ ]
+      },
+      "flowProcessors" : [
+        {
+          "handle" : "hr-processing",
+          "flowProcessor" : "Do Action From Form Response For Remote Work"
+        },
+        {
+          "handle" : "action-from-remote-work-report-form",
+          "flowProcessor" : "Do Action From Form Response",
+          "formField" : "renewal"
+        }
+      ],
+      "forms" : [
+        {
+          "id" : "upload-remote-work-report",
+          "title" : {
+            "pt-PT" : "Submissão do Relatório de Teletrabalho",
+            "en-GB" : "Submission of the Remote Work Report"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Informação das Tarefas Realizadas",
+                  "en-GB" : "Information on the Completed Tasks"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Período",
+                      "en-GB" : "Period"
+                    },
+                    "description" : {
+                      "pt-PT" : "Indicar o período relativo às atividades realizadas em regime de teletrabalho.",
+                      "en-GB" : "Specify the period corresponding to the activities carried out while in remote work."
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Composite",
+                        "field" : "period",
+                        "required" : true,
+                        "properties" : [
+                          {
+                            "type" : "DateTime",
+                            "field" : "startPeriodDate",
+                            "required" : true,
+                            "date" : true,
+                            "time" : false,
+                            "label" : {
+                              "pt-PT" : "Data de Início da Atividade",
+                              "en-GB" : "Activity Start Date"
+                            }
+                          },
+                          {
+                            "type" : "DateTime",
+                            "field" : "endPeriodDate",
+                            "required" : true,
+                            "date" : true,
+                            "time" : false,
+                            "label" : {
+                              "pt-PT" : "Data de Fim da Atividade",
+                              "en-GB" : "Activity End Date"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title" : {
+                      "pt-PT" : "Descrição das Tarefas Indicadas no Plano de Trabalhos",
+                      "en-GB" : "Description of the Tasks Listed in the Work Plan"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Text",
+                        "field" : "tasksConcluded",
+                        "required" : true,
+                        "inputType" : "plain",
+                        "multiline" : true,
+                        "label" : {
+                          "pt-PT" : "Tarefas Concluídas e Timing (quando critério de tempo foi aplicável)",
+                          "en-GB" : "Completed Tasks and Timing (when time criteria were applicable)"
+                        }
+                      },
+                      {
+                        "type" : "Text",
+                        "field" : "meetings",
+                        "required" : true,
+                        "inputType" : "plain",
+                        "multiline" : true,
+                        "label" : {
+                          "pt-PT" : "Indicação das Reuniões e/ou Atividades Realizadas à Distância",
+                          "en-GB" : "Specification of Meetings and/or Activities Carried Out Remotely"
+                        }
+                      },
+                      {
+                        "type" : "Text",
+                        "field" : "tasksNotConcluded",
+                        "required" : true,
+                        "inputType" : "plain",
+                        "multiline" : true,
+                        "label" : {
+                          "pt-PT" : "Tarefas Pendentes/Não Concluídas e Justificação",
+                          "en-GB" : "Pending/Incomplete Tasks and Justification"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "title" : {
+                      "pt-PT" : "Meios Utilizados",
+                      "en-GB" : "Methods Used"
+                    },
+                    "description" : {
+                      "pt-PT" : "Indicação dos meios de comunicação utilizados em teletrabalho (em % aproximada de tempo).",
+                      "en-GB" : "Indication of Communication Methods Used in Remote Work (in approximate % of time)."
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Quantity",
+                        "field" : "email",
+                        "required" : true,
+                        "min" : 0,
+                        "max" : 100,
+                        "label" : {
+                          "pt-PT" : "E-mail",
+                          "en-GB" : "E-mail"
+                        },
+                        "step" : 1
+                      },
+                      {
+                        "type" : "Quantity",
+                        "field" : "phone",
+                        "required" : true,
+                        "min" : 0,
+                        "max" : 100,
+                        "label" : {
+                          "pt-PT" : "Telefone",
+                          "en-GB" : "Phone"
+                        },
+                        "step" : 1
+                      },
+                      {
+                        "type" : "Quantity",
+                        "field" : "chat",
+                        "required" : true,
+                        "min" : 0,
+                        "max" : 100,
+                        "label" : {
+                          "pt-PT" : "Chat",
+                          "en-GB" : "Chat"
+                        },
+                        "step" : 1
+                      },
+                      {
+                        "type" : "Quantity",
+                        "field" : "other",
+                        "required" : true,
+                        "min" : 0,
+                        "max" : 100,
+                        "label" : {
+                          "pt-PT" : "Outro",
+                          "en-GB" : "Other"
+                        },
+                        "step" : 1
+                      },
+                      {
+                        "type" : "Text",
+                        "field" : "otherMethods",
+                        "required" : false,
+                        "inputType" : "plain",
+                        "multiline" : true,
+                        "label" : {
+                          "pt-PT" : "Outros Meios Utilizados",
+                          "en-GB" : "Other Communication Methods Used"
+                        },
+                        "description" : {
+                          "pt-PT" : "Indique, se for caso disso, que outros meios foram utilizados.",
+                          "en-GB" : "Specify, if relevant, which other methods were used."
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "title" : {
+                      "pt-PT" : "Plataformas e Aplicações Utilizadas",
+                      "en-GB" : "Platforms and Applications Used"
+                    },
+                    "description" : {
+                      "pt-PT" : "Indicação dos meios tecnológicos, plataformas e outras aplicações utilizadas na execução das tarefas.",
+                      "en-GB" : "Details of the technological tools, platforms, and other applications used while performing the tasks."
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Text",
+                        "field" : "platforms",
+                        "required" : true,
+                        "inputType" : "plain",
+                        "multiline" : true,
+                        "label" : {
+                          "pt-PT" : "Plataformas e Aplicações Utilizadas",
+                          "en-GB" : "Platforms and Applications Used"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "title" : {
+                  "pt-PT" : "Avaliação do Teletrabalho",
+                  "en-GB" : "Remote Work Evaluation"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Avaliação do Grau de Interação",
+                      "en-GB" : "Evaluation of the Degree of Interaction"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Select",
+                        "field" : "interactionWithStudents",
+                        "required" : true,
+                        "allowOther" : false,
+                        "multiple" : false,
+                        "collapsed" : false,
+                        "label" : {
+                          "pt-PT" : "Grau de Interação com os Estudantes, se Aplicável",
+                          "en-GB" : "Degree of Interaction with the Students, if Applicable"
+                        },
+                        "options" : [
+                          {
+                            "value" : "none",
+                            "label" : {
+                              "pt-PT" : "Nenhum",
+                              "en-GB" : "None"
+                            }
+                          },
+                          {
+                            "value" : "low",
+                            "label" : {
+                              "pt-PT" : "Baixo",
+                              "en-GB" : "Low"
+                            }
+                          },
+                          {
+                            "value" : "average",
+                            "label" : {
+                              "pt-PT" : "Médio",
+                              "en-GB" : "Average"
+                            }
+                          },
+                          {
+                            "value" : "high",
+                            "label" : {
+                              "pt-PT" : "Alto",
+                              "en-GB" : "High"
+                            }
+                          },
+                          {
+                            "value" : "total",
+                            "label" : {
+                              "pt-PT" : "Total",
+                              "en-GB" : "Total"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "Select",
+                        "field" : "interactionOtherUsers",
+                        "required" : true,
+                        "allowOther" : false,
+                        "multiple" : false,
+                        "collapsed" : false,
+                        "label" : {
+                          "pt-PT" : "Grau de Interação com Outros Utentes, se Aplicável",
+                          "en-GB" : "Degree of Interaction with Other Users, if Applicable"
+                        },
+                        "options" : [
+                          {
+                            "value" : "none",
+                            "label" : {
+                              "pt-PT" : "Nenhum",
+                              "en-GB" : "None"
+                            }
+                          },
+                          {
+                            "value" : "low",
+                            "label" : {
+                              "pt-PT" : "Baixo",
+                              "en-GB" : "Low"
+                            }
+                          },
+                          {
+                            "value" : "average",
+                            "label" : {
+                              "pt-PT" : "Médio",
+                              "en-GB" : "Average"
+                            }
+                          },
+                          {
+                            "value" : "high",
+                            "label" : {
+                              "pt-PT" : "Alto",
+                              "en-GB" : "High"
+                            }
+                          },
+                          {
+                            "value" : "total",
+                            "label" : {
+                              "pt-PT" : "Total",
+                              "en-GB" : "Total"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "Select",
+                        "field" : "interactionWithColleagues",
+                        "required" : true,
+                        "allowOther" : false,
+                        "multiple" : false,
+                        "collapsed" : false,
+                        "label" : {
+                          "pt-PT" : "Grau de Interação com os/as Colegas",
+                          "en-GB" : "Degree of Interaction with Colleagues"
+                        },
+                        "options" : [
+                          {
+                            "value" : "none",
+                            "label" : {
+                              "pt-PT" : "Nenhum",
+                              "en-GB" : "None"
+                            }
+                          },
+                          {
+                            "value" : "low",
+                            "label" : {
+                              "pt-PT" : "Baixo",
+                              "en-GB" : "Low"
+                            }
+                          },
+                          {
+                            "value" : "average",
+                            "label" : {
+                              "pt-PT" : "Médio",
+                              "en-GB" : "Average"
+                            }
+                          },
+                          {
+                            "value" : "high",
+                            "label" : {
+                              "pt-PT" : "Alto",
+                              "en-GB" : "High"
+                            }
+                          },
+                          {
+                            "value" : "total",
+                            "label" : {
+                              "pt-PT" : "Total",
+                              "en-GB" : "Total"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "Select",
+                        "field" : "interactionWithHierarchicalSuperiors",
+                        "required" : true,
+                        "allowOther" : false,
+                        "multiple" : false,
+                        "collapsed" : false,
+                        "label" : {
+                          "pt-PT" : "Grau de Interação com os/as Responsáveis Hierárquicos",
+                          "en-GB" : "Degree of Interaction with Hierarchical Superiors"
+                        },
+                        "options" : [
+                          {
+                            "value" : "none",
+                            "label" : {
+                              "pt-PT" : "Nenhum",
+                              "en-GB" : "None"
+                            }
+                          },
+                          {
+                            "value" : "low",
+                            "label" : {
+                              "pt-PT" : "Baixo",
+                              "en-GB" : "Low"
+                            }
+                          },
+                          {
+                            "value" : "average",
+                            "label" : {
+                              "pt-PT" : "Médio",
+                              "en-GB" : "Average"
+                            }
+                          },
+                          {
+                            "value" : "high",
+                            "label" : {
+                              "pt-PT" : "Alto",
+                              "en-GB" : "High"
+                            }
+                          },
+                          {
+                            "value" : "total",
+                            "label" : {
+                              "pt-PT" : "Total",
+                              "en-GB" : "Total"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title" : {
+                      "pt-PT" : "Dificuldades",
+                      "en-GB" : "Difficulties"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Text",
+                        "field" : "difficulties",
+                        "required" : true,
+                        "inputType" : "plain",
+                        "multiline" : true,
+                        "label" : {
+                          "pt-PT" : "Dificuldades Sentidas no Desempenho da Atividade em Regime de Teletrabalho",
+                          "en-GB" : "Difficulties Faced while Performing Tasks during Remote Work"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "title" : {
+                      "pt-PT" : "Formação",
+                      "en-GB" : "Training"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Boolean",
+                        "field" : "trainingQuestion",
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Teve formação?",
+                          "en-GB" : "Have you received training?"
+                        },
+                        "labelYes" : {
+                          "pt-PT" : "Sim",
+                          "en-GB" : "Yes"
+                        },
+                        "labelNo" : {
+                          "pt-PT" : "Não",
+                          "en-GB" : "No"
+                        }
+                      },
+                      {
+                        "type" : "Array",
+                        "field" : "training",
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Formação Recebida",
+                          "en-GB" : "Training Received"
+                        },
+                        "labelAddElement" : {
+                          "pt-PT" : "Adicionar formação",
+                          "en-GB" : "Add training"
+                        },
+                        "min" : 1,
+                        "onlyIf" : {
+                          "field" : "trainingQuestion",
+                          "value" : true,
+                          "negation" : false
+                        },
+                        "properties" : [
+                          {
+                            "type" : "DateTime",
+                            "field" : "trainingStartDate",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Data de Início da Formação",
+                              "en-GB" : "Training Start Date"
+                            },
+                            "date" : true,
+                            "time" : false
+                          },
+                          {
+                            "type" : "DateTime",
+                            "field" : "endTrainingDate",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Data de Fim da Formação",
+                              "en-GB" : "Training End Date"
+                            },
+                            "date" : true,
+                            "time" : false
+                          },
+                          {
+                            "type" : "Text",
+                            "field" : "lectures",
+                            "required" : true,
+                            "inputType" : "plain",
+                            "multiline" : true,
+                            "label" : {
+                              "pt-PT" : "Formações Realizadas para o Teletrabalho Sugeridas na Página \"Boas Práticas para o Teletrabalho\"",
+                              "en-GB" : "Remote Work Training Completed as Recommended on the \"Good Practices for Remote Work\" Page"
+                            }
+                          },
+                          {
+                            "type" : "Text",
+                            "field" : "otherLectures",
+                            "required" : true,
+                            "inputType" : "plain",
+                            "multiline" : true,
+                            "label" : {
+                              "pt-PT" : "Outras Formações Realizadas Relevantes para o Teletrabalho",
+                              "en-GB" : "Other Completed Training Programs Relevant to Remote Work"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title" : {
+                      "pt-PT" : "Apreciação Global",
+                      "en-GB" : "Global Evaluation"
+                    },
+                    "description" : {
+                      "pt-PT" : "Apreciação Global do Teletrabalho no Período de Referência",
+                      "en-GB" : "Global Evaluation of Remote Work in the Reference Period"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Select",
+                        "field" : "globalEvaluation",
+                        "required" : true,
+                        "allowOther" : false,
+                        "multiple" : false,
+                        "collapsed" : false,
+                        "label" : {
+                          "pt-PT" : "Apreciação Qualitativa",
+                          "en-GB" : "Qualitative Evaluation"
+                        },
+                        "options" : [
+                          {
+                            "value" : "veryUnsatisfied",
+                            "label" : {
+                              "pt-PT" : "Muito Insatisfeito",
+                              "en-GB" : "Very Unsatisfied"
+                            }
+                          },
+                          {
+                            "value" : "unsatisfied",
+                            "label" : {
+                              "pt-PT" : "Insatisfeito",
+                              "en-GB" : "Unsatisfied"
+                            }
+                          },
+                          {
+                            "value" : "satisfied",
+                            "label" : {
+                              "pt-PT" : "Satisfeito",
+                              "en-GB" : "Satisfied"
+                            }
+                          },
+                          {
+                            "value" : "verySatisfied",
+                            "label" : {
+                              "pt-PT" : "Muito Satisfeito",
+                              "en-GB" : "Very Satisfied"
+                            }
+                          },
+                          {
+                            "value" : "completelySatisfied",
+                            "label" : {
+                              "pt-PT" : "Totalmente Satisfeito",
+                              "en-GB" : "Completely Satisfied"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "Text",
+                        "field" : "satisfactionJustification",
+                        "required" : true,
+                        "inputType" : "plain",
+                        "multiline" : true,
+                        "label" : {
+                          "pt-PT" : "Justificação do Nível de Satisfação Selecionado",
+                          "en-GB" : "Justification for the Selected Satisfaction Level"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "title" : {
+                  "pt-PT" : "Teletrabalho",
+                  "en-GB" : "Remote Work"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Renovação de Teletrabalho",
+                      "en-GB" : "Remote Work Renewal"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Select",
+                        "field" : "renewal",
+                        "required" : true,
+                        "multiple" : false,
+                        "collapse" : false,
+                        "allowOther" : false,
+                        "label" : {
+                          "pt-PT" : "Pretende renovar o regime de teletrabalho?",
+                          "en-GB" : "Would you like to renew your remote work regime?"
+                        },
+                        "options" : [
+                          {
+                            "value" : "RENEW",
+                            "label" : {
+                              "pt-PT" : "Sim",
+                              "en-GB" : "Yes"
+                            }
+                          },
+                          {
+                            "value" : "DONT_RENEW",
+                            "label" : {
+                              "pt-PT" : "Não",
+                              "en-GB" : "No"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type" : "Boolean",
+                        "field" : "changeRemoteWorkDays",
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Pretende alterar os dias de teletrabalho?",
+                          "en-GB" : "Would you like to change the current days of remote work?"
+                        },
+                        "labelYes" : {
+                          "pt-PT" : "Sim",
+                          "en-GB" : "Yes"
+                        },
+                        "labelNo" : {
+                          "pt-PT" : "Não",
+                          "en-GB" : "No"
+                        },
+                        "onlyIf" : {
+                          "field" : "renewal",
+                          "value" : {
+                            "value" : "RENEW",
+                            "label" : {
+                              "pt-PT" : "Sim",
+                              "en-GB" : "Yes"
+                            }
+                          },
+                          "negation" : false
+                        }
+                      },
+                      {
+                        "type" : "Select",
+                        "field" : "daysOfWeek",
+                        "required" : true,
+                        "allowOther" : false,
+                        "multiple" : true,
+                        "collapsed" : false,
+                        "label" : {
+                          "pt-PT" : "Dias da Semana em Teletrabalho",
+                          "en-GB" : "Days of the Week in Remote Work"
+                        },
+                        "onlyIf" : {
+                          "field" : "changeRemoteWorkDays",
+                          "value" : true,
+                          "negation" : false
+                        },
+                        "options" : [
+                          {
+                            "value" : "monday",
+                            "label" : {
+                              "pt-PT" : "Segunda-feira",
+                              "en-GB" : "Monday"
+                            }
+                          },
+                          {
+                            "value" : "tuesday",
+                            "label" : {
+                              "pt-PT" : "Terça-feira",
+                              "en-GB" : "Tuesday"
+                            }
+                          },
+                          {
+                            "value" : "wednesday",
+                            "label" : {
+                              "pt-PT" : "Quarta-feira",
+                              "en-GB" : "Wednesday"
+                            }
+                          },
+                          {
+                            "value" : "thursday",
+                            "label" : {
+                              "pt-PT" : "Quinta-feira",
+                              "en-GB" : "Thursday"
+                            }
+                          },
+                          {
+                            "value" : "friday",
+                            "label" : {
+                              "pt-PT" : "Sexta-feira",
+                              "en-GB" : "Friday"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "actionNodes" : [
+        {
+          "id" : "step-upload-remote-work-report",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Submissão do Relatório de Teletrabalho",
+            "en-GB" : "Remote Work Report Submission"
+          },
+          "description" : {
+            "pt-PT" : "Submissão do Relatório de Teletrabalho",
+            "en-GB" : "Remote Work Report Submission"
+          },
+          "buttons" : [
+            {
+              "id" : "upload-remote-work-report",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Submeter relatório de teletrabalho",
+                "en-GB" : "Submit remote work report"
+              },
+              "handlers" : {
+                "form" : "upload-remote-work-report",
+                "afterForm" : "action-from-remote-work-report-form"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Confirmar Submissão com Renovação",
+                "en-GB" : "Confirm Submission With Renewal"
+              },
+              "id" : "RENEW-step-upload-remote-work-report",
+              "name" : "RENEW"
+            },
+            {
+              "primary" : false,
+              "to" : "step-administrator",
+              "label" : {
+                "pt-PT" : "Confirmar Submissão Sem Renovação",
+                "en-GB" : "Confirm Submission Without Renewal"
+              },
+              "id" : "DONT_RENEW-step-upload-remote-work-report",
+              "name" : "DONT_RENEW"
+            }
+          ],
+          "queue" : "requester-username"
+        },
+        {
+          "id" : "step-administrator",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "O/A Administrador(a)",
+            "en-GB" : "The Administrator"
+          },
+          "description" : {
+            "pt-PT" : "Parecer do/a Administrador(a)",
+            "en-GB" : "Opinion of the Administrator"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Parecer do/a Administrador(a)",
+            "en-GB" : "Opinion of the Administrator"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-president",
+              "label" : {
+                "pt-PT" : "Autorizo a renovação",
+                "en-GB" : "I authorize the renewal"
+              },
+              "id" : "RENEW-step-administrator",
+              "name" : "RENEW"
+            },
+            {
+              "primary" : false,
+              "to" : "step-president",
+              "label" : {
+                "pt-PT" : "Não autorizo a renovação",
+                "en-GB" : "I do not authorize the renewal"
+              },
+              "id" : "DONT_RENEW-step-administrator",
+              "name" : "DONT_RENEW"
+            }
+          ],
+          "queue" : "Gestao-Administrativa",
+          "replaceTitleWithRole" : true,
+          "hr-final-authorization-step" : "true",
+          "actionProcessor" : [
+            {
+              "flowProcessor" : "Do Administrative Action For Remote Work",
+              "user" : "ist24235",
+              "data" : "Autorização automática por concordância de todos os intervenientes",
+              "flowAction" : "RENEW",
+              "id" : "onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work",
+              "name" : "onEnterNode"
+            },
+            {
+              "applyOn" : "RENEW-step-administrator",
+              "flowProcessor" : "Skip Next Nodes",
+              "node-field-key" : "hr-final-authorization-step",
+              "id" : "onActionTransition-step-administrator-Skip_Next_Nodes",
+              "name" : "onActionTransition"
+            },
+            {
+              "applyOn" : "DONT_RENEW-step-administrator",
+              "flowProcessor" : "Skip Next Nodes",
+              "node-field-key" : "hr-final-authorization-step",
+              "id" : "onActionTransition-step-administrator-Skip_Next_Nodes",
+              "name" : "onActionTransition"
+            }
+          ]
+        },
+        {
+          "id" : "step-president",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "O/A Presidente",
+            "en-GB" : "The President"
+          },
+          "description" : {
+            "pt-PT" : "Parecer do/a Presidente",
+            "en-GB" : "Opinion of the President"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Parecer do/a Presidente",
+            "en-GB" : "Opinion of the President"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-hr-processing",
+              "label" : {
+                "pt-PT" : "Autorizo a renovação",
+                "en-GB" : "I authorize the renewal"
+              },
+              "id" : "RENEW-step-president",
+              "name" : "RENEW"
+            },
+            {
+              "primary" : false,
+              "to" : "step-hr-processing",
+              "label" : {
+                "pt-PT" : "Não autorizo a renovação",
+                "en-GB" : "I do not authorize the renewal"
+              },
+              "id" : "DONT_RENEW-step-president",
+              "name" : "DONT_RENEW"
+            }
+          ],
+          "queue" : "Presidencia-do-Instituto-Superior-Tecnico",
+          "replaceTitleWithRole" : true,
+          "hr-final-authorization-step" : "true"
+        },
+        {
+          "id" : "step-hr-processing",
+          "type" : "withButtons",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "A Direção de Recursos Humanos",
+            "en-GB" : "The Human Resources Department"
+          },
+          "description" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "buttons" : [
+            {
+              "id" : "hr-processing",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Marcar como Processado",
+                "en-GB" : "Mark as Processed"
+              },
+              "handler" : "process:hr-processing"
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : false,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Marcar como Processado - Renovar",
+                "en-GB" : "Mark as Processed - Renew"
+              },
+              "id" : "RENEW-step-hr-processing",
+              "name" : "RENEW"
+            },
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Marcar como Processado - Terminar",
+                "en-GB" : "Mark as Processed - Conclude"
+              },
+              "id" : "CONCLUDE-step-hr-processing",
+              "name" : "CONCLUDE"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "RENEW-step-hr-processing",
+              "flowProcessor" : "Continue Main Flow After All Subflows In Node Are Concluded",
+              "action" : "RENEW",
+              "id" : "onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded",
+              "name" : "onSuccess"
+            },
+            {
+              "applyOn" : "CONCLUDE-step-hr-processing",
+              "flowProcessor" : "Continue Main Flow After All Subflows In Node Are Concluded",
+              "action" : "CONCLUDE",
+              "id" : "onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded",
+              "name" : "onSuccess"
+            }
+          ],
+          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+        }
+      ]
+    }
+  }
+}

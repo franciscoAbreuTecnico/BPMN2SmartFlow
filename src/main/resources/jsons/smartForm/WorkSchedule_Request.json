@@ -1,0 +1,1470 @@
+{
+  "name" : {
+    "pt-PT" : "Horário de Trabalho",
+    "en-GB" : "Work Schedule"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar a alteração do horário de trabalho.",
+    "en-GB" : "This form allows you to request for a change to your work schedule."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "assignment", "type", "specificSituations" ]
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Prestação de Trabalho"
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "work-schedule-flow",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "queuesToRemove" : [ "Gestão Administrativa", "Presidência do Instituto Superior Técnico" ],
+      "completeAuthorizationChain" : true,
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação do Horário de Trabalho",
+        "en-GB" : "Work Schedule Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Horário de Trabalho",
+          "en-GB" : "Work Schedule"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "assignment",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Afetação",
+            "en-GB" : "Assignment"
+          },
+          "options" : [ {
+            "value" : "fullTime",
+            "label" : {
+              "pt-PT" : "Tempo Inteiro",
+              "en-GB" : "Full-time"
+            }
+          }, {
+            "value" : "partTime",
+            "label" : {
+              "pt-PT" : "Tempo Parcial",
+              "en-GB" : "Part-time"
+            }
+          }, {
+            "value" : "specificSituations",
+            "label" : {
+              "pt-PT" : "Especificidades",
+              "en-GB" : "Specific Situations"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "type",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Modalidade",
+            "en-GB" : "Type"
+          },
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "negation" : false,
+            "value" : {
+              "value" : "fullTime",
+              "label" : {
+                "pt-PT" : "Tempo Inteiro",
+                "en-GB" : "Full-time"
+              }
+            }
+          } ],
+          "options" : [ {
+            "value" : "rigidSchedule",
+            "label" : {
+              "pt-PT" : "Horário Rígido (09:00 - 12:30 ; 13:30 - 17:00)",
+              "en-GB" : "Rigid Schedule (09:00 - 12:30 ; 13:30 - 17:00)"
+            }
+          }, {
+            "value" : "flexibleSchedule",
+            "label" : {
+              "pt-PT" : "Horário Flexível",
+              "en-GB" : "Flexible Schedule"
+            }
+          }, {
+            "value" : "scheduleExemption",
+            "label" : {
+              "pt-PT" : "Isenção de Horário",
+              "en-GB" : "Schedule Exemption"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "fixedPlatform",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Plataforma Fixa",
+            "en-GB" : "Fixed Platform"
+          },
+          "options" : [ {
+            "value" : "rule",
+            "label" : {
+              "pt-PT" : "Regra - segunda a sexta, entre as 10h00 - 12h00 e 14h00 - 16h00",
+              "en-GB" : "Rule - Monday to Friday, between 10:00 AM - 12:00 PM and 2:00 PM - 4:00 PM"
+            }
+          }, {
+            "value" : "ruleException",
+            "label" : {
+              "pt-PT" : "Exceção - segunda a sexta",
+              "en-GB" : "Exception - Monday to Friday"
+            }
+          } ],
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "value" : {
+              "value" : "fullTime",
+              "label" : {
+                "pt-PT" : "Tempo Inteiro",
+                "en-GB" : "Full-time"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "type",
+            "negation" : false,
+            "value" : {
+              "value" : "flexibleSchedule",
+              "label" : {
+                "pt-PT" : "Horário Flexível",
+                "en-GB" : "Flexible Schedule"
+              }
+            }
+          } ]
+        }, {
+          "type" : "Array",
+          "field" : "scheduleFixedPlatformException",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Horário da Plataforma Fixa",
+            "en-GB" : "Fixed Platform Schedule"
+          },
+          "description" : {
+            "pt-PT" : "O intervalo entre plataformas tem que ter no mínimo 1 hora e no máximo 2 horas; o total das plataformas da manhã e da tarde não pode ser inferior a 4 horas.",
+            "en-GB" : "The interval between platforms must be no less than 1 hour and no more than 2 hours; the total duration of the morning and afternoon platforms must be at least 4 hours."
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar horário da plataforma fixa",
+            "en-GB" : "Add fixed platform schedule"
+          },
+          "min" : 1,
+          "max" : 1,
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "value" : {
+              "value" : "fullTime",
+              "label" : {
+                "pt-PT" : "Tempo Inteiro",
+                "en-GB" : "Full-time"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "type",
+            "negation" : false,
+            "value" : {
+              "value" : "flexibleSchedule",
+              "label" : {
+                "pt-PT" : "Horário Flexível",
+                "en-GB" : "Flexible Schedule"
+              }
+            }
+          }, {
+            "field" : "fixedPlatform",
+            "negation" : false,
+            "value" : {
+              "value" : "ruleException",
+              "label" : {
+                "pt-PT" : "Exceção - segunda a sexta",
+                "en-GB" : "Exception - Monday to Friday"
+              }
+            }
+          } ],
+          "properties" : [ {
+            "type" : "Composite",
+            "field" : "scheduleExceptionMorning",
+            "required" : true,
+            "properties" : [ {
+              "type" : "DateTime",
+              "field" : "startHoursMorningException",
+              "required" : true,
+              "label" : {
+                "pt-PT" : "Hora de Início - Manhã",
+                "en-GB" : "Start Time - Morning"
+              },
+              "date" : false,
+              "time" : true,
+              "timezone" : false
+            }, {
+              "type" : "DateTime",
+              "field" : "endHoursMorningException",
+              "required" : true,
+              "label" : {
+                "pt-PT" : "Hora de Fim - Manhã",
+                "en-GB" : "End Time - Morning"
+              },
+              "date" : false,
+              "time" : true,
+              "timezone" : false
+            } ]
+          }, {
+            "type" : "Composite",
+            "field" : "scheduleExceptionAfternoon",
+            "required" : true,
+            "properties" : [ {
+              "type" : "DateTime",
+              "field" : "startHoursAfternoonException",
+              "required" : true,
+              "label" : {
+                "pt-PT" : "Hora de Início - Tarde",
+                "en-GB" : "Start Time - Afternoon"
+              },
+              "date" : false,
+              "time" : true,
+              "timezone" : false
+            }, {
+              "type" : "DateTime",
+              "field" : "endHoursAfternoonException",
+              "required" : true,
+              "label" : {
+                "pt-PT" : "Hora de Fim - Tarde",
+                "en-GB" : "End Time - Afternoon"
+              },
+              "date" : false,
+              "time" : true,
+              "timezone" : false
+            } ]
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "flexibleScheduleExceptionJustification",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Fundamentação",
+            "en-GB" : "Justification"
+          },
+          "multiline" : true,
+          "inputType" : "plain",
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "value" : {
+              "value" : "fullTime",
+              "label" : {
+                "pt-PT" : "Tempo Inteiro",
+                "en-GB" : "Full-time"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "type",
+            "negation" : false,
+            "value" : {
+              "value" : "flexibleSchedule",
+              "label" : {
+                "pt-PT" : "Horário Flexível",
+                "en-GB" : "Flexible Schedule"
+              }
+            }
+          }, {
+            "field" : "fixedPlatform",
+            "negation" : false,
+            "value" : {
+              "value" : "ruleException",
+              "label" : {
+                "pt-PT" : "Exceção - segunda a sexta",
+                "en-GB" : "Exception - Monday to Friday"
+              }
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "scheduleExemptionType",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Tipo",
+            "en-GB" : "Type"
+          },
+          "options" : [ {
+            "value" : "executiveRole",
+            "label" : {
+              "pt-PT" : "Dirigente",
+              "en-GB" : "Executive Role"
+            }
+          }, {
+            "value" : "other",
+            "label" : {
+              "pt-PT" : "Outro",
+              "en-GB" : "Other"
+            }
+          } ],
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "value" : {
+              "value" : "fullTime",
+              "label" : {
+                "pt-PT" : "Tempo Inteiro",
+                "en-GB" : "Full-time"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "type",
+            "value" : {
+              "value" : "scheduleExemption",
+              "label" : {
+                "pt-PT" : "Isenção de Horário",
+                "en-GB" : "Schedule Exemption"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "scheduleExemptionJustification",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Fundamentação",
+            "en-GB" : "Justification"
+          },
+          "multiline" : true,
+          "inputType" : "plain",
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "value" : {
+              "value" : "fullTime",
+              "label" : {
+                "pt-PT" : "Tempo Inteiro",
+                "en-GB" : "Full-time"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "type",
+            "value" : {
+              "value" : "scheduleExemption",
+              "label" : {
+                "pt-PT" : "Isenção de Horário",
+                "en-GB" : "Schedule Exemption"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "scheduleExemptionType",
+            "value" : {
+              "value" : "other",
+              "label" : {
+                "pt-PT" : "Outro",
+                "en-GB" : "Other"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "hoursPerWeek",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Número de Horas Semanais",
+            "en-GB" : "Number of Hours per Week"
+          },
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "value" : {
+              "value" : "partTime",
+              "label" : {
+                "pt-PT" : "Tempo Parcial",
+                "en-GB" : "Part-time"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Array",
+          "field" : "partTimeSchedules",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Horário a Praticar",
+            "en-GB" : "Schedule to Follow"
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar dia e horário de trabalho",
+            "en-GB" : "Add work day and schedule"
+          },
+          "min" : 0,
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "value" : {
+              "value" : "partTime",
+              "label" : {
+                "pt-PT" : "Tempo Parcial",
+                "en-GB" : "Part-time"
+              }
+            },
+            "negation" : false
+          } ],
+          "properties" : [ {
+            "type" : "Select",
+            "field" : "partTimeDay",
+            "required" : true,
+            "allowOther" : false,
+            "multiple" : true,
+            "collapsed" : false,
+            "label" : {
+              "pt-PT" : "Dia da Semana",
+              "en-GB" : "Day of the Week"
+            },
+            "options" : [ {
+              "value" : "monday",
+              "label" : {
+                "pt-PT" : "Segunda-feira",
+                "en-GB" : "Monday"
+              }
+            }, {
+              "value" : "tuesday",
+              "label" : {
+                "pt-PT" : "Terça-feira",
+                "en-GB" : "Tuesday"
+              }
+            }, {
+              "value" : "wednesday",
+              "label" : {
+                "pt-PT" : "Quarta-feira",
+                "en-GB" : "Wednesday"
+              }
+            }, {
+              "value" : "thursday",
+              "label" : {
+                "pt-PT" : "Quinta-feira",
+                "en-GB" : "Thursday"
+              }
+            }, {
+              "value" : "friday",
+              "label" : {
+                "pt-PT" : "Sexta-feira",
+                "en-GB" : "Friday"
+              }
+            } ]
+          }, {
+            "type" : "Composite",
+            "field" : "partTimeSchedule",
+            "required" : true,
+            "properties" : [ {
+              "type" : "DateTime",
+              "field" : "startHoursPartTime",
+              "required" : true,
+              "label" : {
+                "pt-PT" : "Hora de Início",
+                "en-GB" : "Start Time"
+              },
+              "date" : false,
+              "time" : true,
+              "timezone" : false
+            }, {
+              "type" : "DateTime",
+              "field" : "endHoursPartTime",
+              "required" : true,
+              "label" : {
+                "pt-PT" : "Hora de Fim",
+                "en-GB" : "End Time"
+              },
+              "date" : false,
+              "time" : true,
+              "timezone" : false
+            } ]
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "specificSituationType",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Especificidades",
+            "en-GB" : "Specific Situations"
+          },
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "negation" : false,
+            "value" : {
+              "value" : "specificSituations",
+              "label" : {
+                "pt-PT" : "Especificidades",
+                "en-GB" : "Specific Situations"
+              }
+            }
+          } ],
+          "options" : [ {
+            "value" : "continuousSchedule",
+            "label" : {
+              "pt-PT" : "Jornada Contínua",
+              "en-GB" : "Continuous Work Schedule"
+            }
+          }, {
+            "value" : "workingStudent",
+            "label" : {
+              "pt-PT" : "Trabalhador-Estudante",
+              "en-GB" : "Working Student"
+            }
+          }, {
+            "value" : "parenthood",
+            "label" : {
+              "pt-PT" : "Parentalidade",
+              "en-GB" : "Parenthood"
+            }
+          } ]
+        }, {
+          "type" : "DateTime",
+          "field" : "startRule",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Hora de Início do Horário",
+            "en-GB" : "Schedule Start Time"
+          },
+          "description" : {
+            "pt-PT" : "O horário tem uma duração total de 6 horas, com uma plataforma fixa de 5 horas, que terá início uma hora após a que indicar. Por exemplo, se pretende ter uma plataforma fixa das 10:00 às 15:00, deverá indicar 09:00.",
+            "en-GB" : "The schedule lasts for a total of 6 hours, with a 5-hour fixed platform, which will start one hour after the time you specify. For example, if you want the fixed platform to be from 10:00 to 15:00, you should specify 09:00."
+          },
+          "date" : false,
+          "time" : true,
+          "timezone" : false,
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "continuousSchedule",
+              "label" : {
+                "pt-PT" : "Jornada Contínua",
+                "en-GB" : "Continuous Work Schedule"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "continuousScheduleJustification",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Fundamentação",
+            "en-GB" : "Justificação"
+          },
+          "multiline" : true,
+          "allowOther" : false,
+          "onlyIf" : [ {
+            "field" : "assignment",
+            "value" : {
+              "value" : "specificSituations",
+              "label" : {
+                "pt-PT" : "Especificidades",
+                "en-GB" : "Specific Situations"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "specificSituationType",
+            "negation" : false,
+            "value" : {
+              "value" : "continuousSchedule",
+              "label" : {
+                "pt-PT" : "Jornada Contínua",
+                "en-GB" : "Continuous Work Schedule"
+              }
+            }
+          } ],
+          "options" : [ {
+            "value" : "childrenUnder12",
+            "label" : {
+              "pt-PT" : "Filhos Menores de 12 Anos",
+              "en-GB" : "Children Under 12 Years Old"
+            }
+          }, {
+            "value" : "otherJustification",
+            "label" : {
+              "pt-PT" : "Outra Fundamentação",
+              "en-GB" : "Other Justification"
+            }
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "otherJustificationText",
+          "required" : true,
+          "multiline" : true,
+          "label" : {
+            "pt-PT" : "Outra Fundamentação",
+            "en-GB" : "Other Justification"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "continuousSchedule",
+              "label" : {
+                "pt-PT" : "Jornada Contínua",
+                "en-GB" : "Continuous Work Schedule"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "continuousScheduleJustification",
+            "value" : {
+              "value" : "otherJustification",
+              "label" : {
+                "pt-PT" : "Outra Fundamentação",
+                "en-GB" : "Other Justification"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Array",
+          "field" : "continuousScheduleDocuments",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Documento(s) a Anexar",
+            "en-GB" : "Attach Document(s)"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "continuousSchedule",
+              "label" : {
+                "pt-PT" : "Jornada Contínua",
+                "en-GB" : "Continuous Work Schedule"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "continuousScheduleJustification",
+            "value" : {
+              "value" : "otherJustification",
+              "label" : {
+                "pt-PT" : "Outra Fundamentação",
+                "en-GB" : "Other Justification"
+              }
+            }
+          } ],
+          "properties" : [ {
+            "type" : "File",
+            "field" : "document",
+            "required" : false,
+            "label" : {
+              "pt-PT" : "Documento",
+              "en-GB" : "Document"
+            },
+            "allowedFileTypes" : [ ".pdf" ],
+            "maxSizeMB" : 10
+          } ]
+        }, {
+          "type" : "AsyncSelect",
+          "field" : "workingStudentRequest",
+          "optionsProvider" : "/paper-pusher-ist/studentWorkerRequests",
+          "required" : true,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Pedido de Estatuto de Trabalhador-Estudante",
+            "en-GB" : "Working Student Status Request"
+          },
+          "description" : {
+            "pt-PT" : "O horário de Trabalhador-Estudante só pode ser solicitado se tiver um pedido de 'Estatuto de Trabalhador Estudante' submetido e lacrado.",
+            "en-GB" : "The Working Student schedule can only be requested for if you have a submitted and locked 'Working Student Status' request."
+          },
+          "onlyIf" : {
+            "field" : "specificSituationType",
+            "negation" : false,
+            "value" : {
+              "value" : "workingStudent",
+              "label" : {
+                "pt-PT" : "Trabalhador-Estudante",
+                "en-GB" : "Working Student"
+              }
+            }
+          }
+        }, {
+          "type" : "AsyncSelect",
+          "field" : "workingStudentAcademicYear",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Ano Letivo",
+            "en-GB" : "Academic Year"
+          },
+          "description" : {
+            "pt-PT" : "Indique o ano letivo da dispensa de trabalho para frequência de aulas.",
+            "en-GB" : "Please specify the academic year in which you wish to request for schedule flexibility to attend classes."
+          },
+          "optionsProvider" : "ist-admissions/executionYears",
+          "allowOther" : true,
+          "onlyIf" : {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "workingStudent",
+              "label" : {
+                "pt-PT" : "Trabalhador-Estudante",
+                "en-GB" : "Working Student"
+              }
+            },
+            "negation" : false
+          }
+        }, {
+          "type" : "Array",
+          "field" : "workingStudentClassAccommodationPeriod",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Período de Dispensa",
+            "en-GB" : "Work-Study Arrangement"
+          },
+          "description" : {
+            "pt-PT" : "Introduzir período de dispensa, o qual se deve adaptar ao horário escolar, podendo variar consoante os dias da semana, num máximo de 5 horas semanais, nos termos previstos na Lei n.º 7/2009, de 12 de fevereiro, na sua redação atual e na Lei n.º 68/2013, de 29 de agosto.",
+            "en-GB" : "Specify the periods in which you require to be off work, which should align with the school schedule and may vary depending on the days of the week, with a maximum of 5 hours per week, in accordance with Law No. 7/2009, of 12 February, in tis current wording, and Law No. 68/2013, of 29 August."
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar período de dispensa",
+            "en-GB" : "Add time off period"
+          },
+          "min" : 0,
+          "max" : 5,
+          "onlyIf" : {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "workingStudent",
+              "label" : {
+                "pt-PT" : "Trabalhador-Estudante",
+                "en-GB" : "Working Student"
+              }
+            },
+            "negation" : false
+          },
+          "properties" : [ {
+            "type" : "Select",
+            "field" : "timeOffDays",
+            "required" : true,
+            "allowOther" : false,
+            "multiple" : true,
+            "collapsed" : false,
+            "label" : {
+              "pt-PT" : "Dia(s) de Dispensa",
+              "en-GB" : "Time Off Day(s)"
+            },
+            "options" : [ {
+              "value" : "monday",
+              "label" : {
+                "pt-PT" : "Segunda-feira",
+                "en-GB" : "Monday"
+              }
+            }, {
+              "value" : "tuesday",
+              "label" : {
+                "pt-PT" : "Terça-feira",
+                "en-GB" : "Tuesday"
+              }
+            }, {
+              "value" : "wednesday",
+              "label" : {
+                "pt-PT" : "Quarta-feira",
+                "en-GB" : "Wednesday"
+              }
+            }, {
+              "value" : "thursday",
+              "label" : {
+                "pt-PT" : "Quinta-feira",
+                "en-GB" : "Thursday"
+              }
+            }, {
+              "value" : "friday",
+              "label" : {
+                "pt-PT" : "Sexta-feira",
+                "en-GB" : "Friday"
+              }
+            } ]
+          }, {
+            "type" : "Composite",
+            "field" : "workingStudentSchedule",
+            "required" : true,
+            "properties" : [ {
+              "type" : "DateTime",
+              "field" : "workingStudentStartHours",
+              "required" : true,
+              "label" : {
+                "pt-PT" : "Hora de Início",
+                "en-GB" : "Start Time"
+              },
+              "date" : false,
+              "time" : true,
+              "timezone" : false
+            }, {
+              "type" : "DateTime",
+              "field" : "workingStudentEndHours",
+              "required" : true,
+              "label" : {
+                "pt-PT" : "Hora de Fim",
+                "en-GB" : "End Time"
+              },
+              "date" : false,
+              "time" : true,
+              "timezone" : false
+            } ]
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "parenthoodLeaveType",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Dispensas Parentais",
+            "en-GB" : "Parental Leaves"
+          },
+          "options" : [ {
+            "value" : "breastfeedingLeave",
+            "label" : {
+              "pt-PT" : "Dispensa para amamentação, nos termos previstos nos artigos 47.º e 48.º do Código de Trabalho (CT)",
+              "en-GB" : "Breastfeeding leave, under the terms set out in Articles 47 and 48 of the Labour Code (CT)"
+            }
+          }, {
+            "value" : "nursingLeave",
+            "label" : {
+              "pt-PT" : "Dispensa para aleitamento, nos termos previstos nos artigos 47.º e 48.º do Código de Trabalho (CT)",
+              "en-GB" : "Nursing leave, under the terms set out in Articles 47 and 48 of the Labour Code (CT)"
+            }
+          }, {
+            "value" : "complementaryParentalLeave",
+            "label" : {
+              "pt-PT" : "Licença parental complementar, nos termos previstos na alínea b) do n.º 1 do artigo 51.º do Código de Trabalho (CT), na modalidade de tempo parcial (equivalente a 50% do horário a tempo inteiro) durante 12 meses",
+              "en-GB" : "Complementary parental leave, in accordance with paragraph b) of number 1 of Article 51 of the Labour Code (CT), on a part-time schedule (equivalent to 50% of full-time working hours) for a duration of 12 months"
+            }
+          }, {
+            "value" : "partTimeParentalSchedule",
+            "label" : {
+              "pt-PT" : "Trabalho a tempo parcial de trabalhadores com responsabilidades familiares, nos termos previstos no artigo 55.º do Código de Trabalho (CT)",
+              "en-GB" : "Part-time schedule for employees with family responsibilities, as provided under Article 55 of the Labour Code (CT)"
+            }
+          } ],
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "DateTime",
+          "field" : "breastFeedingOrNursingStartHours",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Hora de Entrada no Serviço",
+            "en-GB" : "Work Start Time"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : [ {
+              "value" : "breastfeedingLeave",
+              "label" : {
+                "pt-PT" : "Dispensa para amamentação, nos termos previstos nos artigos 47.º e 48.º do Código de Trabalho (CT)",
+                "en-GB" : "Breastfeeding leave, under the terms set out in Articles 47 and 48 of the Labour Code (CT)"
+              }
+            }, {
+              "value" : "nursingLeave",
+              "label" : {
+                "pt-PT" : "Dispensa para aleitamento, nos termos previstos nos artigos 47.º e 48.º do Código de Trabalho (CT)",
+                "en-GB" : "Nursing leave, under the terms set out in Articles 47 and 48 of the Labour Code (CT)"
+              }
+            } ],
+            "negation" : false
+          } ],
+          "date" : false,
+          "time" : true,
+          "timezone" : false
+        }, {
+          "type" : "DateTime",
+          "field" : "breastfeedingOrNursingEndHours",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Hora de Saída do Serviço",
+            "en-GB" : "Work End Time"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : [ {
+              "value" : "breastfeedingLeave",
+              "label" : {
+                "pt-PT" : "Dispensa para amamentação, nos termos previstos nos artigos 47.º e 48.º do Código de Trabalho (CT)",
+                "en-GB" : "Breastfeeding leave, under the terms set out in Articles 47 and 48 of the Labour Code (CT)"
+              }
+            }, {
+              "value" : "nursingLeave",
+              "label" : {
+                "pt-PT" : "Dispensa para aleitamento, nos termos previstos nos artigos 47.º e 48.º do Código de Trabalho (CT)",
+                "en-GB" : "Nursing leave, under the terms set out in Articles 47 and 48 of the Labour Code (CT)"
+              }
+            } ],
+            "negation" : false
+          } ],
+          "date" : false,
+          "time" : true,
+          "timezone" : false
+        }, {
+          "type" : "File",
+          "field" : "breastfeedingOrNursingDocuments",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Declaração Médica",
+            "en-GB" : "Medical Certificate"
+          },
+          "description" : {
+            "pt-PT" : "Tanto no caso de amamentação como de aleitamento, a dispensa é válida durante o primeiro ano de vida da criança, sendo que, caso a amamentação se prolongue, deverá ser apresentada declaração médica que comprove essa situação.",
+            "en-GB" : "Both for breastfeeding and nursing, the leave is valid during the first year of the child's life. If breastfeeding continues beyond this period, a medical certificate must be provided to confirm this situation."
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : [ {
+              "value" : "breastfeedingLeave",
+              "label" : {
+                "pt-PT" : "Dispensa para amamentação, nos termos previstos nos artigos 47.º e 48.º do Código de Trabalho (CT)",
+                "en-GB" : "Breastfeeding leave, under the terms set out in Articles 47 and 48 of the Labour Code (CT)"
+              }
+            }, {
+              "value" : "nursingLeave",
+              "label" : {
+                "pt-PT" : "Dispensa para aleitamento, nos termos previstos nos artigos 47.º e 48.º do Código de Trabalho (CT)",
+                "en-GB" : "Nursing leave, under the terms set out in Articles 47 and 48 of the Labour Code (CT)"
+              }
+            } ],
+            "negation" : false
+          } ],
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10
+        }, {
+          "type" : "DateTime",
+          "field" : "startHoursComplementaryParentalLeave",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Hora de Entrada no Serviço",
+            "en-GB" : "Work Start Time"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "negation" : false,
+            "value" : {
+              "value" : "complementaryParentalLeave",
+              "label" : {
+                "pt-PT" : "Licença parental complementar, nos termos previstos na alínea b) do n.º 1 do artigo 51.º do Código de Trabalho (CT), na modalidade de tempo parcial (equivalente a 50% do horário a tempo inteiro) durante 12 meses",
+                "en-GB" : "Complementary parental leave, in accordance with paragraph b) of number 1 of Article 51 of the Labour Code (CT), on a part-time schedule (equivalent to 50% of full-time working hours) for a duration of 12 months"
+              }
+            }
+          } ],
+          "date" : false,
+          "time" : true,
+          "timezone" : false
+        }, {
+          "type" : "DateTime",
+          "field" : "endHoursComplementaryParentalLeave",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Hora de Saída do Serviço",
+            "en-GB" : "Work End Time"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "negation" : false,
+            "value" : {
+              "value" : "complementaryParentalLeave",
+              "label" : {
+                "pt-PT" : "Licença parental complementar, nos termos previstos na alínea b) do n.º 1 do artigo 51.º do Código de Trabalho (CT), na modalidade de tempo parcial (equivalente a 50% do horário a tempo inteiro) durante 12 meses",
+                "en-GB" : "Complementary parental leave, in accordance with paragraph b) of number 1 of Article 51 of the Labour Code (CT), on a part-time schedule (equivalent to 50% of full-time working hours) for a duration of 12 months"
+              }
+            }
+          } ],
+          "date" : false,
+          "time" : true,
+          "timezone" : false
+        }, {
+          "type" : "Quantity",
+          "field" : "parenthoodInfoPartTimeYears",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Duração (Anos)",
+            "en-GB" : "Duration (Years)"
+          },
+          "description" : {
+            "pt-PT" : "A prestação de trabalho a tempo parcial pode ser prorrogada até dois anos ou, no caso de terceiro filho ou mais, três anos, ou ainda, no caso de filho com deficiência ou doença crónica, quatro anos.",
+            "en-GB" : "The part-time schedule can be extended for up to two years, or three years in the case of a third child or more, or four years if the child has a disability or chronic illness."
+          },
+          "min" : 0,
+          "step" : 1,
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : {
+              "value" : "partTimeParentalSchedule",
+              "label" : {
+                "pt-PT" : "Trabalho a tempo parcial de trabalhadores com responsabilidades familiares, nos termos previstos no artigo 55.º do Código de Trabalho (CT)",
+                "en-GB" : "Part-time schedule for employees with family responsibilities, as provided under Article 55 of the Labour Code (CT)"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "parentalPartTimeScheduleType",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Tipo de Horário",
+            "en-GB" : "Schedule Type"
+          },
+          "options" : [ {
+            "value" : "customSchedule",
+            "label" : {
+              "pt-PT" : "Horário Personalizado",
+              "en-GB" : "Custom Schedule"
+            }
+          }, {
+            "value" : "threeDaysOfTheWeek",
+            "label" : {
+              "pt-PT" : "Três (3) Dias da Semana",
+              "en-GB" : "Three (3) Days of the Week"
+            }
+          } ],
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : {
+              "value" : "partTimeParentalSchedule",
+              "label" : {
+                "pt-PT" : "Trabalho a tempo parcial de trabalhadores com responsabilidades familiares, nos termos previstos no artigo 55.º do Código de Trabalho (CT)",
+                "en-GB" : "Part-time schedule for employees with family responsibilities, as provided under Article 55 of the Labour Code (CT)"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "DateTime",
+          "field" : "startHoursParentalPartTimeSchedule",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Hora de Entrada no Serviço",
+            "en-GB" : "Work Start Time"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : {
+              "value" : "partTimeParentalSchedule",
+              "label" : {
+                "pt-PT" : "Trabalho a tempo parcial de trabalhadores com responsabilidades familiares, nos termos previstos no artigo 55.º do Código de Trabalho (CT)",
+                "en-GB" : "Part-time schedule for employees with family responsibilities, as provided under Article 55 of the Labour Code (CT)"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parentalPartTimeScheduleType",
+            "value" : {
+              "value" : "customSchedule",
+              "label" : {
+                "pt-PT" : "Horário Personalizado",
+                "en-GB" : "Custom Schedule"
+              }
+            },
+            "negation" : false
+          } ],
+          "date" : false,
+          "time" : true,
+          "timezone" : false
+        }, {
+          "type" : "DateTime",
+          "field" : "endHoursParentalPartTimeSchedule",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Hora de Saída do Serviço",
+            "en-GB" : "Work End Time"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : {
+              "value" : "partTimeParentalSchedule",
+              "label" : {
+                "pt-PT" : "Trabalho a tempo parcial de trabalhadores com responsabilidades familiares, nos termos previstos no artigo 55.º do Código de Trabalho (CT)",
+                "en-GB" : "Part-time schedule for employees with family responsibilities, as provided under Article 55 of the Labour Code (CT)"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parentalPartTimeScheduleType",
+            "value" : {
+              "value" : "customSchedule",
+              "label" : {
+                "pt-PT" : "Horário Personalizado",
+                "en-GB" : "Custom Schedule"
+              }
+            },
+            "negation" : false
+          } ],
+          "date" : false,
+          "time" : true,
+          "timezone" : false
+        }, {
+          "type" : "Select",
+          "field" : "daysOfTheWeekParentalPartTimeSchedule",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : true,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Dias da Semana",
+            "en-GB" : "Days of the Week"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : {
+              "value" : "partTimeParentalSchedule",
+              "label" : {
+                "pt-PT" : "Trabalho a tempo parcial de trabalhadores com responsabilidades familiares, nos termos previstos no artigo 55.º do Código de Trabalho (CT)",
+                "en-GB" : "Part-time schedule for employees with family responsibilities, as provided under Article 55 of the Labour Code (CT)"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parentalPartTimeScheduleType",
+            "value" : {
+              "value" : "threeDaysOfTheWeek",
+              "label" : {
+                "pt-PT" : "Three (3) Dias da Semana",
+                "en-GB" : "Três (3) Days of the Week"
+              }
+            },
+            "negation" : false
+          } ],
+          "options" : [ {
+            "value" : "monday",
+            "label" : {
+              "pt-PT" : "Segunda-feira",
+              "en-GB" : "Monday"
+            }
+          }, {
+            "value" : "tuesday",
+            "label" : {
+              "pt-PT" : "Terça-feira",
+              "en-GB" : "Tuesday"
+            }
+          }, {
+            "value" : "wednesday",
+            "label" : {
+              "pt-PT" : "Quarta-feira",
+              "en-GB" : "Wednesday"
+            }
+          }, {
+            "value" : "thursday",
+            "label" : {
+              "pt-PT" : "Quinta-feira",
+              "en-GB" : "Thursday"
+            }
+          }, {
+            "value" : "friday",
+            "label" : {
+              "pt-PT" : "Sexta-feira",
+              "en-GB" : "Friday"
+            }
+          } ]
+        }, {
+          "type" : "Quantity",
+          "field" : "totalHoursPerWeekParentalPartTime",
+          "required" : true,
+          "step" : 1,
+          "min" : 0,
+          "label" : {
+            "pt-PT" : "Total Semanal de Horas de Trabalho",
+            "en-GB" : "Total Hours per Week"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : {
+              "value" : "partTimeParentalSchedule",
+              "label" : {
+                "pt-PT" : "Trabalho a tempo parcial de trabalhadores com responsabilidades familiares, nos termos previstos no artigo 55.º do Código de Trabalho (CT)",
+                "en-GB" : "Part-time schedule for employees with family responsibilities, as provided under Article 55 of the Labour Code (CT)"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parentalPartTimeScheduleType",
+            "value" : {
+              "value" : "threeDaysOfTheWeek",
+              "label" : {
+                "pt-PT" : "Three (3) Dias da Semana",
+                "en-GB" : "Três (3) Days of the Week"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "File",
+          "field" : "proofDocumentParentalPartTime",
+          "label" : {
+            "pt-PT" : "Comprovativo",
+            "en-GB" : "Proof"
+          },
+          "description" : {
+            "pt-PT" : "Se tem filho com deficiência ou doença crónica que com ele viva em comunhão de mesa e habitação, deve apresentar o comprovativo para ter direito ao trabalho a tempo parcial.",
+            "en-GB" : "If you have a child with a disability or chronic illness who lives with you in the same household, you must provide proof in order to be entitled to part-time schedule."
+          },
+          "required" : false,
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10,
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          }, {
+            "field" : "parenthoodLeaveType",
+            "value" : {
+              "value" : "partTimeParentalSchedule",
+              "label" : {
+                "pt-PT" : "Trabalho a tempo parcial de trabalhadores com responsabilidades familiares, nos termos previstos no artigo 55.º do Código de Trabalho (CT)",
+                "en-GB" : "Part-time schedule for employees with family responsibilities, as provided under Article 55 of the Labour Code (CT)"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "parenthoodObservations",
+          "required" : false,
+          "multiline" : true,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Observações",
+            "en-GB" : "Observations"
+          },
+          "onlyIf" : [ {
+            "field" : "specificSituationType",
+            "value" : {
+              "value" : "parenthood",
+              "label" : {
+                "pt-PT" : "Parentalidade",
+                "en-GB" : "Parenthood"
+              }
+            },
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Boolean",
+          "field" : "unjustifiedAbsencesAsHolidays",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Marcação de Férias em Caso de Faltas Injustificadas",
+            "en-GB" : "Holiday Scheduling in the Event of Unjustified Absences"
+          },
+          "description" : {
+            "pt-PT" : "Em situações que originem a marcação de falta(s) injustificada(s), opto pela marcação de dias (ou meios-dias) de férias, nos termos e com os efeitos definidos no artigo 135.º da Lei Geral do Trabalho em Funções Públicas (LTFP), aprovada pela Lei 35/2014, de 20 de junho.",
+            "en-GB" : "In situations that result in the recording of unauthorised absence(s), I opt to record days (or half-days) of holiday, in accordance with the terms and effects defined in Article 135 of the General Labour Law in Public Functions (LTFP), approved by Law 35/2014, of 20 June."
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          }
+        }, {
+          "type" : "DateTime",
+          "field" : "startDate",
+          "description" : {
+            "pt-PT" : "Informamos que a data indicada não é vinculativa e não poderá ser anterior à data do despacho do Conselho de Gestão.",
+            "en-GB" : "Please note that the indicated date is not binding and cannot precede the date of the Governing Board's decision."
+          },
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Horário a Praticar a partir de",
+            "en-GB" : "Schedule to Be Followed Starting From"
+          },
+          "date" : true,
+          "time" : false
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta",
+        "en-GB" : "Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Resposta",
+          "en-GB" : "Response"
+        },
+        "properties" : [ {
+          "type" : "DateTime",
+          "field" : "effectiveDate",
+          "required" : true,
+          "date" : true,
+          "time" : false,
+          "label" : {
+            "pt-PT" : "Data de Produção de Efeitos",
+            "en-GB" : "Effective Date"
+          },
+          "description" : {
+            "pt-PT" : "O horário de trabalho tem efeitos a partir de:",
+            "en-GB" : "The work schedule is effective starting on:"
+          }
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

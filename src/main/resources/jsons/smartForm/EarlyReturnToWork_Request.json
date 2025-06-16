@@ -1,0 +1,167 @@
+{
+  "name" : {
+    "pt-PT" : "Comunicação de Regresso Antecipado ao Trabalho",
+    "en-GB" : "Communication of Early Return to Work"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe comunicar o regresso antecipado ao trabalho.",
+    "en-GB" : "This form allows you to communicate your early return to work."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "reportForDutyDay" ]
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Prestação de Trabalho"
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "early-return-work",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "completeAuthorizationChain" : false,
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação da Apresentação ao Serviço",
+        "en-GB" : "Information on Reporting for Duty"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Dia de Apresentação",
+          "en-GB" : "Day of Reporting for Duty"
+        },
+        "description" : {
+          "pt-PT" : "O dia em que o remetente se apresentou ao serviço.",
+          "en-GB" : "The day the sender reported for duty."
+        },
+        "properties" : [ {
+          "type" : "DateTime",
+          "field" : "reportForDutyDay",
+          "date" : true,
+          "time" : false,
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Dia de Apresentação",
+            "en-GB" : "Day of Reporting for Duty"
+          }
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Junta Médica/Declaração Médica",
+          "en-GB" : "Medical Board/Medical Certificate"
+        },
+        "properties" : [ {
+          "type" : "Boolean",
+          "field" : "medicalBoard",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Junta Médica",
+            "en-GB" : "Medical Board"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          }
+        }, {
+          "type" : "File",
+          "field" : "MEDICAL_CERTIFICATE",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Declaração Médica",
+            "en-GB" : "Medical Certificate"
+          },
+          "onlyIf" : {
+            "field" : "medicalBoard",
+            "value" : true,
+            "negation" : false
+          },
+          "description" : {
+            "pt-PT" : "É favor juntar declaração médica em como está apto/a para retomar as atividades profissionais.",
+            "en-GB" : "Please attach a medical certificate stating that you are fit to resume professional activities."
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10
+        }, {
+          "type" : "Boolean",
+          "field" : "isSS",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "É beneficiário da Segurança Social?",
+            "en-GB" : "Are you a Social Security beneficiary?"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          }
+        }, {
+          "type" : "File",
+          "field" : "SS_COMMUNICATION",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Comunicação de Regresso Antecipado ao Trabalho Submetido à Segurança Social",
+            "en-GB" : "Notification of Early Return to Work Submitted to the Social Security"
+          },
+          "onlyIf" : {
+            "field" : "isSS",
+            "value" : true,
+            "negation" : false
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta",
+        "en-GB" : "Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Resposta",
+          "en-GB" : "Response"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "response",
+          "required" : true,
+          "collapse" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Resposta",
+            "en-GB" : "Response"
+          },
+          "options" : [ {
+            "value" : "processed",
+            "label" : {
+              "pt-PT" : "O pedido foi registado.",
+              "en-GB" : "The request has been registered."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

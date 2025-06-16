@@ -1,0 +1,537 @@
+{
+  "name": {
+    "pt-PT": "Licença Sem Remuneração",
+    "en-GB": "Unpaid Leave"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar licença sem remuneração.",
+    "en-GB": "This form allows you to request unpaid leave."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "purpose",
+        "duration",
+        "startDate"
+      ]
+    },
+    "onLock": {
+      "requestProcessor": "Move Queue",
+      "queue": "Núcleo de Técnicos & Administrativos e Bolseiros"
+    },
+    "onValidate": {
+      "requestProcessor": "Create Flow From Request",
+      "template": "unpaid-leave-flow",
+      "actionNodesProvider": "Collaborator Authorization Flow",
+      "queuesToRemove": [
+        "Gestão Administrativa",
+        "Presidência do Instituto Superior Técnico"
+      ],
+      "completeAuthorizationChain": true,
+      "setSectionWithRequesterInfo": true,
+      "setSupervisorFromRequester": true
+    },
+    "onResetValidate": {
+      "requestProcessor": "Cancel Flow"
+    },
+    "onConclude": {
+      "requestProcessor": "Check Has Connected Successful Flow"
+    },
+    "queuesAllowedToChangeTo": [
+      "Núcleo de Técnicos & Administrativos e Bolseiros",
+      "Núcleo de Docentes e Investigadores",
+      "Núcleo de Remunerações e Proteção Social"
+    ]
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informação da Licença",
+          "en-GB": "Leave Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Propósito",
+              "en-GB": "Purpose"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "purpose",
+                "required": true,
+                "allowOther": false,
+                "multiple": false,
+                "collapsed": false,
+                "label": {
+                  "pt-PT": "Propósito",
+                  "en-GB": "Purpose"
+                },
+                "description": {
+                  "pt-PT": "Nos termos dos artigos 280.º a 283.º da Lei Geral do Trabalho em Funções Públicas (LTFP), aprovada pela Lei n.º 35/2014, de 20 de junho, solicito licença sem remuneração a fim de:",
+                  "en-GB": "Under the provisions of Articles 280 to 283 of the General Labour Law in Public Service (LTFP), approved by Law No. 35/2014, on 20 June, I am requesting unpaid leave for the following reason:"
+                },
+                "options": [
+                  {
+                    "value": "spousePostedAbroad",
+                    "label": {
+                      "pt-PT": "Acompanhar o cônjuge colocado no estrangeiro (Artigo 282.º da LTFP).",
+                      "en-GB": "To accompany my spouse who has been posted abroad (Article 282 of the LTFP)."
+                    }
+                  },
+                  {
+                    "value": "internationalPosition",
+                    "label": {
+                      "pt-PT": "Exercer funções em organismos internacionais (Artigo 283.º da LTFP).",
+                      "en-GB": "To take up a position in international organisations (Article 283 of the LTFP)."
+                    }
+                  },
+                  {
+                    "value": "publicService",
+                    "label": {
+                      "pt-PT": "Circunstâncias de atividade pública e/ou de interesse público.",
+                      "en-GB": "Due to public service circumstances and/or public interest."
+                    }
+                  },
+                  {
+                    "value": "trainingCourses",
+                    "label": {
+                      "pt-PT": "Frequentar cursos de formação (n.º 2, artigo 280.º da LTFP).",
+                      "en-GB": "To attend training courses (number 2, Article 280 of the LTFP)."
+                    }
+                  },
+                  {
+                    "value": "none",
+                    "label": {
+                      "pt-PT": "Não incluída em nenhuma das situações anteriores.",
+                      "en-GB": "Not included in any of the previously listed situations."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Duração",
+              "en-GB": "Duration"
+            },
+            "properties": [
+              {
+                "type": "Quantity",
+                "field": "duration",
+                "required": true,
+                "label": {
+                  "pt-PT": "Duração (em dias)",
+                  "en-GB": "Duration (in days)"
+                },
+                "min": 1,
+                "step": 1
+              },
+              {
+                "type": "DateTime",
+                "field": "startDate",
+                "required": true,
+                "date": true,
+                "time": false,
+                "label": {
+                  "pt-PT": "Data de Início",
+                  "en-GB": "Start Date"
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Fundamentação",
+              "en-GB": "Justification"
+            },
+            "properties": [
+              {
+                "type": "Text",
+                "field": "justification",
+                "required": true,
+                "label": {
+                  "pt-PT": "Motivo do Pedido",
+                  "en-GB": "Reason for the Request"
+                },
+                "inputType": "plain",
+                "multiline": true
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Documentos",
+              "en-GB": "Documents"
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "documentsListedPurposes",
+                "required": true,
+                "label": {
+                  "pt-PT": "Documento(s) a Anexar",
+                  "en-GB": "Document(s) to Attach"
+                },
+                "description": {
+                  "pt-PT": "Anexe documentos comprovativos dos fundamentos invocados.",
+                  "en-GB": "Attach supporting documents for the reasons stated."
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar documento",
+                  "en-GB": "Add document"
+                },
+                "properties": [
+                  {
+                    "type": "File",
+                    "field": "document",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Documento",
+                      "en-GB": "Document"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 10
+                  }
+                ],
+                "onlyIf": [
+                  {
+                    "field": "purpose",
+                    "negation": true,
+                    "value": {
+                      "value": "none",
+                      "label": {
+                        "pt-PT": "Não incluída em nenhuma das situações anteriores.",
+                        "en-GB": "Not included in any of the previously listed situations."
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "Array",
+                "field": "documentsNotListedPurposes",
+                "required": false,
+                "label": {
+                  "pt-PT": "Documento(s) a Anexar",
+                  "en-GB": "Document(s) to Attach"
+                },
+                "description": {
+                  "pt-PT": "Anexe documentos comprovativos dos fundamentos invocados.",
+                  "en-GB": "Attach supporting documents for the reasons stated."
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar documento",
+                  "en-GB": "Add document"
+                },
+                "properties": [
+                  {
+                    "type": "File",
+                    "field": "document",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Documento",
+                      "en-GB": "Document"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 10
+                  }
+                ],
+                "onlyIf": [
+                  {
+                    "field": "purpose",
+                    "negation": false,
+                    "value": {
+                      "value": "none",
+                      "label": {
+                        "pt-PT": "Não incluída em nenhuma das situações anteriores.",
+                        "en-GB": "Not included in any of the previously listed situations."
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Tomada de Conhecimento",
+              "en-GB": "Acknowledgment"
+            },
+            "description": {
+              "pt-PT": "O período de tempo da licença não conta para efeitos de antiguidade, salvo as licenças fundadas em circunstâncias de interesse público, as licenças para acompanhamento do cônjuge colocado no estrangeiro, com duração inferior a dois anos, e as licenças para o exercício de funções em organismos internacionais. Para que seja contado o tempo para efeitos de antiguidade e continuar a efetuar descontos para a ADSE ou outro subsistema de saúde, o trabalhador deve solicitar à DRH declaração onde conste o valor do vencimento e a data de início da licença, bem como fotocópia do despacho de autorização.",
+              "en-GB": "The period of the leave does not count towards seniority, except for leave granted due to public service circumstances and/or public interest, to accompany a spouse who has been posted abroad (with a duration of less than two years), and to take up positions in international organisations. In order for the time to be counted towards seniority and for the employee to continue making contributions to ADSE or another health subsystem, the employee must request from the HR Department a declaration specifying the salary and the start date of the leave, as well as a photocopy of the authorization order."
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "acknowledgment",
+                "required": true,
+                "allowOther": false,
+                "collapse": false,
+                "label": {
+                  "pt-PT": "Tomada de Conhecimento",
+                  "en-GB": "Acknowledgment"
+                },
+                "options": [
+                  {
+                    "value": "accept",
+                    "label": {
+                      "pt-PT": "Tomei conhecimento das informações acima.",
+                      "en-GB": "I confirm that I have read and understood the information above."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false,
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta",
+          "en-GB": "Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Resposta",
+              "en-GB": "Response"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "response",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "label": {
+                  "pt-PT": "Resposta",
+                  "en-GB": "Response"
+                },
+                "options": [
+                  {
+                    "value": "granted",
+                    "label": {
+                      "pt-PT": "O pedido foi deferido.",
+                      "en-GB": "The request was granted."
+                    }
+                  },
+                  {
+                    "value": "denied",
+                    "label": {
+                      "pt-PT": "O pedido foi indeferido.",
+                      "en-GB": "The request was denied."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {
+  },
+  "flowTemplate": {
+    "name": "unpaid-leave-flow",
+    "title": {
+      "pt-PT": "Processo de Pedido de Licença Sem Remuneração",
+      "en-GB": "Unpaid Leave Request Process"
+    },
+    "description": {
+      "pt-PT": "Processo de Pedido de Licença Sem Remuneração",
+      "en-GB": "Unpaid Leave Request Process"
+    },
+    "config": {
+      "authorizationChainNodes": {
+        "actionProcessor": {
+          "onActionTransition": [
+            {
+              "applyOn": "SIGN",
+              "flowProcessor": "Skip Next Queue",
+              "queue-field-key": "hr-authorization-step"
+            }
+          ]
+        }
+      },
+      "actionProcessor": {
+        "onSuccess": [
+          {
+            "flowProcessor": "Set Request Outcome Form",
+            "outcomeFormValues": {
+              "response": {
+                "value": "granted",
+                "label": {
+                  "pt-PT": "O pedido foi deferido.",
+                  "en-GB": "The request was granted."
+                }
+              }
+            }
+          },
+          {
+            "flowProcessor": "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure": [
+          {
+            "flowProcessor": "Set Request Outcome Form",
+            "outcomeFormValues": {
+              "response": {
+                "value": "denied",
+                "label": {
+                  "pt-PT": "O pedido foi indeferido.",
+                  "en-GB": "The request was denied."
+                }
+              }
+            }
+          },
+          {
+            "flowProcessor": "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition": [
+        ],
+        "onCancel": [
+          {
+            "flowProcessor": "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors": [
+      ],
+      "actionNodes": [
+        {
+          "id": "step-administrator",
+          "type": "generic",
+          "comment": true,
+          "title": {
+            "pt-PT": "O/A Administrador(a)",
+            "en-GB": "The Administrator"
+          },
+          "description": {
+            "pt-PT": "Parecer do/a Administrador(a)",
+            "en-GB": "Opinion of the Administrator"
+          },
+          "commentLabel": {
+            "pt-PT": "Parecer do/a Administrador(a)",
+            "en-GB": "Opinion of the Administrator"
+          },
+          "actions": {
+            "SIGN": {
+              "primary": true,
+              "to": "step-president",
+              "label": {
+                "pt-PT": "Concordar",
+                "en-GB": "Agree"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "FAILURE",
+              "label": {
+                "pt-PT": "Rejeitar",
+                "en-GB": "Reject"
+              }
+            }
+          },
+          "queue": "Gestão Administrativa",
+          "replaceTitleWithRole": true,
+          "hr-final-authorization-step": "true",
+          "actionProcessor": {
+            "onActionTransition": [
+              {
+                "applyOn": "SIGN",
+                "flowProcessor": "Skip Next Nodes",
+                "node-field-key": "hr-final-authorization-step"
+              }
+            ]
+          }
+        },
+        {
+          "id": "step-president",
+          "type": "generic",
+          "comment": true,
+          "title": {
+            "pt-PT": "O/A Presidente",
+            "en-GB": "The President"
+          },
+          "description": {
+            "pt-PT": "Parecer do/a Presidente",
+            "en-GB": "Opinion of the President"
+          },
+          "commentLabel": {
+            "pt-PT": "Parecer do/a Presidente",
+            "en-GB": "Opinion of the President"
+          },
+          "actions": {
+            "SIGN": {
+              "primary": true,
+              "to": "step-hr-processing",
+              "label": {
+                "pt-PT": "Concordar",
+                "en-GB": "Agree"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "FAILURE",
+              "label": {
+                "pt-PT": "Rejeitar",
+                "en-GB": "Reject"
+              }
+            }
+          },
+          "queue": "Presidência do Instituto Superior Técnico",
+          "replaceTitleWithRole": true,
+          "hr-final-authorization-step": "true"
+        },
+        {
+          "id": "step-hr-processing",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "A Direção de Recursos Humanos",
+            "en-GB": "The Human Resources Department"
+          },
+          "description": {
+            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+            "en-GB": "Processing by the Human Resources Department"
+          },
+          "commentLabel": {
+            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+            "en-GB": "Processing by the Human Resources Department"
+          },
+          "actions": {
+            "SIGN": {
+              "primary": true,
+              "to": "SUCCESS",
+              "label": {
+                "pt-PT": "Marcar como Processado",
+                "en-GB": "Mark as Processed"
+              }
+            }
+          },
+          "queue": "Núcleo de Técnicos & Administrativos e Bolseiros - Geral"
+        }
+      ]
+    }
+  }
+}

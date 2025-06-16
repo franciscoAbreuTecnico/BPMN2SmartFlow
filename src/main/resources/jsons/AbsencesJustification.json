@@ -1,0 +1,202 @@
+{
+  "name": {
+    "pt-PT": "Justificação de Faltas",
+    "en-GB": "Absences Justification"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe justificar as faltas.",
+    "en-GB": "This form allows you to justify your absences."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+      ]
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Move Queue",
+        "queue": "Núcleo de Prestação de Trabalho"
+      },
+      {
+        "requestProcessor": "Auto Validate"
+      }
+    ],
+    "onValidate": {
+      "requestProcessor": "Create Flow From Request",
+      "template": "absences-justification",
+      "actionNodesProvider": "Collaborator Authorization Flow",
+      "setSectionWithRequesterInfo": true,
+      "setSupervisorFromRequester": true
+    },
+    "onResetValidate": {
+      "requestProcessor": "Cancel Flow"
+    },
+    "onConclude": {
+      "requestProcessor": "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informação da Justificação de Faltas",
+          "en-GB": "Absences Justification Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Período e Justificação das Faltas",
+              "en-GB": "Period and Justification of Absences"
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "absencesPeriod",
+                "required": true,
+                "label": {
+                  "pt-PT": "Período e Justificação das Faltas",
+                  "en-GB": "Period and Justification of Absences"
+                },
+                "description": {
+                  "pt-PT": "Indique o(s) período(s) pretendido(s) e respetiva justificação.",
+                  "en-GB": "Indicate the desired period(s) and the corresponding justification."
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar período de falta",
+                  "en-GB": "Add absence period"
+                },
+                "properties": [
+                  {
+                    "type": "Composite",
+                    "field": "absenceInterval",
+                    "label": {
+                      "pt-PT": "Período da Falta",
+                      "en-GB": "Absence Period"
+                    },
+                    "properties": [
+                      {
+                        "type": "DateTime",
+                        "field": "absenceStartDate",
+                        "required": false,
+                        "date": true,
+                        "time": false,
+                        "label": {
+                          "pt-PT": "Data de Início",
+                          "en-GB": "Start Date"
+                        }
+                      },
+                      {
+                        "type": "DateTime",
+                        "field": "absenceEndDate",
+                        "required": false,
+                        "date": true,
+                        "time": false,
+                        "label": {
+                          "pt-PT": "Data de Fim",
+                          "en-GB": "End Date"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Text",
+                    "field": "absenceJustification",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Justificação/Motivo da Falta",
+                      "en-GB": "Justification/Reason for Absence"
+                    },
+                    "multiline": false,
+                    "inputType": "plain"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false
+  },
+  "cost": {
+  },
+  "flowTemplate": {
+    "name": "absences-justification",
+    "title": {
+      "pt-PT": "Processo de Pedido de Justificação de Faltas",
+      "en-GB": "Absences Justification Request Process"
+    },
+    "description": {
+      "pt-PT": "Processo de Pedido de Justificação de Faltas",
+      "en-GB": "Absences Justification Request Process"
+    },
+    "config": {
+      "actionProcessor": {
+        "onSuccess": [
+          {
+            "flowProcessor": "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure": [
+          {
+            "flowProcessor": "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition": [
+        ],
+        "onCancel": [
+          {
+            "flowProcessor": "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors": [
+      ],
+      "actionNodes": [
+        {
+          "id": "step-hr-processing",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "A Direção de Recursos Humanos",
+            "en-GB": "The Human Resources Department"
+          },
+          "description": {
+            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+            "en-GB": "Processing by the Human Resources Department"
+          },
+          "commentLabel": {
+            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+            "en-GB": "Processing by the Human Resources Department"
+          },
+          "actions": {
+            "PROCESS": {
+              "primary": true,
+              "to": "SUCCESS",
+              "label": {
+                "pt-PT": "Marcar como Processado",
+                "en-GB": "Mark as Processed"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "FAILURE",
+              "label": {
+                "pt-PT": "Rejeitar",
+                "en-GB": "Reject"
+              }
+            }
+          },
+          "queue": "Núcleo de Prestação de Trabalho - Geral"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "name": {
+    "pt-PT": "Informação da Conta Bancária",
+    "en-GB": "Bank Account Information"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe comunicar os dados bancários para domiciliação do vencimento base e/ou reembolso de despesas por parte da ADSE.",
+    "en-GB": "This form allows you to provide your bank details for the receipt of your base salary and/or reimbursement of expenses by ADSE."
+  },
+  "context": {
+    "requestKeywords": {
+      "displayName": true,
+      "username": true
+    },
+    "onLock": {
+      "requestProcessor": "Move Queue",
+      "queue": "Núcleo de Remunerações e Proteção Social"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informação Bancária",
+          "en-GB": "Bank Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Informação da Conta",
+              "en-GB": "Bank Account Information"
+            },
+            "properties": [
+              {
+                "type": "Text",
+                "field": "iban",
+                "required": true,
+                "label": {
+                  "pt-PT": "IBAN – Número Internacional de Conta Bancária",
+                  "en-GB": "IBAN – International Bank Account Number"
+                },
+                "description": {
+                  "pt-PT": "Só deve indicar um número de conta da qual é titular.",
+                  "en-GB": "Only indicate a bank account number that is in your name."
+                },
+                "multiline": false,
+                "inputType": "plain"
+              },
+              {
+                "field": "swift",
+                "type": "Text",
+                "required": true,
+                "label": {
+                  "pt-PT": "SWIFT / BIC",
+                  "en-GB": "SWIFT / BIC"
+                }
+              },
+              {
+                "type": "File",
+                "field": "proof",
+                "required": true,
+                "label": {
+                  "pt-PT": "Comprovativo do IBAN",
+                  "en-GB": "Proof of IBAN"
+                },
+                "description": {
+                  "pt-PT": "Comprovativo do IBAN proveniente do banco onde conste obrigatoriamente o nome do/a remetente como titular da conta.",
+                  "en-GB": "Proof of IBAN from the bank showing the sender's name as the account holder."
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ],
+                "maxSizeMB": 10
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Comunicação a Terceiros",
+          "en-GB": "Communication to Third Parties"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Comunicação à ADSE",
+              "en-GB": "Communication to ADSE"
+            },
+            "properties": [
+              {
+                "type": "Boolean",
+                "field": "provideToADSE",
+                "label": {
+                  "pt-PT": "Pretende que este IBAN seja comunicado à ADSE para efeitos de reembolso de despesas de saúde?",
+                  "en-GB": "Would you like this IBAN to be provided to ADSE for the reimbursement of healthcare expenses?"
+                },
+                "required": true,
+                "labelNo": {
+                  "pt-PT": "Não, não pretendo que este IBAN seja comunicado à ADSE para efeitos de reembolso de despesas de saúde.",
+                  "en-GB": "No, I do not want this IBAN to be provided to ADSE for the reimbursement of healthcare expenses."
+                },
+                "labelYes": {
+                  "pt-PT": "Sim, pretendo que este IBAN seja comunicado à ADSE para efeitos de reembolso de despesas de saúde.",
+                  "en-GB": "Yes, I want this IBAN to be provided to ADSE for the reimbursement of healthcare expenses"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Tomada de Conhecimento",
+          "en-GB": "Acknowledgment"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Tomada de Conhecimento",
+              "en-GB": "Acknowledgment"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "acknowledgement",
+                "required": true,
+                "allowOther": false,
+                "collapse": false,
+                "multiple": true,
+                "label": {
+                  "pt-PT": "Tomada de Conhecimento",
+                  "en-GB": "Acknowledgment"
+                },
+                "options": [
+                  {
+                    "value": "accept",
+                    "label": {
+                      "pt-PT": "Tenho conhecimento que se o formulário for submetido até ao dia 7 de cada mês, e se encontrar devidamente preenchido, terá impacto no próprio mês. Caso contrário, só terá impacto no mês seguinte.",
+                      "en-GB": "I acknowledge that if the form is submitted by the 7th of each month, and is properly completed, it will have an impact on the current month. Otherwise, it will only have an impact on the following month."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false,
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta",
+          "en-GB": "Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Resposta",
+              "en-GB": "Response"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "info-registered",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "label": {
+                  "pt-PT": "Registo da Informação",
+                  "en-GB": "Information Record"
+                },
+                "options": [
+                  {
+                    "value": "processCurrentMonth",
+                    "label": {
+                      "pt-PT": "O seu pedido foi processado e terá impacto no mês corrente.",
+                      "en-GB": "Your request has been processed and will have impact on the current month."
+                    }
+                  },
+                  {
+                    "value": "processNextMonth",
+                    "label": {
+                      "pt-PT": "O seu pedido foi processado e terá impacto no mês seguinte.",
+                      "en-GB": "Your request has been processed and will have impact on next month."
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "Select",
+                "field": "communication-adse",
+                "required": true,
+                "collapse": false,
+                "readonly": false,
+                "label": {
+                  "pt-PT": "Comunicação à ADSE",
+                  "en-GB": "Communication to ADSE"
+                },
+                "options": [
+                  {
+                    "value": "sent",
+                    "label": {
+                      "pt-PT": "A informação da conta foi comunicada à ADSE.",
+                      "en-GB": "The account information has been sent to ADSE."
+                    }
+                  },
+                  {
+                    "value": "not-sent",
+                    "label": {
+                      "pt-PT": "Nenhuma informação foi comunicada à ADSE.",
+                      "en-GB": "No information has been sent to ADSE."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {
+  }
+}

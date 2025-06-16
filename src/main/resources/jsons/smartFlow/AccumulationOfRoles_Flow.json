@@ -1,0 +1,168 @@
+{
+  "flowTemplate" : {
+    "name" : "role-accumulation-flow",
+    "title" : {
+      "pt-PT" : "Processo de Pedido de Acumulação de Funções",
+      "en-GB" : "Accumulation of Roles Request Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Acumulação de Funções",
+      "en-GB" : "Accumulation of Roles Request Process"
+    },
+    "config" : {
+      "authorizationChainNodes" : {
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "SIGN",
+            "flowProcessor" : "Skip Next Queue",
+            "queue-field-key" : "hr-authorization-step"
+          } ]
+        }
+      },
+      "actionProcessor" : {
+        "onSuccess" : [ {
+          "flowProcessor" : "Set Request Outcome Form",
+          "outcomeFormValues" : {
+            "decision" : {
+              "value" : "granted",
+              "label" : {
+                "pt-PT" : "O pedido foi deferido.",
+                "en-GB" : "The request was granted."
+              }
+            }
+          }
+        }, {
+          "flowProcessor" : "Return Flow Approved To Request"
+        } ],
+        "onFailure" : [ {
+          "flowProcessor" : "Set Request Outcome Form",
+          "outcomeFormValues" : {
+            "decision" : {
+              "value" : "denied",
+              "label" : {
+                "pt-PT" : "O pedido foi indeferido.",
+                "en-GB" : "The request was denied."
+              }
+            }
+          }
+        }, {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ {
+          "flowProcessor" : "Cancel Connected Requests"
+        } ]
+      },
+      "flowProcessors" : [ ],
+      "actionNodes" : [ {
+        "id" : "step-administrator",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "O/A Administrador(a)",
+          "en-GB" : "The Administrator"
+        },
+        "description" : {
+          "pt-PT" : "Parecer do/a Administrador(a)",
+          "en-GB" : "Opinion of the Administrator"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Parecer do/a Administrador(a)",
+          "en-GB" : "Opinion of the Administrator"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "step-president",
+            "label" : {
+              "pt-PT" : "Concordar",
+              "en-GB" : "Agree"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar",
+              "en-GB" : "Reject"
+            }
+          }
+        },
+        "queue" : "Gestão Administrativa",
+        "replaceTitleWithRole" : true,
+        "hr-final-authorization-step" : "true",
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "SIGN",
+            "flowProcessor" : "Skip Next Nodes",
+            "node-field-key" : "hr-final-authorization-step"
+          } ]
+        }
+      }, {
+        "id" : "step-president",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "O/A Presidente",
+          "en-GB" : "The President"
+        },
+        "description" : {
+          "pt-PT" : "Parecer do/a Presidente",
+          "en-GB" : "Opinion of the President"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Parecer do/a Presidente",
+          "en-GB" : "Opinion of the President"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "step-hr-processing",
+            "label" : {
+              "pt-PT" : "Concordar",
+              "en-GB" : "Agree"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar",
+              "en-GB" : "Reject"
+            }
+          }
+        },
+        "queue" : "Presidência do Instituto Superior Técnico",
+        "replaceTitleWithRole" : true,
+        "hr-final-authorization-step" : "true"
+      }, {
+        "id" : "step-hr-processing",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "A Direção de Recursos Humanos",
+          "en-GB" : "The Human Resources Department"
+        },
+        "description" : {
+          "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+          "en-GB" : "Processing by the Human Resources Department"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+          "en-GB" : "Processing by the Human Resources Department"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Marcar como Processado",
+              "en-GB" : "Mark as Processed"
+            }
+          }
+        },
+        "queue" : "Núcleo de Técnicos & Administrativos e Bolseiros - Geral"
+      } ]
+    }
+  }
+}

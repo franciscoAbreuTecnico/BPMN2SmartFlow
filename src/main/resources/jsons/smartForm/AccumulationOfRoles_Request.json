@@ -1,0 +1,398 @@
+{
+  "name" : {
+    "pt-PT" : "Acumulação de Funções",
+    "en-GB" : "Accumulation of Roles"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar autorização para acumular outras funções com o trabalho atual.",
+    "en-GB" : "This form allows you to request approval to take on additional roles along with your current one."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "workPlace", "newOrRenewalAccumulation", "natureOfTheAccumulation", "startDate", "exclusiveDedication" ]
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Técnicos & Administrativos e Bolseiros"
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "role-accumulation-flow",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "queuesToRemove" : [ "Gestão Administrativa", "Presidência do Instituto Superior Técnico" ],
+      "completeAuthorizationChain" : true,
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação da Acumulação de Funções",
+        "en-GB" : "Role Accumulation Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Tipo do Pedido",
+          "en-GB" : "Request Type"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "newOrRenewalAccumulation",
+          "label" : {
+            "pt-PT" : "Tipo do Pedido de Acumulação de Funções",
+            "en-GB" : "Role Accumulation Request Type"
+          },
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "options" : [ {
+            "label" : {
+              "pt-PT" : "Novo Pedido de Acumulação de Funções",
+              "en-GB" : "New Role Accumulation Request"
+            },
+            "value" : "newAccumulation"
+          }, {
+            "label" : {
+              "pt-PT" : "Renovação de Pedido de Acumulação de Funções",
+              "en-GB" : "Renewal of Role Accumulation Request"
+            },
+            "value" : "renewalAccumulation"
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Natureza da Acumulação",
+          "en-GB" : "Nature of the Accumulation"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "natureOfTheAccumulation",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Natureza da Acumulação",
+            "en-GB" : "Nature of Accumulation"
+          },
+          "options" : [ {
+            "value" : "public",
+            "label" : {
+              "pt-PT" : "Funções Públicas (art. 21.º da LTFP)",
+              "en-GB" : "Public Service (Article 21 of the LTFP)"
+            }
+          }, {
+            "value" : "private",
+            "label" : {
+              "pt-PT" : "Funções Privadas (art. 22.º da LTFP)",
+              "en-GB" : "Private Institution Role (Article 22 of the LTFP)"
+            }
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "publicServiceJustification",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Fundamente a existência de manifesto interesse público na acumulação, bem como, no caso de as funções públicas a acumular serem remuneradas, a existência de uma das seguintes situações:  a) Participação em comissões ou grupos de trabalho; b) Participação em conselhos consultivos e em comissões de fiscalização ou outros órgãos colegiais de fiscalização ou controlo de dinheiros públicos; c) Atividades docentes ou de investigação de duração não superior à fixada em despacho dos membros do Governo responsáveis pelas áreas das finanças, da Administração Pública e da educação e que, sem prejuízo do cumprimento da duração semanal do trabalho, não se sobreponha em mais de um quarto ao horário inerente à função principal; ou d) Realização de conferências, palestras, ações de formação de curta duração e outras atividades de idêntica natureza (art. 21º da LTFP).",
+            "en-GB" : "Justify the existence of clear public interest in the accumulation of roles, as well as, in the case where the public service role to be accumulated is remunerated, the existence of one of the following situations: a) Participation in committees or working groups; b) Participation in advisory councils and in oversight committees or other collegiate bodies responsible for the oversight or control of public funds; c) Teaching or research activities lasting no longer than the period specified in a decree by the government members responsible for finance, public administration, and education, and which, without affecting the fulfilment of the weekly working hours, does not overlap by more than a quarter with the hours of the primary role; d) Conducting conferences, lectures, short training sessions, and other activities of a similar nature (Article 21 of the LTFP)."
+          },
+          "label" : {
+            "pt-PT" : "Fundamentação",
+            "en-GB" : "Justification"
+          },
+          "multiline" : true,
+          "inputType" : "plain",
+          "onlyIf" : {
+            "field" : "natureOfTheAccumulation",
+            "negation" : false,
+            "value" : {
+              "value" : "public",
+              "label" : {
+                "pt-PT" : "Funções Públicas (art. 21.º da LTFP)",
+                "en-GB" : "Public Service (Article 21 of the LTFP)"
+              }
+            }
+          }
+        }, {
+          "type" : "Text",
+          "field" : "privateJustification",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Fundamente a inexistência de conflito entre as funções no serviço de origem e as funções a desempenhar no serviço beneficiário da acumulação, bem como, a verificação dos seguintes requisitos cumulativos:  a) Não são legalmente consideradas incompatíveis com as funções públicas; b) Não são desenvolvidas em horário sobreposto, ainda que parcialmente, ao das funções públicas; c) Não comprometem a isenção e a imparcialidade exigidas pelo desempenho das funções públicas; d) Não provocam prejuízo para o interesse público ou para os direitos e interesses legalmente protegidos dos cidadãos (art. 22º da LTFP).",
+            "en-GB" : "It is based on the absence of conflict between the functions in the originating service and the functions to be performed in the service benefiting from the accumulation, as well as the verification of the following cumulative requirements: a) They are not legally considered incompatible with public functions; b) They are not carried out during a schedule that overlaps, even partially, with public functions; c) They do not compromise the exemption and impartiality required for the performance of public functions; d) They do not cause harm to the public interest or to the legally protected rights and interests of citizens (art. 22 of the LTFP)."
+          },
+          "label" : {
+            "pt-PT" : "Fundamentação",
+            "en-GB" : "Justification"
+          },
+          "multiline" : true,
+          "inputType" : "plain",
+          "onlyIf" : {
+            "field" : "natureOfTheAccumulation",
+            "negation" : false,
+            "value" : {
+              "value" : "private",
+              "label" : {
+                "pt-PT" : "Funções Privadas (art. 22.º da LTFP)",
+                "en-GB" : "Private Institution Role (Article 22 of the LTFP)"
+              }
+            }
+          }
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Natureza do Trabalho",
+          "en-GB" : "Nature of the Work"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "natureOfTheWork",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Natureza do Trabalho",
+            "en-GB" : "Nature of the Work"
+          },
+          "options" : [ {
+            "value" : "independent",
+            "label" : {
+              "pt-PT" : "Autónoma",
+              "en-GB" : "Independent"
+            }
+          }, {
+            "value" : "subordinate",
+            "label" : {
+              "pt-PT" : "Subordinada",
+              "en-GB" : "Subordinate"
+            }
+          } ]
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação do Trabalho a Realizar",
+        "en-GB" : "Work Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Duração",
+          "en-GB" : "Duration"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "timetable",
+          "required" : true,
+          "multiline" : false,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Horário de Trabalho a Praticar",
+            "en-GB" : "Work Schedule to Be Applied"
+          }
+        }, {
+          "type" : "Composite",
+          "field" : "duration",
+          "required" : true,
+          "properties" : [ {
+            "type" : "DateTime",
+            "field" : "startDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de Início da Atividade",
+              "en-GB" : "Activity Start Date"
+            }
+          }, {
+            "type" : "DateTime",
+            "field" : "endDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de Fim da Atividade",
+              "en-GB" : "Activity End Date"
+            }
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Remuneração",
+          "en-GB" : "Remuneration"
+        },
+        "properties" : [ {
+          "type" : "Boolean",
+          "field" : "hasRemuneration",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "A acumulação de funções é remunerada?",
+            "en-GB" : "Is the accumulation of roles remunerated?"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim, a acumulação de funções é remunerada.",
+            "en-GB" : "Yes, the accumulation of roles is remunerated."
+          },
+          "labelNo" : {
+            "pt-PT" : "Não. a acumulação de funções não é remunerada.",
+            "en-GB" : "No, the accumulation of roles is not remunerated."
+          }
+        }, {
+          "type" : "Quantity",
+          "field" : "monthlyIncome",
+          "description" : {
+            "pt-PT" : "Nos termos da al. c) do n.º 2 do art. 23.º da LTFP, o requerimento de acumulação de funções deve conter indicação da remuneração a auferir, quando aplicável.",
+            "en-GB" : "In accordance with paragraph c) of number 2 of Article 23 of the LTFP, the request for the accumulation of roles must include information on the remuneration to be received, where applicable."
+          },
+          "required" : true,
+          "step" : 0.01,
+          "label" : {
+            "pt-PT" : "Remuneração Mensal",
+            "en-GB" : "Monthly Income"
+          },
+          "min" : 1,
+          "onlyIf" : {
+            "field" : "hasRemuneration",
+            "value" : true,
+            "negation" : false
+          }
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Local de Trabalho",
+          "en-GB" : "Workplace"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "company",
+          "required" : true,
+          "multiline" : false,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Estabelecimento / Instituição / Empresa",
+            "en-GB" : "Establishment / Institution / Company"
+          },
+          "description" : {
+            "pt-PT" : "Entidade onde vai acumular funções.",
+            "en-GB" : "Entity where you will perform the other role."
+          }
+        }, {
+          "type" : "Text",
+          "field" : "description",
+          "description" : {
+            "pt-PT" : "Descrição da atividade/função a desempenhar, com indicação do seu objeto, destinatários e natureza permanente/habitual ou temporária.",
+            "en-GB" : "Description of the activity/role to be performed, including its purpose, recipients, and whether it is permanent/regular or temporary."
+          },
+          "required" : true,
+          "multiline" : true,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Descrição da Atividade/Função a Acumular",
+            "en-GB" : "Description of the Activity/Role to be Accumulated"
+          }
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Declaração de Compromisso de Honra",
+        "en-GB" : "Declaration of Honour"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Declaração de Compromisso de Honra",
+          "en-GB" : "Declaration of Honour"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "declarationConflictOfInterest",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Declaração de Cessação por Conflito de Interesses",
+            "en-GB" : "Declaration of Termination due to Conflict of Interest"
+          },
+          "options" : [ {
+            "value" : "yes",
+            "label" : {
+              "pt-PT" : "Declaro, sob compromisso de honra, que cessarei de imediato a atividade em acumulação no caso de ocorrência superveniente de conflito de interesses.",
+              "en-GB" : "I hereby declare, on my honour, that I will immediately cease to perform the accumulated role in the event of an unforeseen conflict of interest."
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "declarationNotTecnicoEntity",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Declaração de Não-Prestação de Serviços a Entidades do Técnico",
+            "en-GB" : "Declaration of Non-Provision of Services to Técnico Entities"
+          },
+          "options" : [ {
+            "value" : "yes",
+            "label" : {
+              "pt-PT" : "Declaro, ainda, que a atividade a exercer não incluirá a prestação de serviços a qualquer entidade do universo Técnico (ADIST, IST-ID).",
+              "en-GB" : "I further declare that the activity to be performed will not include providing services to any entity in the Técnico universe (ADIST, IST-ID)."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta",
+        "en-GB" : "Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Resposta",
+          "en-GB" : "Response"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "decision",
+          "required" : true,
+          "collapse" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Decisão",
+            "en-GB" : "Decision"
+          },
+          "options" : [ {
+            "value" : "granted",
+            "label" : {
+              "pt-PT" : "O pedido foi deferido.",
+              "en-GB" : "The request was granted."
+            }
+          }, {
+            "value" : "denied",
+            "label" : {
+              "pt-PT" : "O pedido foi indeferido.",
+              "en-GB" : "The request was denied."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

@@ -1,0 +1,74 @@
+{
+  "flowTemplate" : {
+    "name" : "retirement-flow",
+    "title" : {
+      "pt-PT" : "Processo de Pedido de Aposentação",
+      "en-GB" : "Retirement Request Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Aposentação",
+      "en-GB" : "Retirement Request Process"
+    },
+    "config" : {
+      "hideRevertProcess" : true,
+      "authorizationChainNodes" : {
+        "title" : {
+          "pt-PT" : "Envio de Notificação",
+          "en-GB" : "Send Notification"
+        },
+        "description" : {
+          "pt-PT" : "Envio de notificação para o/a responsável",
+          "en-GB" : "Send notification to the person in charge"
+        },
+        "comment" : false,
+        "actions" : {
+          "NOTIFY" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Enviar Notificação",
+              "en-GB" : "Send Notification"
+            }
+          }
+        },
+        "actionProcessor" : {
+          "onEnterNode" : [
+            {
+              "flowProcessor" : "Send e-mail",
+              "template" : "email-notification-retirement-request",
+              "notifyFlowMembers" : true,
+              "registered" : true,
+              "sender" : "1696378937945243",
+              "parameters" : { }
+            },
+            {
+              "flowProcessor" : "Do Flow Action",
+              "flowAction" : "NOTIFY"
+            }
+          ]
+        },
+        "blockUndo" : true
+      },
+      "actionProcessor" : {
+        "onSuccess" : [
+          {
+            "flowProcessor" : "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure" : [
+          {
+            "flowProcessor" : "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition" : [ ],
+        "onCancel" : [
+          {
+            "flowProcessor" : "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors" : [ ],
+      "actionNodes" : [ ]
+    }
+  }
+}

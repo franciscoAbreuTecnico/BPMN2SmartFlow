@@ -9,11 +9,12 @@ import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
 import org.camunda.bpm.model.bpmn.instance.Lane;
 import org.camunda.bpm.model.bpmn.instance.LaneSet;
-import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
 
 import com.rdf.layout.engine.AutoLayoutEngine;
 import com.rdf.layout.model.LayoutConfig;
+
+import org.camunda.bpm.model.bpmn.instance.Process;
 
 public class LayoutExampleMain {
 
@@ -76,7 +77,7 @@ public class LayoutExampleMain {
         LayoutConfig cfg = new LayoutConfig();
         new AutoLayoutEngine().layout(model, cfg);
 
-        try (FileWriter w = new FileWriter("resources/output/testDiagramLayout.bpmn")) {
+        try (FileWriter w = new FileWriter("src/main/resources/output/bpmn/testDiagramLayout.bpmn")) {
             w.write(Bpmn.convertToString(model));
             System.out.println("diagram.bpmn written.");
         } catch (IOException e) {

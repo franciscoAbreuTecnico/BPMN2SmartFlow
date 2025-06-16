@@ -1,0 +1,137 @@
+{
+  "flowTemplate" : {
+    "name" : "proposal-collaboration-agreement",
+    "title" : {
+      "pt-PT" : "Processo de Proposta de Acordo de Colaboração",
+      "en-GB" : "Proposal for Collaboration Agreement Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Proposta de Acordo de Colaboração",
+      "en-GB" : "Proposal for Collaboration Agreement Process"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onSuccess" : [ {
+          "flowProcessor" : "Return Flow Approved To Request"
+        } ],
+        "onFailure" : [ {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ {
+          "flowProcessor" : "Cancel Connected Requests"
+        } ]
+      },
+      "flowProcessors" : [ ],
+      "actionNodes" : [ {
+        "id" : "step-administrator",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "O/A Administrador(a)",
+          "en-GB" : "The Administrator"
+        },
+        "description" : {
+          "pt-PT" : "Parecer do/a Administrador(a)",
+          "en-GB" : "Opinion of the Administrator"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Parecer do/a Administrador(a)",
+          "en-GB" : "Opinion of the Administrator"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "step-president",
+            "label" : {
+              "pt-PT" : "Concordar",
+              "en-GB" : "Agree"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar",
+              "en-GB" : "Reject"
+            }
+          }
+        },
+        "queue" : "Gestão Administrativa",
+        "replaceTitleWithRole" : true,
+        "hr-final-authorization-step" : "true",
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "SIGN",
+            "flowProcessor" : "Skip Next Nodes",
+            "node-field-key" : "hr-final-authorization-step"
+          } ]
+        }
+      }, {
+        "id" : "step-president",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "O/A Presidente",
+          "en-GB" : "The President"
+        },
+        "description" : {
+          "pt-PT" : "Parecer do/a Presidente",
+          "en-GB" : "Opinion of the President"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Parecer do/a Presidente",
+          "en-GB" : "Opinion of the President"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "step-hr-processing",
+            "label" : {
+              "pt-PT" : "Concordar",
+              "en-GB" : "Agree"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar",
+              "en-GB" : "Reject"
+            }
+          }
+        },
+        "queue" : "Presidência do Instituto Superior Técnico",
+        "replaceTitleWithRole" : true,
+        "hr-final-authorization-step" : "true"
+      }, {
+        "id" : "step-hr-processing",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "A Direção de Recursos Humanos",
+          "en-GB" : "The Department of Human Resources "
+        },
+        "description" : {
+          "pt-PT" : "Processamento pela Direção de Recursos Humanos.",
+          "en-GB" : "Processing by the Department of Human Resources."
+        },
+        "commentLabel" : {
+          "pt-PT" : "Processamento pela Direção de Recursos Humanos.",
+          "en-GB" : "Processing by the Department of Human Resources."
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Marcar como Processado",
+              "en-GB" : "Mark as Processed"
+            }
+          }
+        },
+        "queue" : "Núcleo de Docentes e Investigadores - Geral"
+      } ]
+    }
+  }
+}

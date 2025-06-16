@@ -1,0 +1,866 @@
+{
+    "name": {
+        "pt-PT": "Licença Sabática",
+        "en-GB": "Sabbatical Leave"
+    },
+    "description": {
+        "pt-PT": "Este formulário permite-lhe solicitar uma licença sabática.",
+        "en-GB": "This form allows you to request a sabbatical leave."
+    },
+    "context": {
+        "requestKeywords": {
+            "fields": [
+                "period",
+                "startDate"
+            ],
+            "displayName": true,
+            "username": true
+        },
+        "onLock": {
+            "requestProcessor": "Move Queue",
+            "queue": "Núcleo de Docentes e Investigadores"
+        },
+        "onValidate": [
+            {
+                "requestProcessor": "Create Flow From Request",
+                "template": "sabbatical-leave-flow",
+                "actionNodesProvider": "Collaborator Authorization Flow",
+                "queuesToRemove": [
+                    "Conselho Científico",
+                    "Gestão Administrativa",
+                    "Presidência do Instituto Superior Técnico"
+                ],
+                "setSectionWithRequesterInfo": true,
+                "setSupervisorFromRequester": true
+            }
+        ],
+        "onResetValidate": {
+            "requestProcessor": "Cancel Flow"
+        },
+        "onConclude": {
+            "requestProcessor": "Check Has Connected Successful Flow"
+        },
+        "onReject": {
+        },
+        "applicationMapper": {
+            "period": "period",
+            "startDate": "startDate"
+        }
+    },
+    "inputForm": {
+        "checks": {
+            "requirePersonalInformation": true,
+            "requirePhotograph": true,
+            "requireIdentity": true
+        },
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Informação do Remetente",
+                    "en-GB": "Sender Information"
+                },
+                "sections": [
+                ]
+            },
+            {
+                "title": {
+                    "pt-PT": "Informação da Licença Sabática",
+                    "en-GB": "Sabbatical Leave Information"
+                },
+                "description": {
+                    "pt-PT": "Solicita a V. Exa. com base no art.º 77.º do Decreto-Lei n.º 448/79, de 13 de novembro, alterado e republicado pelo Decreto-Lei n.º 205/2009, de 31 de agosto, licença sabática, pelo período de:",
+                    "en-GB": "I hereby request, pursuant to Article 77 of Decree-Law No. 448/79 of 13 November, as amended and republished by Decree-Law No. 205/2009 of 31 August, sabbatical leave for the period of:"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Âmbito e Período da Licença",
+                            "en-GB": "Period"
+                        },
+                        "properties": [
+                            {
+                                "type": "Select",
+                                "field": "sabbaticalLeaveScope",
+                                "multiple": false,
+                                "collapse": false,
+                                "allowOther": false,
+                                "required": true,
+                                "label": {
+                                    "pt-PT": "A licença sabática é requerida no âmbito do Programa Shaping the Future?",
+                                    "en-GB": "Is sabbatical leave required under the Shaping the Future Program?"
+                                },
+                                "options": [
+                                    {
+                                        "label": {
+                                            "pt-PT": "Sim, a licença sabática é requerida no âmbito do Programa Shaping the Future.",
+                                            "en-GB": "Yes, sabbatical leave is required under the Shaping the Future Program."
+                                        },
+                                        "value": "yes"
+                                    },
+                                    {
+                                        "label": {
+                                            "pt-PT": "Não, a licença sabática não é requerida no âmbito do Programa Shaping the Future.",
+                                            "en-GB": "No, sabbatical leave is not required under the Shaping the Future Program.."
+                                        },
+                                        "value": "no"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Select",
+                                "field": "period",
+                                "required": true,
+                                "allowOther": false,
+                                "label": {
+                                    "pt-PT": "Período da Licença",
+                                    "en-GB": "Leave Period"
+                                },
+                                "options": [
+                                    {
+                                        "value": "6Months",
+                                        "label": {
+                                            "pt-PT": "6 Meses",
+                                            "en-GB": "6 Months"
+                                        }
+                                    },
+                                    {
+                                        "value": "1Year",
+                                        "label": {
+                                            "pt-PT": "1 Ano",
+                                            "en-GB": "1 Year"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "DateTime",
+                                "field": "startDate",
+                                "required": true,
+                                "date": true,
+                                "time": false,
+                                "label": {
+                                    "pt-PT": "Data de Início",
+                                    "en-GB": "Start Date"
+                                }
+                            },
+                            {
+                                "type": "Text",
+                                "field": "company",
+                                "required": false,
+                                "multiline": false,
+                                "inputType": "plain",
+                                "label": {
+                                    "pt-PT": "Instituição",
+                                    "en-GB": "Institution"
+                                },
+                                "description": {
+                                    "pt-PT": "Instituição onde vai ser desenvolvida a atividade.",
+                                    "en-GB": "Institution where the activity will be carried out."
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": {
+                    "pt-PT": "Documentos",
+                    "en-GB": "Documents"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Documentos",
+                            "en-GB": "Documents"
+                        },
+                        "properties": [
+                            {
+                                "field": "workPlan",
+                                "type": "File",
+                                "required": true,
+                                "label": {
+                                    "pt-PT": "Plano de Trabalhos",
+                                    "en-GB": "Work Plan"
+                                },
+                                "description": {
+                                    "pt-PT": "Plano de trabalhos para o período de licença incluindo: os objetivos a que se propõe e indicadores de sucesso, de acordo com o ponto 3.1. da Deliberação do CC de 2015.01.05.",
+                                    "en-GB": "Work plan for the period of leave, including: the objectives to be achieved and success indicators, in accordance with point 3.1 of the CC Resolution dated 5 January 2015."
+                                },
+                                "allowedFileTypes": [
+                                    ".pdf"
+                                ],
+                                "maxSizeMB": 25
+                            },
+                            {
+                                "field": "opinions",
+                                "type": "File",
+                                "required": true,
+                                "label": {
+                                    "pt-PT": "Pareceres",
+                                    "en-GB": "Opinions"
+                                },
+                                "description": {
+                                    "pt-PT": "Pareceres do/a Coordenador(a) da Área Científica e do/a Presidente do Departamento, de acordo com o ponto 4 da Deliberação.",
+                                    "en-GB": "Opinions of the Scientific Area Coordinator and the President of the Department, in accordance with point 4 of the Resolution."
+                                },
+                                "allowedFileTypes": [
+                                    ".pdf"
+                                ],
+                                "maxSizeMB": 25
+                            },
+                            {
+                                "type": "Array",
+                                "field": "otherDocuments",
+                                "label": {
+                                    "pt-PT": "Outros Documentos",
+                                    "en-GB": "Other Documents"
+                                },
+                                "required": false,
+                                "labelAddElement": {
+                                    "pt-PT": "Adicionar documento",
+                                    "en-GB": "Add document"
+                                },
+                                "properties": [
+                                    {
+                                        "type": "File",
+                                        "field": "document",
+                                        "required": false,
+                                        "allowedFileTypes": [
+                                            ".pdf"
+                                        ],
+                                        "maxSizeMB": 10
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "outcomeForm": {
+        "canEditResponseAfterConclude": false,
+        "pages": [
+        ]
+    },
+    "cost": {
+    },
+    "flowTemplate": {
+        "name": "sabbatical-leave-flow",
+        "title": {
+            "pt-PT": "Processo de Pedido de Licença Sabática",
+            "en-GB": "Sabbatical Leave Request Process"
+        },
+        "description": {
+            "pt-PT": "Processo de Pedido de Licença Sabática",
+            "en-GB": "Sabbatical Leave Request Process"
+        },
+        "config": {
+            "hideRevertProcess": true,
+            "actionProcessor": {
+                "onSuccess": [
+                    {
+                        "flowProcessor": "Return Flow Approved To Request"
+                    }
+                ],
+                "onFailure": [
+                    {
+                        "flowProcessor": "Return Flow Rejected To Request"
+                    }
+                ],
+                "onActionTransition": [
+                ],
+                "onCancel": [
+                    {
+                        "flowProcessor": "Cancel Connected Requests"
+                    }
+                ]
+            },
+            "flowProcessors": [
+            ],
+            "forms": [
+                {
+                    "id": "human-resources-processing-form",
+                    "title": {
+                        "pt-PT": "Processamento pela Direção de Recursos Humanos",
+                        "en-GB": "Processing by the Human Resources Department"
+                    },
+                    "form": {
+                        "pages": [
+                            {
+                                "title": {
+                                    "pt-PT": "Informação Adicional",
+                                    "en-GB": "Additional Information"
+                                },
+                                "sections": [
+                                    {
+                                        "title": {
+                                            "pt-PT": "Informação da categoria",
+                                            "en-GB": "Category"
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Select",
+                                                "field": "category",
+                                                "label": {
+                                                    "pt-PT": "Categoria",
+                                                    "en-GB": "Category"
+                                                },
+                                                "multiple": false,
+                                                "collapse": false,
+                                                "allowOther": false,
+                                                "required": true,
+                                                "options": [
+                                                    {
+                                                        "label": {
+                                                            "pt-PT": "Professor(a) Catedrático/a",
+                                                            "en-GB": "Full Professor"
+                                                        },
+                                                        "value": "fullProfessor"
+                                                    },
+                                                    {
+                                                        "label": {
+                                                            "pt-PT": "Professor(a) Associado/a",
+                                                            "en-GB": "Associate Professor"
+                                                        },
+                                                        "value": "associateProfessor"
+                                                    },
+                                                    {
+                                                        "label": {
+                                                            "pt-PT": "Professor(a) Auxiliar",
+                                                            "en-GB": "Assistant Professor"
+                                                        },
+                                                        "value": "assistantProfessor"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "DateTime",
+                                                "field": "categoryStartDate",
+                                                "label": {
+                                                    "pt-PT": "Desde",
+                                                    "en-GB": "Since"
+                                                },
+                                                "required": true,
+                                                "date": true,
+                                                "time": false
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": {
+                                            "pt-PT": "Informação da Licença Sabática Anterior",
+                                            "en-GB": "Information on the Previous Sabbatical Leave"
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Select",
+                                                "field": "previousSabbatical",
+                                                "multiple": false,
+                                                "collapse": false,
+                                                "allowOther": false,
+                                                "required": true,
+                                                "label": {
+                                                    "pt-PT": "Foi concedida anteriormente uma licença sabática?",
+                                                    "en-GB": "Has a sabbatical leave been granted previously?"
+                                                },
+                                                "options": [
+                                                    {
+                                                        "label": {
+                                                            "pt-PT": "Sim, foi concedida anteriormente uma licença sabática através do sistema.",
+                                                            "en-GB": "Yes, a sabbatical leave was previously granted through the system."
+                                                        },
+                                                        "value": "previousLeaveThroughSystem"
+                                                    },
+                                                    {
+                                                        "label": {
+                                                            "pt-PT": "Sim, foi concedida anteriormente uma licença sabática.",
+                                                            "en-GB": "Yes, a sabbatical leave was granted previously."
+                                                        },
+                                                        "value": "previousLeave"
+                                                    },
+                                                    {
+                                                        "label": {
+                                                            "pt-PT": "Não, não foi concedida anteriormente uma licença sabática.",
+                                                            "en-GB": "No, a sabbatical leave was not granted previously."
+                                                        },
+                                                        "value": "noPreviousLeave"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "AsyncSelect",
+                                                "field": "previousSabbaticalOnSystem",
+                                                "required": true,
+                                                "label": {
+                                                    "pt-PT": "Licença Sabática Anterior",
+                                                    "en-GB": "Previous Sabbatical Leave"
+                                                },
+                                                "optionsProvider": "/paper-pusher-ist/previousSabbaticalLeave/{{flowId}}",
+                                                "allowOther": false,
+                                                "negation": false,
+                                                "onlyIf": {
+                                                    "field": "previousSabbatical",
+                                                    "value": {
+                                                        "label": {
+                                                            "pt-PT": "Sim, foi concedida anteriormente uma licença sabática através do sistema.",
+                                                            "en-GB": "Yes, a sabbatical leave was previously granted through the system."
+                                                        },
+                                                        "value": "previousLeaveThroughSystem"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "DateTime",
+                                                "field": "sabbaticalStartDate",
+                                                "required": true,
+                                                "date": true,
+                                                "time": false,
+                                                "label": {
+                                                    "pt-PT": "Data de Início da Licença Sabática Anterior",
+                                                    "en-GB": "Start Date of the Previous Sabbatical Leave"
+                                                },
+                                                "onlyIf": [
+                                                    {
+                                                        "field": "previousSabbatical",
+                                                        "value": {
+                                                            "label": {
+                                                                "pt-PT": "Sim, foi concedida anteriormente uma licença sabática.",
+                                                                "en-GB": "Yes, a sabbatical leave was granted previously."
+                                                            },
+                                                            "value": "previousLeave"
+                                                        },
+                                                        "negation": false
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "DateTime",
+                                                "field": "sabbaticalEndDate",
+                                                "required": true,
+                                                "date": true,
+                                                "time": false,
+                                                "label": {
+                                                    "pt-PT": "Data de Fim da Licença Sabática Anterior",
+                                                    "en-GB": "End Date of the Previous Sabbatical Leave"
+                                                },
+                                                "onlyIf": [
+                                                    {
+                                                        "field": "previousSabbatical",
+                                                        "value": {
+                                                            "label": {
+                                                                "pt-PT": "Sim, foi concedida anteriormente uma licença sabática.",
+                                                                "en-GB": "Yes, a sabbatical leave was granted previously."
+                                                            },
+                                                            "value": "previousLeave"
+                                                        },
+                                                        "negation": false
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "Boolean",
+                                                "field": "reportDelivery",
+                                                "label": {
+                                                    "pt-PT": "Houve entrega de relatório?",
+                                                    "en-GB": "Has a report been delivered?"
+                                                },
+                                                "required": true,
+                                                "labelYes": {
+                                                    "pt-PT": "Sim, houve entrega de relatório.",
+                                                    "en-GB": "Yes, a report was submitted."
+                                                },
+                                                "labelNo": {
+                                                    "pt-PT": "Não, não houve entrega de relatório.",
+                                                    "en-GB": "No, a report was not submitted."
+                                                },
+                                                "onlyIf": [
+                                                    {
+                                                        "field": "previousSabbatical",
+                                                        "value": {
+                                                            "label": {
+                                                                "pt-PT": "Sim, foi concedida anteriormente uma licença sabática.",
+                                                                "en-GB": "Yes, a sabbatical leave was granted previously."
+                                                            },
+                                                            "value": "previousLeave"
+                                                        },
+                                                        "negation": false
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "DateTime",
+                                                "field": "reportDeliveryDate",
+                                                "label": {
+                                                    "pt-PT": "Data de Entrega",
+                                                    "en-GB": "Delivery Date"
+                                                },
+                                                "required": true,
+                                                "date": true,
+                                                "time": false,
+                                                "onlyIf": [
+                                                    {
+                                                        "field": "reportDelivery",
+                                                        "value": true
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": {
+                                            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+                                            "en-GB": "Processing by the Human Resources Department"
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "Boolean",
+                                                "field": "inCondition",
+                                                "required": true,
+                                                "label": {
+                                                    "pt-PT": "A pessoa reúne as condições para ser concedida a licença sabática?",
+                                                    "en-GB": "Does the person meet the conditions to be granted sabbatical leave?"
+                                                },
+                                                "labelYes": {
+                                                    "pt-PT": "Sim",
+                                                    "en-GB": "Yes"
+                                                },
+                                                "labelNo": {
+                                                    "pt-PT": "Não",
+                                                    "en-GB": "No"
+                                                }
+                                            },
+                                            {
+                                                "field": "justification",
+                                                "type": "Text",
+                                                "multiline": true,
+                                                "required": true,
+                                                "label": {
+                                                    "pt-PT": "Fundamentação",
+                                                    "en-GB": "Justification"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "sabbatical-report-form",
+                    "title": {
+                        "pt-PT": "Envio de Relatório Final da Licença Sabática",
+                        "en-GB": "Submission of the Sabbatical Leave Final Report"
+                    },
+                    "form": {
+                        "pages": [
+                            {
+                                "title": {
+                                    "pt-PT": "Relatório Final da Licença Sabática",
+                                    "en-GB": "Sabbatical Leave Final Report"
+                                },
+                                "sections": [
+                                    {
+                                        "title": {
+                                            "pt-PT": "Anexar Documentos",
+                                            "en-GB": "Attach Documents"
+                                        },
+                                        "properties": [
+                                            {
+                                                "type": "File",
+                                                "field": "workResults",
+                                                "label": {
+                                                    "pt-PT": "Relatório",
+                                                    "en-GB": "Report"
+                                                },
+                                                "description": {
+                                                    "pt-PT": "Relatório que inclua os resultados do trabalho e uma auto-avaliação (de acordo com o ponto 5.1 da Deliberação do CC de 2015.01.05).",
+                                                    "en-GB": "Report including the work results and a self-evaluation (in accordance with point 5.1 of the SC Resolution of 2015.01.05)."
+                                                },
+                                                "required": true,
+                                                "allowedFileTypes": [
+                                                    ".pdf"
+                                                ],
+                                                "maxSizeMB": 25
+                                            },
+                                            {
+                                                "type": "File",
+                                                "field": "coordinatorAndPresidentOpinion",
+                                                "description": {
+                                                    "pt-PT": "Pareceres do/a Coordenador(a) da Área Científica e do/a Presidente do Departamento (de acordo com o ponto 5.2. da mesma Deliberação).",
+                                                    "en-GB": "Opinions of the Scientific Area Coordinator and the President of the Department (in accordance with point 5.2 of the same Resolution)."
+                                                },
+                                                "required": true,
+                                                "label": {
+                                                    "pt-PT": "Pareceres",
+                                                    "en-GB": "Opinions"
+                                                },
+                                                "allowedFileTypes": [
+                                                    ".pdf"
+                                                ],
+                                                "maxSizeMB": 25
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ],
+            "actionNodes": [
+                {
+                    "id": "step-hr-processing",
+                    "type": "withForms",
+                    "comment": false,
+                    "title": {
+                        "pt-PT": "Verificação de Condições",
+                        "en-GB": "Verification of Conditions"
+                    },
+                    "description": {
+                        "pt-PT": "Processamento pela Direção de Recursos Humanos",
+                        "en-GB": "Processing by the Human Resources Department"
+                    },
+                    "buttons": [
+                        {
+                            "id": "submit-form",
+                            "primary": true,
+                            "label": {
+                                "pt-PT": "Verificar Condições",
+                                "en-GB": "Verify Conditions"
+                            },
+                            "handlers": {
+                                "form": "human-resources-processing-form",
+                                "action": "SIGN"
+                            }
+                        },
+                        {
+                            "id": "reject",
+                            "primary": false,
+                            "label": {
+                                "pt-PT": "Rejeitar",
+                                "en-GB": "Rejeitar"
+                            },
+                            "handlers": {
+                                "action": "REJECT"
+                            }
+                        }
+                    ],
+                    "actions": {
+                        "SIGN": {
+                            "primary": true,
+                            "to": "step-scientific-council",
+                            "label": {
+                                "pt-PT": "Marcar como Processado",
+                                "en-GB": "Mark as Processed"
+                            }
+                        }
+                    },
+                    "blockUndo": true,
+                    "queue": "Núcleo de Docentes e Investigadores - Geral"
+                },
+                {
+                    "id": "step-scientific-council",
+                    "type": "generic",
+                    "comment": true,
+                    "title": {
+                        "pt-PT": "Conselho Científico",
+                        "en-GB": "Scientific Council"
+                    },
+                    "description": {
+                        "pt-PT": "Deliberação do Conselho Científico",
+                        "en-GB": "Decision of the Scientific Council"
+                    },
+                    "commentLabel": {
+                        "pt-PT": "Deliberação do Conselho Científico",
+                        "en-GB": "Decision of the Scientific Council"
+                    },
+                    "actions": {
+                        "SIGN": {
+                            "primary": true,
+                            "to": "step-administrator",
+                            "label": {
+                                "pt-PT": "Autorizar",
+                                "en-GB": "Authorise"
+                            }
+                        },
+                        "REJECT": {
+                            "primary": false,
+                            "to": "FAILURE",
+                            "label": {
+                                "pt-PT": "Rejeitar",
+                                "en-GB": "Reject"
+                            }
+                        }
+                    },
+                    "queue": "Conselho Científico"
+                },
+                {
+                    "id": "step-administrator",
+                    "type": "generic",
+                    "comment": true,
+                    "title": {
+                        "pt-PT": "O/A Administrador(a)",
+                        "en-GB": "The Administrator"
+                    },
+                    "description": {
+                        "pt-PT": "Parecer do/a Administrador(a)",
+                        "en-GB": "Opinion of the Administrator"
+                    },
+                    "commentLabel": {
+                        "pt-PT": "Parecer do/a Administrador(a)",
+                        "en-GB": "Opinion of the Administrator"
+                    },
+                    "actions": {
+                        "SIGN": {
+                            "primary": true,
+                            "to": "step-president",
+                            "label": {
+                                "pt-PT": "Concordar",
+                                "en-GB": "Agree"
+                            }
+                        },
+                        "REJECT": {
+                            "primary": false,
+                            "to": "FAILURE",
+                            "label": {
+                                "pt-PT": "Rejeitar",
+                                "en-GB": "Reject"
+                            }
+                        }
+                    },
+                    "queue": "Gestão Administrativa",
+                    "replaceTitleWithRole": true,
+                    "hr-final-authorization-step": "true",
+                    "actionProcessor": {
+                        "onActionTransition": [
+                            {
+                                "applyOn": "SIGN",
+                                "flowProcessor": "Skip Next Nodes",
+                                "node-field-key": "hr-final-authorization-step"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "step-president",
+                    "type": "generic",
+                    "comment": true,
+                    "title": {
+                        "pt-PT": "O/A Presidente",
+                        "en-GB": "The President"
+                    },
+                    "description": {
+                        "pt-PT": "Parecer do/a Presidente",
+                        "en-GB": "Opinion of the President"
+                    },
+                    "commentLabel": {
+                        "pt-PT": "Parecer do/a Presidente",
+                        "en-GB": "Opinion of the President"
+                    },
+                    "actions": {
+                        "SIGN": {
+                            "primary": true,
+                            "to": "step-wait-sabbatical-leave-reports",
+                            "label": {
+                                "pt-PT": "Concordar",
+                                "en-GB": "Agree"
+                            }
+                        },
+                        "REJECT": {
+                            "primary": false,
+                            "to": "FAILURE",
+                            "label": {
+                                "pt-PT": "Rejeitar",
+                                "en-GB": "Reject"
+                            }
+                        }
+                    },
+                    "queue": "Presidência do Instituto Superior Técnico",
+                    "replaceTitleWithRole": true,
+                    "hr-final-authorization-step": "true"
+                },
+                {
+                    "id": "step-wait-sabbatical-leave-reports",
+                    "type": "generic",
+                    "comment": false,
+                    "title": {
+                        "pt-PT": "Em Espera da Conclusão da Licença Sabática",
+                        "en-GB": "Waiting of the Sabbatical Leave Final Report"
+                    },
+                    "description": {
+                        "pt-PT": "Em espera da conclusão da licença sabática",
+                        "en-GB": "Waiting of the final sabbatical Leave"
+                    },
+                    "actions": {
+                        "FINISH_WAITING": {
+                            "primary": true,
+                            "to": "step-upload-sabbatical-leave-reports",
+                            "label": {
+                                "pt-PT": "Terminar espera da conclusão da licença sabática",
+                                "en-GB": "Finish Waiting for the Sabbatical Leave Final Report"
+                            }
+                        }
+                    },
+                    "queue": "Sistema FenixEdu",
+                    "actionProcessor": {
+                        "onEnterNode": {
+                            "flowProcessor": "Do Flow Action After Time Passes",
+                            "flowAction": "FINISH_WAITING",
+                            "user": "fenix",
+                            "when": {
+                                "field": "startDate",
+                                "withMonthOfYear": "12"
+                            }
+                        }
+                    },
+                    "blockUndo": true
+                },
+                {
+                    "id": "step-upload-sabbatical-leave-reports",
+                    "type": "withForms",
+                    "comment": false,
+                    "title": {
+                        "pt-PT": "O/A Colaborador(a)",
+                        "en-GB": "The Collaborator"
+                    },
+                    "description": {
+                        "pt-PT": "Envio de Relatório Final da Licença Sabática",
+                        "en-GB": "Submission of the Sabbatical Leave Final Report"
+                    },
+                    "commentLabel": {
+                        "pt-PT": "Envio de Relatório Final da Licença Sabática",
+                        "en-GB": "Submission of the Sabbatical Leave Final Report"
+                    },
+                    "buttons": [
+                        {
+                            "id": "submit-form",
+                            "primary": true,
+                            "label": {
+                                "pt-PT": "Submeter Relatório Final",
+                                "en-GB": "Submit Final Report"
+                            },
+                            "handlers": {
+                                "form": "sabbatical-report-form",
+                                "action": "SIGN"
+                            }
+                        }
+                    ],
+                    "actions": {
+                        "SIGN": {
+                            "primary": true,
+                            "to": "SUCCESS",
+                            "label": {
+                                "pt-PT": "Submeter Relatório Final",
+                                "en-GB": "Submit Final Report"
+                            }
+                        }
+                    },
+                    "blockUndo": true,
+                    "queue": "{{requester-username}}"
+                }
+            ]
+        }
+    }
+}

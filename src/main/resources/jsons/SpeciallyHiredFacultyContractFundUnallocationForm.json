@@ -1,0 +1,539 @@
+{
+	"name": {
+		"pt-PT": "Libertação de Fundos de Pessoal Docente Especialmente Contratado",
+		"en-GB": "Fund Unallocation for Specially Hired Faculty Contract"
+	},
+	"description": {
+		"pt-PT": "Este formulário permite-lhe solicitar a libertação de fundos para pessoal docente especialmente contratado.",
+		"en-GB": "This form allows you to request the removal of the allocation of funds for specially hired faculty contracts."
+	},
+	"context": {
+		"requestKeywords": {
+			"fields": [
+				"user",
+				"category",
+				"departament",
+				"contractStartDate",
+				"contractType"
+			],
+			"displayName": false,
+			"username": false
+		},
+		"onValidate": {
+		},
+		"onLock": [
+		],
+		"queuesAllowedToChangeTo": [
+			"Execução Orçamental",
+			"Projetos"
+		]
+	},
+	"inputForm": {
+		"checks": {
+			"requirePersonalInformation": true,
+			"requirePhotograph": true,
+			"requireIdentity": true
+		},
+		"pages": [
+			{
+				"title": {
+					"pt-PT": "Informação do Requerente",
+					"en-GB": "Requester Information"
+				},
+				"sections": [
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Pessoa a Contratar",
+					"en-GB": "Person to Hire"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Identificação da Pessoa",
+							"en-GB": "Person Identification"
+						},
+						"description": {
+							"pt-PT": "Caso a pessoa já tenha registo indique o TécnicoID. Se não encontrar a pessoa pretendida com um TecnicoID deve usar o mecanismo 'inserir outra opção' e indicar o nome completo da pessoa a convidar.",
+							"en-GB": "In case the person is already registered indicate their TecnicoID. Otherwise use the 'insert another option' mechanism and indicate the full name of the person to invite."
+						},
+						"properties": [
+							{
+								"type": "AsyncSelect",
+								"field": "user",
+								"label": {
+									"pt-PT": "Nome / TécnicoID",
+									"en-GB": "Name / TecnicoID"
+								},
+								"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/user",
+								"allowOther": true,
+								"collapse": true,
+								"required": false,
+								"readonly": true
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Financiamento",
+					"en-GB": "Financement"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Imputação de Custos",
+							"en-GB": "Coverage of Costs"
+						},
+						"properties": [
+							{
+								"type": "Array",
+								"field": "financers",
+								"required": false,
+								"readonly": true,
+								"label": {
+									"pt-PT": "Unidades Pagadoras",
+									"en-GB": "Paying Entities"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Unidade Pagadora",
+									"en-GB": "Add Paying Entity"
+								},
+								"properties": [
+									{
+										"type": "Composite",
+										"field": "financerPeriodComposite",
+										"properties": [
+											{
+												"type": "DateTime",
+												"field": "financerStartDate",
+												"required": false,
+												"readonly": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Inicio do Financiamento",
+													"en-GB": "Finance Begin Date"
+												}
+											},
+											{
+												"type": "DateTime",
+												"field": "financerEndDate",
+												"required": false,
+												"readonly": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Fim do Financiamento",
+													"en-GB": "Finance End Date"
+												}
+											}
+										]
+									},
+									{
+										"type": "AsyncSelect",
+										"field": "financerUnit",
+										"label": {
+											"pt-PT": "Unidade Pagadora",
+											"en-GB": "Financing Unit"
+										},
+										"required": false,
+										"readonly": true,
+										"allowOther": false,
+										"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/financeUnit"
+									},
+									{
+										"type": "Quantity",
+										"field": "financerUnitPercentage",
+										"required": false,
+										"readonly": true,
+										"step": 0.01,
+										"label": {
+											"pt-PT": "Percentagem a financiar",
+											"en-GB": "Percentage to finance"
+										},
+										"min": 0,
+										"max": 100
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"outcomeForm": {
+		"canEditResponseAfterConclude": false,
+		"pages": [
+			{
+				"title": {
+					"pt-PT": "Reservas, Cabimentos e Compromissos",
+					"en-GB": "Reserves, Fund Allocations and Commitments"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Direção de Projetos, Execução Orçamental e Contabilidade Autonómas",
+							"en-GB": "Budget Execution and Autonomous Accounting"
+						},
+						"description": {
+							"pt-PT": "Nota: As contabilidades autónomas são responsáveis pela obtenção do nº de compromisso.",
+							"en-GB": "Note: The autonomous accounts are responsible for obtaining the commitment number."
+						},
+						"properties": [
+							{
+								"type": "Array",
+								"field": "reserveFundAllocationCommitments",
+								"required": false,
+								"label": {
+									"pt-PT": "Encargos financeiros",
+									"en-GB": "Financial Costs"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Encargo Financeiro",
+									"en-GB": "Add Financial Cost"
+								},
+								"properties": [
+									{
+										"type": "AsyncSelect",
+										"field": "financerConfig",
+										"label": {
+											"pt-PT": "Elemento Financiador",
+											"en-GB": "Financing Element"
+										},
+										"required": false,
+										"allowOther": false,
+										"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/financeUnitConfig/{{request}}/financers",
+										"readonly": true
+									},
+									{
+										"type": "AsyncSelect",
+										"field": "costsByYearConfig",
+										"label": {
+											"pt-PT": "Elemento Temporal",
+											"en-GB": "Time Element"
+										},
+										"required": false,
+										"allowOther": false,
+										"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/economicYearConfig/{{request}}/costsByYear",
+										"readonly": true
+									},
+									{
+										"type": "Quantity",
+										"field": "financeSubUnitPercentage",
+										"required": false,
+										"step": 0.01,
+										"label": {
+											"pt-PT": "Percentagem Rubrica Financeira",
+											"en-GB": "Percentage of Financial Item"
+										},
+										"min": 0,
+										"max": 100,
+										"readonly": true
+									},
+									{
+										"type": "AsyncSelect",
+										"field": "financeSubUnit",
+										"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/financeSubUnit",
+										"required": false,
+										"label": {
+											"pt-PT": "Rubrica Financeira / Elemento PEP",
+											"en-GB": "Financial Item / PEP Element"
+										},
+										"readonly": true
+									},
+									{
+										"type": "Text",
+										"field": "financerReserve",
+										"required": false,
+										"label": {
+											"pt-PT": "Reserva",
+											"en-GB": "Reserve"
+										},
+										"readonly": true
+									},
+									{
+										"type": "Text",
+										"field": "financerCenter",
+										"label": {
+											"pt-PT": "Centro Financeiro",
+											"en-GB": "Financer center"
+										},
+										"required": false,
+										"readonly": true
+									},
+									{
+										"type": "Text",
+										"field": "financerFucionalArea",
+										"required": false,
+										"label": {
+											"pt-PT": "Área Funcional",
+											"en-GB": "Functional area"
+										},
+										"readonly": true
+									},
+									{
+										"type": "Text",
+										"field": "financerFund",
+										"required": false,
+										"label": {
+											"pt-PT": "Fundo",
+											"en-GB": "Fund"
+										},
+										"readonly": true
+									},
+									{
+										"type": "Text",
+										"field": "financerFundAllocation",
+										"label": {
+											"pt-PT": "Cabimento",
+											"en-GB": "Fund allocation"
+										},
+										"required": false,
+										"readonly": true
+									},
+									{
+										"type": "Text",
+										"field": "financerCommitment",
+										"required": false,
+										"label": {
+											"pt-PT": "Número de Compromisso",
+											"en-GB": "Commitment Number"
+										},
+										"readonly": true
+									},
+									{
+										"type": "DateTime",
+										"field": "commitmentRegistryDate",
+										"required": false,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de registo do compromisso",
+											"en-GB": "Commitment registry date"
+										},
+										"readonly": true
+									},
+									{
+										"type": "DateTime",
+										"field": "commitmentReleaseDate",
+										"required": false,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de libertação do compromisso",
+											"en-GB": "Commitment release date"
+										}
+									},
+									{
+										"type": "Text",
+										"field": "financerFundUnallocation",
+										"label": {
+											"pt-PT": "Cabimento Libertado",
+											"en-GB": "Fund unallocation"
+										},
+										"required": true
+									},
+									{
+										"type": "DateTime",
+										"field": "financerReserveReleaseDate",
+										"required": false,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de libertação da reserva",
+											"en-GB": "Reserve release date"
+										}
+									}
+								]
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Divergência de Rubricas Salariais (IT9009)",
+							"en-GB": "Divergence of Salary Items (IT9009)"
+						},
+						"description": {
+							"pt-PT": "Informação só é preenchida quando existir divergência de rubricas salariais.",
+							"en-GB": "Information is only filled in when there is a divergence of salary types."
+						},
+						"properties": [
+							{
+								"type": "Array",
+								"field": "divergences",
+								"label": {
+									"pt-PT": "Divergência Salarial",
+									"en-GB": "Salary Divergence"
+								},
+								"required": false,
+								"labelAddElement": {
+									"pt-PT": "Adicionar Divergência",
+									"en-GB": "Add Divergence"
+								},
+								"properties": [
+									{
+										"type": "Composite",
+										"field": "financerSalaryType",
+										"required": false,
+										"properties": [
+											{
+												"type": "Select",
+												"field": "salaryType",
+												"label": {
+													"pt-PT": "Rubrica Salarial",
+													"en-GB": "Salary Item"
+												},
+												"collapse": true,
+												"required": false,
+												"options": [
+													{
+														"label": {
+															"pt-PT": "0500 - Vencimento Base",
+															"en-GB": "0500 - Base Salary"
+														},
+														"value": "0500"
+													},
+													{
+														"label": {
+															"pt-PT": "/420 - Subsídio de Refeição",
+															"en-GB": "/420 - Meal Subsidy"
+														},
+														"value": "/420"
+													},
+													{
+														"label": {
+															"pt-PT": "8410 - Subsídio de Férias",
+															"en-GB": "8410 - Vacation Subsidy"
+														},
+														"value": "8410"
+													},
+													{
+														"label": {
+															"pt-PT": "0405 - Subsídio de Natal",
+															"en-GB": "0405 - Christmas Subsidy"
+														},
+														"value": "0405"
+													},
+													{
+														"label": {
+															"pt-PT": "/351 - Contribuição do Empregadora para Segurança social",
+															"en-GB": "/351 - Employer's Contribution to Social Security"
+														},
+														"value": "/351"
+													},
+													{
+														"label": {
+															"pt-PT": "1905 - Compensação por Caducidade",
+															"en-GB": "1905 - Compensation for Forfeiture"
+														},
+														"value": "1905"
+													},
+													{
+														"label": {
+															"pt-PT": "1940 - Férias não Gozadas",
+															"en-GB": "1940 - Untaken Vacation"
+														},
+														"value": "1940"
+													},
+													{
+														"label": {
+															"pt-PT": "1945 - Subsídio de Férias Vincendas",
+															"en-GB": "1945 - Expiring Vacation Subsidy"
+														},
+														"value": "1945"
+													},
+													{
+														"label": {
+															"pt-PT": "1950 - Férias Vincendas",
+															"en-GB": "1950 - Coming Vacation"
+														},
+														"value": "1950"
+													},
+													{
+														"label": {
+															"pt-PT": "/371 - Valor entrega ao FGCT",
+															"en-GB": "/371 - Amount delivered to FGCT"
+														},
+														"value": "/371"
+													},
+													{
+														"label": {
+															"pt-PT": "/372 - Valor entrega ao FCT",
+															"en-GB": "/372 - Amount delivered to FCT"
+														},
+														"value": "372"
+													}
+												]
+											},
+											{
+												"type": "AsyncSelect",
+												"field": "divergencePEP",
+												"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/financeSubUnit",
+												"required": false,
+												"label": {
+													"pt-PT": "Elemento PEP para a Divergência",
+													"en-GB": "PEP Element for the Divergence"
+												}
+											}
+										]
+									}
+								]
+							},
+							{
+								"type": "Text",
+								"field": "divergenceReserve",
+								"required": false,
+								"label": {
+									"pt-PT": "Reserva da Divergência",
+									"en-GB": "Divergence Reserve"
+								},
+								"readonly": true
+							},
+							{
+								"type": "Text",
+								"field": "divergenceFundAlloc",
+								"label": {
+									"pt-PT": "Cabimento da Divergência",
+									"en-GB": "Fund Allocation Divergence"
+								},
+								"required": false,
+								"min": 0,
+								"step": 0.01,
+								"readonly": true
+							},
+							{
+								"type": "DateTime",
+								"field": "divergenceDate",
+								"required": false,
+								"date": true,
+								"time": false,
+								"label": {
+									"pt-PT": "Data da Divergência",
+									"en-GB": "Divergence Date"
+								},
+								"readonly": true
+							},
+							{
+								"type": "DateTime",
+								"field": "divergenceUnallocationDate",
+								"required": false,
+								"date": true,
+								"time": false,
+								"label": {
+									"pt-PT": "Data Libertação da Divergência",
+									"en-GB": "Divergence Unallocation Date"
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"cost": {
+	}
+}

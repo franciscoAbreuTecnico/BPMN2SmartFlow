@@ -1,0 +1,1150 @@
+{
+  "name": {
+    "pt-PT": "Prestações por Encargos Familiares",
+    "en-GB": "Family Support Benefits"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe requerer o pagamento do abono de família a crianças e jovens e abono de família pré-natal (apenas para os trabalhadores do Regime de Proteção Social Convergente, i.e. que efetuam descontos para a CGA). Recomendamos que leia atentamente as instruções de ajuda ao preenchimento do formulário disponível na página da Direção dos Recursos Humanos.",
+    "en-GB": "This form allows you to apply for the family allowance for children and young people, as well as prenatal family allowance (only for workers under the Convergent Social Protection Scheme, i.e., those making contributions to the CGA). We recommend that you carefully read the instructions for completing the form, available on the Human Resources Department website."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "benefitType",
+        "familyRelationship",
+        "hasMovableAssets"
+      ],
+      "displayName": true,
+      "username": true
+    },
+    "onLock": {
+      "requestProcessor": "Move Queue",
+      "queue": "Núcleo de Remunerações e Proteção Social"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informação sobre Património e Agregado Familiar",
+          "en-GB": "Information on Assets and Household"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Património Mobiliário",
+              "en-GB": "Movable Assets"
+            },
+            "description": {
+              "pt-PT": "O direito às Prestações por Encargos Familiares depende do valor do património mobiliário do seu agregado familiar não ser superior a 240 vezes o Indexante dos Apoios Sociais (IAS), ou seja, 122.222,40 € no ano de 2024 (sujeito a alterações anuais). As falsas declarações sobre a composição do agregado familiar e respetivos rendimentos, determinam a inibição do acesso ao direito às prestações sociais acima referidas, durante um período de 24 meses.",
+              "en-GB": "Eligibility to Family Support Benefits is contingent upon the value of your family's movable assets not exceeding 240 times the Social Support Index (Indexante dos Apoios Sociais, i.e. IAS), which amounts to €122,222.40 in 2024 (subject to annual adjustments). False declarations regarding the composition of your household and its income will result in the suspension of the right to the above-mentioned social benefits for a period of 24 months."
+            },
+            "properties": [
+              {
+                "type": "Boolean",
+                "field": "hasMovableAssets",
+                "required": true,
+                "label": {
+                  "pt-PT": "Património",
+                  "en-GB": "Assets"
+                },
+                "description": {
+                  "pt-PT": "Possuem na presente data valores depositados em contas bancárias, ações, fundos de investimento, títulos de dívida pública ou outros valores mobiliários, cujo montante total seja superior a 240 vezes o Indexante dos Apoios Sociais (IAS), ou seja, 122.222,40 € no ano de 2024 (sujeito a alterações anuais)?",
+                  "en-GB": "Do you currently have funds deposited in bank accounts, shares, investment funds, government bonds, or other securities, with a total amount exceeding 240 times the Social Support Index (IAS), which is €122,222.40 in 2024 (subject to annual changes)?"
+                },
+                "labelYes": {
+                  "pt-PT": "Sim",
+                  "en-GB": "Yes"
+                },
+                "labelNo": {
+                  "pt-PT": "Não",
+                  "en-GB": "No"
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Agregado Familiar",
+              "en-GB": "Household"
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "household",
+                "required": true,
+                "label": {
+                  "pt-PT": "Agregado Familiar",
+                  "en-GB": "Household"
+                },
+                "properties": [
+                  {
+                    "type": "Text",
+                    "field": "fullName",
+                    "required": true,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Nome Completo",
+                      "en-GB": "Full Name"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "DateTime",
+                    "field": "birthDate",
+                    "required": true,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Nascimento",
+                      "en-GB": "Birth Date"
+                    }
+                  },
+                  {
+                    "type": "Text",
+                    "field": "familyRelation",
+                    "required": true,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Relação Familiar",
+                      "en-GB": "Family Relation"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "Numeric",
+                    "field": "tin",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Número de Identificação Fiscal",
+                      "en-GB": "Tax Identification Number"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "employmentIncome",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor dos Rendimentos de Trabalho por Conta de Outrem",
+                      "en-GB": "Employment Income"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "selfEmploymentIncomeSales",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor dos Rendimentos de Trabalho Independente - Vendas",
+                      "en-GB": "Self-Employment Income - Sales"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "selfEmploymentIncomeServices",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor dos Rendimentos de Trabalho Independente - Serviços",
+                      "en-GB": "Self-Employment Income - Services"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "childSupport",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor da Pensão de Alimentos",
+                      "en-GB": "Child Support Amount"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "pensions",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor das Prestações Pagas por Outras Entidades - Pensões",
+                      "en-GB": "Benefits Paid by Other Entities - Pensions"
+                    },
+                    "description": {
+                      "pt-PT": "Inclui prestações da Caixa Geral de Aposentações, empresas, sindicatos, Caixa de Previdência dos Advogados e Solicitadores, fundos de pensões, instituições bancárias, companhias de seguros e organismos estrangeiros, entre outros, nomeadamente pensões de sobrevivência, de velhice, de invalidez, de aposentação ou outras de natureza idêntica e rendas temporárias ou vitalícias, pensões a cargo de companhias de seguros ou fundos de pensões, pagas por organismos nacionais ou estrangeiros.",
+                      "en-GB": "This includes payments from the Caixa Geral de Aposentações, companies, trade unions, the Caixa de Previdência dos Advogados e Solicitadores, pension funds, banking institutions, insurance companies, and foreign organisations, among others, specifically survivor’s pensions, old-age pensions, invalidity pensions, retirement pensions, or other similar benefits, as well as temporary or life annuities, pensions from insurance companies or pension funds, paid by national or foreign organisations."
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "socialBenefits",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor das Prestações Pagas por Outras Entidades - Prestações Sociais",
+                      "en-GB": "Benefits Paid by Other Entities - Social Benefits"
+                    },
+                    "description": {
+                      "pt-PT": "Inclui prestações da Caixa Geral de Aposentações, empresas, sindicatos, Caixa de Previdência dos Advogados e Solicitadores, fundos de pensões, instituições bancárias, companhias de seguros e organismos estrangeiros, entre outros. Não inclui prestações por encargos familiares e prestações no domínio da deficiência ou da dependência.",
+                      "en-GB": "This includes payments from the Caixa Geral de Aposentações, companies, trade unions, the Caixa de Previdência dos Advogados e Solicitadores, pension funds, banking institutions, insurance companies, and foreign organisations, among others. It does not include family support benefits or benefits related to disability or dependency."
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "childSupportGuaranteeFund",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor das Prestações Pagas pelo Fundo de Garantia dos Alimentos a Menores",
+                      "en-GB": "Benefits Paid by the Child Support Guarantee Fund"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "houseRentSupport",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Subsídios de Renda de Casa",
+                      "en-GB": "House Rent Support"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "residenceSubsidiesOrOthers",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Subsídios de Residência ou Outros Apoios Públicos à Habitação",
+                      "en-GB": "Residence Subsidies or Other Housing Public Support"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "bankAccounts",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor dos Depósitos em Contas Bancárias",
+                      "en-GB": "Amount in Bank Accounts"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "shares",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor das Ações",
+                      "en-GB": "Value of Stocks"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "obligations",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor das Obrigações",
+                      "en-GB": "Value of Bonds"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "savingsCertificates",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor dos Certificados de Aforro",
+                      "en-GB": "Value of Savings Certificates"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "securitiesAndParticipationUnits",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor de Títulos e Unidades de Participação em Instituições de Investimento Coletivo",
+                      "en-GB": "Value of Securities and Participation Units in Collective Investment Institutions"
+                    }
+                  },
+                  {
+                    "type": "Quantity",
+                    "field": "other",
+                    "required": true,
+                    "step": 0.01,
+                    "label": {
+                      "pt-PT": "Valor de Outros Ativos Financeiros",
+                      "en-GB": "Value of Other Financial Assets"
+                    }
+                  }
+                ],
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Habitação Social do Remetente",
+              "en-GB": "Sender's Social Housing"
+            },
+            "properties": [
+              {
+                "type": "Boolean",
+                "field": "senderSocialHousing",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Reside numa casa de habitação social?",
+                  "en-GB": "Do you live in social housing?"
+                },
+                "labelYes": {
+                  "pt-PT": "Sim",
+                  "en-GB": "Yes"
+                },
+                "labelNo": {
+                  "pt-PT": "Não",
+                  "en-GB": "No"
+                },
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Informação sobre o Processo",
+          "en-GB": "Process Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Tipo de Prestação",
+              "en-GB": "Type of Benefit"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "benefitType",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Tipo de Prestação",
+                  "en-GB": "Type of Benefit"
+                },
+                "options": [
+                  {
+                    "value": "preNatalFamilyAllowance",
+                    "label": {
+                      "pt-PT": "Abono de Família Pré-Natal",
+                      "en-GB": "Prenatal Family Allowance"
+                    }
+                  },
+                  {
+                    "value": "familyAllowanceForChildrenAndYoungPeople",
+                    "label": {
+                      "pt-PT": "Abono de Família para Crianças e Jovens",
+                      "en-GB": "Family Allowance for Children and Young People"
+                    }
+                  }
+                ],
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              },
+              {
+                "type": "Boolean",
+                "field": "preNatalFamilyAllowanceOtherInstitution",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Foi requerido abono de família pré-natal a outra instituição?",
+                  "en-GB": "Has prenatal family allowance been requested to another institution?"
+                },
+                "labelYes": {
+                  "pt-PT": "Sim",
+                  "en-GB": "Yes"
+                },
+                "labelNo": {
+                  "pt-PT": "Não",
+                  "en-GB": "No"
+                },
+                "onlyIf": [
+                  {
+                    "field": "benefitType",
+                    "value": {
+                      "value": "preNatalFamilyAllowance",
+                      "label": {
+                        "pt-PT": "Abono de Família Pré-Natal",
+                        "en-GB": "Prenatal Family Allowance"
+                      }
+                    },
+                    "negation": false
+                  },
+                  {
+                    "field": "hasMovableAssets",
+                    "value": false,
+                    "negation": false
+                  }
+                ]
+              },
+              {
+                "type": "Text",
+                "field": "requesterName",
+                "required": true,
+                "multiline": false,
+                "label": {
+                  "pt-PT": "Nome do Remetente",
+                  "en-GB": "Sender Name"
+                },
+                "inputType": "plain",
+                "onlyIf": [
+                  {
+                    "field": "benefitType",
+                    "value": {
+                      "value": "preNatalFamilyAllowance",
+                      "label": {
+                        "pt-PT": "Abono de Família Pré-Natal",
+                        "en-GB": "Prenatal Family Allowance"
+                      }
+                    },
+                    "negation": false
+                  },
+                  {
+                    "field": "preNatalFamilyAllowanceOtherInstitution",
+                    "value": true,
+                    "negation": false
+                  },
+                  {
+                    "field": "hasMovableAssets",
+                    "value": false,
+                    "negation": false
+                  }
+                ]
+              },
+              {
+                "type": "Text",
+                "field": "institutionName",
+                "required": true,
+                "multiline": false,
+                "label": {
+                  "pt-PT": "Nome da Instituição",
+                  "en-GB": "Institution Name"
+                },
+                "inputType": "plain",
+                "onlyIf": [
+                  {
+                    "field": "benefitType",
+                    "value": {
+                      "value": "preNatalFamilyAllowance",
+                      "label": {
+                        "pt-PT": "Abono de Família Pré-Natal",
+                        "en-GB": "Prenatal Family Allowance"
+                      }
+                    },
+                    "negation": false
+                  },
+                  {
+                    "field": "preNatalFamilyAllowanceOtherInstitution",
+                    "value": true,
+                    "negation": false
+                  },
+                  {
+                    "field": "hasMovableAssets",
+                    "value": false,
+                    "negation": false
+                  }
+                ]
+              },
+              {
+                "type": "Boolean",
+                "field": "familyAllowanceForChildrenAndYoungPeopleOtherInstitution",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Foi requerido abono de família pela mesma criança ou jovem a outra instituição?",
+                  "en-GB": "Has family allowance been requested to another institution for the same child/young person?"
+                },
+                "onlyIf": [
+                  {
+                    "field": "benefitType",
+                    "value": {
+                      "value": "familyAllowanceForChildrenAndYoungPeople",
+                      "label": {
+                        "pt-PT": "Abono de Família para Crianças e Jovens",
+                        "en-GB": "Family Allowance for Children and Young People"
+                      }
+                    },
+                    "negation": false
+                  },
+                  {
+                    "field": "hasMovableAssets",
+                    "value": false,
+                    "negation": false
+                  }
+                ],
+                "labelYes": {
+                  "pt-PT": "Sim",
+                  "en-GB": "Yes"
+                },
+                "labelNo": {
+                  "pt-PT": "Não",
+                  "en-GB": "No"
+                }
+              },
+              {
+                "type": "Text",
+                "field": "requesterName2",
+                "required": true,
+                "multiline": false,
+                "label": {
+                  "pt-PT": "Nome do Remetente",
+                  "en-GB": "Sender Name"
+                },
+                "inputType": "plain",
+                "onlyIf": [
+                  {
+                    "field": "benefitType",
+                    "value": {
+                      "value": "familyAllowanceForChildrenAndYoungPeople",
+                      "label": {
+                        "pt-PT": "Abono de Família para Crianças e Jovens",
+                        "en-GB": "Family Allowance for Children and Young People"
+                      }
+                    },
+                    "negation": false
+                  },
+                  {
+                    "field": "familyAllowanceForChildrenAndYoungPeopleOtherInstitution",
+                    "value": true,
+                    "negation": false
+                  },
+                  {
+                    "field": "hasMovableAssets",
+                    "value": false,
+                    "negation": false
+                  }
+                ]
+              },
+              {
+                "type": "Text",
+                "field": "institutionName2",
+                "required": true,
+                "multiline": false,
+                "label": {
+                  "pt-PT": "Nome da Instituição",
+                  "en-GB": "Institution Name"
+                },
+                "inputType": "plain",
+                "onlyIf": [
+                  {
+                    "field": "benefitType",
+                    "value": {
+                      "value": "familyAllowanceForChildrenAndYoungPeople",
+                      "label": {
+                        "pt-PT": "Abono de Família para Crianças e Jovens",
+                        "en-GB": "Family Allowance for Children and Young People"
+                      }
+                    },
+                    "negation": false
+                  },
+                  {
+                    "field": "familyAllowanceForChildrenAndYoungPeopleOtherInstitution",
+                    "value": true,
+                    "negation": false
+                  },
+                  {
+                    "field": "hasMovableAssets",
+                    "value": false,
+                    "negation": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Relação de Parentesco",
+              "en-GB": "Family Relationship"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "familyRelationship",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Parentesco do Remetente Relativamente à Criança ou Jovem",
+                  "en-GB": "Sender's Relationship to the Child or Young Person"
+                },
+                "options": [
+                  {
+                    "value": "parent",
+                    "label": {
+                      "pt-PT": "Pai/Mãe ou Equiparado",
+                      "en-GB": "Parent or Equivalent"
+                    }
+                  },
+                  {
+                    "value": "legalRepresentative",
+                    "label": {
+                      "pt-PT": "Representante Legal",
+                      "en-GB": "Legal Guardian"
+                    }
+                  },
+                  {
+                    "value": "entity",
+                    "label": {
+                      "pt-PT": "Entidade que Tem a Criança ou Jovem à Sua Guarda",
+                      "en-GB": "Entity Holding Custody of the Child or Young Person"
+                    }
+                  },
+                  {
+                    "value": "trustworthyIndividual",
+                    "label": {
+                      "pt-PT": "Pessoa Idónea que Viva em Comunhão de Mesa e Habitação com a Criança ou Jovem",
+                      "en-GB": "Trustworthy Individual Living with the Child or Young Person in the Same Household"
+                    }
+                  },
+                  {
+                    "value": "personAdministrativelyOrJudiciallyAssigned",
+                    "label": {
+                      "pt-PT": "Pessoa a quem a Criança ou Jovem está Confiada Administrativa ou Judicialmente",
+                      "en-GB": "Person to Whom the Child or Young Person is Administratively or Judicially Assigned"
+                    }
+                  },
+                  {
+                    "value": "self",
+                    "label": {
+                      "pt-PT": "O/A Próprio/a Jovem (com idade superior a 18 anos)",
+                      "en-GB": "The Young Person Themselves (aged 18 and above)"
+                    }
+                  }
+                ],
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Identificação",
+              "en-GB": "Identification"
+            },
+            "description": {
+              "pt-PT": "A preencher apenas no caso de abono de família para crianças e jovens.",
+              "en-GB": "Fill in only if applying for family allowance for children and young people."
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "childrenIdentification",
+                "required": false,
+                "label": {
+                  "pt-PT": "Identificação",
+                  "en-GB": "Identification"
+                },
+                "onlyIf": [
+                  {
+                    "field": "benefitType",
+                    "value": {
+                      "value": "familyAllowanceForChildrenAndYoungPeople",
+                      "label": {
+                        "pt-PT": "Abono de Família para Crianças e Jovens",
+                        "en-GB": "Family Allowance for Children and Young People"
+                      }
+                    },
+                    "negation": false
+                  },
+                  {
+                    "field": "hasMovableAssets",
+                    "value": false,
+                    "negation": false
+                  }
+                ],
+                "properties": [
+                  {
+                    "type": "Text",
+                    "field": "name",
+                    "required": true,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Nome Completo",
+                      "en-GB": "Full Name"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "DateTime",
+                    "field": "birthDate",
+                    "required": true,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Nascimento",
+                      "en-GB": "Birth Date"
+                    }
+                  },
+                  {
+                    "type": "Text",
+                    "field": "motherName",
+                    "required": false,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Nome da Mãe",
+                      "en-GB": "Name of the Mother"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "Text",
+                    "field": "fatherName",
+                    "required": false,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Nome do Pai",
+                      "en-GB": "Name of the Father"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "AsyncSelect",
+                    "field": "country",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "País de Naturalidade",
+                      "en-GB": "Country of Birth"
+                    },
+                    "optionsProvider": "/ist-admissions/supported-countries",
+                    "allowOther": true
+                  },
+                  {
+                    "type": "AsyncSelect",
+                    "field": "district",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Distrito de Naturalidade",
+                      "en-GB": "District of Birth"
+                    },
+                    "optionsProvider": "/ist-admissions/supported-districts",
+                    "allowOther": true
+                  },
+                  {
+                    "type": "AsyncSelect",
+                    "field": "county",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Concelho de Naturalidade",
+                      "en-GB": "Municipality of Birth"
+                    },
+                    "optionsLimitedBy": {
+                      "field": "district"
+                    },
+                    "optionsProvider": "/ist-admissions/supported-municipalities"
+                  },
+                  {
+                    "type": "Text",
+                    "field": "parish",
+                    "required": true,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Freguesia de Naturalidade",
+                      "en-GB": "Parish of Birth"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "Text",
+                    "field": "nationality",
+                    "required": true,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Nacionalidade",
+                      "en-GB": "Nationality"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "Text",
+                    "field": "address",
+                    "required": true,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Morada",
+                      "en-GB": "Address"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "Composite",
+                    "field": "postalCodeComposite",
+                    "required": true,
+                    "properties": [
+                      {
+                        "type": "Text",
+                        "field": "postalCode",
+                        "required": true,
+                        "multiline": false,
+                        "label": {
+                          "pt-PT": "Código Postal",
+                          "en-GB": "Postal Code"
+                        },
+                        "inputType": "plain"
+                      },
+                      {
+                        "type": "Text",
+                        "field": "city",
+                        "required": true,
+                        "multiline": false,
+                        "label": {
+                          "pt-PT": "Localidade / Cidade",
+                          "en-GB": "Locality / City"
+                        },
+                        "inputType": "plain"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Text",
+                    "field": "idDocument",
+                    "required": true,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Tipo do Documento de Identificação",
+                      "en-GB": "Identification Document Type"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "Text",
+                    "field": "idDocumentNumber",
+                    "multiline": false,
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Número do Documento de Identificação",
+                      "en-GB": "Identification Document Number"
+                    },
+                    "inputType": "plain"
+                  },
+                  {
+                    "type": "DateTime",
+                    "field": "idDocumentDate",
+                    "required": true,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Validade do Documento de Identificação",
+                      "en-GB": "Identification Document Expiry Date"
+                    }
+                  },
+                  {
+                    "type": "Boolean",
+                    "field": "youngPersonWorking",
+                    "required": true,
+                    "multiple": false,
+                    "collapse": false,
+                    "allowOther": false,
+                    "label": {
+                      "pt-PT": "O/A jovem exerce atividade laboral?",
+                      "en-GB": "Is the young person employed?"
+                    },
+                    "labelYes": {
+                      "pt-PT": "Sim",
+                      "en-GB": "Yes"
+                    },
+                    "labelNo": {
+                      "pt-PT": "Não",
+                      "en-GB": "No"
+                    }
+                  },
+                  {
+                    "type": "Text",
+                    "field": "regime",
+                    "required": true,
+                    "multiline": true,
+                    "label": {
+                      "pt-PT": "Indique o regime de proteção social que o/a abrange",
+                      "en-GB": "Please specify the social protection scheme that covers them"
+                    },
+                    "inputType": "plain",
+                    "onlyIf": {
+                      "field": "youngPersonWorking",
+                      "value": true,
+                      "negation": false
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Certificação do Remetente",
+          "en-GB": "Sender's Certification"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Declaração",
+              "en-GB": "Declaration"
+            },
+            "description": {
+              "pt-PT": "Todos os termos aqui atestados por mim, manifestados de forma livre, específica e inequívoca, são feitos no âmbito e para os efeitos decorrentes do DL n.º 70/2010, de 16 de junho, na sua redação atual, que estabelece as regras para a determinação da condição de recursos a ter em conta na atribuição e manutenção das prestações do subsistema de proteção familiar, caducando tais termos com o indeferimento do requerimento ou com o término da atribuição da prestação, não podendo os mesmos ser revogados sem o consentimento expresso dos serviços competentes, sob pena da suspensão do procedimento de atribuição ou do pagamento das prestações em curso, com a respetiva perda do direito às prestações sociais.",
+              "en-GB": "All the terms stated by me, expressed freely, specifically, and unequivocally, are made within the scope and for the purposes of Decree-Law No. 70/2010, of 16 June, in its current wording, which establishes the rules for determining the resource condition to be taken into account in the allocation and maintenance of benefits under the family protection subsystem. These terms will expire upon the rejection of the request or the termination of the benefit allocation, and they cannot be revoked without the express consent of the competent authorities, under penalty of suspending the allocation procedure or the payment of ongoing benefits, with the consequent loss of entitlement to social benefits."
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "declaration",
+                "required": true,
+                "multiple": true,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Declaração",
+                  "en-GB": "Declaration"
+                },
+                "options": [
+                  {
+                    "value": "yes",
+                    "label": {
+                      "pt-PT": "Declaro que as informações prestadas correspondem à verdade e não omitem qualquer informação relevante.",
+                      "en-GB": "I hereby declare that the information supplied is truthful and that no relevant information has been omitted."
+                    }
+                  }
+                ],
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Compromissos",
+              "en-GB": "Commitments"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "proofProvidingCommitment",
+                "required": true,
+                "multiple": true,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Compromisso de Apresentação de Provas",
+                  "en-GB": "Commitment to Provide Proof"
+                },
+                "options": [
+                  {
+                    "value": "yes",
+                    "label": {
+                      "pt-PT": "Comprometo-me a apresentar os meios de prova que forem considerados necessários à atribuição e/ou manutenção da prestação requerida.",
+                      "en-GB": "I commit to providing the proof considered necessary for the granting and/or continuation of the requested benefit."
+                    }
+                  }
+                ],
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              },
+              {
+                "type": "Select",
+                "field": "commitment2",
+                "required": true,
+                "multiple": true,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Compromisso de Autorização de Acesso a Informação Patrimonial",
+                  "en-GB": "Commitment"
+                },
+                "options": [
+                  {
+                    "value": "yes",
+                    "label": {
+                      "pt-PT": "Comprometo-me a, em qualquer momento e quando solicitada, visando a comprovação das declarações relativas ao valor do património mobiliário, nos termos do disposto no n.º 1 do art. 14.º do Decreto-Lei n.º 70/2010, de 16 de junho, na sua redação atual, entregar declaração de autorização aos serviços competentes, para solicitarem ao Banco de Portugal a indicação das entidades bancárias ou financeiras onde tenho conta e a obter das respetivas entidades toda a informação patrimonial relevante, relativa a saldos de contas à ordem, a prazo ou de outros valores mobiliários de que seja titular ou cotitular. Este compromisso é igualmente válido para as declarações que sejam necessárias apresentar pelos restantes membros do meu agregado familiar.",
+                      "en-GB": "I commit to providing, at any time and when requested, to verify the declarations regarding the value of movable assets, in accordance with number 1 of Article 14 of Decree-Law No. 70/2010, of 16 June, in its current wording, a declaration of authorisation to the relevant services, so they may request from the Bank of Portugal information on the banking or financial institutions where I hold accounts, and to obtain all pertinent asset information from these institutions, including account balances, term deposits, or other securities where I am the holder or joint holder. This commitment also applies to any declarations required from other members of my household."
+                    }
+                  }
+                ],
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Tomada de Conhecimento e Autorização",
+              "en-GB": "Acknowledgement and Authorisation"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "acknowledge1",
+                "required": true,
+                "allowOther": false,
+                "collapse": false,
+                "multiple": true,
+                "label": {
+                  "pt-PT": "Tomada de Conhecimento",
+                  "en-GB": "Acknowledgment"
+                },
+                "options": [
+                  {
+                    "value": "accept",
+                    "label": {
+                      "pt-PT": "Tenho conhecimento que se o formulário for submetido até ao dia 7 de cada mês, e se encontrar devidamente preenchido, terá impacto no próprio mês. Caso contrário, só terá impacto no mês seguinte.",
+                      "en-GB": "I acknowledge that if the form is submitted by the 7th of each month, and is properly completed, it will have an impact on the current month. Otherwise, it will only have an impact on the following month."
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "Select",
+                "field": "acknowledge2",
+                "required": true,
+                "multiple": true,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Tomada de Conhecimento",
+                  "en-GB": "Acknowledgment"
+                },
+                "options": [
+                  {
+                    "value": "yes",
+                    "label": {
+                      "pt-PT": "Tenho conhecimento que a falta da entrega da mencionada declaração de autorização, quando exigida e no prazo concedido para esse efeito, constitui causa de suspensão do procedimento de atribuição ou do pagamento da prestação social em curso, com perda do direito à prestação até à entrega da declaração de autorização exigida, de acordo com o disposto no n.º 2 do art. 14.ºdo Decreto-Lei n.º 70/2010, de 16 de junho, na sua redação atual.",
+                      "en-GB": "I acknowledge that failing to provide the required authorisation declaration, when requested and within the designated timeframe, will result in the suspension of the benefit allocation process or payment of the current social benefit, with the loss of entitlement to the benefit until the required authorisation declaration is submitted, in line with number 2 of Article 14 of Decree-Law No. 70/2010, of 16 June, in its current wording."
+                    }
+                  }
+                ],
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              },
+              {
+                "type": "Select",
+                "field": "authorisation",
+                "required": true,
+                "collapse": false,
+                "allowOther": false,
+                "multiple": true,
+                "label": {
+                  "pt-PT": "Autorização",
+                  "en-GB": "Authorisation"
+                },
+                "options": [
+                  {
+                    "value": "yes",
+                    "label": {
+                      "pt-PT": "Autorizo os serviços competentes a proceder à averiguação oficiosa dos rendimentos do agregado familiar.",
+                      "en-GB": "I authorise the competent authorities to carry out an official investigation into the household income."
+                    }
+                  }
+                ],
+                "onlyIf": {
+                  "field": "hasMovableAssets",
+                  "value": false,
+                  "negation": false
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false,
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta",
+          "en-GB": "Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Resposta",
+              "en-GB": "Response"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "response",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "label": {
+                  "pt-PT": "Resposta",
+                  "en-GB": "Response"
+                },
+                "options": [
+                  {
+                    "value": "processCurrentMonth",
+                    "label": {
+                      "pt-PT": "A informação foi registada no sistema e terá impacto no mês corrente.",
+                      "en-GB": "The information has been recorded in the system and will have impact on the current month."
+                    }
+                  },
+                  {
+                    "value": "processNextMonth",
+                    "label": {
+                      "pt-PT": "A informação foi registada no sistema e terá impacto no mês seguinte.",
+                      "en-GB": "The information has been recorded in the system and will have impact on next month."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {
+  }
+}

@@ -41,15 +41,15 @@ import com.rdf.query.DLQueryEngine;
 /**
  * OntologyService is responsible for:
  *   1) Loading four files:
- *        • smartFlow.ttl      (SmartFlow schema + sf:has_nextNode chain)
- *        • instanceTtl        (RML‐generated SmartFlow individuals)
- *        • bpmn.ttl           (BBO/BPMN ontology, including bbo:SequenceFlow, bbo:ExclusiveGateway, etc.)
- *        • mapping.ttl        (SmartFlow↔BPMN alignments)
+ *        - smartFlow.ttl      (SmartFlow schema + sf:has_nextNode chain)
+ *        - instanceTtl        (RML‐generated SmartFlow individuals)
+ *        - bpmn.ttl           (BBO/BPMN ontology, including bbo:SequenceFlow, bbo:ExclusiveGateway, etc.)
+ *        - mapping.ttl        (SmartFlow↔BPMN alignments)
  *   2) Merging them into one OWLOntology.
  *   3) Running HermiT (precomputeInferences) so that every sf:has_nextNode(x,y) is materialized.
  *   4) Programmatically creating:
- *        • If x has exactly one inferred sf:has_nextNode, a direct bbo:SequenceFlow x→y.
- *        • If x has two or more inferred sf:has_nextNode targets, a bbo:ExclusiveGateway_x plus:
+ *        - If x has exactly one inferred sf:has_nextNode, a direct bbo:SequenceFlow x→y.
+ *        - If x has two or more inferred sf:has_nextNode targets, a bbo:ExclusiveGateway_x plus:
  *            – a SequenceFlow x→ExclusiveGateway_x
  *            – one SequenceFlow ExclusiveGateway_x→each y
  *   5) Assigning each new SequenceFlow and ExclusiveGateway a bbo:id and bbo:name.
@@ -84,6 +84,7 @@ public class OntologyService {
 
     private final OWLDataProperty nodeIdProp;
     private final OWLObjectProperty queueProp;
+    private final OWLObjectProperty hasAssociationProp;
 
     // The “sf:has_nextNode” property
     private final OWLObjectProperty hasNextNodeProp;
@@ -145,11 +146,11 @@ public class OntologyService {
         this.nodeIdProp      = df.getOWLDataProperty(IRI.create(SF_NS + "sfId"));
         this.hasNextNodeProp = df.getOWLObjectProperty(IRI.create(SF_NS + "has_nextNode"));
         this.queueProp       = df.getOWLObjectProperty(IRI.create(SF_NS + "has_queue"));
+        this.hasAssociationProp = df.getOWLObjectProperty(IRI.create(SF_NS + "has_association"));
 
         // 6) Programmatically create bbo:SequenceFlow (and bbo:ExclusiveGateway if needed) for every inferred (x sf:has_nextNode y)
         materializeSequenceFlowsFromNextNode();
         assignQueueToTerminalNodes();
-
 
         // 7) Prepare DLQueryEngine for Manchester‐syntax queries
         this.shortFormProvider = new SimpleShortFormProvider();
@@ -173,7 +174,7 @@ public class OntologyService {
                 writer.newLine();
             }
 
-            writer.newLine();  // just a separator
+            writer.newLine();
 
             // 2) append individuals, skipping prefixes
             while ((line = instIn.readLine()) != null) {
@@ -243,19 +244,19 @@ public class OntologyService {
             return Collections.emptySet();
         }
     }
-
+    
     // --------------------------------------------------------
     //  “sf:has_nextNode” → bbo:SequenceFlow + ExclusiveGateway + id/name
     // --------------------------------------------------------
 
     /**
      * For every inferred (x sf:has_nextNode y):
-     *   • If x has exactly one y, create one bbo:SequenceFlow x→y.
-     *   • If x has two or more y’s, create:
+     *   - If x has exactly one y, create one bbo:SequenceFlow x→y.
+     *   - If x has two or more y’s, create:
      *       – A bbo:ExclusiveGateway individual “ExclusiveGateway_x”
      *       – A SequenceFlow x→ExclusiveGateway_x
      *       – A SequenceFlow ExclusiveGateway_x→each y
-     *   • Assign each new SequenceFlow and ExclusiveGateway a bbo:id and bbo:name.
+     *   - Assign each new SequenceFlow and ExclusiveGateway a bbo:id and bbo:name.
      *
      * Must be called only after precomputeInferences(...),
      * and only after hasNextNodeProp has been initialized.
@@ -309,7 +310,7 @@ public class OntologyService {
                     df.getOWLDataPropertyAssertionAxiom(bboIdProp, seq, df.getOWLLiteral(seqFrag)));
 
                 // v) seq bbo:name = "SequenceFlow from subj to obj"
-                String humanName = subjFrag + "_to_" + objFrag;
+                String humanName = ""; // subjFrag + "_to_" + objFrag;
                 manager.addAxiom(mergedOntology,
                     df.getOWLDataPropertyAssertionAxiom(bboNameProp, seq, df.getOWLLiteral(humanName)));
 
@@ -327,7 +328,7 @@ public class OntologyService {
                 // ii) gw bbo:id = "ExclusiveGateway_subj"; gw bbo:name = "ExclusiveGateway for subj"
                 manager.addAxiom(mergedOntology,
                     df.getOWLDataPropertyAssertionAxiom(bboIdProp, gw, df.getOWLLiteral(gwFrag)));
-                String gwHuman = "XOR_" + subjFrag;
+                String gwHuman = ""; // "XOR_" + subjFrag;
                 manager.addAxiom(mergedOntology,
                     df.getOWLDataPropertyAssertionAxiom(bboNameProp, gw, df.getOWLLiteral(gwHuman)));
 
@@ -359,7 +360,7 @@ public class OntologyService {
                 // d) seqToGw bbo:id and bbo:name
                 manager.addAxiom(mergedOntology,
                     df.getOWLDataPropertyAssertionAxiom(bboIdProp, seqToGw, df.getOWLLiteral(seqToGwFrag)));
-                String seqToGwName = subjFrag + "_to_" + gwFrag;
+                String seqToGwName = ""; // subjFrag + "_to_" + gwFrag;
                 manager.addAxiom(mergedOntology,
                     df.getOWLDataPropertyAssertionAxiom(bboNameProp, seqToGw, df.getOWLLiteral(seqToGwName)));
 
@@ -389,7 +390,7 @@ public class OntologyService {
                     // d) seqFromGw bbo:id and bbo:name
                     manager.addAxiom(mergedOntology,
                         df.getOWLDataPropertyAssertionAxiom(bboIdProp, seqFromGw, df.getOWLLiteral(seqFromGwFrag)));
-                    String seqFromGwName = gwFrag + "_to_" + objFrag;
+                    String seqFromGwName = ""; // gwFrag + "_to_" + objFrag;
                     manager.addAxiom(mergedOntology,
                         df.getOWLDataPropertyAssertionAxiom(bboNameProp, seqFromGw, df.getOWLLiteral(seqFromGwName)));
                 }
@@ -611,6 +612,18 @@ public class OntologyService {
         return queues.entities().collect(Collectors.toSet());
     }
 
+    /** 
+     * Return all sf:Field individuals linked from the given element via sf:has_association.
+     */
+    public Set<OWLNamedIndividual> getAssociatedFields(OWLNamedIndividual element) {
+        if (element == null) {
+            return Collections.emptySet();
+        }
+        NodeSet<OWLNamedIndividual> fields =
+            reasoner.getObjectPropertyValues(element, hasAssociationProp);
+        return fields.entities().collect(Collectors.toSet());
+    }
+    
     // --------------------------------------------------------
     //  Expose shortFormProvider via a public helper
     // --------------------------------------------------------

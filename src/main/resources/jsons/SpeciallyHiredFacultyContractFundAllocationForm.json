@@ -1,0 +1,1180 @@
+{
+	"name": {
+		"pt-PT": "Alocação de Fundos de Pessoal Docente Especialmente Contratado",
+		"en-GB": "Fund Allocation for Specially Hired Faculty Contract"
+	},
+	"description": {
+		"pt-PT": "Este formulário permite-lhe solicitar a alocação de fundos para pessoal docente especialmente contratado.",
+		"en-GB": "This form allows you to request the allocation of funds for specially hired faculty contracts."
+	},
+	"context": {
+		"requestKeywords": {
+			"fields": [
+				"user",
+				"category",
+				"departament",
+				"contractStartDate",
+				"contractType"
+			],
+			"displayName": false,
+			"username": false
+		},
+		"onValidate": {
+			"requestProcessor": "Copy Input to Outcome",
+			"mapper": {
+				"department-queue": "departament",
+				"reserveFundAllocationCommitments": "financers"
+			}
+		},
+		"onLock": [
+			{
+				"requestProcessor": "Change Request Queue",
+				"queueField": "requestQueue"
+			},
+			{
+				"requestProcessor": "Change Flow Queue",
+				"currentFlowNode": "step-2"
+			}
+		],
+		"onConclude": {
+			"requestProcessor": "Call Flow Action",
+			"flowAction": "RESERVE_FUNDS"
+		},
+		"onReject": {
+			"requestProcessor": "Call Flow Action",
+			"flowAction": "REJECT"
+		},
+		"onChangeQueue": {
+			"requestProcessor": "Change Flow Queue",
+			"currentFlowNode": "step-2"
+		},
+		"applicationMapper": {
+			"salary": "salary"
+		},
+		"queuesAllowedToChangeTo": [
+			"Execução Orçamental",
+			"Projetos"
+		]
+	},
+	"inputForm": {
+		"checks": {
+			"requirePersonalInformation": true,
+			"requirePhotograph": true,
+			"requireIdentity": true
+		},
+		"pages": [
+			{
+				"title": {
+					"pt-PT": "Informação do Requerente",
+					"en-GB": "Requester Information"
+				},
+				"sections": [
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Informação Académica",
+					"en-GB": "Academic Information"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Dados para o Processo",
+							"en-GB": "Information for the Process"
+						},
+						"properties": [
+							{
+								"type": "AsyncSelect",
+								"field": "departament",
+								"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/departments",
+								"required": true,
+								"readonly": true,
+								"allowOther": false,
+								"label": {
+									"pt-PT": "Departamento",
+									"en-GB": "Department"
+								},
+								"description": {
+									"pt-PT": "Selecione o departamento que está a proceder à contratar.",
+									"en-GB": "Select the department that is proceeding with the hiring process."
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Pessoa a Contratar",
+					"en-GB": "Person to Hire"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Identificação da Pessoa",
+							"en-GB": "Person Identification"
+						},
+						"description": {
+							"pt-PT": "Caso a pessoa já tenha registo indique o TécnicoID. Se não encontrar a pessoa pretendida com um TecnicoID deve usar o mecanismo 'inserir outra opção' e indicar o nome completo da pessoa a convidar.",
+							"en-GB": "In case the person is already registered indicate their TecnicoID. Otherwise use the 'insert another option' mechanism and indicate the full name of the person to invite."
+						},
+						"properties": [
+							{
+								"type": "AsyncSelect",
+								"field": "user",
+								"label": {
+									"pt-PT": "Nome / TécnicoID",
+									"en-GB": "Name / TecnicoID"
+								},
+								"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/user",
+								"allowOther": true,
+								"collapse": true,
+								"required": true,
+								"readonly": true
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Informação para o Contrato",
+					"en-GB": "Information for the Contract"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Categoria",
+							"en-GB": "Category"
+						},
+						"properties": [
+							{
+								"type": "Select",
+								"field": "category",
+								"label": {
+									"pt-PT": "Categoria",
+									"en-GB": "Category"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"readonly": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Professor(a) Visitante",
+											"en-GB": "Visiting Professor"
+										},
+										"value": "visitingProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Catedrático(a) Convidado(a)",
+											"en-GB": "Invited Full Professor"
+										},
+										"value": "invitedFullProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Associado(a) Convidado(a)",
+											"en-GB": "Invited Associate Professor"
+										},
+										"value": "invitedAssociateProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Professor(a) Auxiliar Convidado(a)",
+											"en-GB": "Invited Assistant Professor"
+										},
+										"value": "invitedAssistantProfessor"
+									},
+									{
+										"label": {
+											"pt-PT": "Assistente Convidado(a)",
+											"en-GB": "Invited Teaching Assistant"
+										},
+										"value": "invitedTeachingAssistant"
+									},
+									{
+										"label": {
+											"pt-PT": "Monitor(a)",
+											"en-GB": "Junior Teaching Assistant"
+										},
+										"value": "juniorTeachingAssistant"
+									}
+								]
+							},
+							{
+								"type": "Select",
+								"field": "equivalentCategory",
+								"label": {
+									"pt-PT": "Categoria Equiparada",
+									"en-GB": "Equivalent Category"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"readonly": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Catedrático(a) Convidado(a)",
+											"en-GB": "Equivalent to Invited Full Professor"
+										},
+										"value": "invitedFullProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Associado(a) Convidado(a)",
+											"en-GB": "Equivalent to Invited Associate Professor"
+										},
+										"value": "invitedAssociateProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Professor(a) Auxiliar Convidado(a)",
+											"en-GB": "Equivalent to Invited Assistant Professor"
+										},
+										"value": "invitedAssistantProfessorEquivalence"
+									},
+									{
+										"label": {
+											"pt-PT": "Equiparado(a) a Assistente Convidado(a)",
+											"en-GB": "Equivalent to Invited Teaching Assistant"
+										},
+										"value": "invitedTeachingAssistantEquivalence"
+									}
+								],
+								"onlyIf": {
+									"field": "category",
+									"value": {
+										"label": {
+											"pt-PT": "Professor(a) Visitante",
+											"en-GB": "Visiting Professor"
+										},
+										"value": "visitingProfessor"
+									}
+								}
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Regime do contrato",
+							"en-GB": "Contract Regime"
+						},
+						"properties": [
+							{
+								"type": "Composite",
+								"field": "regimeComposite",
+								"required": true,
+								"readonly": true,
+								"properties": [
+									{
+										"type": "Select",
+										"field": "regime",
+										"label": {
+											"pt-PT": "Regime",
+											"en-GB": "Regime"
+										},
+										"multiple": false,
+										"collapse": false,
+										"required": true,
+										"readonly": true,
+										"options": [
+											{
+												"label": {
+													"pt-PT": "Tempo parcial",
+													"en-GB": "Part Time"
+												},
+												"value": "partTime"
+											},
+											{
+												"label": {
+													"pt-PT": "Tempo integral",
+													"en-GB": "Full Time"
+												},
+												"value": "fullTime"
+											},
+											{
+												"label": {
+													"pt-PT": "Tempo integral em dedicação exclusiva",
+													"en-GB": "Full time with exclusive dedication"
+												},
+												"value": "fullTimeExclusive"
+											}
+										]
+									},
+									{
+										"type": "Quantity",
+										"field": "partTimePercentage",
+										"required": true,
+										"readonly": true,
+										"label": {
+											"pt-PT": "Percentagem em tempo parcial (%)",
+											"en-GB": "Part time percentage (%)"
+										},
+										"min": 0,
+										"max": 99.99,
+										"step": 0.01,
+										"description": {
+											"pt-PT": "Indicar a percentagem  do valor de tempo parcial a ser contratado.",
+											"en-GB": "Indicate the percentage of part time value to be contracted."
+										},
+										"onlyIf": {
+											"field": "regime",
+											"value": {
+												"label": {
+													"pt-PT": "Tempo parcial",
+													"en-GB": "Part Time"
+												},
+												"value": "partTime"
+											}
+										}
+									}
+								]
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Tipo de Contrato",
+							"en-GB": "Type of Contract"
+						},
+						"properties": [
+							{
+								"type": "Select",
+								"field": "contractType",
+								"description": {
+									"pt-PT": "Os novos contratos, quando remunerados (não 32-A), apenas são renováveis no caso de personalidades externas ao perímetro de consolidação do Instituto Superior Técnico, e que complementem o portfólio de competências existente no Instituto Superior Técnico.",
+									"en-GB": "The new contracts, when remunerated (not 32-A), are only renewable in the case of personalities outside the Instituto Superior Técnico consolidation perimeter, and who complement the existing portfolio of skills at Instituto Superior Técnico."
+								},
+								"label": {
+									"pt-PT": "Tipo de Contrato",
+									"en-GB": "Contract Type"
+								},
+								"multiple": false,
+								"collapse": false,
+								"allowOther": false,
+								"required": true,
+								"readonly": true,
+								"options": [
+									{
+										"label": {
+											"pt-PT": "Novo Contrato",
+											"en-GB": "New Contract"
+										},
+										"value": "newContract"
+									},
+									{
+										"label": {
+											"pt-PT": "Renovação de Contrato",
+											"en-GB": "Contract Renewal"
+										},
+										"value": "contractRenewal"
+									}
+								]
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Vigência do Contrato",
+							"en-GB": "Contract Term"
+						},
+						"description": {
+							"pt-PT": "A proposta de contratação deverá ser entregue com uma antecedência mínima de 2 meses relativamente à data de início do contrato.",
+							"en-GB": "The contract proposal must be delivered at least 2 months before the start date of the contract."
+						},
+						"properties": [
+							{
+								"type": "Composite",
+								"field": "contractDuration",
+								"required": true,
+								"readonly": true,
+								"properties": [
+									{
+										"type": "DateTime",
+										"field": "contractStartDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Inicio",
+											"en-GB": "Begin Date"
+										}
+									},
+									{
+										"type": "DateTime",
+										"field": "contractEndDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de Fim",
+											"en-GB": "End Date"
+										}
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Financiamento",
+					"en-GB": "Financement"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Imputação de Custos",
+							"en-GB": "Coverage of Costs"
+						},
+						"properties": [
+							{
+								"type": "Array",
+								"field": "financers",
+								"required": true,
+								"readonly": true,
+								"label": {
+									"pt-PT": "Unidades Pagadoras",
+									"en-GB": "Paying Entities"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Unidade Pagadora",
+									"en-GB": "Add Paying Entity"
+								},
+								"properties": [
+									{
+										"type": "Composite",
+										"field": "financerPeriodComposite",
+										"properties": [
+											{
+												"type": "DateTime",
+												"field": "financerStartDate",
+												"required": true,
+												"readonly": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Inicio do Financiamento",
+													"en-GB": "Finance Begin Date"
+												}
+											},
+											{
+												"type": "DateTime",
+												"field": "financerEndDate",
+												"required": true,
+												"readonly": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Fim do Financiamento",
+													"en-GB": "Finance End Date"
+												}
+											}
+										]
+									},
+									{
+										"type": "AsyncSelect",
+										"field": "financerUnit",
+										"label": {
+											"pt-PT": "Unidade Pagadora",
+											"en-GB": "Financing Unit"
+										},
+										"required": true,
+										"readonly": true,
+										"allowOther": false,
+										"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/financeUnit"
+									},
+									{
+										"type": "Quantity",
+										"field": "financerUnitPercentage",
+										"required": true,
+										"readonly": true,
+										"step": 0.01,
+										"label": {
+											"pt-PT": "Percentagem a financiar",
+											"en-GB": "Percentage to finance"
+										},
+										"min": 0,
+										"max": 100
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Informação de Encargos",
+					"en-GB": "Charges Information"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Encargos Definitivos",
+							"en-GB": "Definitive Costs"
+						},
+						"properties": [
+							{
+								"type": "Quantity",
+								"field": "salaryMonthlyBase",
+								"required": true,
+								"label": {
+									"pt-PT": "Remuneração Base Mensal (€)",
+									"en-GB": "Monthly Base Salary (€)"
+								},
+								"min": 0,
+								"step": 0.01
+							},
+							{
+								"type": "Array",
+								"field": "costsByYear",
+								"description": {
+									"pt-PT": "Indique os encargos suportados pelo(s) elemento(s) PEP(s) e a respective percentagem.",
+									"en-GB": "Indicate the costs suported by the PEP element(s) and the respective percentage."
+								},
+								"required": true,
+								"label": {
+									"pt-PT": "Ano Económico e Intervalo",
+									"en-GB": "Economic Year and Interval"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Ano Económico",
+									"en-GB": "Add Economic Year"
+								},
+								"properties": [
+									{
+										"type": "Quantity",
+										"field": "economicYear",
+										"required": true,
+										"label": {
+											"pt-PT": "Ano Económico para os Encargos",
+											"en-GB": "Economic Year for the Costs"
+										},
+										"inputType": "plain",
+										"step": 1,
+										"min": 2023,
+										"max": 2046
+									},
+									{
+										"type": "Composite",
+										"field": "costInterval",
+										"required": true,
+										"description": {
+											"pt-PT": "Indique a data de início e fim dos encargos.",
+											"en-GB": "Indicate the start and end date of costs."
+										},
+										"properties": [
+											{
+												"type": "DateTime",
+												"field": "costIntervalStartDate",
+												"required": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Inicio dos Encargos",
+													"en-GB": "Begin Date of the Costs"
+												}
+											},
+											{
+												"type": "DateTime",
+												"field": "costIntervalEndDate",
+												"required": true,
+												"date": true,
+												"time": false,
+												"label": {
+													"pt-PT": "Data de Fim dos Encargos",
+													"en-GB": "End Date of the Costs"
+												}
+											}
+										]
+									},
+									{
+										"type": "Quantity",
+										"field": "salaryBase",
+										"description": {
+											"pt-PT": "Indique o total da remuneração base no periodo.",
+											"en-GB": "Indicate the total base remuneration in the period."
+										},
+										"required": true,
+										"label": {
+											"pt-PT": "a. Remuneração Base para o Período (€)",
+											"en-GB": "a. Base Salary for the Period (€)"
+										},
+										"min": 0,
+										"step": 0.01
+									},
+									{
+										"type": "Quantity",
+										"field": "salaryFoodSubsidy",
+										"required": true,
+										"label": {
+											"pt-PT": "b. Subsídio de Alimentação (€)",
+											"en-GB": "b. Food Subsidy (€)"
+										},
+										"min": 0,
+										"step": 0.01
+									},
+									{
+										"type": "Quantity",
+										"field": "salaryVacationSubsidy",
+										"required": true,
+										"label": {
+											"pt-PT": "c. Subsídio de Férias (€)",
+											"en-GB": "c. Vacation Subsidy (€)"
+										},
+										"min": 0,
+										"step": 0.01
+									},
+									{
+										"type": "Quantity",
+										"field": "salaryChristmasSubsidy",
+										"required": true,
+										"label": {
+											"pt-PT": "d. Subsídio de Natal (€)",
+											"en-GB": "d. Christmas Subsidy (€)"
+										},
+										"min": 0,
+										"step": 0.01
+									},
+									{
+										"type": "Composite",
+										"field": "tsu",
+										"description": {
+											"pt-PT": "Indique a percentagem da taxa da TSU a aplicar no ano económico e o valor calculado sobre esta.",
+											"en-GB": "Indicate the TSU rate to be applied in the financial year and the value calculated on the rate."
+										},
+										"properties": [
+											{
+												"type": "Quantity",
+												"field": "tsuPercentage",
+												"label": {
+													"pt-PT": "TSU (%)",
+													"en-GB": "TSU (%)"
+												},
+												"min": 0,
+												"step": 0.01
+											},
+											{
+												"type": "Quantity",
+												"field": "tsuValue",
+												"required": true,
+												"label": {
+													"pt-PT": "e. Valor da TSU (€)",
+													"en-GB": "e. TSU Value (€)"
+												},
+												"min": 0,
+												"step": 0.01
+											}
+										]
+									},
+									{
+										"type": "Quantity",
+										"field": "salarySubTotal",
+										"required": true,
+										"label": {
+											"pt-PT": "Sub-Total de encargos para o período (€)",
+											"en-GB": "Sub-Total of expenses for the period (€)"
+										},
+										"description": {
+											"pt-PT": "Calculado sumando os campos a, b, c, d e e para o ano económico.",
+											"en-GB": "Calculated adding values a, b, c, d and e for the economic year."
+										},
+										"min": 0,
+										"step": 0.01
+									},
+									{
+										"type": "Composite",
+										"field": "caducidade",
+										"properties": [
+											{
+												"type": "Quantity",
+												"field": "caducidadeDay",
+												"required": true,
+												"label": {
+													"pt-PT": "Compensação por Caducidade em dias",
+													"en-GB": "Compensation for termination in days"
+												},
+												"min": 0,
+												"step": 0.01
+											},
+											{
+												"type": "Quantity",
+												"field": "caducidadeValue",
+												"required": true,
+												"label": {
+													"pt-PT": "Valor de Caducidade (€)",
+													"en-GB": "Termination Value (€)"
+												},
+												"min": 0,
+												"step": 0.01
+											}
+										]
+									},
+									{
+										"type": "Composite",
+										"field": "unusedVacation",
+										"properties": [
+											{
+												"type": "Quantity",
+												"field": "unusedVacationDay",
+												"required": true,
+												"label": {
+													"pt-PT": "Férias não gozadas em dias",
+													"en-GB": "Unused Vacation in days"
+												},
+												"min": 0,
+												"step": 0.01
+											},
+											{
+												"type": "Quantity",
+												"field": "unusedVacationValue",
+												"required": true,
+												"label": {
+													"pt-PT": "Valor Férias Não Gozadas (€)",
+													"en-GB": "Value of Unused Vacation (€)"
+												},
+												"min": 0,
+												"step": 0.01
+											}
+										]
+									},
+									{
+										"type": "Quantity",
+										"field": "otherVacationSubsidy",
+										"required": true,
+										"label": {
+											"pt-PT": "Subsídio de férias vincendas (€)",
+											"en-GB": "Unused Vacation Subsidy (€)"
+										},
+										"min": 0,
+										"step": 0.01
+									},
+									{
+										"type": "Composite",
+										"field": "expiredVacation",
+										"properties": [
+											{
+												"type": "Quantity",
+												"field": "expiredVacationDay",
+												"required": true,
+												"label": {
+													"pt-PT": "Férias Vincendas em dias",
+													"en-GB": "Expired Vacation in days"
+												},
+												"min": 0,
+												"step": 0.01
+											},
+											{
+												"type": "Quantity",
+												"field": "expiredVacationValue",
+												"required": true,
+												"label": {
+													"pt-PT": "Valor Férias Vincendas (€)",
+													"en-GB": "Expired Vacation Value (€)"
+												},
+												"min": 0,
+												"step": 0.01
+											}
+										]
+									},
+									{
+										"type": "Composite",
+										"field": "otherTsu",
+										"description": {
+											"pt-PT": "Indique a percentagem da taxa da TSU a aplicar no ano económico e o valor calculado sobre esta.",
+											"en-GB": "Indicate the TSU rate to be applied in the financial year and the value calculated on the rate."
+										},
+										"properties": [
+											{
+												"type": "Quantity",
+												"field": "otherTsuPercentage",
+												"label": {
+													"pt-PT": "Outro TSU (%)",
+													"en-GB": "Other TSU (%)"
+												},
+												"min": 0,
+												"step": 0.01
+											},
+											{
+												"type": "Quantity",
+												"field": "otherTsuValue",
+												"required": true,
+												"label": {
+													"pt-PT": "Valor Outro TSU (€)",
+													"en-GB": "Other TSU Value (€)"
+												},
+												"min": 0,
+												"step": 0.01
+											}
+										]
+									},
+									{
+										"type": "Quantity",
+										"field": "totalCosts",
+										"required": true,
+										"label": {
+											"pt-PT": "Total do Encargo para o Período (€)",
+											"en-GB": "Total Expenses for the Period (€)"
+										},
+										"min": 0,
+										"step": 0.01
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"title": {
+					"pt-PT": "Encaminhamento",
+					"en-GB": "Orientation"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Entrada na Gestão Financeira",
+							"en-GB": "Financial Management Entry"
+						},
+						"properties": [
+							{
+								"type": "AsyncSelect",
+								"field": "requestQueue",
+								"label": {
+									"pt-PT": "Primeira Fila para Tratamento",
+									"en-GB": "First Queue for Processing"
+								},
+								"required": true,
+								"allowOther": false,
+								"optionsProvider": "smart-forms/request-queues-provider"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"outcomeForm": {
+		"canEditResponseAfterConclude": false,
+		"pages": [
+			{
+				"title": {
+					"pt-PT": "Reservas, Cabimentos e Compromissos",
+					"en-GB": "Reserves, Fund Allocations and Commitments"
+				},
+				"sections": [
+					{
+						"title": {
+							"pt-PT": "Direção de Projetos, Execução Orçamental e Contabilidade Autonómas",
+							"en-GB": "Budget Execution and Autonomous Accounting"
+						},
+						"description": {
+							"pt-PT": "Nota: As contabilidades autónomas são responsáveis pela obtenção do nº de compromisso.",
+							"en-GB": "Note: The autonomous accounts are responsible for obtaining the commitment number."
+						},
+						"properties": [
+							{
+								"type": "Array",
+								"field": "reserveFundAllocationCommitments",
+								"required": true,
+								"label": {
+									"pt-PT": "Encargos financeiros",
+									"en-GB": "Financial Costs"
+								},
+								"labelAddElement": {
+									"pt-PT": "Adicionar Encargo Financeiro",
+									"en-GB": "Add Financial Cost"
+								},
+								"properties": [
+									{
+										"type": "AsyncSelect",
+										"field": "financerConfig",
+										"label": {
+											"pt-PT": "Elemento Financiador",
+											"en-GB": "Financing Element"
+										},
+										"required": true,
+										"allowOther": false,
+										"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/financeUnitConfig/{{request}}/financers"
+									},
+									{
+										"type": "AsyncSelect",
+										"field": "costsByYearConfig",
+										"label": {
+											"pt-PT": "Elemento Temporal",
+											"en-GB": "Time Element"
+										},
+										"required": true,
+										"allowOther": false,
+										"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/economicYearConfig/{{request}}/costsByYear"
+									},
+									{
+										"type": "Quantity",
+										"field": "financeSubUnitPercentage",
+										"required": true,
+										"step": 0.01,
+										"label": {
+											"pt-PT": "Percentagem Rubrica Financeira",
+											"en-GB": "Percentage of Financial Item"
+										},
+										"min": 0,
+										"max": 100
+									},
+									{
+										"type": "AsyncSelect",
+										"field": "financeSubUnit",
+										"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/financeSubUnit",
+										"required": true,
+										"label": {
+											"pt-PT": "Rubrica Financeira / Elemento PEP",
+											"en-GB": "Financial Item / PEP Element"
+										}
+									},
+									{
+										"type": "Text",
+										"field": "financerReserve",
+										"required": true,
+										"label": {
+											"pt-PT": "Reserva",
+											"en-GB": "Reserve"
+										}
+									},
+									{
+										"type": "Text",
+										"field": "financerCenter",
+										"label": {
+											"pt-PT": "Centro Financeiro",
+											"en-GB": "Financer center"
+										},
+										"required": true
+									},
+									{
+										"type": "Text",
+										"field": "financerFucionalArea",
+										"required": true,
+										"label": {
+											"pt-PT": "Área Funcional",
+											"en-GB": "Functional area"
+										}
+									},
+									{
+										"type": "Text",
+										"field": "financerFund",
+										"required": true,
+										"label": {
+											"pt-PT": "Fundo",
+											"en-GB": "Fund"
+										}
+									},
+									{
+										"type": "Text",
+										"field": "financerFundAllocation",
+										"label": {
+											"pt-PT": "Cabimento",
+											"en-GB": "Fund allocation"
+										},
+										"required": true
+									},
+									{
+										"type": "Text",
+										"field": "financerCommitment",
+										"required": true,
+										"label": {
+											"pt-PT": "Número de Compromisso",
+											"en-GB": "Commitment Number"
+										}
+									},
+									{
+										"type": "DateTime",
+										"field": "commitmentRegistryDate",
+										"required": true,
+										"date": true,
+										"time": false,
+										"label": {
+											"pt-PT": "Data de registo do compromisso",
+											"en-GB": "Commitment registry date"
+										}
+									}
+								]
+							}
+						]
+					},
+					{
+						"title": {
+							"pt-PT": "Divergência de Rubricas Salariais (IT9009)",
+							"en-GB": "Divergence of Salary Items (IT9009)"
+						},
+						"description": {
+							"pt-PT": "Informação só é preenchida quando existir divergência de rubricas salariais.",
+							"en-GB": "Information is only filled in when there is a divergence of salary types."
+						},
+						"properties": [
+							{
+								"type": "Array",
+								"field": "divergences",
+								"label": {
+									"pt-PT": "Divergência Salarial",
+									"en-GB": "Salary Divergence"
+								},
+								"required": false,
+								"labelAddElement": {
+									"pt-PT": "Adicionar Divergência",
+									"en-GB": "Add Divergence"
+								},
+								"properties": [
+									{
+										"type": "Composite",
+										"field": "financerSalaryType",
+										"required": true,
+										"properties": [
+											{
+												"type": "Select",
+												"field": "salaryType",
+												"label": {
+													"pt-PT": "Rubrica Salarial",
+													"en-GB": "Salary Item"
+												},
+												"collapse": true,
+												"required": true,
+												"options": [
+													{
+														"label": {
+															"pt-PT": "0500 - Vencimento Base",
+															"en-GB": "0500 - Base Salary"
+														},
+														"value": "0500"
+													},
+													{
+														"label": {
+															"pt-PT": "/420 - Subsídio de Refeição",
+															"en-GB": "/420 - Meal Subsidy"
+														},
+														"value": "/420"
+													},
+													{
+														"label": {
+															"pt-PT": "8410 - Subsídio de Férias",
+															"en-GB": "8410 - Vacation Subsidy"
+														},
+														"value": "8410"
+													},
+													{
+														"label": {
+															"pt-PT": "0405 - Subsídio de Natal",
+															"en-GB": "0405 - Christmas Subsidy"
+														},
+														"value": "0405"
+													},
+													{
+														"label": {
+															"pt-PT": "/351 - Contribuição do Empregadora para Segurança social",
+															"en-GB": "/351 - Employer's Contribution to Social Security"
+														},
+														"value": "/351"
+													},
+													{
+														"label": {
+															"pt-PT": "1905 - Compensação por Caducidade",
+															"en-GB": "1905 - Compensation for Forfeiture"
+														},
+														"value": "1905"
+													},
+													{
+														"label": {
+															"pt-PT": "1940 - Férias não Gozadas",
+															"en-GB": "1940 - Untaken Vacation"
+														},
+														"value": "1940"
+													},
+													{
+														"label": {
+															"pt-PT": "1945 - Subsídio de Férias Vincendas",
+															"en-GB": "1945 - Expiring Vacation Subsidy"
+														},
+														"value": "1945"
+													},
+													{
+														"label": {
+															"pt-PT": "1950 - Férias Vincendas",
+															"en-GB": "1950 - Coming Vacation"
+														},
+														"value": "1950"
+													},
+													{
+														"label": {
+															"pt-PT": "/371 - Valor entrega ao FGCT",
+															"en-GB": "/371 - Amount delivered to FGCT"
+														},
+														"value": "/371"
+													},
+													{
+														"label": {
+															"pt-PT": "/372 - Valor entrega ao FCT",
+															"en-GB": "/372 - Amount delivered to FCT"
+														},
+														"value": "372"
+													}
+												]
+											},
+											{
+												"type": "AsyncSelect",
+												"field": "divergencePEP",
+												"optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/financeSubUnit",
+												"required": true,
+												"label": {
+													"pt-PT": "Elemento PEP para a Divergência",
+													"en-GB": "PEP Element for the Divergence"
+												}
+											}
+										]
+									}
+								]
+							},
+							{
+								"type": "Text",
+								"field": "divergenceReserve",
+								"required": false,
+								"label": {
+									"pt-PT": "Reserva da Divergência",
+									"en-GB": "Divergence Reserve"
+								}
+							},
+							{
+								"type": "Text",
+								"field": "divergenceFundAlloc",
+								"label": {
+									"pt-PT": "Cabimento da Divergência",
+									"en-GB": "Fund Allocation Divergence"
+								},
+								"required": false,
+								"min": 0,
+								"step": 0.01
+							},
+							{
+								"type": "DateTime",
+								"field": "divergenceDate",
+								"required": false,
+								"date": true,
+								"time": false,
+								"label": {
+									"pt-PT": "Data da Divergência",
+									"en-GB": "Divergence Date"
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"cost": {
+	}
+}

@@ -1,0 +1,180 @@
+{
+  "name" : {
+    "pt-PT" : "Marcação de Férias",
+    "en-GB" : "Holiday Scheduling"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe proceder à marcação de férias.",
+    "en-GB" : "This form allows you to schedule your holidays."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "calendarYear", "holidayStartDate", "holidayEndDate" ]
+    },
+    "onLock" : [ {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Docentes e Investigadores"
+    }, {
+      "requestProcessor" : "Auto Validate"
+    } ],
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "holidays-scheduling",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "completeAuthorizationChain" : false,
+      "queuesToRemove" : [ "Gestão Administrativa", "Presidência do Instituto Superior Técnico" ],
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Marcação de Férias",
+        "en-GB" : "Holiday Scheduling"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Período de Férias",
+          "en-GB" : "Holiday Period"
+        },
+        "properties" : [ {
+          "type" : "Array",
+          "field" : "holidayYear",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Indique o ano civil do período de férias.",
+            "en-GB" : "Indicate the calendar year of the holiday period."
+          },
+          "label" : {
+            "pt-PT" : "Ano Civil",
+            "en-GB" : "Calendar Year"
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar ano civil",
+            "en-GB" : "Add calendar year"
+          },
+          "properties" : [ {
+            "type" : "Quantity",
+            "field" : "calendarYear",
+            "required" : true,
+            "label" : {
+              "pt-PT" : "No ano de",
+              "en-GB" : "In the year of"
+            },
+            "inputType" : "plain",
+            "step" : 1,
+            "min" : 2024,
+            "max" : 2046
+          }, {
+            "type" : "Text",
+            "field" : "leaveDays",
+            "label" : {
+              "pt-PT" : "Total de Dias de Férias Disponíveis no Ano Civil",
+              "en-GB" : "Total Available Leave Days in the Calendar Year"
+            },
+            "description" : {
+              "pt-PT" : "Indicar o total de dias de férias disponíveis no ano civil em causa.",
+              "en-GB" : "Indicate the total number of leave days available in the relevant calendar year."
+            },
+            "required" : true,
+            "inputType" : "plain"
+          }, {
+            "type" : "Array",
+            "field" : "holidayPeriods",
+            "required" : true,
+            "label" : {
+              "pt-PT" : "Marcação do Período de Férias",
+              "en-GB" : "Holiday Period Scheduling"
+            },
+            "description" : {
+              "pt-PT" : "Indique o(s) período(s) de férias a gozar.",
+              "en-GB" : "Indicate the holiday period(s) to be taken."
+            },
+            "labelAddElement" : {
+              "pt-PT" : "Adicionar período de férias",
+              "en-GB" : "Add holiday period"
+            },
+            "properties" : [ {
+              "type" : "Composite",
+              "field" : "holidayInterval",
+              "required" : true,
+              "properties" : [ {
+                "type" : "DateTime",
+                "field" : "holidayStartDate",
+                "required" : true,
+                "date" : true,
+                "time" : false,
+                "label" : {
+                  "pt-PT" : "Data de Início",
+                  "en-GB" : "Start Date"
+                }
+              }, {
+                "type" : "DateTime",
+                "field" : "holidayEndDate",
+                "required" : true,
+                "date" : true,
+                "time" : false,
+                "label" : {
+                  "pt-PT" : "Data de Fim",
+                  "en-GB" : "End Date"
+                }
+              } ]
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta",
+        "en-GB" : "Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Resposta",
+          "en-GB" : "Response"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "response",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "label" : {
+            "pt-PT" : "Resposta",
+            "en-GB" : "Response"
+          },
+          "options" : [ {
+            "value" : "processed",
+            "label" : {
+              "pt-PT" : "O pedido foi registado.",
+              "en-GB" : "The request has been registered."
+            }
+          }, {
+            "value" : "denied",
+            "label" : {
+              "pt-PT" : "O pedido foi rejeitado.",
+              "en-GB" : "The request was denied."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

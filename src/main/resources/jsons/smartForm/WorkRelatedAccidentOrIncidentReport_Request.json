@@ -1,0 +1,156 @@
+{
+  "name" : {
+    "pt-PT" : "Participação de Acidente/Incidente em Serviço",
+    "en-GB" : "Work-Related Accident/Incident Report"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe participar um acidente/incidente em serviço.",
+    "en-GB" : "This form allows you to report a work-related accident/incident."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "occurrenceDate", "user" ],
+      "displayName" : true,
+      "username" : true
+    },
+    "onLock" : [ {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Prestação de Trabalho"
+    } ],
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "report-accident-flow",
+      "setSupervisorFromRequester" : false,
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "queuesToRemove" : [ "Gestão Administrativa", "Presidência do Instituto Superior Técnico" ],
+      "completeAuthorizationChain" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : { },
+    "queuesAllowedToChangeTo" : [ "Núcleo de Prestação de Trabalho", "Núcleo de Remunerações e Proteção Social" ]
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação do Sinistrado",
+        "en-GB" : "Injured Party Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Dados da Pessoa",
+          "en-GB" : "Person's Data"
+        },
+        "description" : {
+          "pt-PT" : "Caso não seja o próprio a comunicar a participação da ocorrência, deverá indicar o Nome/TécnicoID da pessoa envolvida.",
+          "en-GB" : "If the person reporting the occurrence is not the individual concerned, you must provide the Name/TécnicoID of the person involved."
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "field" : "user",
+          "label" : {
+            "pt-PT" : "Nome/TécnicoID",
+            "en-GB" : "Name/TécnicoID"
+          },
+          "optionsProvider" : "/paper-pusher-ist/user",
+          "allowOther" : false,
+          "collapse" : true,
+          "required" : false
+        }, {
+          "type" : "Text",
+          "field" : "collaborator-email",
+          "label" : {
+            "pt-PT" : "Endereço de E-mail para Correspondência",
+            "en-GB" : "E-mail Address for Correspondence"
+          },
+          "required" : true,
+          "multiline" : false,
+          "inputType" : "email"
+        }, {
+          "type" : "Text",
+          "field" : "collaborator-phone",
+          "label" : {
+            "pt-PT" : "Número de Contacto",
+            "en-GB" : "Contact Number"
+          },
+          "required" : true,
+          "multiline" : false
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação da Ocorrência do Acidente/Incidente em Serviço",
+        "en-GB" : "Information on the Work-Related Accident/Incident"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Dados do Acidente/Incidente em Serviço",
+          "en-GB" : "Work-Related Accident/Incident Data"
+        },
+        "properties" : [ {
+          "type" : "DateTime",
+          "field" : "occurrenceDate",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Data e Hora da Ocorrência",
+            "en-GB" : "Date and Time of the Occurrence"
+          },
+          "date" : true,
+          "time" : true
+        }, {
+          "type" : "Text",
+          "field" : "occurrenceLocation",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Local da Ocorrência",
+            "en-GB" : "Location of the Occurrence"
+          },
+          "multiline" : false,
+          "inputType" : "plain"
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Circunstâncias da Ocorrência",
+          "en-GB" : "Circumstances of the Occurrence"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "occurrenceCircumstances",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Descrição",
+            "en-GB" : "Description"
+          },
+          "multiline" : true,
+          "inputType" : "plain"
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Testemunhas",
+          "en-GB" : "Witnesses"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "occurrenceWitnesses",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Testemunhas",
+            "en-GB" : "Witnesses"
+          },
+          "multiline" : true,
+          "inputType" : "plain"
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false
+  },
+  "cost" : { }
+}

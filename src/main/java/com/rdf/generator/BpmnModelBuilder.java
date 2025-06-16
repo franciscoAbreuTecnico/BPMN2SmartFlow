@@ -10,9 +10,12 @@ import java.util.Set;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelException;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.instance.Association;
 import org.camunda.bpm.model.bpmn.instance.BaseElement;
 import org.camunda.bpm.model.bpmn.instance.BpmnModelElementInstance;
 import org.camunda.bpm.model.bpmn.instance.Collaboration;
+import org.camunda.bpm.model.bpmn.instance.DataObject;
+import org.camunda.bpm.model.bpmn.instance.DataObjectReference;
 import org.camunda.bpm.model.bpmn.instance.Definitions;
 import org.camunda.bpm.model.bpmn.instance.Documentation;
 import org.camunda.bpm.model.bpmn.instance.EndEvent;
@@ -23,16 +26,18 @@ import org.camunda.bpm.model.bpmn.instance.LaneSet;
 import org.camunda.bpm.model.bpmn.instance.Participant;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
+import org.camunda.bpm.model.bpmn.instance.ServiceTask;
 import org.camunda.bpm.model.bpmn.instance.StartEvent;
 import org.camunda.bpm.model.bpmn.instance.UserTask;
+import org.camunda.bpm.model.xml.ModelInstance;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import com.rdf.OntologyService;
 import com.rdf.exception.BpmnGenerationException;
-import com.rdf.layout.CamundaAutoLayoutWithLanes.AutoLayoutEngine;
-import com.rdf.layout.CamundaAutoLayoutWithLanes.LayoutConfig;
+import com.rdf.layout.engine.AutoLayoutEngine;
+import com.rdf.layout.model.LayoutConfig;
 
 public class BpmnModelBuilder {
 
@@ -44,7 +49,7 @@ public class BpmnModelBuilder {
         this.ontService = ontologyService;
     }
 
-    public void generateBpmnModel() throws BpmnModelException, BpmnGenerationException {
+    public void generateBpmnModel(String fileName) throws BpmnModelException, BpmnGenerationException {
         try {
             // Create an empty BpmnModel
             BpmnModelInstance modelInstance = Bpmn.createEmptyModel();
@@ -65,13 +70,15 @@ public class BpmnModelBuilder {
             participant.setName("Smart Flow");
             participant.setProcess(process);
 
+
             instantiateLanes(process);
+
 
             instantiateFlowObjects(modelInstance, process);
             
             instantiateConnectingObjects(modelInstance, process);
 
-            validateAndSaveModel(modelInstance, "src/main/resources/output/test.bpmn"); // fileName
+            validateAndSaveModel(modelInstance, fileName);
 
         } catch (BpmnGenerationException e) {
             throw e;
@@ -81,19 +88,35 @@ public class BpmnModelBuilder {
     }
 
     public void instantiateFlowObjects(BpmnModelInstance modelInstance, Process process) {
-        // a) Start Event
+        // Start Event
         ontService.getInstances("ProcessStartEvent", false)
         .forEach(ind -> createBpmnElement(process, ind, StartEvent.class, ontService.getDataPropertyValue(ind, "sfName")));
 
-        // b) User Task
+        // User Task + any associated Fields → BPMN DataObjects
         ontService.getInstances("UserTask", false)
-        .forEach(ind -> createBpmnElement(process, ind, UserTask.class, ind.getIRI().getFragment()));
+          .forEach(taskInd -> {
+            // 1) create the UserTask node
+            UserTask ut = createBpmnElement(
+                process,
+                taskInd,
+                UserTask.class,
+                taskInd.getIRI().getFragment()
+            );
 
-        // c) Exclusive Gateway
+            // 2) for every sf:has_association → Field, make a DataObject + DataAssociation
+            ontService.getAssociatedFields(taskInd)
+              .forEach(fieldInd -> createDataObjectForTask(process, ut, fieldInd));
+        });
+
+        // Service Task
+        ontService.getInstances("ServiceTask", false)
+        .forEach(ind -> createBpmnElement(process, ind, ServiceTask.class, ind.getIRI().getFragment()));
+
+        // Exclusive Gateway
         ontService.getInstances("ExclusiveGateway", false)
         .forEach(ind -> createBpmnElement(process, ind, ExclusiveGateway.class, ind.getIRI().getFragment()));
 
-        // d) End Event
+        // End Event
         ontService.getInstances("EndEvent", false)
         .forEach(ind -> createBpmnElement(process, ind, EndEvent.class, ontService.getDataPropertyValue(ind, "sfName")));
 
@@ -232,7 +255,7 @@ public class BpmnModelBuilder {
 
         // 2) determine the name: for UserTask use sfName if present, otherwise fallback
         String nameToSet = defaultName;
-        if (node instanceof UserTask) {
+        if (node instanceof UserTask || node instanceof ServiceTask || node instanceof DataObject) {
             String sfName = ontService.getDataPropertyValue(ind, "sfName");
             if (sfName != null && !sfName.isBlank()) {
             nameToSet = sfName;
@@ -263,6 +286,43 @@ public class BpmnModelBuilder {
         element.setAttributeValue("id", id, true);
         parentElement.addChildElement(element);
         return element;
+    }
+
+    private void createDataObjectForTask(Process process, UserTask userTask, OWLNamedIndividual fieldInd) {
+        // base fragment from your ontology individual
+        String baseId      = fieldInd.getIRI().getFragment();
+
+        // 1) generate a globally‐unique ID for the DataObject
+        String dataObjId   = ensureUniqueId(process.getModelInstance(), baseId);
+        DataObject dataObj = createElement(process, dataObjId, DataObject.class);
+        String name        = ontService.getDataPropertyValue(fieldInd, "sfName");
+        dataObj.setName(name != null ? name : dataObjId);
+
+        // 2) generate a globally‐unique ID for the DataObjectReference
+        String refBase     = dataObjId + "_Ref";
+        String refId       = ensureUniqueId(process.getModelInstance(), refBase);
+        DataObjectReference ref = createElement(process, refId, DataObjectReference.class);
+        ref.setDataObject(dataObj);
+        ref.setName(dataObj.getName());
+
+        // 3) add both to the process
+        process.addChildElement(dataObj);
+        process.addChildElement(ref);
+
+        // 4) associate back to the UserTask
+        createDataAssociation(process, userTask, ref);
+    }
+
+    private void createDataAssociation(Process process, UserTask userTask, DataObjectReference dataObjectRef) {
+        process.addChildElement(dataObjectRef);
+    
+        Association association = createElement(process, userTask.getId() + "_to_" + dataObjectRef.getId(), Association.class);
+        association.setSource(userTask);
+        association.setTarget(dataObjectRef);
+        
+        association.setAttributeValue("associationDirection", "One", true);  // "One" means an arrow pointing to the target
+    
+        process.addChildElement(association);
     }
 
     /**
@@ -299,16 +359,30 @@ public class BpmnModelBuilder {
         try {
             LayoutConfig cfg = new LayoutConfig();
             AutoLayoutEngine ale = new AutoLayoutEngine();
+
             ale.layout(modelInstance, cfg);
-            System.out.println("Auto layout applied to BPMN model.");
 
             Bpmn.validateModel(modelInstance);
             File file = new File(fileName);
             file.getParentFile().mkdirs();
             Bpmn.writeModelToFile(file, modelInstance);
-            System.out.println("BPMN model written to file: " + file.getAbsolutePath());
         } catch (Exception e) {
             throw new BpmnGenerationException("Error saving BPMN model: " + fileName, e);
         }
     }
+
+    /////////////
+    // UTIL
+    /////////////
+    
+    private String ensureUniqueId(ModelInstance model, String prefix) {
+        String id     = prefix;
+        int    index  = 1;
+        // model.getModelElementById(id) returns null if no element has that ID
+        while (model.getModelElementById(id) != null) {
+            id = prefix + "_" + (index++);
+        }
+        return id;
+    }
 }   
+

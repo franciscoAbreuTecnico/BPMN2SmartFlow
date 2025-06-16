@@ -1,0 +1,144 @@
+{
+  "name": {
+    "pt-PT": "Declaração de Situação Fiscal",
+    "en-GB": "Declaration of Fiscal Status"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe comunicar alterações ao Agregado Familiar e morada fiscal, e fixar a taxa de retenção mensal de IRS.",
+    "en-GB": "This form allows you to report changes to the Household and tax residence, and set the monthly IRS withholding rate."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+      ],
+      "displayName": true,
+      "username": true
+    },
+    "onLock": {
+      "requestProcessor": "Move Queue",
+      "queue": "Núcleo de Remunerações e Proteção Social"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Autoridade Tributária e Aduaneira",
+          "en-GB": "Tax and Customs Authority"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Documentos da Autoridade Tributária e Aduaneira",
+              "en-GB": "Tax and Customs Authority Documents"
+            },
+            "description": {
+              "pt-PT": "Deverá ser entregue pelas pessoas singulares que aufiram rendimentos de trabalho e ou/pensões, à respetiva entidade pagadora de forma a possibilitar a retenção do imposto em harmonia com as correspondentes tabelas de retenção. Não sendo comunicada à entidade devedora dos rendimentos a situação pessoal e familiar do titular, aquela fica obrigada a efetuar a retenção de acordo com a tabela aplicável aos sujeitos passivos não casados sem dependentes.",
+              "en-GB": "It must be delivered by the natural persons who earn income from work and/or pensions, to the respective paying entity in order to enable the the tax to be withheld in accordance with the corresponding withholding tables. If the entity owing the income is not notified of the holder's personal and family situation, the former is obliged to carry out the withholding in accordance with the table applicable to unmarried taxpayers without dependents."
+            },
+            "properties": [
+              {
+                "field": "taxDeclarationFile",
+                "templateUrl": "/paper-pusher-ist/document-template/teacherAdmissions/declaracao-99-irs.pdf",
+                "type": "File",
+                "required": true,
+                "label": {
+                  "pt-PT": "IRS – Declaração nos Termos do Artigo 99.º do Código do IRS",
+                  "en-GB": "IRS – Declaration Pursuant to Article 99 of the Portuguese IRS (Tax) Code"
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ],
+                "maxSizeMB": 25
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Tomada de Conhecimento",
+              "en-GB": "Acknowledgment"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "acknowledgement",
+                "required": true,
+                "allowOther": false,
+                "collapse": false,
+                "multiple": true,
+                "label": {
+                  "pt-PT": "Tomada de Conhecimento",
+                  "en-GB": "Acknowledgment"
+                },
+                "options": [
+                  {
+                    "value": "accept",
+                    "label": {
+                      "pt-PT": "Tenho conhecimento que se o formulário for submetido até ao dia 7 de cada mês, e se encontrar devidamente preenchido, terá impacto no próprio mês. Caso contrário, só terá impacto no mês seguinte.",
+                      "en-GB": "I acknowledge that if the form is submitted by the 7th of each month, and is properly completed, it will have an impact on the current month. Otherwise, it will only have an impact on the following month."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false,
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta",
+          "en-GB": "Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Resposta",
+              "en-GB": "Response"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "response",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "label": {
+                  "pt-PT": "Resposta",
+                  "en-GB": "Response"
+                },
+                "options": [
+                  {
+                    "value": "processCurrentMonth",
+                    "label": {
+                      "pt-PT": "A informação foi registada no sistema e terá impacto no mês corrente.",
+                      "en-GB": "The information has been recorded in the system and will have impact on the current month."
+                    }
+                  },
+                  {
+                    "value": "processNextMonth",
+                    "label": {
+                      "pt-PT": "A informação foi registada no sistema e terá impacto no mês seguinte.",
+                      "en-GB": "The information has been recorded in the system and will have impact on next month."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {
+  }
+}

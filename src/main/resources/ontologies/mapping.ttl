@@ -39,6 +39,10 @@ sf:ActionProcessor
     owl:equivalentClass bbo:ServiceTask ;
     rdfs:comment "SmartFlow action processor aligned to BBO’s ServiceTask." .
 
+sf:Field
+    owl:equivalentClass bbo:DataResource ;
+    rdfs:comment "SmartFlow field aligned to BBO’s DataResource." .
+
 ###############################################################################
 
 ###############################################################################
@@ -54,128 +58,3 @@ sf:sfName
 ###############################################################################
 
 ###############################################################################
-
-# <http://example.org/ontologies/SmartFlow/Action/REJECT-step-about-to-marry> a sf:Action;
-#   sf:has_transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing>;
-#   sf:isPrimaryAction true;
-#   sf:labelEN "Reject Request";
-#   sf:labelPT "Rejeitar Pedido";
-#   sf:sfId "REJECT-step-about-to-marry";
-#   sf:sfName "REJECT" .
-
-# <http://example.org/ontologies/SmartFlow/Action/SIGN-step-about-to-marry> a sf:Action;
-#   sf:has_transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate>;
-#   sf:isPrimaryAction true;
-#   sf:labelEN "Conditions Fulfilled";
-#   sf:labelPT "Condições Confirmadas";
-#   sf:sfId "SIGN-step-about-to-marry";
-#   sf:sfName "SIGN" .
-
-# <http://example.org/ontologies/SmartFlow/Action/SIGN-step-hr-processing> a sf:Action;
-#   sf:has_transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/SUCCESS>;
-#   sf:isPrimaryAction true;
-#   sf:labelEN "Mark as Processed";
-#   sf:labelPT "Marcar como Processado";
-#   sf:sfId "SIGN-step-hr-processing";
-#   sf:sfName "SIGN" .
-
-# <http://example.org/ontologies/SmartFlow/Action/SIGN-step-upload-marriage-certificate>
-#   a sf:Action;
-#   sf:has_transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing>;
-#   sf:isPrimaryAction true;
-#   sf:labelEN "Confirm Submission";
-#   sf:labelPT "Confirmar Submissão";
-#   sf:sfId "SIGN-step-upload-marriage-certificate";
-#   sf:sfName "SIGN" .
-
-# <http://example.org/ontologies/SmartFlow/Action/START-start-event> a sf:Action;
-#   sf:has_transitionsTo <http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry>;
-#   sf:isPrimaryAction true;
-#   sf:labelEN "Start Process";
-#   sf:labelPT "Iniciar Processo";
-#   sf:sfId "START-start-event";
-#   sf:sfName "START" .
-
-# <http://example.org/ontologies/SmartFlow/ActionNode/SUCCESS> a sf:TerminalNode;
-#   sf:sfId "SUCCESS";
-#   sf:sfName "SUCCESS State" .
-
-# <http://example.org/ontologies/SmartFlow/ActionNode/step-about-to-marry> a sf:ActionNode,
-#     sf:GenericActionNode;
-#   sf:descriptionEN "About to Marry";
-#   sf:descriptionPT "Em Vias de Casar";
-#   sf:has_action <http://example.org/ontologies/SmartFlow/Action/REJECT-step-about-to-marry>,
-#     <http://example.org/ontologies/SmartFlow/Action/SIGN-step-about-to-marry>;
-#   sf:has_actionProcessor <http://example.org/ontologies/SmartFlow/ActionProcessor/onEnterNode-step-about-to-marry>;
-#   sf:has_queue <http://example.org/ontologies/SmartFlow/Queue/Sistema-FenixEdu>;
-#   sf:sfId "step-about-to-marry";
-#   sf:sfName "About to Marry";
-#   sf:titleEN "About to Marry";
-#   sf:titlePT "Em Vias de Casar" .
-
-# <http://example.org/ontologies/SmartFlow/ActionNode/step-hr-processing> a sf:ActionNode,
-#     sf:GenericActionNode;
-#   sf:descriptionEN "Processing by the Human Resources Department";
-#   sf:descriptionPT "Processamento pela Direção de Recursos Humanos";
-#   sf:has_action <http://example.org/ontologies/SmartFlow/Action/SIGN-step-hr-processing>;
-#   sf:has_actionProcessor <http://example.org/ontologies/SmartFlow/ActionProcessor/onSuccess-step-hr-processing>;
-#   sf:has_queue <http://example.org/ontologies/SmartFlow/Queue/Nucleo-de-Prestacao-de-Trabalho-Geral>;
-#   sf:sfId "step-hr-processing";
-#   sf:sfName "The Human Resources Department";
-#   sf:titleEN "The Human Resources Department";
-#   sf:titlePT "A Direção de Recursos Humanos" .
-
-# <http://example.org/ontologies/SmartFlow/ActionNode/step-upload-marriage-certificate>
-#   a sf:ActionNode, sf:WithFormsActionNode;
-#   sf:descriptionEN "Submission of the Marriage Certificate";
-#   sf:descriptionPT "Apresentação da Certidão de Casamento";
-#   sf:has_action <http://example.org/ontologies/SmartFlow/Action/SIGN-step-upload-marriage-certificate>;
-#   sf:has_button <http://example.org/ontologies/SmartFlow/Button/upload-marriage-certificate>;
-#   sf:has_queue <http://example.org/ontologies/SmartFlow/Queue/requester-username>;
-#   sf:sfId "step-upload-marriage-certificate";
-#   sf:sfName "Submission of the Marriage Certificate";
-#   sf:titleEN "Submission of the Marriage Certificate";
-#   sf:titlePT "Apresentação da Certidão de Casamento" .
-
-# <http://example.org/ontologies/SmartFlow/ActionProcessor/onEnterNode-step-about-to-marry>
-#   a sf:ActionProcessor;
-#   sf:sfId "onEnterNode-step-about-to-marry";
-#   sf:sfName "Do Flow Action After Time Passes" .
-
-# <http://example.org/ontologies/SmartFlow/ActionProcessor/onSuccess-step-hr-processing>
-#   a sf:ActionProcessor;
-#   sf:has_applyOn <http://example.org/ontologies/SmartFlow/Action/SIGN-step-hr-processing>;
-#   sf:sfId "onSuccess-step-hr-processing";
-#   sf:sfName "Set Request Outcome Form" .
-
-# <http://example.org/ontologies/SmartFlow/Button/upload-marriage-certificate> a sf:Button;
-#   sf:has_associatedForm <http://example.org/ontologies/SmartFlow/Form/upload-marriage-certificate>;
-#   sf:has_handlersAction <http://example.org/ontologies/SmartFlow/Action/SIGN-step-upload-marriage-certificate>;
-#   sf:isPrimaryButton true;
-#   sf:labelEN "Submit Marriage Certificate";
-#   sf:labelPT "Apresentar Certidão de Casamento";
-#   sf:sfId "upload-marriage-certificate" .
-
-# <http://example.org/ontologies/SmartFlow/Form/upload-marriage-certificate> a sf:Form;
-#   sf:sfId "upload-marriage-certificate";
-#   sf:titleEN "Submit Marriage Certificate";
-#   sf:titlePT "Submeter Certidão de Casamento" .
-
-# <http://example.org/ontologies/SmartFlow/Queue/Nucleo-de-Prestacao-de-Trabalho-Geral>
-#   a sf:Queue;
-#   sf:sfId "Nucleo-de-Prestacao-de-Trabalho-Geral";
-#   sf:sfName "Nucleo-de-Prestacao-de-Trabalho-Geral" .
-
-# <http://example.org/ontologies/SmartFlow/Queue/Sistema-FenixEdu> a sf:Queue;
-#   sf:sfId "Sistema-FenixEdu";
-#   sf:sfName "Sistema-FenixEdu" .
-
-# <http://example.org/ontologies/SmartFlow/Queue/requester-username> a sf:Queue;
-#   sf:sfId "requester-username";
-#   sf:sfName "requester-username" .
-
-# <http://example.org/ontologies/SmartFlow/StartNode/start-node> a sf:StartNode;
-#   sf:has_action <http://example.org/ontologies/SmartFlow/Action/START-start-event>;
-#   sf:has_queue <http://example.org/ontologies/SmartFlow/Queue/Sistema-FenixEdu>;
-#   sf:sfId "start-event";
-#   sf:sfName "Start Event" .

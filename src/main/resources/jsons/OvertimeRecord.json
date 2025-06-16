@@ -1,0 +1,384 @@
+{
+  "name": "overtime-subflow-record",
+  "title": {
+    "pt-PT": "Processo de Pedido de Trabalho Suplementar - Registo de Trabalho Suplementar",
+    "en-GB": "Overtime Request Process - Overtime Work Record"
+  },
+  "description": {
+    "pt-PT": "Processo de Pedido de Trabalho Suplementar - Registo de Trabalho Suplementar",
+    "en-GB": "Overtime Request Process - Overtime Work Record"
+  },
+  "config": {
+    "actionProcessor": {
+      "onSuccess": [
+        {
+          "flowProcessor": "Continue Main Flow After All Subflows In Node Are Concluded"
+        }
+      ],
+      "onFailure": [
+      ],
+      "onActionTransition": [],
+      "onCancel": [
+      ]
+    },
+    "flowProcessors": [
+      {
+        "handle": "action-from-overtime-work-record",
+        "flowProcessor": "Do Action From Overtime Record"
+      }
+    ],
+    "actionNodes": [
+      {
+        "id": "step-working",
+        "type": "generic",
+        "comment": false,
+        "title": {
+          "pt-PT": "A Trabalhar",
+          "en-GB": "Working"
+        },
+        "description": {
+          "pt-PT": "A Trabalhar",
+          "en-GB": "Working"
+        },
+        "actions": {
+          "FINISH_WAITING": {
+            "primary": true,
+            "to": "step-record-overtime-work",
+            "label": {
+              "pt-PT": "Terminar Espera pela Realização do Trabalho",
+              "en-GB": "Finish Waiting for the Work to Be Completed"
+            }
+          }
+        },
+        "queue": "Sistema FenixEdu",
+        "actionProcessor": {
+          "onEnterNode": {
+            "flowProcessor": "Do Flow Action After Time Passes",
+            "flowAction": "FINISH_WAITING",
+            "user": "fenix",
+            "when": {
+              "field": "startDate",
+              "withDayOfMonth": "1",
+              "plusMonths": "1"
+            }
+          }
+        }
+      },
+      {
+        "id": "step-record-overtime-work",
+        "type": "withForms",
+        "comment": false,
+        "title": {
+          "pt-PT": "Registar Trabalho Suplementar",
+          "en-GB": "Record Overtime Work"
+        },
+        "description": {
+          "pt-PT": "Registar Trabalho Suplementar",
+          "en-GB": "Record Overtime Work"
+        },
+        "buttons": [
+          {
+            "id": "record-overtime-work",
+            "primary": true,
+            "label": {
+              "pt-PT": "Registar Trabalho Suplementar",
+              "en-GB": "Record Overtime Work"
+            },
+            "handlers": {
+              "form": "overtime-record",
+              "afterForm": "action-from-overtime-work-record"
+            }
+          }
+        ],
+        "actions": {
+          "TERMINATE": {
+            "primary": true,
+            "to": "SUCCESS",
+            "label": {
+              "pt-PT": "Terminar Trabalho Suplementar",
+              "en-GB": "Finish Overtime Work"
+            }
+          },
+          "WAIT": {
+            "primary": false,
+            "to": "step-working",
+            "label": {
+              "pt-PT": "Mês Corrente Registado",
+              "en-GB": "Current Month Recorded"
+            }
+          }
+        },
+        "queue": "Núcleo de Prestação de Trabalho - Geral"
+      }
+    ],
+    "forms": [
+      {
+        "id": "overtime-record",
+        "title": {
+          "pt-PT": "Horas Realizadas",
+          "en-GB": "Hours Worked"
+        },
+        "form": {
+          "pages": [
+            {
+              "title": {
+                "pt-PT": "Horas Realizadas",
+                "en-GB": "Hours Worked"
+              },
+              "sections": [
+                {
+                  "title": {
+                    "pt-PT": "Horas Realizadas",
+                    "en-GB": "Hours Worked"
+                  },
+                  "properties": [
+                    {
+                      "type": "Array",
+                      "field": "workedDays",
+                      "required": false,
+                      "labelAddElement": {
+                        "pt-PT": "Adicionar dia",
+                        "en-GB": "Add day"
+                      },
+                      "label": {
+                        "pt-PT": "Dias",
+                        "en-GB": "Days"
+                      },
+                      "properties": [
+                        {
+                          "type": "Composite",
+                          "field": "dayComposite",
+                          "required": true,
+                          "properties": [
+                            {
+                              "type": "DateTime",
+                              "field": "day",
+                              "required": true,
+                              "date": true,
+                              "time": false,
+                              "label": {
+                                "pt-PT": "Data",
+                                "en-GB": "Date"
+                              }
+                            },
+                            {
+                              "type": "Quantity",
+                              "field": "hours",
+                              "required": true,
+                              "step": 0.01,
+                              "label": {
+                                "pt-PT": "Número de Horas Realizadas",
+                                "en-GB": "Number of Hours of Work"
+                              },
+                              "min": 0
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Quantity",
+                      "field": "remainingHours",
+                      "required": true,
+                      "step": 0.01,
+                      "label": {
+                        "pt-PT": "Horas por Realizar",
+                        "en-GB": "Remaining Hours"
+                      },
+                      "min": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "viewForm": {
+      "pages": [
+        {
+          "title": {
+            "pt-PT": "Informação do Local de Trabalho",
+            "en-GB": "Workplace Information"
+          },
+          "sections": [
+            {
+              "title": {
+                "pt-PT": "Local de Trabalho",
+                "en-GB": "Workplace"
+              },
+              "properties": [
+                {
+                  "type": "AsyncSelect",
+                  "field": "workPlace",
+                  "optionsProvider": "/paper-pusher-ist/workingUnits?forAuthenticatedUser=false",
+                  "required": true,
+                  "allowOther": false,
+                  "label": {
+                    "pt-PT": "Local de Trabalho",
+                    "en-GB": "Workplace"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "pt-PT": "Informação do Trabalho Suplementar",
+            "en-GB": "Overtime Work Information"
+          },
+          "sections": [
+            {
+              "title": {
+                "pt-PT": "Informação da Unidade Pagadora",
+                "en-GB": "Paying Unit Information"
+              },
+              "properties": [
+                {
+                  "type": "AsyncSelect",
+                  "field": "financerUnit",
+                  "label": {
+                    "pt-PT": "Unidade Pagadora",
+                    "en-GB": "Paying Unit"
+                  },
+                  "required": true,
+                  "allowOther": false,
+                  "optionsProvider": "/paper-pusher-ist/financeUnit"
+                }
+              ]
+            },
+            {
+              "title": {
+                "pt-PT": "Período e Horário Previsto",
+                "en-GB": "Period and Expected Hours"
+              },
+              "properties": [
+                {
+                  "type": "Composite",
+                  "field": "overtimeWork",
+                  "required": true,
+                  "properties": [
+                    {
+                      "type": "DateTime",
+                      "field": "startDate",
+                      "required": true,
+                      "label": {
+                        "pt-PT": "Data de Início",
+                        "en-GB": "Start Date"
+                      },
+                      "date": true,
+                      "time": false
+                    },
+                    {
+                      "type": "DateTime",
+                      "field": "endDate",
+                      "required": true,
+                      "label": {
+                        "pt-PT": "Data de Fim",
+                        "en-GB": "End Date"
+                      },
+                      "date": true,
+                      "time": false
+                    }
+                  ]
+                },
+                {
+                  "type": "Composite",
+                  "field": "schedule",
+                  "required": true,
+                  "properties": [
+                    {
+                      "type": "DateTime",
+                      "field": "startHours",
+                      "required": true,
+                      "label": {
+                        "pt-PT": "Hora de Início",
+                        "en-GB": "Start Time"
+                      },
+                      "date": false,
+                      "time": true,
+                      "timezone": false
+                    },
+                    {
+                      "type": "DateTime",
+                      "field": "endHours",
+                      "required": true,
+                      "label": {
+                        "pt-PT": "Hora de Fim",
+                        "en-GB": "End Time"
+                      },
+                      "date": false,
+                      "time": true,
+                      "timezone": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": {
+            "pt-PT": "Trabalho a Realizar",
+            "en-GB": "Work to Be Done"
+          },
+          "sections": [
+            {
+              "title": {
+                "pt-PT": "Informação sobre o Trabalho a Realizar",
+                "en-GB": "Information Regarding the Work to Be Done"
+              },
+              "properties": [
+                {
+                  "type": "Quantity",
+                  "field": "expectedHoursOfWork",
+                  "step": 0.01,
+                  "label": {
+                    "pt-PT": "Número de Horas Previstas a Realizar",
+                    "en-GB": "Expected Hours of Work"
+                  },
+                  "min": 0
+                },
+                {
+                  "type": "Quantity",
+                  "field": "expectedHoursWorkingDays",
+                  "required": true,
+                  "step": 0.01,
+                  "label": {
+                    "pt-PT": "Número de Horas Previstas em Dias Úteis",
+                    "en-GB": "Number of Hours Expected on Working Days"
+                  },
+                  "min": 0
+                },
+                {
+                  "type": "Quantity",
+                  "field": "expectedHoursSupplementaryRestDaysAndHolidays",
+                  "required": true,
+                  "step": 0.01,
+                  "label": {
+                    "pt-PT": "Número de Horas Previstas em Dias de Descanso Complementar (sábado) e Feriados",
+                    "en-GB": "Number of Hours Expected on Supplementary Rest Days (Saturday) and Public Holidays"
+                  },
+                  "min": 0
+                },
+                {
+                  "type": "Quantity",
+                  "field": "expectedHoursStatutoryRestDays",
+                  "required": true,
+                  "step": 0.01,
+                  "label": {
+                    "pt-PT": "Número de Horas Previstas em Dias de Descanso Semanal Obrigatório (domingo)",
+                    "en-GB": "Number of Hours Expected on Statutory Rest Days (Sunday)"
+                  },
+                  "min": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

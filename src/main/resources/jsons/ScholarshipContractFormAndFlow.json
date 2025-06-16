@@ -2522,7 +2522,7 @@
           "actionIfRequesterIsQueueMember": "SIGN"
         },
         {
-          "id": "{{step-2}}",
+          "id": "step-2.1",
           "type": "generic",
           "comment": true,
           "title": {
@@ -2540,7 +2540,7 @@
           "actions": {
             "SIGN": {
               "primary": true,
-              "to": "{{next-step}}",
+              "to": "step-3.1-fund-reservation",
               "label": {
                 "pt-PT": "Autorizar",
                 "en-GB": "Authorise"
@@ -2597,7 +2597,7 @@
           "actionIfRequesterIsQueueMember": "SIGN"
         },
         {
-          "id": "{{step-3}}-fund-reservation",
+          "id": "step-3.1-fund-reservation",
           "type": "withForms",
           "comment": false,
           "title": {
@@ -2636,7 +2636,7 @@
           "actions": {
             "RESERVE_FUNDS": {
               "primary": true,
-              "to": "{{next-step}}",
+              "to": "step-4-fund-allocation",
               "label": {
                 "pt-PT": "Confirmar Reserva de Fundos",
                 "en-GB": "Confirm Fund Reservation"
@@ -2926,7 +2926,7 @@
           "blockUndo": false
         },
         {
-          "id": "{{step-3}}-fund-undo-reservation",
+          "id": "step-3.1-fund-undo-reservation",
           "type": "generic",
           "comment": false,
           "title": {
@@ -2940,7 +2940,7 @@
           "actions": {
             "UNDO_RESERVE_FUNDS": {
               "primary": true,
-              "to": "{{next-step}}",
+              "to": "step-4-fund-undo-allocation",
               "label": {
                 "pt-PT": "Confirmar Cancelamento da Reserva de Fundos",
                 "en-GB": "Confirm Undo Fund Reservation"

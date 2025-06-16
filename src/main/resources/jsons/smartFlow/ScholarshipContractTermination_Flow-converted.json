@@ -1,0 +1,86 @@
+{
+  "flowTemplate" : {
+    "name" : "scholarship-contract-termination-flow",
+    "title" : {
+      "pt-PT" : "Processo de Pedido de Rescisão de Contrato de Bolsa",
+      "en-GB" : "Scholarship Contract Termination Request Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Rescisão de Contrato de Bolsa",
+      "en-GB" : "Scholarship Contract Termination Request Process"
+    },
+    "config" : {
+      "authorizationChainNodes" : {
+        "description" : {
+          "pt-PT" : "Tomada de conhecimento",
+          "en-GB" : "Acknowledgment"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Tomada de conhecimento",
+          "en-GB" : "Acknowledgment"
+        },
+        "actions" : {
+          "ACKNOWLEDGE" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Tomei conhecimento do processo",
+              "en-GB" : "I confirm that I am aware of this process"
+            }
+          }
+        }
+      },
+      "actionProcessor" : {
+        "onSuccess" : [
+          {
+            "flowProcessor" : "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure" : [
+          {
+            "flowProcessor" : "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition" : [ ],
+        "onCancel" : [
+          {
+            "flowProcessor" : "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors" : [ ],
+      "actionNodes" : [
+        {
+          "id" : "step-hr-processing",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "A Direção de Recursos Humanos",
+            "en-GB" : "The Human Resources Department"
+          },
+          "description" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Marcar como Processado",
+                "en-GB" : "Mark as Processed"
+              },
+              "id" : "PROCESS-step-hr-processing",
+              "name" : "PROCESS"
+            }
+          ],
+          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros"
+        }
+      ]
+    }
+  }
+}

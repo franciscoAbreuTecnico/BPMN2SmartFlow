@@ -1,0 +1,290 @@
+{
+  "name": {
+    "pt-PT": "Reembolso de Despesas de Acidente de Trabalho",
+    "en-GB": "Reimbursement of Work-Related Accident Or Incident Expenses"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar o reembolso de despesas de acidente de trabalho.",
+    "en-GB": "This form allows you to request the reimbursement of work-related accident or incident expenses."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [],
+      "displayName": true,
+      "username": true
+    },
+    "onLock": {
+      "requestProcessor": "Move Queue",
+      "queue": "Núcleo de Remunerações e Proteção Social"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true,
+      "requireTaxInformation": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informação do Reembolso de Despesas",
+          "en-GB": "Expenses Reimbursement Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Dados das Despesas",
+              "en-GB": "Expenses Data"
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "reimbursements",
+                "required": true,
+                "label": {
+                  "pt-PT": "Dados da Despesa",
+                  "en-GB": "Expense Data"
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar dados da despesa",
+                  "en-GB": "Add expense data"
+                },
+                "properties": [
+                  {
+                    "type": "Composite",
+                    "field": "invoiceData",
+                    "required": true,
+                    "properties": [
+                      {
+                        "type": "DateTime",
+                        "field": "invoiceDate",
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Data da Fatura",
+                          "en-GB": "Invoice Date"
+                        },
+                        "date": true,
+                        "time": false
+                      },
+                      {
+                        "type": "Text",
+                        "field": "invoiceNumber",
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Número da Fatura, da Fatura-Recibo ou da Fatura Simplificada",
+                          "en-GB": "Invoice, Invoice with Receipt, or Simplified Invoice Number"
+                        }
+                      },
+                      {
+                        "type": "Quantity",
+                        "field": "invoiceValue",
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Valor (€)",
+                          "en-GB": "Value (€)"
+                        },
+                        "min": 0,
+                        "step": 0.01
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Numeric",
+                    "field": "providerTaxNumber",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Número de Identificação Fiscal do Prestador",
+                      "en-GB": "Provider Tax Identification Number"
+                    }
+                  },
+                  {
+                    "type": "Boolean",
+                    "field": "isExternalProvider",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "O Prestador é de um país estrangeiro?",
+                      "en-GB": "Is the Provider from a foreign country?"
+                    },
+                    "labelNo": {
+                      "pt-PT": "Não",
+                      "en-GB": "No"
+                    },
+                    "labelYes": {
+                      "pt-PT": "Sim",
+                      "en-GB": "Yes"
+                    }
+                  },
+                  {
+                    "type": "Select",
+                    "field": "providerType",
+                    "required": true,
+                    "multiple": false,
+                    "collapsed": false,
+                    "label": {
+                      "pt-PT": "Tipologia",
+                      "en-GB": "Type"
+                    },
+                    "options": [
+                      {
+                        "value": "analysis",
+                        "label": {
+                          "pt-PT": "Análise",
+                          "en-GB": "Analysis"
+                        }
+                      },
+                      {
+                        "value": "consultation",
+                        "label": {
+                          "pt-PT": "Consulta",
+                          "en-GB": "Consultation"
+                        }
+                      },
+                      {
+                        "value": "stomatology",
+                        "label": {
+                          "pt-PT": "Estomatologia",
+                          "en-GB": "Stomatology"
+                        }
+                      },
+                      {
+                        "value": "physiotherapy",
+                        "label": {
+                          "pt-PT": "Fisioterapia",
+                          "en-GB": "Physiotherapy"
+                        }
+                      },
+                      {
+                        "value": "homeSupport",
+                        "label": {
+                          "pt-PT": "Lares/Apoio Domiciliário",
+                          "en-GB": "Care Homes/Home Care Support"
+                        }
+                      },
+                      {
+                        "value": "optics",
+                        "label": {
+                          "pt-PT": "Óticas",
+                          "en-GB": "Optics"
+                        }
+                      },
+                      {
+                        "value": "psychology",
+                        "label": {
+                          "pt-PT": "Psicologia",
+                          "en-GB": "Psychology"
+                        }
+                      },
+                      {
+                        "value": "speechTherapy",
+                        "label": {
+                          "pt-PT": "Terapia da Fala",
+                          "en-GB": "Speech Therapy"
+                        }
+                      },
+                      {
+                        "value": "radiology",
+                        "label": {
+                          "pt-PT": "Radiologia",
+                          "en-GB": "Radiology"
+                        }
+                      },
+                      {
+                        "value": "transport",
+                        "label": {
+                          "pt-PT": "Transportes",
+                          "en-GB": "Transport"
+                        }
+                      },
+                      {
+                        "value": "others",
+                        "label": {
+                          "pt-PT": "Outros",
+                          "en-GB": "Others"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Boolean",
+                    "field": "isCoveredByInsurance",
+                    "label": {
+                      "pt-PT": "Este documento de despesa já foi objeto de comparticipação por seguro?",
+                      "en-GB": "Has this expense document already been covered by insurance?"
+                    },
+                    "description": {
+                      "pt-PT": "Se este documento de despesa já foi objeto de comparticipação por seguro, deverá também anexar a respetiva declaração de complementaridade.",
+                      "en-GB": "If this expense document has already been covered by insurance, you should also attach the corresponding supplementary contribution declaration."
+                    },
+                    "required": true,
+                    "labelNo": {
+                      "pt-PT": "Não",
+                      "en-GB": "No"
+                    },
+                    "labelYes": {
+                      "pt-PT": "Sim",
+                      "en-GB": "Yes"
+                    }
+                  },
+                  {
+                    "type": "File",
+                    "field": "supplementaryContributionDeclaration",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Declaração de Complementaridade",
+                      "en-GB": "Supplementary Contribution Declaration"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 10,
+                    "onlyIf": [
+                      {
+                        "field": "isCoveredByInsurance",
+                        "negation": false,
+                        "value": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "File",
+                    "field": "prescriptionDocument",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Receita Médica, Relatório Médico ou Outro Documento de Suporte Necessário",
+                      "en-GB": "Medical Prescription, Medical Report, or Other Necessary Supporting Document"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 10
+                  },
+                  {
+                    "type": "File",
+                    "field": "invoiceDocument",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Fatura, Fatura-Recibo ou Fatura Simplificada",
+                      "en-GB": "Invoice, Invoice with Receipt, or Simplified Invoice"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 10
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": true,
+    "pages": [
+    ]
+  },
+  "cost": {
+  }
+}

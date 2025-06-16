@@ -1,0 +1,304 @@
+{
+  "name": {
+    "pt-PT": "Rescisão de Contrato",
+    "en-GB": "Contract Termination"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe iniciar o processo de rescisão de contrato.",
+    "en-GB": "This form allows you to start the process of contract termination."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "terminationDate"
+      ],
+      "displayName": true,
+      "username": true
+    },
+    "onLock": {
+      "requestProcessor": "Move Queue",
+      "queue": "Núcleo de Técnicos & Administrativos e Bolseiros"
+    },
+    "onValidate": {
+      "requestProcessor": "Create Flow From Request",
+      "template": "contract-termination-flow",
+      "actionNodesProvider": "Collaborator Authorization Flow",
+      "queuesToRemove": [
+        "Gestão Administrativa",
+        "Presidência do Instituto Superior Técnico"
+      ],
+      "completeAuthorizationChain": true,
+      "setSectionWithRequesterInfo": true,
+      "setSupervisorFromRequester": true
+    },
+    "onResetValidate": {
+      "requestProcessor": "Cancel Flow"
+    },
+    "onConclude": [
+    ],
+    "queuesAllowedToChangeTo": [
+      "Núcleo de Técnicos & Administrativos e Bolseiros",
+      "Núcleo de Docentes e Investigadores"
+    ]
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informação de Rescisão de Contrato",
+          "en-GB": "Contract Termination Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Rescisão",
+              "en-GB": "Termination"
+            },
+            "properties": [
+              {
+                "type": "DateTime",
+                "field": "terminationDate",
+                "required": true,
+                "label": {
+                  "pt-PT": "Data de Rescisão do Contrato",
+                  "en-GB": "Termination Date of the Contract"
+                },
+                "description": {
+                  "pt-PT": "Data a partir da qual pretende cessar o contrato (último dia de trabalho).",
+                  "en-GB": "Date from which you want to terminate the contract (last day of work)."
+                },
+                "date": true,
+                "time": false
+              },
+              {
+                "type": "Text",
+                "field": "terminationReason",
+                "required": false,
+                "inputType": "plain",
+                "multiline": true,
+                "label": {
+                  "pt-PT": "Motivo da Rescisão do Contrato",
+                  "en-GB": "Reason for Termination of the Contract"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Informação sobre Aviso Prévio",
+          "en-GB": "Notice Period Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Aviso Prévio",
+              "en-GB": "Notice Period"
+            },
+            "description": {
+              "pt-PT": "- Sendo o contrato por tempo indeterminado, o prazo de aviso prévio é de 30 ou 60 dias, consoante o vínculo de emprego público tenha durado menos ou mais de 2 anos, respetivamente. - Sendo o contrato a termo resolutivo certo ou incerto, o prazo de aviso prévio é de 15 ou 30 dias, consoante o vínculo tiver duração inferior ou superior a 6 meses, respetivamente. Indemnização em caso de incumprimento total ou parcial do pré-aviso - montante correspondente à remuneração base do período de aviso prévio em falta.",
+              "en-GB": "- For permanent contracts, the notice period is 30 or 60 days, depending on whether the public employment relationship has lasted less than or more than 2 years, respectively. - For fixed-term contracts (whether definite or indefinite), the notice period is 15 or 30 days, depending on whether the employment relationship has lasted less than or more than 6 months, respectively. Compensation in the event of full or partial non-compliance with the notice period - the amount corresponding to the base salary for the missing notice period."
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "acknowledgement",
+                "required": true,
+                "allowOther": false,
+                "collapse": false,
+                "label": {
+                  "pt-PT": "Tomada de Conhecimento",
+                  "en-GB": "Acknowledgment"
+                },
+                "options": [
+                  {
+                    "value": "accept",
+                    "label": {
+                      "pt-PT": "Tomei conhecimento do período de aviso prévio.",
+                      "en-GB": "I confirm that I am aware of the notice period."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false,
+    "pages": [
+    ]
+  },
+  "cost": {
+  },
+  "flowTemplate": {
+    "name": "contract-termination-flow",
+    "title": {
+      "pt-PT": "Processo de Pedido de Rescisão de Contrato",
+      "en-GB": "Contract Termination Request Process"
+    },
+    "description": {
+      "pt-PT": "Processo de Pedido de Rescisão de Contrato",
+      "en-GB": "Contract Termination Request Process"
+    },
+    "config": {
+      "hideRevertProcess": true,
+      "authorizationChainNodes": {
+        "title": {
+          "pt-PT": "Envio de Notificação",
+          "en-GB": "Send Notification"
+        },
+        "description": {
+          "pt-PT": "Envio de notificação para o/a responsável",
+          "en-GB": "Send notification to the person in charge"
+        },
+        "comment": false,
+        "actions": {
+          "NOTIFY": {
+            "primary": true,
+            "to": "SUCCESS",
+            "label": {
+              "pt-PT": "Enviar Notificação",
+              "en-GB": "Send Notification"
+            }
+          }
+        },
+        "actionProcessor": {
+          "onEnterNode": [
+            {
+              "flowProcessor": "Send e-mail",
+              "template": "email-notification-contract-termination",
+              "notifyFlowMembers": true,
+              "registered": true,
+              "sender": "1977853914648090",
+              "parameters": {
+                "terminationDate": "terminationDate"
+              }
+            },
+            {
+              "flowProcessor": "Do Flow Action",
+              "flowAction": "NOTIFY"
+            }
+          ]
+        },
+        "blockUndo": true
+      },
+      "actionProcessor": {
+        "onSuccess": [
+          {
+            "flowProcessor": "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure": [
+          {
+            "flowProcessor": "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition": [
+        ],
+        "onCancel": [
+          {
+            "flowProcessor": "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors": [
+      ],
+      "actionNodes": [
+        {
+          "id": "step-administrator",
+          "type": "generic",
+          "comment": true,
+          "title": {
+            "pt-PT": "O/A Administrador(a)",
+            "en-GB": "The Administrator"
+          },
+          "description": {
+            "pt-PT": "Parecer do/a Administrador(a)",
+            "en-GB": "Opinion of the Administrator"
+          },
+          "commentLabel": {
+            "pt-PT": "Parecer do/a Administrador(a)",
+            "en-GB": "Opinion of the Administrator"
+          },
+          "actions": {
+            "SIGN": {
+              "primary": true,
+              "to": "step-president",
+              "label": {
+                "pt-PT": "Concordar",
+                "en-GB": "Agree"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "FAILURE",
+              "label": {
+                "pt-PT": "Rejeitar",
+                "en-GB": "Reject"
+              }
+            }
+          },
+          "queue": "Gestão Administrativa",
+          "replaceTitleWithRole": true,
+          "hr-final-authorization-step": "true",
+          "actionProcessor": {
+            "onActionTransition": [
+              {
+                "applyOn": "SIGN",
+                "flowProcessor": "Skip Next Nodes",
+                "node-field-key": "hr-final-authorization-step"
+              }
+            ]
+          }
+        },
+        {
+          "id": "step-president",
+          "type": "generic",
+          "comment": true,
+          "title": {
+            "pt-PT": "O/A Presidente",
+            "en-GB": "The President"
+          },
+          "description": {
+            "pt-PT": "Parecer do/a Presidente",
+            "en-GB": "Opinion of the President"
+          },
+          "commentLabel": {
+            "pt-PT": "Parecer do/a Presidente",
+            "en-GB": "Opinion of the President"
+          },
+          "actions": {
+            "SIGN": {
+              "primary": true,
+              "to": "SUCCESS",
+              "label": {
+                "pt-PT": "Concordar",
+                "en-GB": "Agree"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "FAILURE",
+              "label": {
+                "pt-PT": "Rejeitar",
+                "en-GB": "Reject"
+              }
+            }
+          },
+          "queue": "Presidência do Instituto Superior Técnico",
+          "replaceTitleWithRole": true,
+          "hr-final-authorization-step": "true"
+        }
+      ]
+    }
+  }
+}

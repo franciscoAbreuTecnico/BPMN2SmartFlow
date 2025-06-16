@@ -1,0 +1,108 @@
+{
+  "flowTemplate" : {
+    "name" : "parental-leave-flow",
+    "title" : {
+      "pt-PT" : "Processo de Pedido de Licença de Parentalidade",
+      "en-GB" : "Parental Leave Request Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Licença de Parentalidade",
+      "en-GB" : "Parental Leave Request Process"
+    },
+    "config" : {
+      "authorizationChainNodes" : {
+        "title" : {
+          "pt-PT" : "Envio de Notificação",
+          "en-GB" : "Send Notification"
+        },
+        "description" : {
+          "pt-PT" : "Envio de notificação para o/a responsável",
+          "en-GB" : "Send notification to the person in charge"
+        },
+        "comment" : false,
+        "actions" : {
+          "NOTIFY" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Enviar Notificação",
+              "en-GB" : "Send Notification"
+            }
+          }
+        },
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Send e-mail",
+            "template" : "email-notification-paternity",
+            "notifyFlowMembers" : true,
+            "registered" : true,
+            "sender" : "1977853914648083",
+            "parameters" : {
+              "startDate" : "startDate"
+            }
+          }, {
+            "flowProcessor" : "Do Flow Action",
+            "flowAction" : "NOTIFY"
+          } ]
+        },
+        "blockUndo" : true
+      },
+      "actionProcessor" : {
+        "onSuccess" : [ {
+          "flowProcessor" : "Return Flow Approved To Request"
+        } ],
+        "onFailure" : [ {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ {
+          "flowProcessor" : "Cancel Connected Requests"
+        } ]
+      },
+      "flowProcessors" : [ ],
+      "actionNodes" : [ {
+        "id" : "step-hr-processing",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "A Direção de Recursos Humanos",
+          "en-GB" : "The Human Resources Department"
+        },
+        "description" : {
+          "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+          "en-GB" : "Processing by the Human Resources Department"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+          "en-GB" : "Processing by the Human Resources Department"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Marcar como Processado",
+              "en-GB" : "Mark as Processed"
+            }
+          }
+        },
+        "actionProcessor" : {
+          "onSuccess" : [ {
+            "applyOn" : "SIGN",
+            "flowProcessor" : "Set Request Outcome Form",
+            "outcomeFormValues" : {
+              "response" : {
+                "value" : "processed",
+                "label" : {
+                  "pt-PT" : "O pedido foi registado.",
+                  "en-GB" : "The request has been registered."
+                }
+              }
+            }
+          } ]
+        },
+        "queue" : "Núcleo de Prestação de Trabalho - Geral"
+      } ]
+    }
+  }
+}

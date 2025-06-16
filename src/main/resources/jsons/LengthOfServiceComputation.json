@@ -1,0 +1,86 @@
+{
+  "name": {
+    "pt-PT": "Contagem de Tempo de Serviço",
+    "en-GB": "Length of Service Computation"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar a contagem de tempo de serviço.",
+    "en-GB": "This form allows you to request the computation of the length of service."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+      ]
+    },
+    "onLock": {
+      "requestProcessor": "Move Queue",
+      "queue": "Núcleo de Técnicos & Administrativos e Bolseiros"
+    },
+    "queuesAllowedToChangeTo": [
+      "Núcleo de Técnicos & Administrativos e Bolseiros",
+      "Núcleo de Docentes e Investigadores"
+    ]
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Documentos",
+          "en-GB": "Documents"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Documentos",
+              "en-GB": "Documents"
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "documents",
+                "required": false,
+                "label": {
+                  "pt-PT": "Anexos",
+                  "en-GB": "Attachments"
+                },
+                "description": {
+                  "pt-PT": "Deverá anexar todos os documentos que considere necessários ou convenientes para a submissão do seu pedido, tais como contagens de tempo anteriores que não estejam no seu processo individual.",
+                  "en-GB": "You must attach all documents that you consider necessary or convenient for submitting your request, such as previous computations of length of service that are not in your individual process."
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar documento",
+                  "en-GB": "Add document"
+                },
+                "properties": [
+                  {
+                    "type": "File",
+                    "field": "document",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Anexo",
+                      "en-GB": "Attachment"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 10
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": true
+  },
+  "cost": {
+  }
+}

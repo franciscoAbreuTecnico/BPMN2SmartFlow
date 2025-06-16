@@ -1,0 +1,1009 @@
+{
+  "name" : {
+    "pt-PT" : "Acumulação de funções com funções privadas/públicas, curso breve e prestação de serviço docente",
+    "en-GB" : "Accumulation of functions with private/public functions, short course and provision of teaching services"
+  },
+  "description" : {
+    "pt-PT" : "Formulário para solicitar acumulação de funções.",
+    "en-GB" : "Form to request cumulation of functions."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "accumulationType", "startDate", "endDate" ]
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Docentes e Investigadores"
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "setSupervisorFromRequester" : true,
+      "template" : "accumulation-of-teacher-functions",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "queuesToRemove" : [ "Gestão Administrativa", "Presidência do Instituto Superior Técnico" ],
+      "completeAuthorizationChain" : true,
+      "setSectionWithRequesterInfo" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação do Remetente",
+        "en-GB" : "Sender Information"
+      },
+      "sections" : [ ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação da Acumulação de Funções",
+        "en-GB" : "Accumulation of Functions Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Tipo de Acumulação de Funções",
+          "en-GB" : "Type of Accumulation Functions"
+        },
+        "description" : {
+          "pt-PT" : "Não carece de autorização a acumulação de funções com:\n - Direitos de autor;\n - Ajudas de custo;\n - Despesas de deslocação;\n - Desempenho de funções em órgãos da instituição a que esteja vinculado;\n -  Participação em avaliações e em júris de concursos ou de exames estranhos à instituição a que esteja vinculado;\n -  Elaboração de estudos ou pareceres mandados executar por entidades oficiais nacionais, da União Europeia ou internacionais, ou no âmbito de comissões constituídas por sua determinação;\n -  Actividades exercidas, quer no âmbito de contratos entre a instituição a que pertence e outras entidades públicas ou privadas, nacionais, estrangeiras ou internacionais, quer no âmbito de projectos subsidiados por quaisquer dessas entidades, desde que se trate de actividades da responsabilidade da instituição e que os encargos com as correspondentes remunerações sejam satisfeitos através de receitas provenientes dos referidos contratos ou subsídios, nos termos de regulamento aprovado pela própria instituição de ensino superior.",
+          "en-GB" : "The accumulation of functions with:\n -  Copyright does not require authorization;\n -  Cost of living allowance; Travel expenses;\n -  Performance of functions in bodies of the institution to which he/she is linked;\n -  Participation in assessments and on competition or examination boards outside the institution to which the person is linked;\n -  Preparation of studies or opinions commissioned by national, European Union or international official entities, or within the scope of committees established by their determination;\n -  Activities carried out, whether within the scope of contracts between the institution to which it belongs and other public or private entities, national, foreign or international, or within the scope of projects subsidized by any of these entities, provided that these are activities under the responsibility of the institution and that the costs of the corresponding remunerations are met through revenues from said contracts or subsidies, under the terms of the regulations approved by the higher education institution itself."
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "accumulationType",
+          "require" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Tipo de Acumulação de Funções",
+            "en-GB" : "Type of Accumulation Functions"
+          },
+          "options" : [ {
+            "value" : "accumulationFunctions",
+            "label" : {
+              "pt-PT" : "Acumulação com funções privadas/públicas",
+              "en-GB" : "Accumulation with private/public roles"
+            }
+          }, {
+            "value" : "briefCourse",
+            "label" : {
+              "pt-PT" : "Lecionar curso breve",
+              "en-GB" : "Teach brief course"
+            }
+          }, {
+            "value" : "teachingService",
+            "label" : {
+              "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+              "en-GB" : "Provision of teaching services (without protocol)"
+            }
+          }, {
+            "value" : "teachingServiceUnderProtocol",
+            "label" : {
+              "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+              "en-GB" : "Provision of teaching services under protocol"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "newOrRenewalAccumulation",
+          "label" : {
+            "pt-PT" : "Fase do Pedido de Acumulação de Funções",
+            "en-GB" : "Role Accumulation Request Type"
+          },
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            } ]
+          },
+          "options" : [ {
+            "label" : {
+              "pt-PT" : "Novo Pedido de Acumulação de Funções",
+              "en-GB" : "New Role Accumulation Request"
+            },
+            "value" : "newAccumulation"
+          }, {
+            "label" : {
+              "pt-PT" : "Renovação de Pedido de Acumulação de Funções",
+              "en-GB" : "Renewal of Role Accumulation Request"
+            },
+            "value" : "renewalAccumulation"
+          } ]
+        }, {
+          "type" : "Boolean",
+          "field" : "exclusiveRegime",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Exerce funções em regime de dedicação exclusiva?",
+            "en-GB" : "Works on an exclusive dedication regime?"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim, exerce funções em regime de dedicação exclusiva",
+            "en-GB" : "Yes, he works on exclusive dedication regime"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não, não exerce funções em regime de dedicação exclusiva",
+            "en-GB" : "No, he does not work under an exclusive dedication regime"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            }, {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            }, {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            } ]
+          }
+        }, {
+          "type" : "Select",
+          "field" : "natureOfTheAccumulation",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Natureza da Acumulação",
+            "en-GB" : "Nature of Accumulation"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            } ]
+          },
+          "options" : [ {
+            "value" : "public",
+            "label" : {
+              "pt-PT" : "Funções Públicas (art. 21.º da LTFP)",
+              "en-GB" : "Public Service (Article 21 of the LTFP)"
+            }
+          }, {
+            "value" : "private",
+            "label" : {
+              "pt-PT" : "Funções Privadas (art. 22.º da LTFP)",
+              "en-GB" : "Private Institution Role (Article 22 of the LTFP)"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "natureOfWork",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Natureza do Trabalho",
+            "en-GB" : "Nature of Work"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            } ]
+          },
+          "options" : [ {
+            "value" : "autonomous",
+            "label" : {
+              "pt-PT" : "Autónoma",
+              "en-GB" : "Autonomous"
+            }
+          }, {
+            "value" : "subordinate",
+            "label" : {
+              "pt-PT" : "Subordinada",
+              "en-GB" : "Subordinate"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "paragraph",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "description" : {
+            "pt-PT" : "A função a acumular não viola o compromisso de dedicação exclusiva uma vez que se enquadra numa das exceções previstas no nº3 do artigo 70º do ECDU.",
+            "en-GB" : "The function to be accumulated does not violate the commitment of exclusive dedication since it falls within one of the exceptions provided for in paragraph 3 of article 70th of the ECDU."
+          },
+          "label" : {
+            "pt-PT" : "Selecione a Alínea Correspondente à Atividade",
+            "en-GB" : "Select the Paragraph Corresponding to the Activity"
+          },
+          "onlyIf" : [ {
+            "field" : "exclusiveRegime",
+            "negation" : false,
+            "value" : true
+          }, {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            } ]
+          } ],
+          "options" : [ {
+            "value" : "a",
+            "label" : {
+              "pt-PT" : "Direitos de autor",
+              "en-GB" : "Copyright"
+            }
+          }, {
+            "value" : "c",
+            "label" : {
+              "pt-PT" : "Ajudas de custo",
+              "en-GB" : "Cost allowances"
+            }
+          }, {
+            "value" : "d",
+            "label" : {
+              "pt-PT" : "Despesas de deslocação",
+              "en-GB" : "Travel expenses"
+            }
+          }, {
+            "value" : "e",
+            "label" : {
+              "pt-PT" : "Desempenho de funções em órgãos da instituição a que esteja vinculado",
+              "en-GB" : "Performance of functions in bodies of the institution to which he/she is linked"
+            }
+          }, {
+            "value" : "f",
+            "label" : {
+              "pt-PT" : "Participação em órgãos consultivos de instituição estranha àquela a que pertença, desde que com a anuência prévia desta última e quando a forma de remuneração seja exclusivamente a de senhas de presença",
+              "en-GB" : "Participation in advisory bodies of an institution other than the one to which he belongs, provided that it is with the latter's prior consent and when the form of remuneration is exclusively attendance fees"
+            }
+          }, {
+            "value" : "g",
+            "label" : {
+              "pt-PT" : "Participação em avaliações e em júris de concursos ou de exames estranhos à instituição a que esteja vinculado",
+              "en-GB" : "Participation in assessments and juries of competitions or exams outside the institution to which you are linked"
+            }
+          }, {
+            "value" : "h",
+            "label" : {
+              "pt-PT" : "Elaboração de estudos ou pareceres mandados executar por entidades oficiais nacionais, da União Europeia ou internacionais, ou no âmbito de comissões constituídas por sua determinação",
+              "en-GB" : "Preparation of studies or opinions ordered to be carried out by official national, European Union or international entities, or within the scope of commissions established by their determination"
+            }
+          }, {
+            "value" : "j",
+            "label" : {
+              "pt-PT" : "Actividades exercidas, quer no âmbito de contratos entre a instituição a que pertence e outras entidades públicas ou privadas, nacionais, estrangeiras ou internacionais, quer no âmbito de projectos subsidiados por quaisquer dessas entidades, desde que se trate de actividades da responsabilidade da instituição e que os encargos com as correspondentes remunerações sejam satisfeitos através de receitas provenientes dos referidos contratos ou subsídios, nos termos de regulamento aprovado pela própria instituição de ensino superior",
+              "en-GB" : "Activities carried out, either within the scope of contracts between the institution to which it belongs and other public or private, national, foreign or international entities, or within the scope of projects subsidized by any of these entities, as long as they are activities under the responsibility of the institution and that the corresponding remuneration costs are met through revenues arising from the aforementioned contracts or subsidies, in accordance with regulations approved by the higher education institution itself"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "teachingServiceParagraph",
+          "description" : {
+            "pt-PT" : "Após autorização é necessário entregar na DRH o contrato de prestação de serviços assinado.",
+            "en-GB" : "After authorization, it is necessary to deliver the signed service provision contract to the HR department."
+          },
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Selecione a Alínea Correspondente à Atividade",
+            "en-GB" : "Select the Paragraph Corresponding to the Activity"
+          },
+          "onlyIf" : [ {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            } ]
+          }, {
+            "field" : "exclusiveRegime",
+            "negation" : false,
+            "value" : true
+          } ],
+          "options" : [ {
+            "value" : "i",
+            "label" : {
+              "pt-PT" : "Prestação de serviço docente em instituição de ensino superior pública diversa da instituição a que esteja vinculado, quando, com autorização prévia desta última, se realize para além do período semanal de trinta e cinco horas de serviço e não exceda quatro horas semanais",
+              "en-GB" : "Provision of teaching service at a public higher education institution other than the institution to which he/she is linked, when, with prior authorization from the latter, it takes place beyond the weekly period of thirty-five hours of service and does not exceed four hours per week"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "teachingServiceNoExclusive",
+          "description" : {
+            "pt-PT" : "Após autorização é necessário entregar na DRH o contrato de prestação de serviços assinado.",
+            "en-GB" : "After authorization, it is necessary to deliver the signed service provision contract to the HR department."
+          },
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Selecione a Alínea Correspondente à Atividade",
+            "en-GB" : "Select the Paragraph Corresponding to the Activity"
+          },
+          "onlyIf" : [ {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            } ]
+          }, {
+            "field" : "exclusiveRegime",
+            "negation" : false,
+            "value" : false
+          } ],
+          "options" : [ {
+            "value" : "i",
+            "label" : {
+              "pt-PT" : "Prestação de serviço docente em instituição de ensino superior diversa da instituição a que esteja vinculado quando, com autorização prévia desta última, se realize além do período semanal de trinta e cinco horas semanais e não exceda seis horas semanais.",
+              "en-GB" : "Provision of teaching service at a public higher education institution other than the institution to which he/she is linked, when, with prior authorization from the latter, it takes place beyond the weekly period of thirty-five hours of service and does not exceed six hours per week"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "underProtocolPragraph",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Selecione a Alínea Correspondente à Atividade",
+            "en-GB" : "Select the Paragraph Corresponding to the Activity"
+          },
+          "onlyIf" : [ {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            } ]
+          }, {
+            "field" : "exclusiveRegime",
+            "negation" : false,
+            "value" : true
+          } ],
+          "options" : [ {
+            "value" : "j",
+            "label" : {
+              "pt-PT" : "Prestação serviço de docente ao abrigo de protocolo interinstitucional nos termos previstos no n.º 5, do artigo 12.º do Regulamento de Prestação de Serviço dos Docentes do Instituto Superior Técnico.",
+              "en-GB" : "Provision of teaching services under an inter-institutional protocol under the terms set out in paragraph 5 of article 12 of the Regulation for the Provision of Teaching Services of the Instituto Superior Técnico."
+            }
+          } ]
+        }, {
+          "type" : "Quantity",
+          "field" : "timetableBriefCourse",
+          "required" : true,
+          "max" : 20,
+          "description" : {
+            "pt-PT" : "Entende-se por curso breve ou atividade análoga a realização de um curso em que a participação do docente ou investigador não envolva mais do que 20 horas de lecionação.",
+            "en-GB" : "A short course or similar activity is understood to be a course in which the teacher's participation does not involve more than 20 hours of teaching."
+          },
+          "label" : {
+            "pt-PT" : "Número de Horas",
+            "en-GB" : "Number of Hours"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "briefCourse",
+              "label" : {
+                "pt-PT" : "Lecionar curso breve",
+                "en-GB" : "Teach brief course"
+              }
+            } ]
+          }
+        }, {
+          "type" : "Quantity",
+          "field" : "timetableTeachingServices",
+          "required" : true,
+          "max" : 6,
+          "description" : {
+            "pt-PT" : "O docente em regime de exclusividade não viola o regime de dedicação exclusiva se a prestação de serviço docente noutra instituição de ensino superior pública que não exceder quatro horas semanais. A prestação de serviço docente noutra instituição de ensino superior por um docente em regime de tempo integral, sem exclusividade, não pode exceder seis horas semanais.",
+            "en-GB" : "Provision of teaching services under a Protocol with IST in accordance with the terms set out in paragraph 5 of article 12 of the Regulations for the Provision of Services for Teachers of the Instituto Superior ."
+          },
+          "label" : {
+            "pt-PT" : "Horário/Nº de Horas",
+            "en-GB" : "Work Schedule to Be Applied"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            }, {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            } ]
+          }
+        }, {
+          "type" : "AsyncSelect",
+          "field" : "executionYears",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Ano Letivo",
+            "en-GB" : "School Year"
+          },
+          "optionsProvider" : "/ist-admissions/executionYears",
+          "allowOther" : false,
+          "negation" : false,
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            }, {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            } ]
+          }
+        }, {
+          "type" : "Select",
+          "field" : "semester",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : true,
+          "label" : {
+            "pt-PT" : "Semestre",
+            "en-GB" : "Semester"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            }, {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            } ]
+          },
+          "options" : [ {
+            "value" : "firstSemester",
+            "label" : {
+              "pt-PT" : "1º Semestre",
+              "en-GB" : "1º Semester"
+            }
+          }, {
+            "value" : "SecondSemester",
+            "label" : {
+              "pt-PT" : "2º Semestre",
+              "en-GB" : "2º Semester"
+            }
+          } ]
+        }, {
+          "type" : "Boolean",
+          "field" : "appliableRemuneration",
+          "required" : true,
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            } ]
+          },
+          "label" : {
+            "pt-PT" : "A acumulação de funções é remunerada?",
+            "en-GB" : "Accumulation of functions is paid?"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim, a acumulação de funções é remunerada",
+            "en-GB" : "Yes, the accumulation of functions is paid"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não a acumulação de funções não é remunerada",
+            "en-GB" : "No, the accumulation of functions is not paid"
+          }
+        }, {
+          "type" : "Quantity",
+          "field" : "monthlyIncome",
+          "description" : {
+            "pt-PT" : "Nos termos da al. c) do n.º 2 do art. 23.º da LTFP, o requerimento de acumulação de funções deve conter indicação da remuneração a auferir, quando aplicável.",
+            "en-GB" : "Pursuant to art. c) paragraph 2 of art. 23 of the LTFP, the application for accumulation of functions must contain an indication of the remuneration to be received, when applicable."
+          },
+          "required" : true,
+          "step" : 0.01,
+          "label" : {
+            "pt-PT" : "Remuneração Mensal",
+            "en-GB" : "Monthly Pay"
+          },
+          "onlyIf" : [ {
+            "field" : "appliableRemuneration",
+            "value" : true,
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "instituituionType",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Tipo de Estabelecimento",
+            "en-GB" : "Company Type"
+          },
+          "onlyIf" : [ {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            }, {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            } ]
+          }, {
+            "field" : "exclusiveRegime",
+            "negation" : false,
+            "value" : false
+          } ],
+          "options" : [ {
+            "value" : "publicHigherEducation",
+            "label" : {
+              "pt-PT" : "Ensino Superior Público",
+              "en-GB" : "Public Higher Education"
+            }
+          }, {
+            "value" : "privateHigherEducation",
+            "label" : {
+              "pt-PT" : "Ensino superior Privado  e Cooperativo",
+              "en-GB" : "Private and Cooperative higher education"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "exclusiveInstituituionType",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Tipo de Estabelecimento",
+            "en-GB" : "Company Type"
+          },
+          "onlyIf" : [ {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            }, {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            } ]
+          }, {
+            "field" : "exclusiveRegime",
+            "negation" : false,
+            "value" : true
+          } ],
+          "options" : [ {
+            "value" : "publicHigherEducation",
+            "label" : {
+              "pt-PT" : "Ensino Superior Público",
+              "en-GB" : "Public Higher Education"
+            }
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "description",
+          "description" : {
+            "pt-PT" : "Descrição da atividade/função a desempenhar, com indicação do seu objeto, destinatários e natureza permanente/habitual ou temporária",
+            "en-GB" : "Description of the activity/function to be performed, indicating its purpose, recipients and permanent/usual or temporary nature"
+          },
+          "required" : true,
+          "multiline" : true,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Descrição da Atividade/Função a Acumular",
+            "en-GB" : "Description of the Activity/Function to be Accumulated"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            } ]
+          }
+        }, {
+          "type" : "Text",
+          "field" : "companyName",
+          "description" : {
+            "pt-PT" : "Indique o nome da instituição de ensino superior onde irá desempenhar as funções.",
+            "en-GB" : "Indicate the name of the higher education institution where you will perform your functions."
+          },
+          "required" : true,
+          "multiline" : false,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Nome da Instituição",
+            "en-GB" : "Institution Name"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            }, {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            }, {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            } ]
+          }
+        }, {
+          "type" : "Text",
+          "field" : "publicServiceJustification",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Fundamente a existência de manifesto interesse público na acumulação, bem como, no caso de as funções públicas a acumular serem remuneradas, a existência de uma das seguintes situações:  a) Participação em comissões ou grupos de trabalho; b) Participação em conselhos consultivos e em comissões de fiscalização ou outros órgãos colegiais de fiscalização ou controlo de dinheiros públicos; c) Atividades docentes ou de investigação de duração não superior à fixada em despacho dos membros do Governo responsáveis pelas áreas das finanças, da Administração Pública e da educação e que, sem prejuízo do cumprimento da duração semanal do trabalho, não se sobreponha em mais de um quarto ao horário inerente à função principal; ou d) Realização de conferências, palestras, ações de formação de curta duração e outras atividades de idêntica natureza (art. 21º da LTFP).",
+            "en-GB" : "Justify the existence of clear public interest in the accumulation of roles, as well as, in the case where the public service role to be accumulated is remunerated, the existence of one of the following situations: a) Participation in committees or working groups; b) Participation in advisory councils and in oversight committees or other collegiate bodies responsible for the oversight or control of public funds; c) Teaching or research activities lasting no longer than the period specified in a decree by the government members responsible for finance, public administration, and education, and which, without affecting the fulfilment of the weekly working hours, does not overlap by more than a quarter with the hours of the primary role; d) Conducting conferences, lectures, short training sessions, and other activities of a similar nature (Article 21 of the LTFP)."
+          },
+          "label" : {
+            "pt-PT" : "Fundamentação",
+            "en-GB" : "Justification"
+          },
+          "multiline" : true,
+          "inputType" : "plain",
+          "onlyIf" : {
+            "field" : "natureOfTheAccumulation",
+            "negation" : false,
+            "value" : {
+              "value" : "public",
+              "label" : {
+                "pt-PT" : "Funções Públicas (art. 21.º da LTFP)",
+                "en-GB" : "Public Service (Article 21 of the LTFP)"
+              }
+            }
+          }
+        }, {
+          "type" : "Text",
+          "field" : "privateJustification",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Fundamente a inexistência de conflito entre as funções no serviço de origem e as funções a desempenhar no serviço beneficiário da acumulação, bem como, a verificação dos seguintes requisitos cumulativos:  a) Não são legalmente consideradas incompatíveis com as funções públicas; b) Não são desenvolvidas em horário sobreposto, ainda que parcialmente, ao das funções públicas; c) Não comprometem a isenção e a imparcialidade exigidas pelo desempenho das funções públicas; d) Não provocam prejuízo para o interesse público ou para os direitos e interesses legalmente protegidos dos cidadãos (art. 22º da LTFP).",
+            "en-GB" : "It is based on the absence of conflict between the functions in the originating service and the functions to be performed in the service benefiting from the accumulation, as well as the verification of the following cumulative requirements: a) They are not legally considered incompatible with public functions; b) They are not carried out during a schedule that overlaps, even partially, with public functions; c) They do not compromise the exemption and impartiality required for the performance of public functions; d) They do not cause harm to the public interest or to the legally protected rights and interests of citizens (art. 22 of the LTFP)."
+          },
+          "label" : {
+            "pt-PT" : "Fundamentação",
+            "en-GB" : "Justification"
+          },
+          "multiline" : true,
+          "inputType" : "plain",
+          "onlyIf" : {
+            "field" : "natureOfTheAccumulation",
+            "negation" : false,
+            "value" : {
+              "value" : "private",
+              "label" : {
+                "pt-PT" : "Funções Privadas (art. 22.º da LTFP)",
+                "en-GB" : "Private Institution Role (Article 22 of the LTFP)"
+              }
+            }
+          }
+        }, {
+          "type" : "Composite",
+          "field" : "duration",
+          "required" : true,
+          "properties" : [ {
+            "type" : "DateTime",
+            "field" : "startDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de Início da Atividade",
+              "en-GB" : "Activity Atarting Date"
+            }
+          }, {
+            "type" : "DateTime",
+            "field" : "endDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de Fim da Atividade",
+              "en-GB" : "Activity Ending Date"
+            }
+          } ]
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Documentos",
+        "en-GB" : "Documents"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Documentos a anexar",
+          "en-GB" : "Attach documents"
+        },
+        "properties" : [ {
+          "field" : "departamentInformation",
+          "type" : "File",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Anexar a informação do departamento.",
+            "en-GB" : "Attach the departement information."
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "value" : {
+              "value" : "briefCourse",
+              "label" : {
+                "pt-PT" : "Lecionar curso breve",
+                "en-GB" : "Teach brief course"
+              }
+            },
+            "negation" : false
+          },
+          "label" : {
+            "pt-PT" : "Informação do Departamento",
+            "en-GB" : "Department Information"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        }, {
+          "field" : "proofOfCourse",
+          "type" : "File",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Anexar o comprovativo de curso.",
+            "en-GB" : "Attach the proof of course."
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "value" : {
+              "value" : "briefCourse",
+              "label" : {
+                "pt-PT" : "Lecionar curso breve",
+                "en-GB" : "Teach brief course"
+              }
+            },
+            "negation" : false
+          },
+          "label" : {
+            "pt-PT" : "Comprovativo do Curso",
+            "en-GB" : "Proof of Course"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        }, {
+          "field" : "workingHoursPracticed",
+          "type" : "File",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Parecer fundamentado do(a) Diretor(a) do Serviço ou Responsável do Departamento.",
+            "en-GB" : "Reasoned opinion from the Service Director or Department Manager."
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "value" : {
+              "label" : {
+                "pt-PT" : "Lecionar curso breve",
+                "en-GB" : "Teach brief course"
+              }
+            },
+            "negation" : false
+          },
+          "label" : {
+            "pt-PT" : "Parecer Fundamentado",
+            "en-GB" : "Reasoned Opinion"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Compromisso de Honra",
+        "en-GB" : "Commitment of Honor"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Declaração de Compromisso de Honra",
+          "en-GB" : "Honor Commitment Declaration"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "teachingServiceDeclaration",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Declaração de Compromisso",
+            "en-GB" : "Commitment Declaration"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingService",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente (sem protocolo)",
+                "en-GB" : "Provision of teaching services (without protocol)"
+              }
+            } ]
+          },
+          "options" : [ {
+            "value" : "yes",
+            "label" : {
+              "pt-PT" : "Declaro, sob compromisso de honra, não haver incompatibilidades com as alíneas do nº 2 do, art.º. 23º da LTFP.",
+              "en-GB" : "I declare, on honor, that there are no incompatibilities with the paragraphs of paragraph 2 of art. 23rd of the LTFP."
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "declarationUnderProtocol",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Declaração de Compromisso",
+            "en-GB" : "Commitment Declaration"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "teachingServiceUnderProtocol",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente ao abrigo de protocolo",
+                "en-GB" : "Provision of teaching services under protocol"
+              }
+            } ]
+          },
+          "options" : [ {
+            "value" : "yes",
+            "label" : {
+              "pt-PT" : "Declaro, sob compromisso de honra, que as funções acima referidas, não violam o princípio da exclusividade, nem colidem com o serviço que lhe está atribuído no IST.",
+              "en-GB" : "I declare, on my honour, that the aforementioned functions do not violate the principle of exclusivity, nor do they conflict with the service assigned to me at IST."
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "declarationAccumulationFunctions",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Declaração de Compromisso",
+            "en-GB" : "Commitment Declaration"
+          },
+          "onlyIf" : {
+            "field" : "accumulationType",
+            "negation" : false,
+            "value" : [ {
+              "value" : "accumulationFunctions",
+              "label" : {
+                "pt-PT" : "Acumulação com funções privadas/públicas",
+                "en-GB" : "Accumulation with private/public roles"
+              }
+            } ]
+          },
+          "options" : [ {
+            "value" : "yes",
+            "label" : {
+              "pt-PT" : "Declaro, sob compromisso de honra, que cessarei de imediato a atividade em acumulação no caso de ocorrência superveniente de conflito de interesses. Declaro, ainda, que a atividade a exercer não incluirá a prestação de serviços à ADIST ou à IST-ID.",
+              "en-GB" : "I declare, under a commitment of honor, that I will immediately cease the accumulated activity in the event of a subsequent conflict of interest. I further declare that the activity to be performed will not include the provision of services to ADIST or IST-ID."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ ]
+  },
+  "cost" : { }
+}

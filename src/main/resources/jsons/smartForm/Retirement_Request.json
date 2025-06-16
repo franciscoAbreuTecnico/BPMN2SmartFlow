@@ -1,0 +1,446 @@
+{
+  "name" : {
+    "pt-PT" : "Aposentação",
+    "en-GB" : "Retirement"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar a aposentação. Este pedido é exclusivo para Caixa Geral de Aposentações (CGA).",
+    "en-GB" : "This form allows you to apply for retirement. This request is exclusively for the Caixa Geral de Aposentações (CGA)."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "purpose" ],
+      "displayName" : true,
+      "username" : true
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : {
+        "Balcão Docentes" : "Núcleo de Docentes e Investigadores",
+        "Balcão Técnicos e Administrativos" : "Núcleo de Técnicos & Administrativos e Bolseiros"
+      }
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "retirement-flow",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "queuesToRemove" : [ "Gestão Administrativa", "Presidência do Instituto Superior Técnico" ],
+      "completeAuthorizationChain" : true,
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : [ ]
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Finalidade",
+        "en-GB" : "Purpose"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Finalidade",
+          "en-GB" : "Purpose"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "purpose",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Finalidade",
+            "en-GB" : "Purpose"
+          },
+          "options" : [ {
+            "value" : "earlyRetirement",
+            "label" : {
+              "pt-PT" : "Aposentação Antecipada",
+              "en-GB" : "Early Retirement"
+            }
+          }, {
+            "value" : "NonEarlyRetirement",
+            "label" : {
+              "pt-PT" : "Aposentação Não Antecipada",
+              "en-GB" : "Non-Early Retirement"
+            }
+          }, {
+            "value" : "ageLimitRetirement",
+            "label" : {
+              "pt-PT" : "Aposentação por Limite de Idade/Jubilação",
+              "en-GB" : "Retirement by Age Limit/Jubilation"
+            }
+          } ]
+        }, {
+          "type" : "File",
+          "field" : "iban",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "IBAN - Número Internacional de Conta Bancária",
+            "en-GB" : "IBAN - International Bank Account Number"
+          },
+          "description" : {
+            "pt-PT" : "Anexe o comprovativo do Número Internacional de Conta Bancária.",
+            "en-GB" : "Attach proof of International Bank Account Number."
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10,
+          "onlyIf" : {
+            "field" : "purpose",
+            "value" : {
+              "value" : "ageLimitRetirement",
+              "label" : {
+                "pt-PT" : "Aposentação por Limite de Idade/Jubilação",
+                "en-GB" : "Retirement by Age Limit/Jubilation"
+              }
+            }
+          }
+        }, {
+          "type" : "Text",
+          "field" : "coOwnershipName",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Nome do Cotitular",
+            "en-GB" : "Joint Account Holder Name"
+          },
+          "description" : {
+            "pt-PT" : "Indique o nome do cotitular, caso haja cotitularidade.",
+            "en-GB" : "Indicate the name of the joint account holder, if there is one."
+          },
+          "onlyIf" : {
+            "field" : "purpose",
+            "value" : {
+              "value" : "ageLimitRetirement",
+              "label" : {
+                "pt-PT" : "Aposentação por Limite de Idade/Jubilação",
+                "en-GB" : "Retirement by Age Limit/Jubilation"
+              }
+            }
+          }
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Para Efeitos de Aposentação",
+        "en-GB" : "For Retirement Purposes"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Informação Complementar",
+          "en-GB" : "Additional Information"
+        },
+        "properties" : [ {
+          "type" : "Boolean",
+          "field" : "socialSecurity",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Tem descontos para o regime geral da Segurança Social?",
+            "en-GB" : "Do you make contributions to the Social Security scheme?"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          }
+        }, {
+          "type" : "Numeric",
+          "field" : "beneficiaryNumber",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Número de Beneficiário",
+            "en-GB" : "Beneficiary Number"
+          },
+          "onlyIf" : [ {
+            "field" : "socialSecurity",
+            "value" : true,
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Boolean",
+          "field" : "hasSubmittedSocialSecurityProof",
+          "required" : true,
+          "onlyIf" : {
+            "field" : "socialSecurity",
+            "value" : true,
+            "negation" : false
+          },
+          "label" : {
+            "pt-PT" : "Entregou o comprovativo da carreira contributiva da Segurança Social?",
+            "en-GB" : "Have you submitted the proof of your Social Security contribution record?"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          }
+        }, {
+          "type" : "File",
+          "field" : "contributionRecordProof",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Comprovativo da Carreira Contributiva da Segurança Social",
+            "en-GB" : "Proof of Social Security Contribution Record"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10,
+          "onlyIf" : {
+            "field" : "hasSubmittedSocialSecurityProof",
+            "value" : false,
+            "negation" : false
+          }
+        }, {
+          "type" : "Boolean",
+          "field" : "pensioner",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "É pensionista ou já requereu pensão no regime de Segurança Social?",
+            "en-GB" : "Are you a pensioner, or have you already applied for a pension under the Social Security scheme?"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          },
+          "onlyIf" : [ {
+            "field" : "socialSecurity",
+            "value" : true,
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Boolean",
+          "field" : "unifiedPension",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Pretende beneficiar da pensão unificada?",
+            "en-GB" : "Would you like to benefit from the unified pension?"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          },
+          "onlyIf" : [ {
+            "field" : "socialSecurity",
+            "value" : true,
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Boolean",
+          "field" : "workedAbroad",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Já trabalhou no estrangeiro?",
+            "en-GB" : "Have you ever worked abroad?"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          }
+        }, {
+          "type" : "AsyncSelect",
+          "field" : "country",
+          "optionsProvider" : "/ist-admissions/supported-countries",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "País Estrangeiro em que Trabalhou",
+            "en-GB" : "Foreign Country Where You Worked"
+          },
+          "onlyIf" : [ {
+            "field" : "workedAbroad",
+            "value" : true,
+            "negation" : false
+          } ]
+        }, {
+          "type" : "Boolean",
+          "field" : "madeContributions",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Efetuou descontos nesse país?",
+            "en-GB" : "Did you make any social security contributions in that country?"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          },
+          "onlyIf" : [ {
+            "field" : "workedAbroad",
+            "value" : true,
+            "negation" : false
+          } ]
+        }, {
+          "type" : "File",
+          "field" : "workedAbroadContributionsDocument",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Comprovativo dos Descontos",
+            "en-GB" : "Proof of Contributions"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10,
+          "onlyIf" : [ {
+            "field" : "madeContributions",
+            "value" : true,
+            "negation" : false
+          } ]
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Outras Informações",
+        "en-GB" : "Other Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Serviço Militar",
+          "en-GB" : "Military Service"
+        },
+        "properties" : [ {
+          "type" : "Boolean",
+          "field" : "militaryService",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Prestou serviço militar obrigatório?",
+            "en-GB" : "Have you completed the compulsory military service?"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          }
+        }, {
+          "type" : "Boolean",
+          "field" : "linkPublicFunction",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Perdeu vínculo à Função Pública?",
+            "en-GB" : "Have you lost your status as a Public Servant?"
+          },
+          "onlyIf" : {
+            "field" : "militaryService",
+            "value" : true,
+            "negation" : false
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          }
+        }, {
+          "type" : "Boolean",
+          "field" : "hasSubmittedMilitaryServiceProof",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Entregou o documento comprovativo do serviço militar à CGA?",
+            "en-GB" : "Have you submitted the proof of military service to the CGA?"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não",
+            "en-GB" : "No"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim",
+            "en-GB" : "Yes"
+          },
+          "onlyIf" : {
+            "field" : "militaryService",
+            "negation" : false,
+            "value" : true
+          }
+        }, {
+          "type" : "File",
+          "field" : "militaryServiceProof",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Comprovativo do Serviço Militar",
+            "en-GB" : "Proof of Military Service"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10,
+          "onlyIf" : {
+            "field" : "hasSubmittedMilitaryServiceProof",
+            "negation" : true,
+            "value" : true
+          }
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Outros Documentos",
+        "en-GB" : "Other Documents"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Anexar Documentos",
+          "en-GB" : "Attach Documents"
+        },
+        "description" : {
+          "pt-PT" : "Anexar documentos se necessário.",
+          "en-GB" : "Attach documents if necessary."
+        },
+        "properties" : [ {
+          "field" : "docs",
+          "type" : "Array",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Documentos",
+            "en-GB" : "Documents"
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar documento",
+            "en-GB" : "Add document"
+          },
+          "properties" : [ {
+            "field" : "doc",
+            "type" : "File",
+            "required" : false,
+            "label" : {
+              "pt-PT" : "Documento",
+              "en-GB" : "Document"
+            },
+            "allowedFileTypes" : [ ".pdf" ],
+            "maxSizeMB" : 25
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false
+  },
+  "cost" : { }
+}

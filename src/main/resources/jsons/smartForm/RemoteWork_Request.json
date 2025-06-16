@@ -1,0 +1,389 @@
+{
+  "name" : {
+    "pt-PT" : "Teletrabalho",
+    "en-GB" : "Remote Work"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar o regime de teletrabalho.",
+    "en-GB" : "This form allows you to apply for remote work."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "totalMonths", "startDate", "arrangement" ]
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Técnicos & Administrativos e Bolseiros"
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "remote-work-flow",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "queuesToRemove" : [ "Gestão Administrativa", "Presidência do Instituto Superior Técnico" ],
+      "completeAuthorizationChain" : true,
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação sobre as Condições de Trabalho",
+        "en-GB" : "Information about the Working Conditions"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Condições de Trabalho",
+          "en-GB" : "Working Conditions"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "required" : true,
+          "field" : "workComputer",
+          "label" : {
+            "pt-PT" : "O computador que pretende utilizar em teletrabalho é",
+            "en-GB" : "The computer you intend to use for remote work belongs to"
+          },
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "options" : [ {
+            "value" : "own",
+            "label" : {
+              "pt-PT" : "Do próprio.",
+              "en-GB" : "Myself."
+            }
+          }, {
+            "value" : "tecnico",
+            "label" : {
+              "pt-PT" : "Do Técnico.",
+              "en-GB" : "Técnico."
+            }
+          } ]
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação do Requerimento",
+        "en-GB" : "Request Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Requerimento",
+          "en-GB" : "Request"
+        },
+        "description" : {
+          "pt-PT" : "Solicita a V. Exa. que, nos termos dos artigos 165.º e seguintes do Código do Trabalho (CT), aprovado pela Lei n.º 7/2009, de 12 de fevereiro, na sua redação atual, por força da remissão efetuada pelo n.º 1 do artigo 68.º da Lei Geral do Trabalho em Funções Públicas (LTFP), aprovada pela Lei n.º 35/2014, de 20 de junho, na sua redação atual, conceda autorização para exercer a sua atividade em regime de teletrabalho, com fundamento em:",
+          "en-GB" : "I hereby request, in accordance with Articles 165 et seq. of the Labour Code (CT), approved by Law No. 7/2009, of 12 February, in its current wording, and under the provisions of number 1 of Article 68 of the General Labour Law in Public Service (LTFP), approved by Law No. 35/2014, of 20 June, in its current wording, that you authorise the exercise of their duties under a remote work arrangement, based on:"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "requestType",
+          "label" : {
+            "pt-PT" : "Requerimento",
+            "en-GB" : "Request"
+          },
+          "required" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "options" : [ {
+            "value" : "3YearOld",
+            "label" : {
+              "pt-PT" : "Ter filho com idade até 3 anos, exclusive (Artigo 166.º-A, n.º 2, do CT) - no máximo até a criança completar 3 anos",
+              "en-GB" : "Having a child under the age of 3, exclusive (Article 166-A, no. 2 of the Labour Code) - until the child reaches 3 years of age"
+            }
+          }, {
+            "value" : "3To8YearsOld",
+            "label" : {
+              "pt-PT" : "Ter filho com idade entre os 3 e os 8 anos, exclusive (Artigo 166.º-A, n.º 3, do CT) - por períodos máximos de 6 meses, automaticamente renováveis na ausência de comunicação prévia em contrário por uma das partes, no máximo até a criança perfazer 8 anos e conforme declaração em anexo",
+              "en-GB" : "Having a child between the ages of 3 and 8, exclusive (Article 166-A, no. 3 of the Labour Code) - for periods of up to 6 months, automatically renewable unless otherwise communicated in advance by either party, until the child turns 8 years old and as per the attached declaration"
+            }
+          }, {
+            "value" : "informal",
+            "label" : {
+              "pt-PT" : "Ter o estatuto de cuidador informal não principal, comprovadamente reconhecido (Artigo 166.º-A, n.º 5, do CT) - por períodos máximos de 6 meses, automaticamente renováveis na ausência de comunicação prévia em contrário por uma das partes, até ao limite de 4 anos",
+              "en-GB" : "Having the status of a non-primary informal caregiver, duly recognised (Article 166-A, no. 5 of the Labour Code) - for periods of up to 6 months, automatically renewable unless otherwise communicated in advance by either party, up to a maximum of 4 years"
+            }
+          }, {
+            "value" : "domesticViolence",
+            "label" : {
+              "pt-PT" : "Ser vítima de violência doméstica (Artigo 166.º-A, n.º 1, do CT) - por períodos máximos de 6 meses, automaticamente renováveis na ausência de comunicação prévia em contrário por uma das partes",
+              "en-GB" : "Being a victim of domestic violence (Article 166-A, no. 1 of the Labour Code) - for periods of up to 6 months, automatically renewable unless otherwise communicated in advance by either party"
+            }
+          }, {
+            "value" : "none",
+            "label" : {
+              "pt-PT" : "Nenhum dos anteriores - por períodos máximos de 6 meses, automaticamente renováveis na ausência de comunicação prévia em contrário por uma das partes",
+              "en-GB" : "None of the above - for periods of up to 6 months, automatically renewable unless otherwise communicated in advance by either party"
+            }
+          } ]
+        }, {
+          "type" : "Quantity",
+          "field" : "totalMonths",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Número Total de Meses",
+            "en-GB" : "Total Number of Months"
+          },
+          "description" : {
+            "pt-PT" : "O período pode ter até 6 meses.",
+            "en-GB" : "Up to a maximum of 6 months."
+          },
+          "min" : 1,
+          "step" : 1
+        }, {
+          "type" : "DateTime",
+          "field" : "startDate",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Data de Início",
+            "en-GB" : "Start Date"
+          },
+          "date" : true,
+          "time" : false
+        }, {
+          "type" : "Select",
+          "field" : "arrangement",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Modalidade de Teletrabalho Pretendida",
+            "en-GB" : "Desired Remote Work Arrangement"
+          },
+          "options" : [ {
+            "value" : "fullTime",
+            "label" : {
+              "pt-PT" : "Tempo inteiro (100% do tempo de trabalho em teletrabalho)",
+              "en-GB" : "Full-time (100% of working hours)"
+            }
+          }, {
+            "value" : "hybrid",
+            "label" : {
+              "pt-PT" : "Híbrido",
+              "en-GB" : "Hybrid"
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "daysOfWeek",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : true,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Dias da Semana em Teletrabalho",
+            "en-GB" : "Days of the Week in Remote Work"
+          },
+          "onlyIf" : {
+            "field" : "arrangement",
+            "value" : {
+              "value" : "hybrid",
+              "label" : {
+                "pt-PT" : "Híbrido",
+                "en-GB" : "Hybrid"
+              }
+            },
+            "negation" : false
+          },
+          "options" : [ {
+            "value" : "monday",
+            "label" : {
+              "pt-PT" : "Segunda-feira",
+              "en-GB" : "Monday"
+            }
+          }, {
+            "value" : "tuesday",
+            "label" : {
+              "pt-PT" : "Terça-feira",
+              "en-GB" : "Tuesday"
+            }
+          }, {
+            "value" : "wednesday",
+            "label" : {
+              "pt-PT" : "Quarta-feira",
+              "en-GB" : "Wednesday"
+            }
+          }, {
+            "value" : "thursday",
+            "label" : {
+              "pt-PT" : "Quinta-feira",
+              "en-GB" : "Thursday"
+            }
+          }, {
+            "value" : "friday",
+            "label" : {
+              "pt-PT" : "Sexta-feira",
+              "en-GB" : "Friday"
+            }
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Fundamentação",
+          "en-GB" : "Justification"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "justification",
+          "required" : true,
+          "multiline" : true,
+          "InputType" : "plain",
+          "label" : {
+            "pt-PT" : "Motivo do Pedido",
+            "en-GB" : "Reason for the Request"
+          }
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Anexos",
+        "en-GB" : "Attachments"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Plano de Trabalhos",
+          "en-GB" : "Work Plan"
+        },
+        "properties" : [ {
+          "type" : "File",
+          "field" : "workPlan",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Plano de Trabalhos Negociado",
+            "en-GB" : "Negotiated Work Plan"
+          },
+          "description" : {
+            "pt-PT" : "Plano de trabalhos negociado, com a enumeração concreta e expressa das tarefas a executar, devidamente assinado pelos/as responsáveis hierárquicos/as.>",
+            "en-GB" : "A negotiated work plan, with a detailed and explicit listing of the tasks to be completed, duly signed by the hierarchical superiors."
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Comprovativo",
+          "en-GB" : "Proof"
+        },
+        "properties" : [ {
+          "type" : "File",
+          "field" : "proofDocument",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Documento Comprovativo",
+            "en-GB" : "Supporting Document"
+          },
+          "description" : {
+            "pt-PT" : "Documento comprovativo do(s) fundamento(s) indicado(s)",
+            "en-GB" : "Document supporting the provided justification(s)"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10
+        }, {
+          "type" : "File",
+          "field" : "childBetween3and8YearsOfAgeProof",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Documento Comprovativo (Progenitor / Família Monoparental)",
+            "en-GB" : "Proof Document (Parent / Single-Parent Family)"
+          },
+          "description" : {
+            "pt-PT" : "Comprovativo de que o outro progenitor reúne condições para o exercício da atividade em regime de teletrabalho, emitido pela respetiva entidade empregadora, e indicação dos períodos sucessivos de igual duração em que cada um dos progenitores pretende estar em teletrabalho, com a concordância prévia dos/as responsáveis hierárquicos/as do/a remetente OU Comprovativo de que se trata de família monoparental OU Comprovativo de que o/a outro/a progenitor/a não reúne condições para o exercício da atividade em regime de teletrabalho, emitido pela respetiva entidade empregadora.",
+            "en-GB" : "Proof that the other parent is able to work remotely, issued by their employer, and details of the consecutive periods of equal duration during which each parent intends to work remotely, with the prior consent of the sender's hierarchical superiors OR Proof that the sender is part of a single-parent family OR Proof that the other parent is not able to work remotely, issued by their employer."
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10,
+          "onlyIf" : {
+            "field" : "requestType",
+            "value" : {
+              "value" : "3To8YearsOld",
+              "label" : {
+                "pt-PT" : "Ter filho com idade entre os 3 e os 8 anos, exclusive (Artigo 166.º-A, n.º 3, do CT) - por períodos máximos de 6 meses, automaticamente renováveis na ausência de comunicação prévia em contrário por uma das partes, no máximo até a criança perfazer 8 anos e conforme declaração em anexo",
+                "en-GB" : "Having a child between the ages of 3 and 8, exclusive (Article 166-A, no. 3 of the Labour Code) - for periods of up to 6 months, automatically renewable unless otherwise communicated in advance by either party, until the child turns 8 years old and as per the attached declaration"
+              }
+            },
+            "negation" : false
+          }
+        }, {
+          "type" : "File",
+          "field" : "informalCaregiver",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Documento de Identificação do Cuidador Informal",
+            "en-GB" : "Informal Caregiver Identification Document"
+          },
+          "description" : {
+            "pt-PT" : "Cópia do Cartão de Identificação do Cuidador Informal (certificada pela DRH mediante apresentação do original).",
+            "en-GB" : "Copy of the Informal Caregiver Identification Card (certified by the HR Department upon presentation of the original)."
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 10,
+          "onlyIf" : {
+            "field" : "requestType",
+            "value" : {
+              "value" : "informal",
+              "label" : {
+                "pt-PT" : "Ter o estatuto de cuidador informal não principal, comprovadamente reconhecido (Artigo 166.º-A, n.º 5, do CT) - por períodos máximos de 6 meses, automaticamente renováveis na ausência de comunicação prévia em contrário por uma das partes, até ao limite de 4 anos",
+                "en-GB" : "Having the status of a non-primary informal caregiver, duly recognised (Article 166-A, no. 5 of the Labour Code) - for periods of up to 6 months, automatically renewable unless otherwise communicated in advance by either party, up to a maximum of 4 years"
+              }
+            },
+            "negation" : false
+          }
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta",
+        "en-GB" : "Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Resposta",
+          "en-GB" : "Response"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "response",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "label" : {
+            "pt-PT" : "Resposta",
+            "en-GB" : "Response"
+          },
+          "options" : [ {
+            "value" : "granted",
+            "label" : {
+              "pt-PT" : "O pedido foi deferido.",
+              "en-GB" : "The request was granted."
+            }
+          }, {
+            "value" : "denied",
+            "label" : {
+              "pt-PT" : "O pedido foi indeferido.",
+              "en-GB" : "The request was denied."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

@@ -1,0 +1,228 @@
+{
+  "name": {
+    "pt-PT": "Rescisão de Contrato de Bolsa",
+    "en-GB": "Scholarship Contract Termination"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe iniciar o processo de rescisão de contrato de bolsa.",
+    "en-GB": "This form allows you to start the process of scholarship contract termination."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "terminationDate",
+        "workPlace"
+      ]
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Move Queue",
+        "queue": "Núcleo de Técnicos & Administrativos e Bolseiros"
+      }
+    ],
+    "onValidate": {
+      "requestProcessor": "Create Flow From Request",
+      "template": "scholarship-contract-termination-flow",
+      "actionNodesProvider": "Collaborator Authorization Flow",
+      "queuesToRemove": [
+        "Presidência do Instituto Superior Técnico"
+      ],
+      "completeAuthorizationChain": false,
+      "setSectionWithRequesterInfo": true,
+      "setSupervisorFromRequester": true
+    },
+    "onResetValidate": {
+      "requestProcessor": "Cancel Flow"
+    },
+    "onConclude": {
+      "requestProcessor": "Check Has Connected Successful Flow"
+    },
+    "queuesAllowedToChangeTo": [
+      "Núcleo de Técnicos & Administrativos e Bolseiros",
+      "Núcleo de Docentes e Investigadores"
+    ]
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informação do Local de Trabalho",
+          "en-GB": "Workplace Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Local de Trabalho",
+              "en-GB": "Workplace"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "field": "workPlace",
+                "optionsProvider": "/paper-pusher-ist/workingUnits?forAuthenticatedUser=true",
+                "required": true,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Local de Trabalho",
+                  "en-GB": "Workplace"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Informação de Rescisão de Contrato de Bolsa",
+          "en-GB": "Scholarship Contract Termination Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Rescisão de Bolsa",
+              "en-GB": "Scholarship Termination"
+            },
+            "description": {
+              "pt-PT": "Caso tenha aderido ao Seguro Social Voluntário e passe a estar abrangido por um regime de proteção social obrigatório, ou seja, se começar a trabalhar por conta de outrem, tem de comunicar, de preferência nos serviços de Segurança Social da sua área de residência, a fim de terminar o seu enquadramento no Seguro Social Voluntário.",
+              "en-GB": "If you have joined the Voluntary Social Insurance regime and become covered by a mandatory social protection regime, that is, if you start working as an employee, it is mandatory to communicate it, preferably to the Social Security services of your residence area, in order to leave the Voluntary Social Insurance regime."
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "field": "scholarshipContract",
+                "label": {
+                  "pt-PT": "Contrato de Bolsa",
+                  "en-GB": "Scholarship Contract"
+                },
+                "optionsProvider": "/paper-pusher-ist/scholarShipContract",
+                "allowOther": false,
+                "required": true,
+                "collapse": true
+              },
+              {
+                "type": "DateTime",
+                "field": "terminationDate",
+                "required": true,
+                "label": {
+                  "pt-PT": "Data de Rescisão do Contrato de Bolsa",
+                  "en-GB": "Termination Date of the Scholarship Contract"
+                },
+                "description": {
+                  "pt-PT": "Data a partir da qual pretende cessar o contrato de bolsa (último dia de trabalho).",
+                  "en-GB": "Date from which you want to terminate the scholarship contract (last day of work)."
+                },
+                "date": true,
+                "time": false
+              },
+              {
+                "type": "Text",
+                "field": "terminationReason",
+                "required": true,
+                "inputType": "plain",
+                "multiline": true,
+                "label": {
+                  "pt-PT": "Motivo da Rescisão do Contrato de Bolsa",
+                  "en-GB": "Reason for Termination of the Scholarship Contract"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false
+  },
+  "cost": {
+  },
+  "flowTemplate": {
+    "name": "scholarship-contract-termination-flow",
+    "title": {
+      "pt-PT": "Processo de Pedido de Rescisão de Contrato de Bolsa",
+      "en-GB": "Scholarship Contract Termination Request Process"
+    },
+    "description": {
+      "pt-PT": "Processo de Pedido de Rescisão de Contrato de Bolsa",
+      "en-GB": "Scholarship Contract Termination Request Process"
+    },
+    "config": {
+      "authorizationChainNodes": {
+        "description": {
+          "pt-PT": "Tomada de conhecimento",
+          "en-GB": "Acknowledgment"
+        },
+        "commentLabel": {
+          "pt-PT": "Tomada de conhecimento",
+          "en-GB": "Acknowledgment"
+        },
+        "actions": {
+          "ACKNOWLEDGE": {
+            "primary": true,
+            "to": "SUCCESS",
+            "label": {
+              "pt-PT": "Tomei conhecimento do processo",
+              "en-GB": "I confirm that I am aware of this process"
+            }
+          }
+        }
+      },
+      "actionProcessor": {
+        "onSuccess": [
+          {
+            "flowProcessor": "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure": [
+          {
+            "flowProcessor": "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition": [
+        ],
+        "onCancel": [
+          {
+            "flowProcessor": "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors": [
+      ],
+      "actionNodes": [
+        {
+          "id": "step-hr-processing",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "A Direção de Recursos Humanos",
+            "en-GB": "The Human Resources Department"
+          },
+          "description": {
+            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+            "en-GB": "Processing by the Human Resources Department"
+          },
+          "commentLabel": {
+            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+            "en-GB": "Processing by the Human Resources Department"
+          },
+          "actions": {
+            "PROCESS": {
+              "primary": true,
+              "to": "SUCCESS",
+              "label": {
+                "pt-PT": "Marcar como Processado",
+                "en-GB": "Mark as Processed"
+              }
+            }
+          },
+          "queue": "Núcleo de Técnicos & Administrativos e Bolseiros"
+        }
+      ]
+    }
+  }
+}

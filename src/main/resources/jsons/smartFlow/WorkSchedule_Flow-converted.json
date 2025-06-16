@@ -1,0 +1,257 @@
+{
+  "flowTemplate" : {
+    "name" : "work-schedule-flow",
+    "title" : {
+      "pt-PT" : "Processo de Horário de Trabalho",
+      "en-GB" : "Work Schedule Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Horário de Trabalho",
+      "en-GB" : "Work Schedule Process"
+    },
+    "config" : {
+      "authorizationChainNodes" : {
+        "actionProcessor" : {
+          "onActionTransition" : [
+            {
+              "applyOn" : "SIGN",
+              "flowProcessor" : "Skip Next Nodes",
+              "node-field-key" : "hr-authorization-step"
+            }
+          ]
+        }
+      },
+      "actionProcessor" : {
+        "onSuccess" : [
+          {
+            "flowProcessor" : "Copy Flow Form To Outcome",
+            "formId" : "response-information",
+            "mapper" : {
+              "effectiveDate" : "effectiveDate"
+            }
+          },
+          {
+            "flowProcessor" : "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure" : [
+          {
+            "flowProcessor" : "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition" : [ ],
+        "onCancel" : [
+          {
+            "flowProcessor" : "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors" : [
+        {
+          "handle" : "copy-date-from-input-form",
+          "flowProcessor" : "Copy View Data to Form",
+          "formId" : "response-information",
+          "mapper" : {
+            "startDate" : "startDate"
+          }
+        }
+      ],
+      "forms" : [
+        {
+          "id" : "response-information",
+          "title" : {
+            "pt-PT" : "Informação da Resposta",
+            "en-GB" : "Response Information"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Informação da Resposta",
+                  "en-GB" : "Response Information"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Informação da Resposta",
+                      "en-GB" : "Response Information"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "DateTime",
+                        "field" : "startDate",
+                        "required" : true,
+                        "readonly" : true,
+                        "date" : true,
+                        "time" : false,
+                        "label" : {
+                          "pt-PT" : "Data de Início Proposta pelo Remetente",
+                          "en-GB" : "Start Date Requested by the Sender"
+                        }
+                      },
+                      {
+                        "type" : "DateTime",
+                        "field" : "effectiveDate",
+                        "required" : true,
+                        "date" : true,
+                        "time" : false,
+                        "label" : {
+                          "pt-PT" : "Data de Produção de Efeitos",
+                          "en-GB" : "Effective Date"
+                        },
+                        "description" : {
+                          "pt-PT" : "O horário de trabalho tem efeitos a partir de:",
+                          "en-GB" : "The work schedule is effective starting on:"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "actionNodes" : [
+        {
+          "id" : "step-administrator",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "O/A Administrador(a)",
+            "en-GB" : "The Administrator"
+          },
+          "description" : {
+            "pt-PT" : "Parecer do/a Administrador(a)",
+            "en-GB" : "Opinion of the Administrator"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Parecer do/a Administrador(a)",
+            "en-GB" : "Opinion of the Administrator"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-president",
+              "label" : {
+                "pt-PT" : "Concordar",
+                "en-GB" : "Agree"
+              },
+              "id" : "SIGN-step-administrator",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-administrator",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Gestao-Administrativa",
+          "replaceTitleWithRole" : true,
+          "hr-final-authorization-step" : "true",
+          "actionProcessor" : [
+            {
+              "applyOn" : "SIGN-step-administrator",
+              "flowProcessor" : "Skip Next Nodes",
+              "node-field-key" : "hr-final-authorization-step",
+              "id" : "onActionTransition-step-administrator-Skip_Next_Nodes",
+              "name" : "onActionTransition"
+            }
+          ]
+        },
+        {
+          "id" : "step-president",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "O/A Presidente",
+            "en-GB" : "The President"
+          },
+          "description" : {
+            "pt-PT" : "Parecer do/a Presidente",
+            "en-GB" : "Opinion of the President"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Parecer do/a Presidente",
+            "en-GB" : "Opinion of the President"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-hr-processing",
+              "label" : {
+                "pt-PT" : "Concordar",
+                "en-GB" : "Agree"
+              },
+              "id" : "SIGN-step-president",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-president",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Presidencia-do-Instituto-Superior-Tecnico",
+          "replaceTitleWithRole" : true,
+          "hr-final-authorization-step" : "true"
+        },
+        {
+          "id" : "step-hr-processing",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "A Direção de Recursos Humanos",
+            "en-GB" : "The Human Resources Department"
+          },
+          "description" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "buttons" : [
+            {
+              "id" : "mark-as-processed",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Marcar como Processado",
+                "en-GB" : "Mark as Processed"
+              },
+              "handlers" : {
+                "beforeForm" : "copy-date-from-input-form",
+                "form" : "response-information",
+                "action" : "SIGN-step-hr-processing"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Marcar como Processado",
+                "en-GB" : "Mark as Processed"
+              },
+              "id" : "SIGN-step-hr-processing",
+              "name" : "SIGN"
+            }
+          ],
+          "queue" : "Nucleo-de-Prestacao-de-Trabalho-Geral"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,648 @@
+{
+  "name" : {
+    "pt-PT" : "Acumulação de Funções (investigador)",
+    "en-GB" : "Accumulation of Functions"
+  },
+  "description" : {
+    "pt-PT" : "Formulário de Acumulação de Funções",
+    "en-GB" : "Accumulation Functions Form"
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "workPlace" ]
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Docentes e Investigadores"
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "accumulation-of-investigator-functions",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informação do Remetente",
+        "en-GB" : "Sender Information"
+      },
+      "sections" : [ ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação do Local de Trabalho",
+        "en-GB" : "Working Place Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Local de Trabalho",
+          "en-GB" : "Working Place"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "field" : "workPlace",
+          "optionsProvider" : "paper-pusher-ist/workingUnits?forAuthenticatedUser=true",
+          "required" : true,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Local de Trabalho",
+            "en-GB" : "Working Place"
+          }
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação da Acumulação de Funções",
+        "en-GB" : "Accumulation of Functions Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Natureza de Acumulação",
+          "en-GB" : "Nature of Accumulation"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "natureOfAccumulation",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Natureza da Acumulação",
+            "en-GB" : "Nature of Accumulation"
+          },
+          "options" : [ {
+            "value" : "public",
+            "label" : {
+              "pt-PT" : "Funções Públicas (art. 21º da LTFP)",
+              "en-GB" : "Public Functions (art. 21st of LTFP)"
+            }
+          }, {
+            "value" : "private",
+            "label" : {
+              "pt-PT" : "Funções Privadas (art. 22º da LTFP)",
+              "en-GB" : "Private Functions (art. 22nd of LTFP)"
+            }
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Natureza do Trabalho",
+          "en-GB" : "Nature of Work"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "natureOfWork",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Natureza do Trabalho",
+            "en-GB" : "Nature of Work"
+          },
+          "options" : [ {
+            "value" : "autonomous",
+            "label" : {
+              "pt-PT" : "Autónoma",
+              "en-GB" : "Autonomous"
+            }
+          }, {
+            "value" : "subordinate",
+            "label" : {
+              "pt-PT" : "Subordinada",
+              "en-GB" : "Subordinate"
+            }
+          } ]
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação da atividade em regime de exclusividade",
+        "en-GB" : "Exclusive activity information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Natureza do Regime",
+          "en-GB" : "Nature of Regime"
+        },
+        "description" : {
+          "pt-PT" : "Regime de exclusividade depende da natureza da acumulação de funções em funções publicas ou privadas.",
+          "en-GB" : "Exclusivity regime depends on the nature of the accumulation of functions in public or private functions."
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "regime",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "optionsLimitedBy" : {
+            "field" : "natureOfAccumulation"
+          },
+          "label" : {
+            "pt-PT" : "Regime",
+            "en-GB" : "Regime"
+          },
+          "options" : [ {
+            "value" : "exclusive",
+            "label" : {
+              "pt-PT" : "Em Regime de dedicação exclusiva. (Até ao limite máximo de 4 horas em instituições públicas).",
+              "en-GB" : "Under exclusive dedication regime. (Up to a maximum limit of 4 hours in public institutions)."
+            },
+            "optionFor" : "public"
+          }, {
+            "value" : "nonExclusive",
+            "label" : {
+              "pt-PT" : "Em Regime de tempo integral. sem dedicação exclusiva. (Até ao limite máximo de 6 horas por semanais).",
+              "en-GB" : "Full-time, without exclusive dedication. (Up to a maximum limit of 6 hours per week)"
+            },
+            "optionFor" : "public"
+          }, {
+            "value" : "nonExclusive",
+            "label" : {
+              "pt-PT" : "Em Regime de tempo integral. sem dedicação exclusiva. (Até ao limite máximo de 6 horas por semanais).",
+              "en-GB" : "Full-time, without exclusive dedication. (Up to a maximum limit of 6 hours per week)"
+            },
+            "optionFor" : "private"
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Alíneas",
+          "en-GB" : "Paragraphs"
+        },
+        "description" : {
+          "pt-PT" : "A escolha da alínea só se aplica para um regime com dedicação exclusivo.",
+          "en-GB" : "The choice of paragraph only applies to a regime with exclusive dedication."
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "paragraph",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "description" : {
+            "pt-PT" : "A função a acumular não prejudica o exercício de funções em regime de dedicação exclusiva uma vez que se enquadra numa das exceções previstas no n.º 2 do artigo 52.º do ECIC.",
+            "en-GB" : "The role to be accumulated does not affect the exercise of duties on an exclusive dedication basis as it falls within one of the exceptions provided for in paragraph 2 of article 52 of the ECIC."
+          },
+          "label" : {
+            "pt-PT" : "Indique a alínea correspondente à atividade",
+            "en-GB" : "Indicate the paragraph corresponding to the activity"
+          },
+          "onlyIf" : {
+            "field" : "regime",
+            "value" : {
+              "value" : "exclusive",
+              "label" : {
+                "pt-PT" : "Em Regime de dedicação exclusiva. (Até ao limite máximo de 4 horas em instituições públicas).",
+                "en-GB" : "Under exclusive dedication regime. (Up to a maximum limit of 4 hours in public institutions)."
+              },
+              "optionFor" : "public"
+            }
+          },
+          "options" : [ {
+            "value" : "a",
+            "label" : {
+              "pt-PT" : "Direitos de autor",
+              "en-GB" : "Copyright"
+            }
+          }, {
+            "value" : "b",
+            "label" : {
+              "pt-PT" : "Direitos de propriedade industrial",
+              "en-GB" : "Industrial property rights"
+            }
+          }, {
+            "value" : "c",
+            "label" : {
+              "pt-PT" : "Realização de conferências e palestras, cursos de formação profissional de curta duração e outras actividades análogas",
+              "en-GB" : "Holding conferences and lectures, short-term professional training courses and other similar activities"
+            }
+          }, {
+            "value" : "d",
+            "label" : {
+              "pt-PT" : "Ajudas de custo",
+              "en-GB" : "Cost allowances"
+            }
+          }, {
+            "value" : "e",
+            "label" : {
+              "pt-PT" : "Despesas de deslocação",
+              "en-GB" : "Travel expenses"
+            }
+          }, {
+            "value" : "f",
+            "label" : {
+              "pt-PT" : "Elaboração de estudos ou pareceres mandados executar por despacho do membro do Governo responsável pela coordenação da política científica e tecnológica, do membro do Governo com tutela sobre o sector da educação ou do membro do Governo da tutela ou, ainda, no âmbito de comissões constituídas por nomeação daqueles",
+              "en-GB" : "Preparation of studies or opinions ordered to be carried out by order of the member of the Government responsible for coordinating scientific and technological policy, the member of the Government with responsibility for the education sector or the member of the Government responsible for the supervision or, even, within the scope of commissions constituted by appointment of those"
+            }
+          }, {
+            "value" : "g",
+            "label" : {
+              "pt-PT" : "Desempenho de funções em órgãos da instituição a que esteja vinculado",
+              "en-GB" : "Performance of functions in bodies of the institution to which he/she is linked"
+            }
+          }, {
+            "value" : "h",
+            "label" : {
+              "pt-PT" : "Participação em órgãos consultivos de instituição estranha àquela a que pertença, desde que com a anuência prévia desta última",
+              "en-GB" : "Participation in consultative bodies of an institution other than the one to which he/she belongs, as long as with the prior consent of the latter"
+            }
+          }, {
+            "value" : "i",
+            "label" : {
+              "pt-PT" : "Participação em júris de concurso, exames ou avaliações estranhos à instituição a que esteja vinculado",
+              "en-GB" : "Participation in competition juries, exams or assessments outside the institution to which you are linked"
+            }
+          }, {
+            "value" : "j",
+            "label" : {
+              "pt-PT" : "Participação em júris e comissões de avaliação e emissão de pareceres solicitados por organismos nacionais ou estrangeiros",
+              "en-GB" : "Participation in juries and evaluation committees and issuing opinions requested by national or foreign bodies"
+            }
+          }, {
+            "value" : "k",
+            "label" : {
+              "pt-PT" : "Prestação de serviço docente em estabelecimento de ensino superior quando, com autorização prévia da instituição a que esteja vinculado, se realize sem prejuízo do exercício de funções durante o período normal de serviço e não exceda, em média anual, um total de quatro horas semanais de actividade lectiva",
+              "en-GB" : "Provision of teaching service in a higher education establishment when, with prior authorization from the institution to which he/she is linked, it is carried out without prejudice to the exercise of duties during the normal period of service and does not exceed, on an annual average, a total of four hours per week of teaching academic activity"
+            }
+          }, {
+            "value" : "l",
+            "label" : {
+              "pt-PT" : "Actividades exercidas, quer no âmbito de contratos entre a instituição a que pertence e outras entidades públicas ou privadas, nacionais, estrangeiras ou internacionais, quer no âmbito de projectos subsidiados por quaisquer dessas entidades, desde que se trate de actividades da responsabilidade da instituição e que os encargos com as correspondentes remunerações sejam satisfeitos através de receitas provenientes dos referidos contratos ou subsídios, nos termos de regulamento aprovado pela própria instituição de ensino superior",
+              "en-GB" : "Activities carried out, either within the scope of contracts between the institution to which it belongs and other public or private, national, foreign or international entities, or within the scope of projects subsidized by any of these entities, as long as they are activities under the responsibility of the institution and that the corresponding remuneration costs are met through revenues arising from the aforementioned contracts or subsidies, in accordance with regulations approved by the higher education institution itself"
+            }
+          } ]
+        }, {
+          "type" : "AsyncSelect",
+          "field" : "executionYears",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Ano letivo",
+            "en-GB" : "School year"
+          },
+          "optionsProvider" : "/ist-admissions/executionYears",
+          "allowOther" : false,
+          "negation" : false,
+          "onlyIf" : {
+            "field" : "paragraph",
+            "value" : {
+              "value" : "k",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente em estabelecimento de ensino superior quando, com autorização prévia da instituição a que esteja vinculado, se realize sem prejuízo do exercício de funções durante o período normal de serviço e não exceda, em média anual, um total de quatro horas semanais de actividade lectiva",
+                "en-GB" : "Provision of teaching service in a higher education establishment when, with prior authorization from the institution to which he/she is linked, it is carried out without prejudice to the exercise of duties during the normal period of service and does not exceed, on an annual average, a total of four hours per week of teaching academic activity"
+              }
+            }
+          }
+        }, {
+          "type" : "Select",
+          "field" : "semester",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : true,
+          "label" : {
+            "pt-PT" : "Semestre",
+            "en-GB" : "Semester"
+          },
+          "onlyIf" : {
+            "field" : "paragraph",
+            "negation" : false,
+            "value" : {
+              "value" : "k",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente em estabelecimento de ensino superior quando, com autorização prévia da instituição a que esteja vinculado, se realize sem prejuízo do exercício de funções durante o período normal de serviço e não exceda, em média anual, um total de quatro horas semanais de actividade lectiva",
+                "en-GB" : "Provision of teaching service in a higher education establishment when, with prior authorization from the institution to which he/she is linked, it is carried out without prejudice to the exercise of duties during the normal period of service and does not exceed, on an annual average, a total of four hours per week of teaching academic activity"
+              }
+            }
+          },
+          "options" : [ {
+            "value" : "firstSemester",
+            "label" : {
+              "pt-PT" : "1 Semestre",
+              "en-GB" : "1 Semester"
+            }
+          }, {
+            "value" : "SecondSemester",
+            "label" : {
+              "pt-PT" : "2 Semestre",
+              "en-GB" : "2 Semester"
+            }
+          } ]
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Informação do trabalho a realizar",
+        "en-GB" : "Information about the work to be carried out"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Local e atividade da acumulação de funções",
+          "en-GB" : "Place e activity of the accumulation of functions"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "company",
+          "description" : {
+            "pt-PT" : "Indique o nome do estabelecimento,instituição ou a empresa onde irá desempenhar as funções.",
+            "en-GB" : "Indicate the name of the establishment, institution or company where you will perform the functions."
+          },
+          "required" : true,
+          "multiline" : false,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Nome do local da acumulação de funções",
+            "en-GB" : "Name of the location of the accumulation of functions"
+          }
+        }, {
+          "type" : "Select",
+          "field" : "instituituionType",
+          "required" : true,
+          "allowOther" : false,
+          "multiple" : false,
+          "collapsed" : false,
+          "label" : {
+            "pt-PT" : "Tipo de Estabelecimento",
+            "en-GB" : "Company Type"
+          },
+          "onlyIf" : {
+            "field" : "paragraph",
+            "negation" : false,
+            "value" : {
+              "value" : "k",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente em estabelecimento de ensino superior quando, com autorização prévia da instituição a que esteja vinculado, se realize sem prejuízo do exercício de funções durante o período normal de serviço e não exceda, em média anual, um total de quatro horas semanais de actividade lectiva",
+                "en-GB" : "Provision of teaching service in a higher education establishment when, with prior authorization from the institution to which he/she is linked, it is carried out without prejudice to the exercise of duties during the normal period of service and does not exceed, on an annual average, a total of four hours per week of teaching academic activity"
+              }
+            }
+          },
+          "options" : [ {
+            "value" : "publicHigherEducation",
+            "label" : {
+              "pt-PT" : "Ensino Superior Público",
+              "en-GB" : "Public higher education"
+            }
+          }, {
+            "value" : "privateHigherEducation",
+            "label" : {
+              "pt-PT" : "Ensino Superior Privado",
+              "en-GB" : "Private higher education"
+            }
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "description",
+          "description" : {
+            "pt-PT" : "Descrição da atividade/função a desempenhar, com indicação do seu objeto, destinatários e natureza permanente/habitual ou temporária",
+            "en-GB" : "Description of the activity/function to be performed, indicating its purpose, recipients and permanent/usual or temporary nature"
+          },
+          "required" : true,
+          "multiline" : true,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Descrição da atividade/função a acumular",
+            "en-GB" : "Description of the activity/function to be accumulated"
+          },
+          "onlyIf" : {
+            "field" : "paragraph",
+            "value" : [ {
+              "negation" : true,
+              "value" : "k",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente em estabelecimento de ensino superior quando, com autorização prévia da instituição a que esteja vinculado, se realize sem prejuízo do exercício de funções durante o período normal de serviço e não exceda, em média anual, um total de quatro horas semanais de actividade lectiva",
+                "en-GB" : "Provision of teaching service in a higher education establishment when, with prior authorization from the institution to which he/she is linked, it is carried out without prejudice to the exercise of duties during the normal period of service and does not exceed, on an annual average, a total of four hours per week of teaching academic activity"
+              }
+            }, {
+              "negation" : true,
+              "value" : "c",
+              "label" : {
+                "pt-PT" : "Realização de conferências e palestras, cursos de formação profissional de curta duração e outras actividades análogas",
+                "en-GB" : "Holding conferences and lectures, short-term professional training courses and other similar activities"
+              }
+            } ]
+          }
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Duração",
+          "en-GB" : "Duration"
+        },
+        "properties" : [ {
+          "type" : "Quantity",
+          "field" : "timetable",
+          "description" : {
+            "pt-PT" : "Para a acumulação de funções docentes o um limite máximo de horas é de 4h em instituições públicas  e de 6h semanais em instituições privadas. A acumulações de funções para lecionar curso breve, o número máximo de horas permitido é de 20 horas.",
+            "en-GB" : "For the accumulation of teaching duties, the maximum number of hours is 4 hours in public institutions and 6 hours per week in private institutions. For accumulation of functions to teach a short course, the maximum number of hours allowed is 20 hours."
+          },
+          "required" : false,
+          "step" : 0.01,
+          "label" : {
+            "pt-PT" : "Horário de trabalho a praticar",
+            "en-GB" : "Timetable to be practiced"
+          }
+        }, {
+          "type" : "Composite",
+          "field" : "duration",
+          "required" : true,
+          "properties" : [ {
+            "type" : "DateTime",
+            "field" : "startDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de início da atividade",
+              "en-GB" : "Activity starting date"
+            }
+          }, {
+            "type" : "DateTime",
+            "field" : "endDate",
+            "required" : true,
+            "date" : true,
+            "time" : false,
+            "label" : {
+              "pt-PT" : "Data de fim da atividade",
+              "en-GB" : "Activity ending date"
+            }
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Remuneração",
+          "en-GB" : "Remuneration"
+        },
+        "description" : {
+          "pt-PT" : "Informação não aplicável para pedidos de acumulações de funções Docentes e lecionar curso breve",
+          "en-GB" : "Information not applicable for requests for accumulation of teaching functions and teaching a short course"
+        },
+        "properties" : [ {
+          "type" : "Boolean",
+          "field" : "appliableRemuneration",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "A acumulação de funções é remunerada?",
+            "en-GB" : "Accumulation of functions is paid?"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim, a acumulação de funções é remunerada",
+            "en-GB" : "Yes, the accumulation of functions is paid"
+          },
+          "labelNo" : {
+            "pt-PT" : "Não a acumulação de funções não é remunerada",
+            "en-GB" : "No, the accumulation of functions is not paid"
+          }
+        }, {
+          "type" : "Text",
+          "field" : "monthlyIncome",
+          "description" : {
+            "pt-PT" : "Nos termos da al. c) do n.º 2 do art. 23.º da LTFP, o requerimento de acumulação de funções deve conter indicação da remuneração a auferir, quando aplicável.",
+            "en-GB" : "Pursuant to art. c) paragraph 2 of art. 23 of the LTFP, the application for accumulation of functions must contain an indication of the remuneration to be received, when applicable."
+          },
+          "required" : true,
+          "multiline" : true,
+          "inputType" : "plain",
+          "label" : {
+            "pt-PT" : "Remuneração mensal",
+            "en-GB" : "Monthly income"
+          },
+          "onlyIf" : [ {
+            "field" : "appliableRemuneration",
+            "value" : true,
+            "negation" : false
+          } ]
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Documentos",
+        "en-GB" : "Documents"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Documentos a anexar",
+          "en-GB" : "Attach documents"
+        },
+        "description" : {
+          "pt-PT" : "Só aplicável para a acumulação de funções para lecionar curso breve",
+          "en-GB" : "Only applicable for the accumulation of functions to teach a short course"
+        },
+        "properties" : [ {
+          "field" : "departamentInformation",
+          "type" : "File",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Anexar a informação do departamento.",
+            "en-GB" : "Attach the Curriculum Vitae."
+          },
+          "onlyIf" : {
+            "field" : "paragraph",
+            "value" : {
+              "value" : "c",
+              "label" : {
+                "pt-PT" : "Realização de conferências e palestras, cursos de formação profissional de curta duração e outras actividades análogas",
+                "en-GB" : "Holding conferences and lectures, short-term professional training courses and other similar activities"
+              }
+            },
+            "negation" : false
+          },
+          "label" : {
+            "pt-PT" : "Informação do Departamento",
+            "en-GB" : "Curriculum Vitae"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        }, {
+          "field" : "proofOfCourse",
+          "type" : "File",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Anexar o comprovativo de curso.",
+            "en-GB" : "Attach the Curriculum Vitae."
+          },
+          "onlyIf" : {
+            "field" : "paragraph",
+            "value" : {
+              "value" : "c",
+              "label" : {
+                "pt-PT" : "Realização de conferências e palestras, cursos de formação profissional de curta duração e outras actividades análogas",
+                "en-GB" : "Holding conferences and lectures, short-term professional training courses and other similar activities"
+              }
+            },
+            "negation" : false
+          },
+          "label" : {
+            "pt-PT" : "Comprovativo do Curso",
+            "en-GB" : "Curriculum Vitae"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Compromisso de Honra",
+        "en-GB" : "Applicant's Certification"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Declaração de Compromisso de Honra",
+          "en-GB" : "Honor Commitment Declaration"
+        },
+        "description" : {
+          "pt-PT" : "Só é aplicável para a acumulação de funções de docências",
+          "en-GB" : "It is only applicable for the accumulation of teaching functions"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "declaration",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Declaração",
+            "en-GB" : "Declaration"
+          },
+          "onlyIf" : {
+            "field" : "paragraph",
+            "negation" : false,
+            "value" : {
+              "value" : "k",
+              "label" : {
+                "pt-PT" : "Prestação de serviço docente em estabelecimento de ensino superior quando, com autorização prévia da instituição a que esteja vinculado, se realize sem prejuízo do exercício de funções durante o período normal de serviço e não exceda, em média anual, um total de quatro horas semanais de actividade lectiva",
+                "en-GB" : "Provision of teaching service in a higher education establishment when, with prior authorization from the institution to which he/she is linked, it is carried out without prejudice to the exercise of duties during the normal period of service and does not exceed, on an annual average, a total of four hours per week of teaching academic activity"
+              }
+            }
+          },
+          "options" : [ {
+            "value" : "yes",
+            "label" : {
+              "pt-PT" : "Declaro, sob compromisso de honra, não haver incompatibilidades com as alíneas do nº 2 do, art.º. 23º da LTFP.",
+              "en-GB" : "I declare, on honor, that there are no incompatibilities with the paragraphs of paragraph 2 of art. 23rd of the LTFP."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false
+  },
+  "cost" : { }
+}

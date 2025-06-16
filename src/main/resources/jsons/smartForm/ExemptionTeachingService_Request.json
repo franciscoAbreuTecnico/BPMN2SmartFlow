@@ -1,0 +1,148 @@
+{
+  "name" : {
+    "pt-PT" : "Dispensa de Prestação de Serviço na Instituição de Origem",
+    "en-GB" : "Exemption from Service provision at the Institution of Origin"
+  },
+  "description" : {
+    "pt-PT" : "Pedido de dispensa prestação de serviço na instituição de origem",
+    "en-GB" : "Request for exemption from service provision at the instituition of origin."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "period", "startDate", "instituition" ]
+    },
+    "onLock" : {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Docentes e Investigadores"
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "exemption-service-position-flow",
+      "actionNodesProvider" : "Collaborator Authorization Flow",
+      "completeAuthorizationChain" : true,
+      "setSectionWithRequesterInfo" : true,
+      "setSupervisorFromRequester" : true
+    },
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "queuesAllowedToChangeTo" : [ "Núcleo de Prestação de Trabalho", "Núcleo de Docentes e Investigadores" ],
+    "onConclude" : {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm" : {
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Dispensa de Prestação de Serviço na Instituição de Origem",
+        "en-GB" : "Exemption from Service provision at the Institution of Origin"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Dispensa de Prestação de Serviço na Instituição de Origem",
+          "en-GB" : "Exemption from Service provision at the Institution of Origin"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "period",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Periodo",
+            "en-GB" : "For period"
+          }
+        }, {
+          "type" : "DateTime",
+          "field" : "startDate",
+          "required" : true,
+          "date" : true,
+          "time" : false,
+          "label" : {
+            "pt-PT" : "Data de Início",
+            "en-GB" : "Start Date"
+          }
+        }, {
+          "type" : "Text",
+          "field" : "reason",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Objectivo",
+            "en-GB" : "Objective"
+          }
+        }, {
+          "type" : "Text",
+          "field" : "instituition",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Instituição",
+            "en-GB" : "Instituition"
+          }
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Documentos a submeter",
+          "en-GB" : "Documents to submit"
+        },
+        "properties" : [ {
+          "field" : "informationResponsible",
+          "type" : "File",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "Informação do/a responsável do grupo de investigação e do/a Presidente do Centro ou do/a Coordenador/a da Secção/Área Científica e do/a Presidente do Departamento",
+            "en-GB" : "Informação do/a responsável do grupo de investigação e do/a Presidente do Centro ou do/a Coordenador/a da Secção/Área Científica e do/a Presidente do Departamento"
+          },
+          "label" : {
+            "pt-PT" : "Informação do(s) Responsável(eis)",
+            "en-GB" : "Information of the Responsible(ies)"
+          },
+          "allowedFileTypes" : [ ".pdf" ],
+          "maxSizeMB" : 25
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta",
+        "en-GB" : "Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Resposta",
+          "en-GB" : "Response"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "response",
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "label" : {
+            "pt-PT" : "Resposta",
+            "en-GB" : "Response"
+          },
+          "options" : [ {
+            "value" : "granted",
+            "label" : {
+              "pt-PT" : "O pedido foi deferido.",
+              "en-GB" : "The request was granted."
+            }
+          }, {
+            "value" : "denied",
+            "label" : {
+              "pt-PT" : "O pedido foi indeferido.",
+              "en-GB" : "The request was denied."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

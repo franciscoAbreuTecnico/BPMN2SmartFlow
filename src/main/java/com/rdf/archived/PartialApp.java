@@ -17,13 +17,9 @@ import com.rdf.util.JsonFlattener;
 import be.ugent.rml.cli.Main;
 
 public class PartialApp {
-
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    
-    private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/tests/simple_gateway_test.json");
-    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/ScholarshipContractFormAndFlow.json");
-    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/SabbaticalLeave.json");
-    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/MarriageLeave.json");
+
+    private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/ScholarshipContractFormAndFlow.json");
 
     /**
      * Processes the hard-coded JSON file: splits into Flow and Request variants,
@@ -37,35 +33,41 @@ public class PartialApp {
      *  4: mapping OWL TTL path
      */
     public static void main(String[] args) throws Exception {
-        Path jsonFile = INPUT_JSON;
+        Path jsonFile  = INPUT_JSON;
         Path parentDir = jsonFile.getParent();
-        Path flowDir = parentDir.resolve("smartFlow");
-        Path requestDir = parentDir.resolve("smartForm");
+        Path flowDir   = parentDir.resolve("smartFlow");
+        Path requestDir= parentDir.resolve("smartForm");
+
+        // make split JSON dirs
         Files.createDirectories(flowDir);
         Files.createDirectories(requestDir);
+
+        // make pipeline output dirs
+        Files.createDirectories(Paths.get("src/main/resources/output/instances"));
+        Files.createDirectories(Paths.get("src/main/resources/output/bpmn"));
+        Files.createDirectories(Paths.get("src/main/resources/output/merged"));
+        Files.createDirectories(Paths.get("src/main/resources/output/report"));
 
         processJsonAndFlowSingle(jsonFile, flowDir, requestDir, args);
     }
 
     private static void processJsonAndFlowSingle(Path jsonFile, Path flowDir, Path requestDir, String[] args) throws Exception {
         String fileName = jsonFile.getFileName().toString();
-        String baseName = fileName.contains(".") ? fileName.substring(0, fileName.lastIndexOf('.')) : fileName;
-
-        JsonNode root = MAPPER.readTree(jsonFile.toFile());
-        if (!root.has("flowTemplate")) {
+        if (!MAPPER.readTree(jsonFile.toFile()).has("flowTemplate")) {
             System.out.println("Skipping file " + fileName + ": missing flowTemplate");
             return;
         }
 
+        String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+
         // Extract Flow
-        JsonNode flowNode = root.get("flowTemplate");
-        ObjectNode flowRoot = MAPPER.createObjectNode();
-        flowRoot.set("flowTemplate", flowNode);
+        JsonNode flowNode = MAPPER.readTree(jsonFile.toFile()).get("flowTemplate");
+        ObjectNode flowRoot = MAPPER.createObjectNode().set("flowTemplate", flowNode);
         Path outFlow = flowDir.resolve(baseName + "_Flow.json");
         MAPPER.writerWithDefaultPrettyPrinter().writeValue(outFlow.toFile(), flowRoot);
 
         // Extract Request
-        ObjectNode requestRoot = (ObjectNode) root.deepCopy();
+        ObjectNode requestRoot = (ObjectNode) MAPPER.readTree(jsonFile.toFile()).deepCopy();
         requestRoot.remove("flowTemplate");
         Path outRequest = requestDir.resolve(baseName + "_Request.json");
         MAPPER.writerWithDefaultPrettyPrinter().writeValue(outRequest.toFile(), requestRoot);
@@ -78,52 +80,46 @@ public class PartialApp {
 
     private static void processFile(String inputJson, String[] args) throws Exception {
         String fileName = Paths.get(inputJson).getFileName().toString();
-        String baseName = fileName.contains(".") ? fileName.substring(0, fileName.lastIndexOf('.')) : fileName;
+        String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
 
-        // Unpack other args or use defaults
-        String rmlTemplate    = args.length > 0 ? args[0] : "src/main/resources/rml/flowTemplate.rml.ttl";
-        String outputRdfDir   = args.length > 1 ? args[1] : "src/main/resources/output/instances/";
-        String smartFlowTTL   = args.length > 2 ? args[2] : "src/main/resources/ontologies/smartFlow.ttl";
-        String bpmnTtl        = args.length > 3 ? args[3] : "src/main/resources/ontologies/bpmn/bpmn.ttl";
-        String mappingOwl     = args.length > 4 ? args[4] : "src/main/resources/ontologies/mapping.ttl";
+        // defaults or args
+        String rmlTemplate  = args.length > 0 ? args[0] : "src/main/resources/rml/flowTemplate.rml.ttl";
+        String outputRdfDir = args.length > 1 ? args[1] : "src/main/resources/output/instances/";
+        String smartFlowTTL = args.length > 2 ? args[2] : "src/main/resources/ontologies/smartFlow.ttl";
+        String bpmnTtl      = args.length > 3 ? args[3] : "src/main/resources/ontologies/bpmn/bpmn.ttl";
+        String mappingOwl   = args.length > 4 ? args[4] : "src/main/resources/ontologies/mapping.ttl";
 
-        // Prepare RML mapping
-        Path template = Paths.get(rmlTemplate);
+        // build temporary RML
+        Path template     = Paths.get(rmlTemplate);
         String transfJson = JsonFlattener.convert(inputJson);
-        String mappingTurtle = Files.readString(template);
-        mappingTurtle = mappingTurtle.replace("{{JSON_SOURCE}}", transfJson);
-        Path tempMapping = Paths.get("target/temp-mapping-" + baseName + ".ttl");
-        Files.createDirectories(tempMapping.getParent());
-        Files.writeString(tempMapping, mappingTurtle);
+        String mappingTtl = Files.readString(template).replace("{{JSON_SOURCE}}", transfJson);
 
-        System.out.println("RML mapping template written to: " + tempMapping.toAbsolutePath());
+        Path tmpMap = Paths.get("target/temp-mapping-" + baseName + ".ttl");
+        Files.createDirectories(tmpMap.getParent());
+        Files.writeString(tmpMap, mappingTtl);
+        System.out.println("RML mapping template written to: " + tmpMap.toAbsolutePath());
 
-        // Run RMLMapper
+        // RMLMapper → individuals
         String outputRdf = outputRdfDir + baseName + "_individuals.ttl";
-        Main.main(new String[] {"-m", tempMapping.toString(), "-o", outputRdf, "-s", "Turtle"});
+        Main.main(new String[] {"-m", tmpMap.toString(), "-o", outputRdf});
         System.out.println("RDF output written to: " + outputRdf);
 
-        // OWLAPI + Reasoning
-        OntologyService ontologyService = new OntologyService(
+        // OWLAPI + reasoning
+        OntologyService ontService = new OntologyService(
             Paths.get(smartFlowTTL),
             Paths.get(outputRdf),
             Paths.get(bpmnTtl),
             Paths.get(mappingOwl)
         );
-        BpmnModelBuilder builder = new BpmnModelBuilder(ontologyService);
 
-        // Generate BPMN model
-        String bpmnOutputPath = "src/main/resources/output/bpmn/" + baseName + ".bpmn";
-        builder.generateBpmnModel(bpmnOutputPath);
-        System.out.println("BPMN model written to: " + bpmnOutputPath);
+        // generate BPMN
+        String bpmnOut = "src/main/resources/output/bpmn/" + baseName + ".bpmn";
+        new BpmnModelBuilder(ontService).generateBpmnModel(bpmnOut);
+        System.out.println("BPMN model written to: " + bpmnOut);
 
-        // Save merged ontology
-        try {
-            Path mergedOutput = Paths.get("src/main/resources/output/merged/" + baseName + ".ttl");
-            ontologyService.saveMergedOntologyAsTurtle(mergedOutput);
-            System.out.println("Merged ontology written to: " + mergedOutput.toAbsolutePath());
-        } catch (IOException | OWLOntologyStorageException e) {
-            e.printStackTrace();
-        }
+        // save merged ontology
+        Path mergedOut = Paths.get("src/main/resources/output/merged/" + baseName + ".ttl");
+        ontService.saveMergedOntologyAsTurtle(mergedOut);
+        System.out.println("Merged ontology written to: " + mergedOut.toAbsolutePath());
     }
 }

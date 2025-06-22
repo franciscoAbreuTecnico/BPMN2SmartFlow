@@ -88,6 +88,20 @@
   <build>
     <plugins>
 
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.4.2</version>
+      <configuration>
+          <archive>
+              <manifest>
+                  <mainClass>com.rdf.Main</mainClass>
+              </manifest>
+          </archive>
+          <skip>true</skip>
+      </configuration>
+    </plugin>
+
       <!-- Java 17 compiler -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -98,9 +112,9 @@
         </configuration>
       </plugin>
 
-      <!-- Exec plugin (if you still want to run via mvn exec:java) -->
+      <!-- Exec plugin (run via mvn exec:java) -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
@@ -121,7 +135,8 @@
             </goals>
             <configuration>
               <createDependencyReducedPom>false</createDependencyReducedPom>
-
+              <!-- <attach>true</attach>
+              <shadedClassifierName>jar-with-dependencies</shadedClassifierName> -->
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -137,6 +152,7 @@
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>com.rdf.App</mainClass>
                 </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>
             </configuration>
           </execution>

@@ -43,7 +43,7 @@ import com.rdf.query.DLQueryEngine;
  * OntologyService is responsible for:
  *   1) Loading four files:
  *        - smartFlow.ttl      (SmartFlow schema + sf:has_nextNode chain)
- *        - instanceTtl        (RML‐generated SmartFlow individuals)
+ *        - instanceTtl        (RML generated SmartFlow individuals)
  *        - bpmn.ttl           (BBO/BPMN ontology, including bbo:SequenceFlow, bbo:ExclusiveGateway, etc.)
  *        - mapping.ttl        (SmartFlow↔BPMN alignments)
  *   2) Merging them into one OWLOntology.
@@ -54,8 +54,8 @@ import com.rdf.query.DLQueryEngine;
  *            – a SequenceFlow x→ExclusiveGateway_x
  *            – one SequenceFlow ExclusiveGateway_x→each y
  *   5) Assigning each new SequenceFlow and ExclusiveGateway a bbo:id and bbo:name.
- *   6) Providing DL‐query helpers (getSubClasses, getInstances, etc.).
- *   7) Providing “inferred properties by class” methods.
+ *   6) Providing DLquery helpers (getSubClasses, getInstances, etc.).
+ *   7) Providing "inferred properties by class" methods.
  *   8) Exposing print methods so that App.java can simply call them.
  *   9) Offering a method to retrieve all bbo:FlowNode (and subclasses) individuals as a List.
  *  10) Providing a public getShortForm(...) helper to retrieve short forms.
@@ -166,7 +166,7 @@ public class OntologyService {
         assignQueueToTerminalNodes();
         assignQueueToChildElements();
 
-        // 7) Prepare DLQueryEngine for Manchester‐syntax queries
+        // 7) Prepare DLQueryEngine for Manchester syntax queries
         this.shortFormProvider = new SimpleShortFormProvider();
         this.dlQueryEngine     = new DLQueryEngine(reasoner, shortFormProvider);
     }
@@ -204,13 +204,13 @@ public class OntologyService {
     }
 
     // --------------------------------------------------------
-    //  DL‐Query Helper Methods
+    //  DLQuery Helper Methods
     // --------------------------------------------------------
 
     /**
-     * Return all individuals (OWLNamedIndividual) that satisfy the given Manchester‐syntax class expression.
+     * Return all individuals (OWLNamedIndividual) that satisfy the given Manchester syntax class expression.
      * @param classExpressionString e.g. "ActionNode"
-     * @param direct                true = only direct instances; false = include subclass‐instances.
+     * @param direct                true = only direct instances; false = include subclass instances.
      */
     public Set<OWLNamedIndividual> getInstances(String classExpressionString, boolean direct) {
         if (classExpressionString == null || classExpressionString.trim().isEmpty()) {
@@ -278,7 +278,7 @@ public final void materializeSequenceFlowsFromNextNode() {
             .entities().collect(Collectors.toList());
         if (actions.isEmpty()) continue;
 
-        // 3b) subject‐level XOR if >1 Action
+        // 3b) subject level XOR if >1 Action
         OWLNamedIndividual entry = subj;
         if (actions.size() > 1) {
             entry = makeGateway.apply(subj.getIRI().getFragment(), subj);
@@ -304,7 +304,7 @@ public final void materializeSequenceFlowsFromNextNode() {
             }
         }
 
-        // 3d) map Action → Buttons with “all‐Actions” rules
+        // 3d) map Action -> Buttons with all Actions rules
         Map<OWLNamedIndividual,List<OWLNamedIndividual>> actionToButtons = new HashMap<>();
         for (OWLNamedIndividual btn : reasoner
                 .getObjectPropertyValues(subj, hasButtonProp)
@@ -353,15 +353,15 @@ public final void materializeSequenceFlowsFromNextNode() {
             }
         });
 
-        // 4) emit Button‐driven branches
+        // 4) emit Button driven branches
         for (Map.Entry<OWLNamedIndividual,List<OWLNamedIndividual>> e : buttonToActions.entrySet()) {
             OWLNamedIndividual btn  = e.getKey();
             List<OWLNamedIndividual> acts = e.getValue();
 
-            // subj/gateway → button
+            // subj/gateway -> button
             emitFlow.accept(entry, btn);
 
-            // button‐level XOR if needed
+            // button level XOR if needed
             OWLNamedIndividual btnEntry = btn;
             if (acts.size() > 1) {
                 btnEntry = makeGateway.apply(btn.getIRI().getFragment(), subj);
@@ -435,7 +435,7 @@ public final void materializeSequenceFlowsFromNextNode() {
 
 
     // --------------------------------------------------------
-    //  Getters for “inferred nextNode” and “all sequenceFlow” Links
+    //  Getters for inferred nextNode and all sequenceFlow Links
     // --------------------------------------------------------
 
     /**
@@ -804,7 +804,7 @@ public final void materializeSequenceFlowsFromNextNode() {
     }
 
     /**
-     * Return the literal value of the given data‐property (by local name) on this individual,
+     * Return the literal value of the given data property (by local name) on this individual,
      * or null if not present.
      *
      * Example: getDataPropertyValue(seqInd, "name") will return the bbo:name literal.

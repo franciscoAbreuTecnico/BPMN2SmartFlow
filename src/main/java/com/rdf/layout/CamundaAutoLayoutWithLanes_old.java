@@ -298,7 +298,7 @@ public void layout(BpmnModelInstance mi, LayoutConfig cfg) {
     }
   });
 
-  // 4) Figure out the overall right‐most X so lanes/pool expand fully
+  // 4) Figure out the overall right most X so lanes/pool expand fully
   double globalRight = globalLayout.values().stream()
                           .mapToDouble(ld -> ld.x + ld.width)
                           .max()

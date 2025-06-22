@@ -169,7 +169,6 @@ public class JsonFlattener {
             }
         }
 
-        // pretty‐printer
         DefaultPrettyPrinter pp = new DefaultPrettyPrinter();
         DefaultIndenter ind = new DefaultIndenter("  ", "\n");
         pp.indentObjectsWith(ind);

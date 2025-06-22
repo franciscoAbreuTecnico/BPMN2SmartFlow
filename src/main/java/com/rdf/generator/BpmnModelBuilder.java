@@ -61,7 +61,7 @@ public class BpmnModelBuilder {
 
             // Collaboration <=> ID if the process (FlowTemplate name)
             Collaboration collaboration = createElement(definitions, "smart_flow_collaboration", Collaboration.class);
-            collaboration.setName("SmartFlow Collaboration"); // optional, if you set name
+            collaboration.setName("SmartFlow Collaboration"); // optional, if set name
             attachDocumentation(collaboration, ""); // ibpmCollaboration.getElementDocumentation()); // raw JSON
             definitions.addChildElement(collaboration);
 
@@ -289,16 +289,16 @@ public class BpmnModelBuilder {
     }
 
     private void createDataObjectForTask(Process process, UserTask userTask, OWLNamedIndividual fieldInd) {
-        // base fragment from your ontology individual
+        // base fragment from ontology individual
         String baseId      = fieldInd.getIRI().getFragment();
 
-        // 1) generate a globally‐unique ID for the DataObject
+        // 1) generate a globally unique ID for the DataObject
         String dataObjId   = ensureUniqueId(process.getModelInstance(), baseId);
         DataObject dataObj = createElement(process, dataObjId, DataObject.class);
         String name        = ontService.getDataPropertyValue(fieldInd, "sfName");
         dataObj.setName(name != null ? name : dataObjId);
 
-        // 2) generate a globally‐unique ID for the DataObjectReference
+        // 2) generate a globally unique ID for the DataObjectReference
         String refBase     = dataObjId + "_Ref";
         String refId       = ensureUniqueId(process.getModelInstance(), refBase);
         DataObjectReference ref = createElement(process, refId, DataObjectReference.class);

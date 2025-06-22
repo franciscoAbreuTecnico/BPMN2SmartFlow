@@ -127,7 +127,7 @@
           },
           "buttons" : [
             {
-              "id" : "upload-transcript-records",
+              "id" : "upload-transcript-records-step-upload-transcript-records",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Submeter Certificado de Aproveitamento",

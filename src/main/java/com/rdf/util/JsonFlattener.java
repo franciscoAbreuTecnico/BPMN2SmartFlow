@@ -116,15 +116,25 @@ public class JsonFlattener {
     private static void rewriteButtonHandlers(ObjectNode node) {
         if (!node.has("buttons") || !node.get("buttons").isArray()) return;
         String parentId = node.path("id").asText();
+
         for (JsonNode b : (ArrayNode) node.get("buttons")) {
             ObjectNode btn = (ObjectNode) b;
+
+            // 1) rename the button’s own id
+            if (btn.has("id")) {
+                String btnId = btn.get("id").asText();
+                btn.put("id", btnId + "-" + parentId);
+            }
+
+            // 2) rename the handler action
             if (btn.has("handlers") && btn.get("handlers").has("action")) {
                 String act = btn.get("handlers").get("action").asText();
-                btn.withObject("handlers") // with (deprecated)
-                   .put("action", act + "-" + parentId);
+                btn.withObject("handlers")
+                .put("action", act + "-" + parentId);
             }
         }
     }
+
 
     /**
      * Main entry: read JSON, transform each actionNode, write "-converted.json".

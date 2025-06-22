@@ -224,7 +224,7 @@
           },
           "buttons" : [
             {
-              "id" : "mark-as-processed",
+              "id" : "mark-as-processed-step-hr-processing",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Marcar como Processado",

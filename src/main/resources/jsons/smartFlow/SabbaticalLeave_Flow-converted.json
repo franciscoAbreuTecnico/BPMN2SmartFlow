@@ -376,7 +376,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-hr-processing",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Verificar Condições",
@@ -388,11 +388,11 @@
               }
             },
             {
-              "id" : "reject",
+              "id" : "reject-step-hr-processing",
               "primary" : false,
               "label" : {
                 "pt-PT" : "Rejeitar",
-                "en-GB" : "Rejeitar"
+                "en-GB" : "Reject"
               },
               "handlers" : {
                 "action" : "REJECT-step-hr-processing"
@@ -409,6 +409,16 @@
               },
               "id" : "SIGN-step-hr-processing",
               "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-hr-processing",
+              "name" : "REJECT"
             }
           ],
           "blockUndo" : true,
@@ -605,7 +615,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-upload-sabbatical-leave-reports",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Submeter Relatório Final",

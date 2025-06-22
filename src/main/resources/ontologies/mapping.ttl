@@ -35,6 +35,14 @@ sf:TerminalNode
     owl:equivalentClass bbo:EndEvent ;
     rdfs:comment "SmartFlow terminal node aligned to BBO’s EndEvent." .
 
+sf:Action
+    owl:equivalentClass bbo:ServiceTask ;
+    rdfs:comment "SmartFlow action aligned to BBO’s UserTask." .
+
+sf:Button
+    owl:equivalentClass bbo:UserTask ;
+    rdfs:comment "SmartFlow button aligned to BBO’s UserTask." .
+
 sf:ActionProcessor
     owl:equivalentClass bbo:ServiceTask ;
     rdfs:comment "SmartFlow action processor aligned to BBO’s ServiceTask." .
@@ -47,7 +55,7 @@ sf:Field
 
 ###############################################################################
 
-sf:sfId
+sf:sfId             
     owl:equivalentProperty bbo:id ;
     rdfs:comment "SmartFlow node identifier aligned to BBO id." .
 

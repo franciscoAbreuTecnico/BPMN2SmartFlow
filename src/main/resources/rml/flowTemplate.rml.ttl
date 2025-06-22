@@ -117,6 +117,14 @@
       rr:termType   rr:IRI ;
     ] ;
   ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_queue ;
+    rr:objectMap [
+      rr:template   "http://example.org/ontologies/SmartFlow/Queue/{.flowTemplate.config.actionNodes[0].queue}" ;
+      rr:termType   rr:IRI ;
+    ] ;
+  ] ;
 .
 
 #################################################################
@@ -437,13 +445,39 @@
   ] ;
 
   rr:predicateObjectMap [
-    rr:predicate sf:labelEN ;
+    rr:predicate sf:sfName ; # labelEN
     rr:objectMap [
       rml:reference "label.en-GB" ;
     ] ;
   ] ;
 
   rr:predicateObjectMap [
+    rr:predicate sf:has_handler ;
+    rr:objectMap [
+      rr:parentTriplesMap <#HandlerMapping> ;
+      rr:joinCondition [ rr:child "id" ; rr:parent "id" ]
+    ] ;
+  ] ;
+.
+
+#################################################################
+# Map each Handler associated with a Button
+#################################################################
+<#HandlerMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source            "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator          "$.flowTemplate.config.actionNodes[*].buttons[*]" ;
+  ] ;
+  
+  rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/Handler/{id}" ;
+    rr:termType  rr:IRI ;
+    rr:class     sf:Handler ;
+  ] ;
+
+    rr:predicateObjectMap [
     rr:predicate sf:has_handlersAction ;
     rr:objectMap [
       rr:template "http://example.org/ontologies/SmartFlow/Action/{handlers.action}" ;

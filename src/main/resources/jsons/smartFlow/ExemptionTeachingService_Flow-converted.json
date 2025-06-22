@@ -369,7 +369,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-hr-verification-conditions",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Verificar Condições",
@@ -381,7 +381,7 @@
               }
             },
             {
-              "id" : "reject",
+              "id" : "reject-step-hr-verification-conditions",
               "primary" : false,
               "label" : {
                 "pt-PT" : "Rejeitar",
@@ -599,7 +599,7 @@
           },
           "buttons" : [
             {
-              "id" : "upload-exemption-service",
+              "id" : "upload-exemption-service-step-upload-exemption-service-reports",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Submeter Relatório Tranalho Desenvolvido",

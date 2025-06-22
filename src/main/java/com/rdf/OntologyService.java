@@ -6,11 +6,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import org.semanticweb.HermiT.ReasonerFactory;
@@ -18,8 +21,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
@@ -84,9 +85,15 @@ public class OntologyService {
 
     private final OWLDataProperty nodeIdProp;
     private final OWLObjectProperty queueProp;
-    private final OWLObjectProperty hasAssociationProp;
 
-    // The “sf:has_nextNode” property
+    private final OWLObjectProperty hasActionProp;
+    private final OWLObjectProperty hasButtonProp;
+    private final OWLObjectProperty hasActionProcessorProp;
+    private final OWLObjectProperty hasAssociationProp;
+    private final OWLObjectProperty hasHandlerProp;
+    private final OWLObjectProperty hasAssociatedFormProp;
+    private final OWLDataProperty   sfIdProp;
+
     private final OWLObjectProperty hasNextNodeProp;
 
     // --------------------------------------------------------
@@ -146,11 +153,18 @@ public class OntologyService {
         this.nodeIdProp      = df.getOWLDataProperty(IRI.create(SF_NS + "sfId"));
         this.hasNextNodeProp = df.getOWLObjectProperty(IRI.create(SF_NS + "has_nextNode"));
         this.queueProp       = df.getOWLObjectProperty(IRI.create(SF_NS + "has_queue"));
+        this.hasActionProp          = df.getOWLObjectProperty(IRI.create(SF_NS + "has_action"));
+        this.hasButtonProp          = df.getOWLObjectProperty(IRI.create(SF_NS + "has_button"));
+        this.hasActionProcessorProp = df.getOWLObjectProperty(IRI.create(SF_NS + "has_actionProcessor"));
         this.hasAssociationProp = df.getOWLObjectProperty(IRI.create(SF_NS + "has_association"));
+        this.hasHandlerProp        = df.getOWLObjectProperty(IRI.create(SF_NS + "has_handler"));
+        this.hasAssociatedFormProp = df.getOWLObjectProperty(IRI.create(SF_NS + "has_associatedForm"));
+        this.sfIdProp              = df.getOWLDataProperty(  IRI.create(SF_NS + "sfId"));
 
         // 6) Programmatically create bbo:SequenceFlow (and bbo:ExclusiveGateway if needed) for every inferred (x sf:has_nextNode y)
         materializeSequenceFlowsFromNextNode();
         assignQueueToTerminalNodes();
+        assignQueueToChildElements();
 
         // 7) Prepare DLQueryEngine for Manchester‐syntax queries
         this.shortFormProvider = new SimpleShortFormProvider();
@@ -193,42 +207,6 @@ public class OntologyService {
     //  DL‐Query Helper Methods
     // --------------------------------------------------------
 
-    /** Return direct or indirect subclasses of a Manchester‐syntax class expression. */
-    public Set<OWLClass> getSubClasses(String classExpressionString, boolean direct) {
-        if (classExpressionString == null || classExpressionString.trim().isEmpty()) {
-            return Collections.emptySet();
-        }
-        try {
-            return dlQueryEngine.getSubClasses(classExpressionString, direct);
-        } catch (Exception ex) {
-            return Collections.emptySet();
-        }
-    }
-
-    /** Return direct or indirect superclasses of a Manchester‐syntax class expression. */
-    public Set<OWLClass> getSuperClasses(String classExpressionString, boolean direct) {
-        if (classExpressionString == null || classExpressionString.trim().isEmpty()) {
-            return Collections.emptySet();
-        }
-        try {
-            return dlQueryEngine.getSuperClasses(classExpressionString, direct);
-        } catch (Exception ex) {
-            return Collections.emptySet();
-        }
-    }
-
-    /** Return all equivalent classes of a Manchester‐syntax class expression. */
-    public Set<OWLClass> getEquivalentClasses(String classExpressionString) {
-        if (classExpressionString == null || classExpressionString.trim().isEmpty()) {
-            return Collections.emptySet();
-        }
-        try {
-            return dlQueryEngine.getEquivalentClasses(classExpressionString);
-        } catch (Exception ex) {
-            return Collections.emptySet();
-        }
-    }
-
     /**
      * Return all individuals (OWLNamedIndividual) that satisfy the given Manchester‐syntax class expression.
      * @param classExpressionString e.g. "ActionNode"
@@ -245,159 +223,216 @@ public class OntologyService {
         }
     }
     
-    // --------------------------------------------------------
-    //  “sf:has_nextNode” → bbo:SequenceFlow + ExclusiveGateway + id/name
-    // --------------------------------------------------------
+public final void materializeSequenceFlowsFromNextNode() {
+    OWLDataFactory df = manager.getOWLDataFactory();
 
-    /**
-     * For every inferred (x sf:has_nextNode y):
-     *   - If x has exactly one y, create one bbo:SequenceFlow x→y.
-     *   - If x has two or more y’s, create:
-     *       – A bbo:ExclusiveGateway individual “ExclusiveGateway_x”
-     *       – A SequenceFlow x→ExclusiveGateway_x
-     *       – A SequenceFlow ExclusiveGateway_x→each y
-     *   - Assign each new SequenceFlow and ExclusiveGateway a bbo:id and bbo:name.
-     *
-     * Must be called only after precomputeInferences(...),
-     * and only after hasNextNodeProp has been initialized.
-     */
-    public final void materializeSequenceFlowsFromNextNode() {
-        // 1) BBO namespace & OWL entities
-        String BBO_NS = BPMN_NS; // "https://www.irit.fr/recherches/MELODI/ontologies/BBO#"
-        OWLClass sequenceFlowClass    = df.getOWLClass(IRI.create(BBO_NS + "SequenceFlow"));
-        OWLObjectProperty srcProp     = df.getOWLObjectProperty(IRI.create(BBO_NS + "has_sourceRef"));
-        OWLObjectProperty tgtProp     = df.getOWLObjectProperty(IRI.create(BBO_NS + "has_targetRef"));
-        OWLDataProperty bboIdProp     = df.getOWLDataProperty(IRI.create(BBO_NS + "id"));
-        OWLDataProperty bboNameProp   = df.getOWLDataProperty(IRI.create(BBO_NS + "name"));
-        OWLObjectProperty hasActionProp = df.getOWLObjectProperty(IRI.create(SF_NS + "has_action"));
-        OWLClass exclusiveGatewayCls  = df.getOWLClass(IRI.create(BBO_NS + "ExclusiveGateway"));
-        // (If you want to use default‐branch marking, uncomment the next line)
-        // OWLObjectProperty hasExGwProp = df.getOWLObjectProperty(IRI.create(BBO_NS + "has_exclusiveGateway"));
+    // SmartFlow properties
+    OWLObjectProperty hasButtonProp          = df.getOWLObjectProperty(IRI.create(SF_NS + "has_button"));
+    OWLObjectProperty hasHandlerProp         = df.getOWLObjectProperty(IRI.create(SF_NS + "has_handler"));
+    OWLObjectProperty hasHandlersActionProp  = df.getOWLObjectProperty(IRI.create(SF_NS + "has_handlersAction"));
+    OWLObjectProperty hasActionProp          = df.getOWLObjectProperty(IRI.create(SF_NS + "has_action"));
+    OWLObjectProperty transitionsToProp      = df.getOWLObjectProperty(IRI.create(SF_NS + "has_transitionsTo"));
+    OWLObjectProperty hasActionProcessorProp = df.getOWLObjectProperty(IRI.create(SF_NS + "has_actionProcessor"));
+    OWLObjectProperty hasApplyOnProp         = df.getOWLObjectProperty(IRI.create(SF_NS + "has_applyOn"));
+    OWLObjectProperty queueProp              = df.getOWLObjectProperty(IRI.create(SF_NS + "has_queue"));
 
-        // 2) For each individual “subj” in the ontology signature:
-        for (OWLNamedIndividual subj : mergedOntology.getIndividualsInSignature()) {
-            // a) Ask HermiT: all y such that (subj, sf:has_nextNode, y)
-            NodeSet<OWLNamedIndividual> targets = reasoner.getObjectPropertyValues(subj, hasNextNodeProp);
-            Set<OWLNamedIndividual> nextNodes  = targets.entities().collect(Collectors.toSet());
+    // BPMN classes & props
+    OWLClass          seqFlowCls = df.getOWLClass(IRI.create(BPMN_NS + "SequenceFlow"));
+    OWLObjectProperty srcProp     = df.getOWLObjectProperty(IRI.create(BPMN_NS + "has_sourceRef"));
+    OWLObjectProperty tgtProp     = df.getOWLObjectProperty(IRI.create(BPMN_NS + "has_targetRef"));
+    OWLDataProperty   idProp      = df.getOWLDataProperty(IRI.create(BPMN_NS + "id"));
+    OWLDataProperty   nameProp    = df.getOWLDataProperty(IRI.create(BPMN_NS + "name"));
+    OWLClass          xorGwCls    = df.getOWLClass(IRI.create(BPMN_NS + "ExclusiveGateway"));
 
-            // b) If no nextNodes, skip
-            if (nextNodes.isEmpty()) {
-                continue;
-            }
+    // 1) emit one SequenceFlow from→to
+    BiConsumer<OWLNamedIndividual,OWLNamedIndividual> emitFlow = (from,to) -> {
+        String seqId = from.getIRI().getFragment() + "_to_" + to.getIRI().getFragment();
+        OWLNamedIndividual seq = df.getOWLNamedIndividual(IRI.create(BPMN_NS + seqId));
+        manager.addAxiom(mergedOntology, df.getOWLClassAssertionAxiom(seqFlowCls, seq));
+        manager.addAxiom(mergedOntology, df.getOWLObjectPropertyAssertionAxiom(srcProp, seq, from));
+        manager.addAxiom(mergedOntology, df.getOWLObjectPropertyAssertionAxiom(tgtProp, seq, to));
+        manager.addAxiom(mergedOntology, df.getOWLDataPropertyAssertionAxiom(idProp, seq, df.getOWLLiteral(seqId)));
+        manager.addAxiom(mergedOntology, df.getOWLDataPropertyAssertionAxiom(nameProp, seq, df.getOWLLiteral("")));
+    };
 
-            // c) If exactly one target → create simple SequenceFlow subj→y
-            if (nextNodes.size() == 1) {
-                OWLNamedIndividual obj   = nextNodes.iterator().next();
-                String subjFrag = subj.getIRI().getFragment();
-                String objFrag  = obj .getIRI().getFragment();
-                String seqFrag  = subjFrag + "_to_" + objFrag;
-                OWLNamedIndividual seq   = df.getOWLNamedIndividual(IRI.create(BBO_NS + seqFrag));
+    // 2) create XOR gateway named by frag, copying subj’s queues
+    BiFunction<String,OWLNamedIndividual,OWLNamedIndividual> makeGateway = (frag, subj) -> {
+        String gwId = "ExclusiveGateway_" + frag;
+        OWLNamedIndividual gw = df.getOWLNamedIndividual(IRI.create(BPMN_NS + gwId));
+        manager.addAxiom(mergedOntology, df.getOWLClassAssertionAxiom(xorGwCls, gw));
+        manager.addAxiom(mergedOntology, df.getOWLDataPropertyAssertionAxiom(idProp, gw, df.getOWLLiteral(gwId)));
+        manager.addAxiom(mergedOntology, df.getOWLDataPropertyAssertionAxiom(nameProp, gw, df.getOWLLiteral("XOR for " + frag)));
+        // copy queues
+        reasoner.getObjectPropertyValues(subj, queueProp)
+                .entities()
+                .forEach(q -> manager.addAxiom(mergedOntology,
+                    df.getOWLObjectPropertyAssertionAxiom(queueProp, gw, q)));
+        return gw;
+    };
 
-                // i) seq a bbo:SequenceFlow
-                manager.addAxiom(mergedOntology,
-                    df.getOWLClassAssertionAxiom(sequenceFlowClass, seq));
+    // 3) main loop
+    for (OWLNamedIndividual subj : mergedOntology.getIndividualsInSignature()) {
+        // 3a) collect all Actions
+        List<OWLNamedIndividual> actions = reasoner
+            .getObjectPropertyValues(subj, hasActionProp)
+            .entities().collect(Collectors.toList());
+        if (actions.isEmpty()) continue;
 
-                // ii) seq bbo:has_sourceRef subj
-                manager.addAxiom(mergedOntology,
-                    df.getOWLObjectPropertyAssertionAxiom(srcProp, seq, subj));
+        // 3b) subject‐level XOR if >1 Action
+        OWLNamedIndividual entry = subj;
+        if (actions.size() > 1) {
+            entry = makeGateway.apply(subj.getIRI().getFragment(), subj);
+            emitFlow.accept(subj, entry);
+        }
 
-                // iii) seq bbo:has_targetRef obj
-                manager.addAxiom(mergedOntology,
-                    df.getOWLObjectPropertyAssertionAxiom(tgtProp, seq, obj));
-
-                // iv) seq bbo:id = "SequenceFlow_subj_to_obj"
-                manager.addAxiom(mergedOntology,
-                    df.getOWLDataPropertyAssertionAxiom(bboIdProp, seq, df.getOWLLiteral(seqFrag)));
-
-                // v) seq bbo:name = "SequenceFlow from subj to obj"
-                String humanName = ""; // subjFrag + "_to_" + objFrag;
-                manager.addAxiom(mergedOntology,
-                    df.getOWLDataPropertyAssertionAxiom(bboNameProp, seq, df.getOWLLiteral(humanName)));
-
+        // 3c) map Action → Processors
+        Map<OWLNamedIndividual,List<OWLNamedIndividual>> actionToProcs = new HashMap<>();
+        for (OWLNamedIndividual proc : reasoner
+                .getObjectPropertyValues(subj, hasActionProcessorProp)
+                .entities().collect(Collectors.toList())) {
+            manager.addAxiom(mergedOntology,
+                df.getOWLObjectPropertyAssertionAxiom(hasActionProcessorProp, subj, proc));
+            Set<OWLNamedIndividual> applies = reasoner
+                .getObjectPropertyValues(proc, hasApplyOnProp)
+                .entities().collect(Collectors.toSet());
+            if (applies.isEmpty()) {
+                actions.forEach(a ->
+                    actionToProcs.computeIfAbsent(a, k->new ArrayList<>()).add(proc));
             } else {
-                // d) Two or more targets → create a single ExclusiveGateway + multiple SequenceFlows
-                String subjFrag = subj.getIRI().getFragment();
-                String gwFrag   = "XOR_" + subjFrag;
-                String gwIRI    = BBO_NS + gwFrag;
-                OWLNamedIndividual gw = df.getOWLNamedIndividual(IRI.create(gwIRI));
+                applies.forEach(a ->
+                    actionToProcs.computeIfAbsent(a, k->new ArrayList<>()).add(proc));
+            }
+        }
 
-                // i) gw a bbo:ExclusiveGateway
-                manager.addAxiom(mergedOntology,
-                    df.getOWLClassAssertionAxiom(exclusiveGatewayCls, gw));
+        // 3d) map Action → Buttons with “all‐Actions” rules
+        Map<OWLNamedIndividual,List<OWLNamedIndividual>> actionToButtons = new HashMap<>();
+        for (OWLNamedIndividual btn : reasoner
+                .getObjectPropertyValues(subj, hasButtonProp)
+                .entities().collect(Collectors.toList())) {
+            manager.addAxiom(mergedOntology,
+                df.getOWLObjectPropertyAssertionAxiom(hasButtonProp, subj, btn));
 
-                // ii) gw bbo:id = "ExclusiveGateway_subj"; gw bbo:name = "ExclusiveGateway for subj"
-                manager.addAxiom(mergedOntology,
-                    df.getOWLDataPropertyAssertionAxiom(bboIdProp, gw, df.getOWLLiteral(gwFrag)));
-                String gwHuman = ""; // "XOR_" + subjFrag;
-                manager.addAxiom(mergedOntology,
-                    df.getOWLDataPropertyAssertionAxiom(bboNameProp, gw, df.getOWLLiteral(gwHuman)));
-
-                mergedOntology.getObjectPropertyAssertionAxioms(subj).stream()
-                    .filter(ax -> ax.getProperty().asOWLObjectProperty().equals(queueProp))
-                    .map(ax -> ax.getObject().asOWLNamedIndividual())
-                    .forEach(queueInd -> {
-                        manager.addAxiom(mergedOntology,
-                            df.getOWLObjectPropertyAssertionAxiom(queueProp, gw, queueInd));
-                    });
-
-                // iii) Create one SequenceFlow subj→gw
-                String seqToGwFrag = subjFrag + "_to_" + gwFrag;
-                String seqToGwIRI  = BBO_NS + seqToGwFrag;
-                OWLNamedIndividual seqToGw = df.getOWLNamedIndividual(IRI.create(seqToGwIRI));
-
-                // a) seqToGw a bbo:SequenceFlow
-                manager.addAxiom(mergedOntology,
-                    df.getOWLClassAssertionAxiom(sequenceFlowClass, seqToGw));
-
-                // b) seqToGw bbo:has_sourceRef subj
-                manager.addAxiom(mergedOntology,
-                    df.getOWLObjectPropertyAssertionAxiom(srcProp, seqToGw, subj));
-
-                // c) seqToGw bbo:has_targetRef gw
-                manager.addAxiom(mergedOntology,
-                    df.getOWLObjectPropertyAssertionAxiom(tgtProp, seqToGw, gw));
-
-                // d) seqToGw bbo:id and bbo:name
-                manager.addAxiom(mergedOntology,
-                    df.getOWLDataPropertyAssertionAxiom(bboIdProp, seqToGw, df.getOWLLiteral(seqToGwFrag)));
-                String seqToGwName = ""; // subjFrag + "_to_" + gwFrag;
-                manager.addAxiom(mergedOntology,
-                    df.getOWLDataPropertyAssertionAxiom(bboNameProp, seqToGw, df.getOWLLiteral(seqToGwName)));
-
-                // (Optional) mark default: 
-                // manager.addAxiom(mergedOntology,
-                //     df.getOWLObjectPropertyAssertionAxiom(hasExGwProp, seqToGw, gw));
-
-                // iv) For each target y, create SequenceFlow gw→y
-                for (OWLNamedIndividual obj : nextNodes) {
-                    String objFrag      = obj.getIRI().getFragment();
-                    String seqFromGwFrag = gwFrag + "_to_" + objFrag;
-                    String seqFromGwIRI  = BBO_NS + seqFromGwFrag;
-                    OWLNamedIndividual seqFromGw = df.getOWLNamedIndividual(IRI.create(seqFromGwIRI));
-
-                    // a) seqFromGw a bbo:SequenceFlow
+            List<OWLNamedIndividual> handlers = reasoner
+                .getObjectPropertyValues(btn, hasHandlerProp)
+                .entities().collect(Collectors.toList());
+            if (handlers.isEmpty()) {
+                // no handler → button→all Actions
+                actions.forEach(a ->
+                    actionToButtons.computeIfAbsent(a, k->new ArrayList<>()).add(btn));
+            } else {
+                for (OWLNamedIndividual h : handlers) {
                     manager.addAxiom(mergedOntology,
-                        df.getOWLClassAssertionAxiom(sequenceFlowClass, seqFromGw));
-
-                    // b) seqFromGw bbo:has_sourceRef gw
-                    manager.addAxiom(mergedOntology,
-                        df.getOWLObjectPropertyAssertionAxiom(srcProp, seqFromGw, gw));
-
-                    // c) seqFromGw bbo:has_targetRef obj
-                    manager.addAxiom(mergedOntology,
-                        df.getOWLObjectPropertyAssertionAxiom(tgtProp, seqFromGw, obj));
-
-                    // d) seqFromGw bbo:id and bbo:name
-                    manager.addAxiom(mergedOntology,
-                        df.getOWLDataPropertyAssertionAxiom(bboIdProp, seqFromGw, df.getOWLLiteral(seqFromGwFrag)));
-                    String seqFromGwName = ""; // gwFrag + "_to_" + objFrag;
-                    manager.addAxiom(mergedOntology,
-                        df.getOWLDataPropertyAssertionAxiom(bboNameProp, seqFromGw, df.getOWLLiteral(seqFromGwName)));
+                        df.getOWLObjectPropertyAssertionAxiom(hasHandlerProp, btn, h));
+                    List<OWLNamedIndividual> hActs = reasoner
+                        .getObjectPropertyValues(h, hasHandlersActionProp)
+                        .entities().collect(Collectors.toList());
+                    if (hActs.isEmpty()) {
+                        // handler w/o handlersAction → button→all Actions
+                        actions.forEach(a ->
+                            actionToButtons.computeIfAbsent(a, k->new ArrayList<>()).add(btn));
+                    } else {
+                        for (OWLNamedIndividual act : hActs) {
+                            manager.addAxiom(mergedOntology,
+                                df.getOWLObjectPropertyAssertionAxiom(hasHandlersActionProp, h, act));
+                            actionToButtons
+                                .computeIfAbsent(act, k->new ArrayList<>())
+                                .add(btn);
+                        }
+                    }
                 }
             }
         }
-        reasoner.flush();
+
+        // 3e) invert to Button → Actions
+        Map<OWLNamedIndividual,List<OWLNamedIndividual>> buttonToActions = new HashMap<>();
+        actionToButtons.forEach((act, btns) -> {
+            for (OWLNamedIndividual btn : btns) {
+                buttonToActions
+                    .computeIfAbsent(btn, k->new ArrayList<>())
+                    .add(act);
+            }
+        });
+
+        // 4) emit Button‐driven branches
+        for (Map.Entry<OWLNamedIndividual,List<OWLNamedIndividual>> e : buttonToActions.entrySet()) {
+            OWLNamedIndividual btn  = e.getKey();
+            List<OWLNamedIndividual> acts = e.getValue();
+
+            // subj/gateway → button
+            emitFlow.accept(entry, btn);
+
+            // button‐level XOR if needed
+            OWLNamedIndividual btnEntry = btn;
+            if (acts.size() > 1) {
+                btnEntry = makeGateway.apply(btn.getIRI().getFragment(), subj);
+                emitFlow.accept(btn, btnEntry);
+            }
+
+            // then each branch to its Action
+            for (OWLNamedIndividual action : acts) {
+                emitFlow.accept(btnEntry, action);
+            }
+        }
+
+        // 5) direct Action branches for any not covered by a Button
+        Set<OWLNamedIndividual> covered = actionToButtons.keySet();
+        for (OWLNamedIndividual action : actions) {
+            if (!covered.contains(action)) {
+                emitFlow.accept(entry, action);
+            }
+        }
+
+        // 6) for every Action: hook in processors, then transitions
+        for (OWLNamedIndividual action : actions) {
+            // re-assert sf:has_action
+            manager.addAxiom(mergedOntology,
+                df.getOWLObjectPropertyAssertionAxiom(hasActionProp, subj, action));
+
+            // a) hook in ActionProcessor → may need XOR
+            List<OWLNamedIndividual> procs = actionToProcs.getOrDefault(action, Collections.emptyList());
+            List<OWLNamedIndividual> procSources = new ArrayList<>();
+            if (procs.isEmpty()) {
+                procSources.add(action);
+            } else if (procs.size() == 1) {
+                OWLNamedIndividual p = procs.get(0);
+                emitFlow.accept(action, p);
+                procSources.add(p);
+            } else {
+                OWLNamedIndividual pGw = makeGateway.apply(action.getIRI().getFragment(), subj);
+                emitFlow.accept(action, pGw);
+                for (OWLNamedIndividual p : procs) {
+                    emitFlow.accept(pGw, p);
+                    procSources.add(p);
+                }
+            }
+
+            // b) finally route each source → nextNode(s) with possible XOR
+            Set<OWLNamedIndividual> nexts = reasoner
+                .getObjectPropertyValues(action, transitionsToProp)
+                .entities().collect(Collectors.toSet());
+            nexts.forEach(t ->
+                manager.addAxiom(mergedOntology,
+                    df.getOWLObjectPropertyAssertionAxiom(transitionsToProp, action, t)));
+
+            for (OWLNamedIndividual src : procSources) {
+                if (nexts.size() == 1) {
+                    emitFlow.accept(src, nexts.iterator().next());
+                } else if (nexts.size() > 1) {
+                    OWLNamedIndividual nGw = makeGateway.apply(src.getIRI().getFragment(), subj);
+                    emitFlow.accept(src, nGw);
+                    for (OWLNamedIndividual t : nexts) {
+                        emitFlow.accept(nGw, t);
+                    }
+                }
+            }
+        }
     }
+
+    reasoner.flush();
+}
+
+
+
 
     // --------------------------------------------------------
     //  Getters for “inferred nextNode” and “all sequenceFlow” Links
@@ -415,24 +450,6 @@ public class OntologyService {
         NodeSet<OWLNamedIndividual> targets =
             reasoner.getObjectPropertyValues(node, hasNextNodeProp);
         return targets.entities().collect(Collectors.toSet());
-    }
-
-    /**
-     * Return a Map of every (x → {y1,y2,…}) where HermiT has inferred (x, sf:has_nextNode, y).
-     * @return Map whose key = OWLNamedIndividual x, value = Set<OWLNamedIndividual> of all y’s.
-     */
-    public Map<OWLNamedIndividual, Set<OWLNamedIndividual>> getAllInferredNextNodeLinks() {
-        Map<OWLNamedIndividual, Set<OWLNamedIndividual>> result = new HashMap<>();
-        for (OWLNamedIndividual subj : mergedOntology.getIndividualsInSignature()) {
-            NodeSet<OWLNamedIndividual> targets =
-                reasoner.getObjectPropertyValues(subj, hasNextNodeProp);
-            Set<OWLNamedIndividual> targetSet =
-                targets.entities().collect(Collectors.toSet());
-            if (!targetSet.isEmpty()) {
-                result.put(subj, targetSet);
-            }
-        }
-        return result;
     }
 
     /**
@@ -460,25 +477,6 @@ public class OntologyService {
             .collect(Collectors.toSet());
     }
 
-    /**
-     * Return a List of all OWLNamedIndividual that are instances of bbo:FlowNode
-     * or any subclass of bbo:FlowNode (asserted or inferred).
-     *
-     * Internally, this calls reasoner.getInstances(flowNodeCls, false), which returns
-     * all individuals whose type is flowNodeCls or any subclass thereof.
-     *
-     * @return List of OWLNamedIndividual for class bbo:FlowNode (and subclasses).
-     */
-    public List<OWLNamedIndividual> getAllFlowNodeIndividuals() {
-        // Look up the FlowNode class from the BPMN namespace
-        OWLClass flowNodeClass = df.getOWLClass(IRI.create(BPMN_NS + "FlowNode"));
-
-        // Ask the reasoner for all instances (including those inferred via subclass)
-        NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(flowNodeClass, false);
-
-        // Convert NodeSet to a List<OWLNamedIndividual>
-        return instances.entities().collect(Collectors.toList());
-    }
 
     public List<OWLNamedIndividual> getAllLaneIndividuals() {
         // Look up the Lane class from the BPMN namespace
@@ -490,66 +488,52 @@ public class OntologyService {
     }
 
     /**
-     * Print every FlowNode (or subclass) individual, prefixed by its direct type(s).
-     * Example output line: "Task: task-ApproveLeave"
+     * Copy each ActionNode’s sf:has_queue values down to its
+     * sf:Action, sf:Button and sf:ActionProcessor children.
      */
-    public void printAllFlowNodesWithClass() {
-        System.out.println("\n=== All bbo:FlowNode (and subclasses) with direct class ===");
-        List<OWLNamedIndividual> flowNodes = getAllFlowNodeIndividuals();
-        if (flowNodes.isEmpty()) {
-            System.out.println("  [No FlowNode individuals found]");
-            return;
-        }
-        for (OWLNamedIndividual fn : flowNodes) {
-            // Get direct types (classes) of this individual
-            Set<OWLClass> directTypes = reasoner.getTypes(fn, true)
-                                                 .entities()
-                                                 .collect(Collectors.toSet());
-            // For each direct type, print "TypeShortForm: IndividualShortForm"
-            for (OWLClass type : directTypes) {
-                String typeSf = shortFormProvider.getShortForm(type);
-                String indSf  = shortFormProvider.getShortForm(fn);
-                System.out.println("  " + typeSf + ": " + indSf);
-            }
-        }
-    }
+    private void assignQueueToChildElements() {
+        // get all ActionNode individuals
+        OWLClass actionNodeCls = df.getOWLClass(IRI.create(SF_NS + "ActionNode"));
+        Set<OWLNamedIndividual> nodes =
+            reasoner.getInstances(actionNodeCls, /*direct=*/false)
+                    .entities().collect(Collectors.toSet());
 
-    /**
-     * Print every SequenceFlow (or subclass) individual, prefixed by its direct type(s).
-     * To find direct types we consult the ontology’s ClassAssertion axioms (since the reasoner
-     * wasn’t updated after adding SequenceFlow assertions).
-     * Example output line: "SequenceFlow: SequenceFlow_step-Upload_to_step-HR"
-     */
-    public void printAllSequenceFlowsWithClass() {
-        System.out.println("\n=== All bbo:SequenceFlow (and subclasses) with direct class ===");
-        Set<OWLNamedIndividual> seqFlows = getAllSequenceFlowIndividuals();
-        if (seqFlows.isEmpty()) {
-            System.out.println("  [No SequenceFlow individuals found]");
-            return;
-        }
-        for (OWLNamedIndividual sf : seqFlows) {
-            // Collect all asserted rdf:type classes from the ontology
-            Set<OWLClass> assertedTypes = mergedOntology.getClassAssertionAxioms(sf).stream()
-                .map(OWLClassAssertionAxiom::getClassExpression)
-                .filter(expr -> !expr.isAnonymous())
-                .map(expr -> expr.asOWLClass())
+        for (OWLNamedIndividual node : nodes) {
+            // collect the node’s queue targets
+            Set<OWLNamedIndividual> queues = mergedOntology
+                .getObjectPropertyAssertionAxioms(node).stream()
+                .filter(ax -> ax.getProperty().equals(queueProp))
+                .map(ax -> ax.getObject().asOWLNamedIndividual())
                 .collect(Collectors.toSet());
+            if (queues.isEmpty()) continue;
 
-            if (assertedTypes.isEmpty()) {
-                // If somehow no asserted type, fall back to “Thing”
-                String indSf = shortFormProvider.getShortForm(sf);
-                System.out.println("  Thing: " + indSf);
-            } else {
-                // Print each asserted type in short form
-                for (OWLClass type : assertedTypes) {
-                    String typeSf = shortFormProvider.getShortForm(type);
-                    String indSf  = shortFormProvider.getShortForm(sf);
-                    System.out.println("  " + typeSf + ": " + indSf);
-                }
-            }
+            // 1) copy to each sf:Action
+            reasoner.getObjectPropertyValues(node, hasActionProp).entities()
+                .forEach(action ->
+                    queues.forEach(q ->
+                        manager.addAxiom(mergedOntology,
+                            df.getOWLObjectPropertyAssertionAxiom(queueProp, action, q)))
+                );
+
+            // 2) copy to each sf:Button
+            reasoner.getObjectPropertyValues(node, hasButtonProp).entities()
+                .forEach(button ->
+                    queues.forEach(q ->
+                        manager.addAxiom(mergedOntology,
+                            df.getOWLObjectPropertyAssertionAxiom(queueProp, button, q)))
+                );
+
+            // 3) copy to each sf:ActionProcessor
+            reasoner.getObjectPropertyValues(node, hasActionProcessorProp).entities()
+                .forEach(proc ->
+                    queues.forEach(q ->
+                        manager.addAxiom(mergedOntology,
+                            df.getOWLObjectPropertyAssertionAxiom(queueProp, proc, q)))
+                );
         }
+        reasoner.flush();
     }
-
+    
     private void assignQueueToTerminalNodes() {
         // 1) find all ActionNode individuals
         OWLClass actionNodeCls = df.getOWLClass(IRI.create(SF_NS + "StartNode"));
@@ -558,7 +542,7 @@ public class OntologyService {
                     .entities().collect(Collectors.toSet());
 
         if (actionNodes.isEmpty()) {
-            // no ActionNodes → nothing to copy
+            // no ActionNodes -> nothing to copy
             return;
         }
 
@@ -577,6 +561,7 @@ public class OntologyService {
             return;
         }
 
+        
         // 4) for each TerminalNode, add the same has_queue assertions
         OWLClass terminalNodeCls = df.getOWLClass(IRI.create(SF_NS + "TerminalNode"));
         Set<OWLNamedIndividual> terminals =
@@ -612,22 +597,6 @@ public class OntologyService {
         return queues.entities().collect(Collectors.toSet());
     }
 
-    /** 
-     * Return all sf:Field individuals linked from the given element via sf:has_association.
-     */
-    public Set<OWLNamedIndividual> getAssociatedFields(OWLNamedIndividual element) {
-        if (element == null) {
-            return Collections.emptySet();
-        }
-        NodeSet<OWLNamedIndividual> fields =
-            reasoner.getObjectPropertyValues(element, hasAssociationProp);
-        return fields.entities().collect(Collectors.toSet());
-    }
-    
-    // --------------------------------------------------------
-    //  Expose shortFormProvider via a public helper
-    // --------------------------------------------------------
-
     /**
      * Return the short form (e.g. just the fragment) of any OWLEntity (individual or class).
      * Mainly used by App.java so it does not need to access shortFormProvider directly.
@@ -640,49 +609,26 @@ public class OntologyService {
     //  Print Methods
     // --------------------------------------------------------
 
-    /**
-     * Print all inferred sf:has_nextNode links to stdout in short form:
-     *   x --has_nextNode--> y
-     */
-    public void printAllInferredNextNodeLinks() {
-        Map<OWLNamedIndividual, Set<OWLNamedIndividual>> nextNodeMap =
-            getAllInferredNextNodeLinks();
+    public void printFlowElements() {
+        // Fetch all FlowElement individuals (direct + indirect)
+        Set<OWLNamedIndividual> elements = getInstances("FlowElement", false);
 
-        System.out.println("\n=== All inferred sf:has_nextNode links ===");
-        if (nextNodeMap.isEmpty()) {
-            System.out.println("  [No inferred sf:has_nextNode links found]");
-            return;
-        }
-        nextNodeMap.forEach((subj, targets) -> {
-            String subjId = shortFormProvider.getShortForm(subj);
-            for (OWLNamedIndividual obj : targets) {
-                String objId = shortFormProvider.getShortForm(obj);
-                System.out.println("  " + subjId + " --has_nextNode--> " + objId);
+        System.out.println("=== BPMN FlowElements ===");
+        for (OWLNamedIndividual fe : elements) {
+            // Ask HermiT for the direct types of this individual
+            NodeSet<OWLClass> typeNodes = reasoner.getTypes(fe, /* direct = */ true);
+            Set<OWLClass> types = typeNodes.getFlattened();
+
+            // If there are no explicit types, still print the element
+            if (types.isEmpty()) {
+                System.out.println(" -> (no explicit class) : " + getShortForm(fe));
+            } else {
+                // Print one line per class
+                for (OWLClass cls : types) {
+                    String clsShort = shortFormProvider.getShortForm(cls);
+                    System.out.println(" -> " + clsShort + " : " + getShortForm(fe));
+                }
             }
-        });
-    }
-
-    /**
-     * Print, for a given OWLNamedIndividual x, its inferred sf:has_nextNode targets:
-     *   x --has_nextNode--> y1
-     *   x --has_nextNode--> y2
-     */
-    public void printInferredNextNodesOf(OWLNamedIndividual node) {
-        if (node == null) {
-            System.out.println("[Cannot print inferred nextNodes: node is null]");
-            return;
-        }
-        String nodeId = shortFormProvider.getShortForm(node);
-        Set<OWLNamedIndividual> targets = getInferredNextNodes(node);
-
-        System.out.println("\n=== Inferred sf:has_nextNode targets of “" + nodeId + "” ===");
-        if (targets.isEmpty()) {
-            System.out.println("  [no inferred sf:has_nextNode for “" + nodeId + "”]");
-            return;
-        }
-        for (OWLNamedIndividual obj : targets) {
-            String objId = shortFormProvider.getShortForm(obj);
-            System.out.println("  " + nodeId + " --has_nextNode--> " + objId);
         }
     }
 
@@ -691,7 +637,7 @@ public class OntologyService {
      * Format:
      *   SequenceFlow_…  has_sourceRef=x  has_targetRef=y  id="…"  name="…"
      */
-    public void printAllSequenceFlows() {
+    public void printSequenceFlows() {
         System.out.println("\n=== All bbo:SequenceFlow instances ===");
 
         OWLClass seqFlowClass   = df.getOWLClass(IRI.create(BPMN_NS + "SequenceFlow"));
@@ -812,50 +758,33 @@ public class OntologyService {
     }
 
     // --------------------------------------------------------
-    //  “Inferred Properties for Each Class” Methods
-    // --------------------------------------------------------
-
-    /**
-     * For a given named OWLClass C, return all OWLObjectProperties P such that
-     * HermiT can prove: C ⊑ ∃P.⊤
-     */
-    public Set<OWLObjectProperty> getInferredObjectProperties(OWLClass cls) {
-        if (cls == null) {
-            return Collections.emptySet();
-        }
-        return mergedOntology.getObjectPropertiesInSignature().stream()
-            .filter(prop -> {
-                OWLClassExpression existsRestriction =
-                    df.getOWLObjectSomeValuesFrom(prop, df.getOWLThing());
-                NodeSet<OWLClass> superOfRestr =
-                    reasoner.getSuperClasses(existsRestriction, false);
-                return superOfRestr.entities().anyMatch(c -> c.equals(cls));
-            })
-            .collect(Collectors.toSet());
-    }
-
-    /**
-     * For a given named OWLClass C, return all OWLDataProperties D such that
-     * HermiT can prove: C ⊑ ∃D.⊤_datatype
-     */
-    public Set<OWLDataProperty> getInferredDataProperties(OWLClass cls) {
-        if (cls == null) {
-            return Collections.emptySet();
-        }
-        return mergedOntology.getDataPropertiesInSignature().stream()
-            .filter(dataProp -> {
-                OWLClassExpression existsDataRestriction =
-                    df.getOWLDataSomeValuesFrom(dataProp, df.getTopDatatype());
-                NodeSet<OWLClass> superOfDataRestr =
-                    reasoner.getSuperClasses(existsDataRestriction, false);
-                return superOfDataRestr.entities().anyMatch(c -> c.equals(cls));
-            })
-            .collect(Collectors.toSet());
-    }
-
-    // --------------------------------------------------------
     //  Public getters
     // --------------------------------------------------------
+
+    /**
+     * If buttonInd →has_handler→ handler →has_associatedForm→ form,
+     * returns that form’s sfId literal; else null.
+     */
+    public String getFormKeyForButton(OWLNamedIndividual buttonInd) {
+        // 1) find its handler(s)
+        for (OWLNamedIndividual handler : reasoner
+                .getObjectPropertyValues(buttonInd, hasHandlerProp)
+                .entities().collect(Collectors.toSet())) {
+
+            // 2) find any associated Form(s)
+            for (OWLNamedIndividual form : reasoner
+                    .getObjectPropertyValues(handler, hasAssociatedFormProp)
+                    .entities().collect(Collectors.toSet())) {
+
+                // 3) grab the sfId literal
+                return mergedOntology.getDataPropertyAssertionAxioms(form).stream()
+                    .filter(ax -> ax.getProperty().equals(sfIdProp))
+                    .map(ax -> ax.getObject().getLiteral())
+                    .findFirst().orElse(null);
+            }
+        }
+        return null;
+    }
 
     /** Return the merged OWLOntology (with newly created SequenceFlows and ExclusiveGateways). */
     public OWLOntology getMergedOntology() {

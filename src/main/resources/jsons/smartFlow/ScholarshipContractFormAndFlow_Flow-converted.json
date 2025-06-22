@@ -860,7 +860,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-0-hr-verification",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Verificar Condições",
@@ -872,7 +872,7 @@
               }
             },
             {
-              "id" : "reject",
+              "id" : "reject-step-0-hr-verification",
               "primary" : false,
               "label" : {
                 "pt-PT" : "Rejeitar",
@@ -1052,7 +1052,7 @@
           },
           "buttons" : [
             {
-              "id" : "fund-reservation-form",
+              "id" : "fund-reservation-form-step-3.1-fund-reservation",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Confirmar Reserva de Fundos",
@@ -1064,7 +1064,7 @@
               }
             },
             {
-              "id" : "reject",
+              "id" : "reject-step-3.1-fund-reservation",
               "primary" : false,
               "label" : {
                 "pt-PT" : "Rejeitar",

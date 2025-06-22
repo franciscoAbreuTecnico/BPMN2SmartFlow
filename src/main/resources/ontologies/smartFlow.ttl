@@ -40,6 +40,7 @@ sf:ActionNode a owl:Class ;
     rdfs:subClassOf sf:Element ;
     rdfs:label "ActionNode" ;
     rdfs:comment "A node (step) within the workflow." .
+
 # sf:GenericActionNode a owl:Class ;
 #     rdfs:subClassOf sf:ActionNode ;
 #     rdfs:label "GenericActionNode" ;
@@ -59,6 +60,7 @@ sf:TerminalNode a owl:Class ;
     rdfs:comment "A terminal (end) node indicating the end of the flow (success or failure or cancel)." .
 
 sf:Action a owl:Class ;
+    rdfs:subClassOf sf:Element ;
     rdfs:label "Action" ;
     rdfs:comment "An action or transition available at a node (e.g., a user decision or automatic transition)." .
 
@@ -67,8 +69,14 @@ sf:Queue a owl:Class ;
     rdfs:comment "A work queue or assignment target (e.g., a user, group, or system) responsible for processing a node." .
 
 sf:Button a owl:Class ;
+    rdfs:subClassOf sf:Element ;
     rdfs:label "Button" ;
     rdfs:comment "A UI button that triggers a form submission and an action at a node." .
+
+sf:Handler a owl:Class ;
+    rdfs:subClassOf sf:Element ;
+    rdfs:label "Handler" ;
+    rdfs:comment "A Handler encapsulates both a form submission and an action trigger for a Button." .
 
 sf:ActionProcessor a owl:Class ;
     rdfs:subClassOf sf:Element ;
@@ -82,7 +90,7 @@ sf:ActionProcessor a owl:Class ;
 ################################################################
 # Disjointness
 ################################################################
-sf:ActionNode         owl:disjointWith sf:StartNode, sf:ActionProcessor, sf:TerminalNode .
+# sf:ActionNode         owl:disjointWith sf:StartNode, sf:Action, sf:Button, sf:Handler, sf:ActionProcessor, sf:TerminalNode .
 # sf:GenericActionNode     owl:disjointWith sf:WithFormsActionNode, sf:WithButtonsActionNode .
 # sf:WithFormsActionNode   owl:disjointWith sf:WithButtonsActionNode .
 
@@ -131,11 +139,22 @@ sf:has_transitionsTo a owl:ObjectProperty ;
     rdfs:label "has_transitionsTo" ;
     rdfs:comment "Indicates the target action node that an action leads to (transition). Terminal end states are also modeled as action nodes." .
 
-sf:has_associatedForm a owl:ObjectProperty ;
+sf:has_handler a owl:ObjectProperty ;
     rdfs:domain sf:Button ;
+    rdfs:range  sf:Handler ;
+    rdfs:label  "has_handler" ;
+    rdfs:comment "Links a Button to its Handler." .
+
+sf:has_associatedForm a owl:ObjectProperty ;
+    rdfs:domain sf:Handler ;
     rdfs:range sf:Form ;
     rdfs:label "has_associatedForm" ;
     rdfs:comment "Links a form button to the form that it launches." .
+sf:has_handlersAction a owl:ObjectProperty ;
+    rdfs:domain sf:Handler ;
+    rdfs:range sf:Action ;
+    rdfs:label "has_handlersAction" ;
+    rdfs:comment "If type=withForms, the action this button invokes." .
 sf:has_fields a owl:ObjectProperty ;
     rdfs:domain sf:Form ;
     rdfs:range sf:Field ;
@@ -146,11 +165,6 @@ sf:has_applyOn  a owl:ObjectProperty ;
     rdfs:range  sf:Action ;
     rdfs:label "has_applyOn" ;
     rdfs:comment "When clicked, this button fires the given Action." .
-sf:has_handlersAction a owl:ObjectProperty ;
-    rdfs:domain sf:Button ;
-    rdfs:range sf:Action ;
-    rdfs:label "has_handlersAction" ;
-    rdfs:comment "If type=withForms, the action this button invokes." .
 
 ################################################################
 # Datatype Properties
@@ -197,28 +211,28 @@ sf:labelEN a owl:AnnotationProperty ;
 # ############################################################################
 # # Transitions
 # ############################################################################
-sf:has_nextNode
-    a           owl:ObjectProperty ; # , owl:TransitiveProperty ;
-    rdfs:domain sf:Element ;
-    rdfs:range  sf:Element ;
-    owl:propertyChainAxiom (
-        sf:has_action
-        sf:has_transitionsTo
-    ) ;
-    rdfs:comment
-      "Logical next‐step in the flow, whether direct or via a processor." .
+# sf:has_nextNode
+#     a           owl:ObjectProperty ; # , owl:TransitiveProperty ;
+#     rdfs:domain sf:Element ;
+#     rdfs:range  sf:Element ;
+#     owl:propertyChainAxiom (
+#         sf:has_action
+#         sf:has_transitionsTo
+#     ) ;
+#     rdfs:comment
+#       "Logical next‐step in the flow, whether direct or via a processor." .
 
-sf:has_association
-    a           owl:ObjectProperty ;
-    rdfs:domain sf:Element ;
-    rdfs:range  sf:Field ;
-    owl:propertyChainAxiom (
-      sf:has_button
-      sf:has_associatedForm
-      sf:has_fields
-    ) ;
-    rdfs:comment
-      "Associates a field with an element, e.g., a form field with an action node." .
+# sf:has_association
+#     a           owl:ObjectProperty ;
+#     rdfs:domain sf:Element ;
+#     rdfs:range  sf:Field ;
+#     owl:propertyChainAxiom (
+#       sf:has_button
+#       sf:has_associatedForm
+#       sf:has_fields
+#     ) ;
+#     rdfs:comment
+#       "Associates a field with an element, e.g., a form field with an action node." .
 
 # ############################################################################
 # # 2) Direct hops: ActionNode → has_action → Action → has_transitionsTo → ActionNode

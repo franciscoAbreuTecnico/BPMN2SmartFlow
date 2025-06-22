@@ -1272,7 +1272,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-1-work-plan",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Planear",
@@ -1313,7 +1313,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-2-hr-processing",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Processar Informação",
@@ -1354,7 +1354,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-3.1-fund-reservation",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Confirmar Reserva de Fundos",
@@ -1452,7 +1452,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-5-sign-contract",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Assinar Contrato",

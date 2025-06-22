@@ -1,0 +1,465 @@
+{
+  "name": {
+    "pt-PT": "Faltas por Motivo de Casamento",
+    "en-GB": "Marriage Leave"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar e justificar faltas por motivo de casamento.",
+    "en-GB": "This form allows you to request and justify leave for marriage."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "startDate"
+      ],
+      "displayName": true,
+      "username": true
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Move Queue",
+        "queue": "Núcleo de Prestação de Trabalho"
+      }
+    ],
+    "onValidate": {
+      "requestProcessor": "Create Flow From Request",
+      "template": "marriage-leave-flow",
+      "actionNodesProvider": "Collaborator Authorization Flow",
+      "completeAuthorizationChain": false,
+      "setSectionWithRequesterInfo": true,
+      "setSupervisorFromRequester": true
+    },
+    "onResetValidate": {
+      "requestProcessor": "Cancel Flow"
+    },
+    "onConclude": {
+      "requestProcessor": "Check Has Connected Successful Flow"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Data da Ausência",
+          "en-GB": "Absence date"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Data da Ausência",
+              "en-GB": "Date of Absence"
+            },
+            "description": {
+              "pt-PT": "Ao abrigo da alínea a) n.º 2 do artigo 134.º da Lei Geral do Trabalho em Funções Públicas (LTFP) aprovada pela Lei n.º 35/2014, de 20 de junho, indique a data a partir da qual pretende faltar 15 dias seguidos por motivo de casamento.",
+              "en-GB": "Under paragraph a) of number 2 of Article 134 of the General Labour Law in Public Service (LTFP) approved by Law No. 35/2014, of 20 June, please indicate the date from which you intend to take 15 consecutive days' leave for marriage."
+            },
+            "properties": [
+              {
+                "type": "DateTime",
+                "field": "startDate",
+                "required": true,
+                "date": true,
+                "time": false,
+                "label": {
+                  "pt-PT": "Data de Início",
+                  "en-GB": "Start Date"
+                },
+                "description": {
+                  "pt-PT": "Poderá iniciar os 15 dias seguidos antes do dia do casamento, desde que inclua a data do casamento.",
+                  "en-GB": "You may begin the 15 consecutive days before the wedding date, provided that the wedding date is included."
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Certidão de Casamento",
+          "en-GB": "Marriage Certificate"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Submissão da Certidão de Casamento",
+              "en-GB": "Submission of the Marriage Certificate"
+            },
+            "description": {
+              "pt-PT": "Para conclusão do pedido é obrigatória a submissão da certidão de casamento.",
+              "en-GB": "The submission of the marriage certificate is required to complete the request."
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "acknowledgement",
+                "required": true,
+                "allowOther": false,
+                "collapse": false,
+                "label": {
+                  "pt-PT": "Tomada de Conhecimento",
+                  "en-GB": "Acknowledgment"
+                },
+                "options": [
+                  {
+                    "value": "accept",
+                    "label": {
+                      "pt-PT": "Tomei conhecimento da obrigatoriedade da submissão da certidão de casamento.",
+                      "en-GB": "I confirm that I am aware of the requirement to submit the marriage certificate."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Declaração de Compromisso de Honra",
+              "en-GB": "Declaration of Honour"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "declaration",
+                "required": true,
+                "multiple": false,
+                "collapse": false,
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Declaração de Compromisso de Honra",
+                  "en-GB": "Declaration of Honour"
+                },
+                "options": [
+                  {
+                    "value": "yes",
+                    "label": {
+                      "pt-PT": "Declaro, sob compromisso de honra, a autenticidade da presente informação e ter conhecimento da obrigatoriedade de conservar os originais pelo período de 5 anos.",
+                      "en-GB": "I hereby declare, on my honour, that this information is accurate and that I am aware of the obligation to retain the original documents for 5 years."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false,
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta",
+          "en-GB": "Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Resposta",
+              "en-GB": "Response"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "response",
+                "required": true,
+                "collapse": true,
+                "readonly": true,
+                "label": {
+                  "pt-PT": "Resposta",
+                  "en-GB": "Response"
+                },
+                "options": [
+                  {
+                    "value": "processed",
+                    "label": {
+                      "pt-PT": "O pedido foi registado.",
+                      "en-GB": "The request has been registered."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {
+  },
+  "flowTemplate": {
+    "name": "marriage-leave-flow",
+    "title": {
+      "pt-PT": "Processo de Pedido e Justificação de Faltas por Motivo de Casamento",
+      "en-GB": "Marriage Leave Request and Justification Process"
+    },
+    "description": {
+      "pt-PT": "Processo de Pedido e Justificação de Faltas por Motivo de Casamento",
+      "en-GB": "Marriage Leave Request and Justification Process"
+    },
+    "config": {
+      "authorizationChainNodes": {
+        "title": {
+          "pt-PT": "Envio de Notificação",
+          "en-GB": "Send Notification"
+        },
+        "description": {
+          "pt-PT": "Envio de notificação para o/a responsável",
+          "en-GB": "Send notification to the person in charge"
+        },
+        "comment": false,
+        "actions": {
+          "NOTIFY": {
+            "primary": true,
+            "to": "SUCCESS",
+            "label": {
+              "pt-PT": "Enviar Notificação",
+              "en-GB": "Send Notification"
+            }
+          }
+        },
+        "actionProcessor": {
+          "onEnterNode": [
+            {
+              "flowProcessor": "Send e-mail",
+              "template": "email-notification-marriage-leave",
+              "notifyFlowMembers": true,
+              "registered": true,
+              "sender": "1977853914648083",
+              "parameters": {
+                "startDate": "startDate"
+              }
+            },
+            {
+              "flowProcessor": "Do Flow Action",
+              "flowAction": "NOTIFY"
+            }
+          ]
+        },
+        "blockUndo": true
+      },
+      "actionProcessor": {
+        "onSuccess": [
+          {
+            "flowProcessor": "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure": [
+          {
+            "flowProcessor": "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition": [
+        ],
+        "onCancel": [
+          {
+            "flowProcessor": "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors": [
+      ],
+      "forms": [
+        {
+          "id": "upload-marriage-certificate",
+          "title": {
+            "pt-PT": "Submeter Certidão de Casamento",
+            "en-GB": "Submit Marriage Certificate"
+          },
+          "form": {
+            "pages": [
+              {
+                "title": {
+                  "pt-PT": "Informação do Casamento",
+                  "en-GB": "Marriage Information"
+                },
+                "sections": [
+                  {
+                    "title": {
+                      "pt-PT": "Informação do Casamento",
+                      "en-GB": "Marriage Information"
+                    },
+                    "properties": [
+                      {
+                        "type": "Boolean",
+                        "field": "requireMarriageCertificate",
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Vai apresentar a certidão de casamento?",
+                          "en-GB": "Are you submitting the marriage certificate?"
+                        },
+                        "labelYes": {
+                          "pt-PT": "Sim, vou apresentar a certidão de casamento.",
+                          "en-GB": "Yes, I am submitting the marriage certificate."
+                        },
+                        "labelNo": {
+                          "pt-PT": "Não, vou cancelar o pedido de falta por motivo de casamento.",
+                          "en-GB": "No, I am cancelling the marriage leave request."
+                        }
+                      },
+                      {
+                        "type": "File",
+                        "field": "marriageCertificate",
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Certidão de Casamento",
+                          "en-GB": "Marriage Certificate"
+                        },
+                        "allowedFileTypes": [
+                          ".pdf"
+                        ],
+                        "maxSizeMB": 10,
+                        "onlyIf": {
+                          "field": "requireMarriageCertificate",
+                          "value": true,
+                          "negation": false
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "actionNodes": [
+        {
+          "id": "step-about-to-marry",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "Em Vias de Casar",
+            "en-GB": "About to Marry"
+          },
+          "description": {
+            "pt-PT": "Em Vias de Casar",
+            "en-GB": "About to Marry"
+          },
+          "actions": {
+            "FINISH_WAITING": {
+              "primary": true,
+              "to": "step-upload-marriage-certificate",
+              "label": {
+                "pt-PT": "Terminar Espera pelo Casamento",
+                "en-GB": "Finish Waiting for the Wedding"
+              }
+            }
+          },
+          "queue": "Sistema FenixEdu",
+          "actionProcessor": {
+            "onEnterNode": {
+              "flowProcessor": "Do Flow Action After Time Passes",
+              "flowAction": "FINISH_WAITING",
+              "user": "fenix",
+              "when": {
+                "field": "startDate",
+                "plusDays": "1"
+              }
+            }
+          },
+          "blockUndo": true
+        },
+        {
+          "id": "step-upload-marriage-certificate",
+          "type": "withForms",
+          "comment": false,
+          "title": {
+            "pt-PT": "Apresentação da Certidão de Casamento",
+            "en-GB": "Submission of the Marriage Certificate"
+          },
+          "description": {
+            "pt-PT": "Apresentação da Certidão de Casamento",
+            "en-GB": "Submission of the Marriage Certificate"
+          },
+          "commentLabel": {
+            "pt-PT": "Apresentação da Certidão de Casamento",
+            "en-GB": "Submission of the Marriage Certificate"
+          },
+          "buttons": [
+            {
+              "id": "upload-marriage-certificate",
+              "primary": true,
+              "label": {
+                "pt-PT": "Apresentar Certidão de Casamento",
+                "en-GB": "Submit Marriage Certificate"
+              },
+              "handlers": {
+                "form": "upload-marriage-certificate",
+                "action": "SIGN"
+              }
+            }
+          ],
+          "actions": {
+            "SIGN": {
+              "primary": true,
+              "to": "step-hr-processing",
+              "label": {
+                "pt-PT": "Confirmar Submissão",
+                "en-GB": "Confirm Submission"
+              }
+            },
+            "REJECT" : {
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Cancelar Pedido de Falta por Motivo de Casamento",
+                "en-GB" : "Cancel Marriage Leave Request"
+              }
+            }
+          },
+          "queue": "{{requester-username}}"
+        },
+        {
+          "id": "step-hr-processing",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "A Direção de Recursos Humanos",
+            "en-GB": "The Human Resources Department"
+          },
+          "description": {
+            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+            "en-GB": "Processing by the Human Resources Department"
+          },
+          "commentLabel": {
+            "pt-PT": "Processamento pela Direção de Recursos Humanos",
+            "en-GB": "Processing by the Human Resources Department"
+          },
+          "actions": {
+            "SIGN": {
+              "primary": true,
+              "to": "SUCCESS",
+              "label": {
+                "pt-PT": "Marcar como Processado",
+                "en-GB": "Mark as Processed"
+              }
+            }
+          },
+          "actionProcessor": {
+            "onSuccess": [
+              {
+                "applyOn": "SIGN",
+                "flowProcessor": "Set Request Outcome Form",
+                "outcomeFormValues": {
+                  "response": {
+                    "value": "processed",
+                    "label": {
+                      "pt-PT": "O pedido foi registado.",
+                      "en-GB": "The request has been registered."
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "queue": "Núcleo de Prestação de Trabalho - Geral"
+        }
+      ]
+    }
+  }
+}

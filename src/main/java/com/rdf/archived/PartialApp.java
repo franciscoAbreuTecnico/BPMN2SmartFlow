@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rdf.OntologyService;
 import com.rdf.generator.BpmnModelBuilder;
 import com.rdf.util.JsonFlattener;
@@ -16,47 +17,75 @@ import com.rdf.util.JsonFlattener;
 import be.ugent.rml.cli.Main;
 
 public class PartialApp {
-    /**
-     * args:
-     * 0: input JSON file (e.g., src/main/resources/jsons/MarriageLeaveFlow_Flow.json)
-     * 1: RML template file with placeholder {{JSON_SOURCE}}
-     * 2: output RDF file
-     * 3: BPMN ontology TTL
-     * 4: mapping OWL TTL
-     */
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
+    
+    private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/tests/simple_gateway_test.json");
+    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/ScholarshipContractFormAndFlow.json");
+    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/SabbaticalLeave.json");
+    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/MarriageLeave.json");
 
+    /**
+     * Processes the hard-coded JSON file: splits into Flow and Request variants,
+     * then processes the Flow through the RDF + BPMN pipeline.
+     *
+     * args (optional):
+     *  0: RML template file with placeholder {{JSON_SOURCE}}
+     *  1: output RDF folder
+     *  2: smartFlow TTL ontology path
+     *  3: BPMN ontology TTL path
+     *  4: mapping OWL TTL path
+     */
     public static void main(String[] args) throws Exception {
-        // Hardcoded path for the input SmartFlow JSON
-        String inputJson = "src/main/resources/jsons/smartFlow/MarriageLeave_Flow.json";
-        processFile(inputJson);
+        Path jsonFile = INPUT_JSON;
+        Path parentDir = jsonFile.getParent();
+        Path flowDir = parentDir.resolve("smartFlow");
+        Path requestDir = parentDir.resolve("smartForm");
+        Files.createDirectories(flowDir);
+        Files.createDirectories(requestDir);
+
+        processJsonAndFlowSingle(jsonFile, flowDir, requestDir, args);
     }
 
-    private static void processFile(String inputJson) throws Exception {
+    private static void processJsonAndFlowSingle(Path jsonFile, Path flowDir, Path requestDir, String[] args) throws Exception {
+        String fileName = jsonFile.getFileName().toString();
+        String baseName = fileName.contains(".") ? fileName.substring(0, fileName.lastIndexOf('.')) : fileName;
+
+        JsonNode root = MAPPER.readTree(jsonFile.toFile());
+        if (!root.has("flowTemplate")) {
+            System.out.println("Skipping file " + fileName + ": missing flowTemplate");
+            return;
+        }
+
+        // Extract Flow
+        JsonNode flowNode = root.get("flowTemplate");
+        ObjectNode flowRoot = MAPPER.createObjectNode();
+        flowRoot.set("flowTemplate", flowNode);
+        Path outFlow = flowDir.resolve(baseName + "_Flow.json");
+        MAPPER.writerWithDefaultPrettyPrinter().writeValue(outFlow.toFile(), flowRoot);
+
+        // Extract Request
+        ObjectNode requestRoot = (ObjectNode) root.deepCopy();
+        requestRoot.remove("flowTemplate");
+        Path outRequest = requestDir.resolve(baseName + "_Request.json");
+        MAPPER.writerWithDefaultPrettyPrinter().writeValue(outRequest.toFile(), requestRoot);
+
+        // Process Flow
+        System.out.println("-> processing flow: " + outFlow.getFileName());
+        processFile(outFlow.toString(), args);
+        System.out.println();
+    }
+
+    private static void processFile(String inputJson, String[] args) throws Exception {
         String fileName = Paths.get(inputJson).getFileName().toString();
         String baseName = fileName.contains(".") ? fileName.substring(0, fileName.lastIndexOf('.')) : fileName;
 
-        // Default resources
-        String rmlTemplate    = "src/main/resources/rml/flowTemplate.rml.ttl";
-        String outputRdfDir   = "src/main/resources/output/instances/";
-        String smartFlowTTL   = "src/main/resources/ontologies/smartFlow.ttl";
-        String bpmnTtl        = "src/main/resources/ontologies/bpmn/bpmn.ttl";
-        String mappingOwl     = "src/main/resources/ontologies/mapping.ttl";
-
-        // Quick JSON validity check and extract flowTemplate
-        JsonNode root = MAPPER.readTree(Paths.get(inputJson).toFile());
-        JsonNode flowTemplate = root.get("flowTemplate");
-        if (flowTemplate == null || !flowTemplate.isObject()) {
-            System.out.println("Invalid or missing flowTemplate in " + inputJson);
-            return;
-        }
-        JsonNode config = flowTemplate.get("config");
-        JsonNode actionNodes = (config != null) ? config.get("actionNodes") : null;
-        if (actionNodes == null || !actionNodes.isArray() || actionNodes.size() == 0) {
-            System.out.println("No actionNodes found or empty in " + inputJson);
-            return;
-        }
+        // Unpack other args or use defaults
+        String rmlTemplate    = args.length > 0 ? args[0] : "src/main/resources/rml/flowTemplate.rml.ttl";
+        String outputRdfDir   = args.length > 1 ? args[1] : "src/main/resources/output/instances/";
+        String smartFlowTTL   = args.length > 2 ? args[2] : "src/main/resources/ontologies/smartFlow.ttl";
+        String bpmnTtl        = args.length > 3 ? args[3] : "src/main/resources/ontologies/bpmn/bpmn.ttl";
+        String mappingOwl     = args.length > 4 ? args[4] : "src/main/resources/ontologies/mapping.ttl";
 
         // Prepare RML mapping
         Path template = Paths.get(rmlTemplate);

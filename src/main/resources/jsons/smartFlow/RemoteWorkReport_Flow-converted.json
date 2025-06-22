@@ -829,7 +829,7 @@
           },
           "buttons" : [
             {
-              "id" : "upload-remote-work-report",
+              "id" : "upload-remote-work-report-step-upload-remote-work-report",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Submeter relatório de teletrabalho",
@@ -991,7 +991,7 @@
           },
           "buttons" : [
             {
-              "id" : "hr-processing",
+              "id" : "hr-processing-step-hr-processing",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Marcar como Processado",

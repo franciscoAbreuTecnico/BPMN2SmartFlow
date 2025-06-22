@@ -940,7 +940,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-2",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Imputação de custos",
@@ -952,7 +952,7 @@
               }
             },
             {
-              "id" : "reject",
+              "id" : "reject-step-2",
               "primary" : false,
               "label" : {
                 "pt-PT" : "Rejeitar",
@@ -1002,7 +1002,7 @@
           },
           "buttons" : [
             {
-              "id" : "fund-reservation-form",
+              "id" : "fund-reservation-form-step-3.1-fund-reservation",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Confirmar Reserva de Fundos",
@@ -1014,7 +1014,7 @@
               }
             },
             {
-              "id" : "reject",
+              "id" : "reject-step-3.1-fund-reservation",
               "primary" : false,
               "label" : {
                 "pt-PT" : "Rejeitar",
@@ -1209,7 +1209,7 @@
           },
           "buttons" : [
             {
-              "id" : "review-documents-form",
+              "id" : "review-documents-form-step-5-request-document-changes",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Rever Documentação",

@@ -183,7 +183,7 @@
           },
           "buttons" : [
             {
-              "id" : "upload-signed-service-provision-contract",
+              "id" : "upload-signed-service-provision-contract-step-upload-signed-service-provision-contract",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Apresentar Contrato de Prestação de Serviço Assinado",

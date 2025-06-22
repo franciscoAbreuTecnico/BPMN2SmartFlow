@@ -140,7 +140,7 @@
           },
           "buttons" : [
             {
-              "id" : "submit-form",
+              "id" : "submit-form-step-0-hr-verification",
               "primary" : true,
               "label" : {
                 "pt-PT" : "Verificar Elegibilidade",
@@ -152,7 +152,7 @@
               }
             },
             {
-              "id" : "reject",
+              "id" : "reject-step-0-hr-verification",
               "primary" : false,
               "label" : {
                 "pt-PT" : "Rejeitar",

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
-    <uri id="User Entered Import Resolution" name="http://example.org/ontologies/SmartFlow/individuals.ttl" uri="smartFlow.ttl"/>
     <uri id="User Entered Import Resolution" name="http://example.org/ontologies/SmartFlow" uri="smartFlow.ttl"/>
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1748942039030" name="https://www.irit.fr/recherches/MELODI/ontologies/BBO" uri="bpmn.ttl"/>
+        <uri id="Automatically generated entry, Timestamp=1750369055909" name="https://www.irit.fr/recherches/MELODI/ontologies/BBO" uri="bpmn/bpmn.ttl"/>
     </group>
 </catalog>

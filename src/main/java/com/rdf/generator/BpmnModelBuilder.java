@@ -36,8 +36,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import com.rdf.OntologyService;
 import com.rdf.exception.BpmnGenerationException;
-import com.rdf.layout.engine.AutoLayoutEngine;
-import com.rdf.layout.model.LayoutConfig;
+import com.rdf.layout.test.LayoutExampleMain.AutoLayoutEngine;
+import com.rdf.layout.test.LayoutExampleMain.LayoutConfig;
 
 public class BpmnModelBuilder {
 
@@ -73,7 +73,6 @@ public class BpmnModelBuilder {
 
             instantiateLanes(process);
 
-
             instantiateFlowObjects(modelInstance, process);
             
             instantiateConnectingObjects(modelInstance, process);
@@ -103,9 +102,10 @@ public class BpmnModelBuilder {
                 taskInd.getIRI().getFragment()
             );
 
-            // 2) for every sf:has_association → Field, make a DataObject + DataAssociation
-            ontService.getAssociatedFields(taskInd)
-              .forEach(fieldInd -> createDataObjectForTask(process, ut, fieldInd));
+            String formKey = ontService.getFormKeyForButton(taskInd);
+            if (formKey != null && !formKey.isBlank()) {
+                ut.builder().camundaFormKey("" + formKey).done();
+            }
         });
 
         // Service Task
@@ -349,7 +349,7 @@ public class BpmnModelBuilder {
         return sequenceFlow;
     }
 
-        /*
+    /*
      * Validates the BPMN model and writes it to a file
      * @param modelInstance The BPMN model instance to validate and save
      * @param fileName The name of the file to save the model to

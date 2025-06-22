@@ -156,6 +156,16 @@
               },
               "id" : "FINISH_WAITING-step-about-to-marry",
               "name" : "FINISH_WAITING"
+            },
+            {
+              "primary" : true,
+              "to" : "step-hr-processing",
+              "label" : {
+                "pt-PT" : "Confirmar Submissão",
+                "en-GB" : "Confirm Submission"
+              },
+              "id" : "SIGN-step-about-to-marry",
+              "name" : "SIGN"
             }
           ],
           "queue" : "Sistema-FenixEdu",

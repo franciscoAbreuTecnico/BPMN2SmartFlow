@@ -640,7 +640,7 @@
                             "primary": false,
                             "label": {
                                 "pt-PT": "Rejeitar",
-                                "en-GB": "Rejeitar"
+                                "en-GB": "Reject"
                             },
                             "handlers": {
                                 "action": "REJECT"
@@ -654,6 +654,14 @@
                             "label": {
                                 "pt-PT": "Marcar como Processado",
                                 "en-GB": "Mark as Processed"
+                            }
+                        },
+                        "REJECT": {
+                            "primary": false,
+                            "to": "FAILURE",
+                            "label": {
+                                "pt-PT": "Rejeitar",
+                                "en-GB": "Reject"
                             }
                         }
                     },

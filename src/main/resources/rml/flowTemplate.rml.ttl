@@ -7,6 +7,63 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @base <http://example.org/mappings/> .
 
+#################################################################
+# Map FlowTemplate
+#################################################################
+<#FlowTemplateMapping>
+  a rr:TriplesMap ;
+  
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$" ;
+  ] ;
+  
+  rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/{flowTemplate.name}" ;
+    rr:termType  rr:IRI ;
+    rr:class     sf:FlowTemplate ;
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate sf:sfName ;
+    rr:objectMap  [ rml:reference "$.flowTemplate.name" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titleEN ;
+    rr:objectMap [
+      rml:reference "$.flowTemplate.title.en-GB" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titlePT ;
+    rr:objectMap [
+      rml:reference "$.flowTemplate.title.pt-PT" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:descriptionPT ;
+    rr:objectMap [
+      rml:reference "$.flowTemplate.description.pt-PT" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:descriptionEN ;
+    rr:objectMap [
+      rml:reference "$.flowTemplate.description.en-GB" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:rawJson ;
+    rr:objectMap [
+      rml:reference "$.flowTemplate" ;
+    ] ;
+  ] .
 
 #################################################################
 # Map StartNode
@@ -581,6 +638,9 @@
   ] ;
 .
 
+#################################################################
+# Map each Field associated with a Form
+#################################################################
 <#FieldMapping>
   a rr:TriplesMap ;
   rml:logicalSource [
@@ -608,6 +668,9 @@
 ] ;
 .
 
+#################################################################
+# Map each Queue
+#################################################################
 <#QueueMapping>
   a rr:TriplesMap ;
   rml:logicalSource [

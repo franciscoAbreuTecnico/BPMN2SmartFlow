@@ -1,7 +1,11 @@
 package com.rdf.generator;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,35 +24,50 @@ import org.camunda.bpm.model.bpmn.instance.Definitions;
 import org.camunda.bpm.model.bpmn.instance.Documentation;
 import org.camunda.bpm.model.bpmn.instance.EndEvent;
 import org.camunda.bpm.model.bpmn.instance.ExclusiveGateway;
+import org.camunda.bpm.model.bpmn.instance.ExtensionElements;
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
 import org.camunda.bpm.model.bpmn.instance.Lane;
 import org.camunda.bpm.model.bpmn.instance.LaneSet;
 import org.camunda.bpm.model.bpmn.instance.Participant;
 import org.camunda.bpm.model.bpmn.instance.Process;
+import org.camunda.bpm.model.bpmn.instance.ScriptTask;
 import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
 import org.camunda.bpm.model.bpmn.instance.ServiceTask;
 import org.camunda.bpm.model.bpmn.instance.StartEvent;
 import org.camunda.bpm.model.bpmn.instance.UserTask;
+import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperties;
+import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperty;
 import org.camunda.bpm.model.xml.ModelInstance;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import com.rdf.OntologyService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rdf.exception.BpmnGenerationException;
+import com.rdf.extractor.JavaMethodExtractor;
+import com.rdf.extractor.enums.PatternType;
 import com.rdf.layout.test.LayoutExampleMain.AutoLayoutEngine;
 import com.rdf.layout.test.LayoutExampleMain.LayoutConfig;
+import com.rdf.service.OntologyService;
 
 public class BpmnModelBuilder {
 
     private final OntologyService ontService;
     private final Map<String, Lane>    laneMap   = new LinkedHashMap<>();
     private final List<Lane>           lanes     = new ArrayList<>();
+    private static final ObjectMapper JSON = new ObjectMapper();
+    private final Map<PatternType, HashMap<String, JavaMethodExtractor.Location>> methodData;
 
-    public BpmnModelBuilder(OntologyService ontologyService) {
-        this.ontService = ontologyService;
+    public BpmnModelBuilder(
+        OntologyService ontologyService,
+        Map<PatternType, HashMap<String, JavaMethodExtractor.Location>> methodData
+    ) {
+        this.ontService   = ontologyService;
+        this.methodData   = methodData;
     }
-
+    
     public void generateBpmnModel(String fileName) throws BpmnModelException, BpmnGenerationException {
         try {
             // Create an empty BpmnModel
@@ -59,17 +78,12 @@ public class BpmnModelBuilder {
 
             Process process = createProcess(definitions);
 
-            // Collaboration <=> ID if the process (FlowTemplate name)
-            Collaboration collaboration = createElement(definitions, "smart_flow_collaboration", Collaboration.class);
-            collaboration.setName("SmartFlow Collaboration"); // optional, if set name
-            attachDocumentation(collaboration, ""); // ibpmCollaboration.getElementDocumentation()); // raw JSON
-            definitions.addChildElement(collaboration);
+            Collaboration collaboration = createFillCollaboration(definitions);
 
             // For now, it only has 1 Participant/Pool
             Participant participant = createElement(collaboration, "smart_flow_participant", Participant.class);
             participant.setName("Smart Flow");
             participant.setProcess(process);
-
 
             instantiateLanes(process);
 
@@ -91,22 +105,38 @@ public class BpmnModelBuilder {
         ontService.getInstances("ProcessStartEvent", false)
         .forEach(ind -> createBpmnElement(process, ind, StartEvent.class, ontService.getDataPropertyValue(ind, "sfName")));
 
-        // User Task + any associated Fields → BPMN DataObjects
+        // User Task
         ontService.getInstances("UserTask", false)
-          .forEach(taskInd -> {
-            // 1) create the UserTask node
-            UserTask ut = createBpmnElement(
-                process,
-                taskInd,
-                UserTask.class,
-                taskInd.getIRI().getFragment()
-            );
+        .forEach(taskInd -> {
+        UserTask ut = createBpmnElement(
+            process,
+            taskInd,
+            UserTask.class,
+            ontService.getDataPropertyValue(taskInd, "sfName")
+        );
 
-            String formKey = ontService.getFormKeyForButton(taskInd);
-            if (formKey != null && !formKey.isBlank()) {
-                ut.builder().camundaFormKey("" + formKey).done();
-            }
+        // Reference Camunda Form
+        OWLNamedIndividual formInd = ontService.getFormForTask(taskInd);
+        if (formInd != null) {
+            String formRef = formInd.getIRI().getFragment();
+            ut.getDomElement()
+            .setAttribute(
+                "http://camunda.org/schema/1.0/bpmn",
+                "formRef",
+                formRef
+            );
+            ut.getDomElement()
+            .setAttribute(
+                "http://camunda.org/schema/1.0/bpmn",
+                "formRefBinding",
+                "latest"
+            );
+        }
         });
+
+        // Script Task
+        instantiateScriptTasks(modelInstance, process);
+
 
         // Service Task
         ontService.getInstances("ServiceTask", false)
@@ -157,6 +187,22 @@ public class BpmnModelBuilder {
     // 
     /// //////////////////////////////////
 
+    public Collaboration createFillCollaboration(Definitions definitions) throws BpmnGenerationException {
+        OWLNamedIndividual ft = ontService.getInstances("ProcessDefinition", false)
+            .stream()
+            .findFirst()
+            .orElseThrow(() -> new BpmnGenerationException("No ProcessDefinition individual found"));
+
+        String processIdName = ontService.getDataPropertyValue(ft, "sfName");
+
+        Collaboration collaboration = createElement(definitions, processIdName, Collaboration.class);
+        collaboration.setName(processIdName);
+
+        attachDocumentation(collaboration, ontService.getDataPropertyValue(ft, "rawJson"));
+        definitions.addChildElement(collaboration);
+        return collaboration;
+    }
+
     /**
      * Creates a new Process element and adds it to the Definitions.
      *
@@ -189,7 +235,6 @@ public class BpmnModelBuilder {
      * Creates a new Process element and adds it to the Definitions.
      *
      * @param definitions The Definitions instance to which the Process will be added.
-     * @param ibpmProcess The IBPMProcess instance containing process details.
      * @return The created Process instance.
      */
     private Process createProcess(Definitions definitions) {
@@ -217,6 +262,98 @@ public class BpmnModelBuilder {
         });
     }
 
+    public void generateFormDefinitions(Path formsDir) throws IOException {
+        // make sure the directory exists
+        Files.createDirectories(formsDir);
+
+        // get every Form individual
+        ontService.getInstances("Form", false).forEach(formInd -> {
+            try {
+                String formId = formInd.getIRI().getFragment();
+
+                // build a minimal Camunda form JSON:
+                ObjectNode formJson = JSON.createObjectNode();
+                formJson.put("key", formId);
+
+                // fields array
+                ArrayNode fields = formJson.putArray("fields");
+                // assume your OntologyService has something like `getFieldsForForm(...)`
+                ontService.getFieldsForForm(formInd).forEach(fieldInd -> {
+                    ObjectNode f = fields.addObject();
+                    f.put("id",      fieldInd.getIRI().getFragment());
+                    f.put("label",   ontService.getDataPropertyValue(fieldInd, "sfName"));
+                    // ... any other metadata you need (type, validations, etc)
+                });
+
+                // write to disk
+                Path out = formsDir.resolve(formId + ".form");
+                JSON.writerWithDefaultPrettyPrinter()
+                    .writeValue(out.toFile(), formJson);
+            }
+            catch (IOException e) {
+                throw new RuntimeException("Error writing form JSON for " 
+                                           + formInd.getIRI().getFragment(), e);
+            }
+        });
+    }
+
+    /**
+     * Create all ScriptTask nodes, then add a camunda:property link
+     * back to the Java source if we found a matching processor.
+     */
+    private void instantiateScriptTasks(
+        BpmnModelInstance modelInstance,
+        Process process
+    ) {
+        Map<String, JavaMethodExtractor.Location> flowProcessorsMap =
+            methodData.getOrDefault(PatternType.FLOW_PROCESSORS, new HashMap<>());
+
+        ontService.getInstances("ScriptTask", false)
+        .forEach(ind -> {
+            // 1) create the ScriptTask
+            ScriptTask st = createBpmnElement(
+                process,
+                ind,
+                ScriptTask.class,
+                ontService.getDataPropertyValue(ind, "sfName")
+            );
+
+            // 2) find the matching Location by the same name
+            String processorsName = ontService.getDataPropertyValue(ind, "sfName");
+            JavaMethodExtractor.Location loc = flowProcessorsMap.get(processorsName);
+            if (loc == null) {
+            return;
+            }
+
+            // 3) build the GitLab URL
+            int lineNumber = loc.lineNumber;
+            String fullPath = loc.getFile().toAbsolutePath().toString().replace("\\", "/");
+
+            String[] submodules = {
+            "fenixedu-paper-pusher-ist",
+            "fenixedu-paper-pusher-integration"
+            };
+            String branch  = "main";
+            String baseUrl = "https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher";
+
+            for (String sub : submodules) {
+            int idx = fullPath.indexOf(sub + "/");
+            if (idx != -1) {
+                String relativePath = fullPath.substring(idx);
+                String fullUrl = String.format(
+                "%s/-/blob/%s/%s#L%d",
+                baseUrl, branch, relativePath, lineNumber
+                );
+                // 4) attach as camunda extension property
+                Map<String,String> props = new HashMap<>();
+                props.put("LINK_" + lineNumber, fullUrl);
+                applyExtensionProperties(props, st);
+                break;
+            }
+            }
+        });
+    }
+
     /*
      * Attach documentation to a BPMN element
      * @param element The BPMN element to which the documentation will be attached
@@ -231,6 +368,36 @@ public class BpmnModelBuilder {
             element.addChildElement(documentation);
         }
     } 
+
+    /**
+     * Pushes a Map of camunda extension properties onto a BPMN element.
+     */
+    private void applyExtensionProperties(
+        Map<String,String> props,
+        BaseElement targetElement
+    ) {
+        if (props == null || props.isEmpty()) {
+            return;
+        }
+
+        ModelInstance modelInstance = targetElement.getModelInstance();
+        ExtensionElements extElems = targetElement.getExtensionElements();
+        if (extElems == null) {
+            extElems = modelInstance.newInstance(ExtensionElements.class);
+            targetElement.setExtensionElements(extElems);
+        }
+
+        // create <camunda:properties>
+        CamundaProperties camProps = modelInstance.newInstance(CamundaProperties.class);
+        extElems.addChildElement(camProps);
+
+        for (Map.Entry<String,String> e : props.entrySet()) {
+            CamundaProperty prop = modelInstance.newInstance(CamundaProperty.class);
+            prop.setCamundaName(e.getKey());
+            prop.setCamundaValue(e.getValue());
+            camProps.addChildElement(prop);
+        }
+    }
 
     /**
      * Create a BPMN element of the given type, set its id and (possibly overridden) name,

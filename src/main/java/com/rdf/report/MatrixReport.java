@@ -1,12 +1,21 @@
 package com.rdf.report;
 
-import com.rdf.OntologyService;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+
+import com.rdf.service.OntologyService;
 
 /**
  * MatrixReport collects counts of SmartFlow and BPMN elements
@@ -19,6 +28,7 @@ public class MatrixReport {
         "Queue > Lane",
         "StartNode > ProcessStartEvent",
         "ActionNode > UserTask",
+        // TODO Change it to ScriptTask when implemented
         "ActionProcessor > ServiceTask",
         "TerminalNode > EndEvent",
         "Field > DataObject",

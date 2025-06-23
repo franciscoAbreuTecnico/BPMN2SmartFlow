@@ -18,6 +18,11 @@
 # Align core ActionNode and its identifiers
 ###############################################################################
 
+bbo:ProcessDefinition
+    a owl:Class ;
+    owl:equivalentClass sf:FlowTemplate ;
+    rdfs:comment "BBO ProcessDefinition aligned to SmartFlow ProcessDefinition." .
+
 bbo:Lane
     a owl:Class ;
     owl:equivalentClass sf:Queue ;
@@ -44,8 +49,8 @@ sf:Button
     rdfs:comment "SmartFlow button aligned to BBO’s UserTask." .
 
 sf:ActionProcessor
-    owl:equivalentClass bbo:ServiceTask ;
-    rdfs:comment "SmartFlow action processor aligned to BBO’s ServiceTask." .
+    owl:equivalentClass bbo:ScriptTask ;
+    rdfs:comment "SmartFlow action processor aligned to BBO’s ScriptTask." .
 
 sf:Field
     owl:equivalentClass bbo:DataResource ;

@@ -15,6 +15,11 @@ sf:Flow a owl:Class ;
     rdfs:label "Flow" ;
     rdfs:comment "Represents a workflow template or process definition." .
 
+sf:FlowTemplate a owl:Class ;
+    rdfs:subClassOf sf:Flow ;
+    rdfs:label "Flow Template" ;
+    rdfs:comment "A template for a workflow, defining the structure and elements of the flow." .
+
 sf:Element a owl:Class ;
     rdfs:label "Flow Template Element" ;
     rdfs:comment "An element in the flow, which can be an action node or a terminal node." .
@@ -169,6 +174,12 @@ sf:has_applyOn  a owl:ObjectProperty ;
 ################################################################
 # Datatype Properties
 ################################################################
+sf:rawJson
+    a               owl:DatatypeProperty ;
+    rdfs:domain     sf:FlowTemplate ;
+    rdfs:range      xsd:string ;
+    rdfs:label      "rawJson" ;
+    rdfs:comment    "Contains the full JSON text of the flowTemplate object, serialized as one string." .
 sf:sfId a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "sfId" ;
@@ -207,103 +218,3 @@ sf:labelPT a owl:AnnotationProperty ;
     rdfs:comment "Label in Portuguese (pt-PT)" .
 sf:labelEN a owl:AnnotationProperty ;
     rdfs:comment "Label in English (en-GB)" .
-
-# ############################################################################
-# # Transitions
-# ############################################################################
-# sf:has_nextNode
-#     a           owl:ObjectProperty ; # , owl:TransitiveProperty ;
-#     rdfs:domain sf:Element ;
-#     rdfs:range  sf:Element ;
-#     owl:propertyChainAxiom (
-#         sf:has_action
-#         sf:has_transitionsTo
-#     ) ;
-#     rdfs:comment
-#       "Logical next‐step in the flow, whether direct or via a processor." .
-
-# sf:has_association
-#     a           owl:ObjectProperty ;
-#     rdfs:domain sf:Element ;
-#     rdfs:range  sf:Field ;
-#     owl:propertyChainAxiom (
-#       sf:has_button
-#       sf:has_associatedForm
-#       sf:has_fields
-#     ) ;
-#     rdfs:comment
-#       "Associates a field with an element, e.g., a form field with an action node." .
-
-# ############################################################################
-# # 2) Direct hops: ActionNode → has_action → Action → has_transitionsTo → ActionNode
-# ############################################################################
-# sf:nextNodeDirect
-#     a                   owl:ObjectProperty ;
-#     rdfs:subPropertyOf  sf:nextNode ;
-#     rdfs:domain         sf:ActionNode ;
-#     rdfs:range          sf:ActionNode ;
-#     owl:propertyChainAxiom (
-#       sf:has_action
-#       sf:has_transitionsTo
-#     ) ;
-#     rdfs:comment
-#       "When no processor intervenes: node → action → next-node." .
-
-# ############################################################################
-# # 3a) First hop via processor: ActionNode → has_actionProcessor → ActionProcessor
-# ############################################################################
-# sf:nextNodeToProcessor
-#     a                  owl:ObjectProperty ;
-#     rdfs:subPropertyOf sf:nextNode ;
-#     rdfs:domain        sf:ActionNode ;
-#     rdfs:range         sf:ActionProcessor ;
-#     owl:propertyChainAxiom (
-#       sf:has_actionProcessor
-#     ) ;
-#     rdfs:comment
-#       "First hop when a processor exists: node → processor." .
-
-# ############################################################################
-# # 3b) Second hop via processor: ActionProcessor → has_applyOn → Action → has_transitionsTo → ActionNode
-# ############################################################################
-# sf:nextNodeViaProcessor
-#     a                  owl:ObjectProperty ;
-#     rdfs:subPropertyOf sf:nextNode ;
-#     rdfs:domain        sf:ActionProcessor ;
-#     rdfs:range         sf:ActionNode ;
-#     owl:propertyChainAxiom (
-#       sf:has_applyOn
-#       sf:has_transitionsTo
-#     ) ;
-#     rdfs:comment
-#       "Completes the hop via a processor: processor → action → next-node." .
-
-# # Case A: direct transitions ActionNode - hasAction -> Action - hasTransitionsTo -> ActionNode (next)
-# sf:nextNode a                   owl:ObjectProperty ;
-#     rdfs:domain         sf:ActionNode ;
-#     rdfs:range          sf:ActionNode ;
-#     owl:propertyChainAxiom (
-#       sf:has_action
-#       sf:has_transitionsTo
-#     ) ;
-#     rdfs:comment "Direct step-to-step transition." .
-
-# # Chain B.1: ActionNode - has_actionProcessor -> Processor
-# sf:nextNode
-#   owl:propertyChainAxiom (
-#     sf:has_actionProcessor
-#   ) ;
-#   rdfs:comment "First hop: node → processor → action." .
-    
-
-# # Chain B.2: Processor - has_applyOn -> Action - has_transitionsTo -> ActionNode (next)
-# sf:nextNode
-#   owl:propertyChainAxiom (
-#     sf:has_applyOn
-#     sf:has_transitionsTo
-#   ) ;
-#   rdfs:comment "Full hop: node → … → next node." .
-
-################################################################
-# Individuals (defined in individuals.ttl)
-################################################################

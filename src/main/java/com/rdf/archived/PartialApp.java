@@ -1,17 +1,18 @@
 package com.rdf.archived;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.rdf.OntologyService;
+import com.rdf.extractor.JavaMethodExtractor;
+import com.rdf.extractor.enums.PatternType;
 import com.rdf.generator.BpmnModelBuilder;
+import com.rdf.service.OntologyService;
 import com.rdf.util.JsonFlattener;
 
 import be.ugent.rml.cli.Main;
@@ -19,7 +20,18 @@ import be.ugent.rml.cli.Main;
 public class PartialApp {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/ScholarshipContractFormAndFlow.json");
+    private static final String[] SOURCE_PATHS = new String[] {
+        "C:\\Users\\franc\\Desktop\\DASI\\fenixedu-paper-pusher\\fenixedu-paper-pusher-integration",
+        "C:\\Users\\franc\\Desktop\\DASI\\fenixedu-paper-pusher\\fenixedu-paper-pusher-ist"
+    };
+
+    private static final JavaMethodExtractor EXTRACTOR = new JavaMethodExtractor(SOURCE_PATHS);
+
+    private static final Map<PatternType, HashMap<String, JavaMethodExtractor.Location>> METHOD_DATA =
+        EXTRACTOR.getResultsMap();
+
+    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/ScholarshipContractFormAndFlow.json");
+    private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/MarriageLeave.json");
 
     /**
      * Processes the hard-coded JSON file: splits into Flow and Request variants,
@@ -99,9 +111,9 @@ public class PartialApp {
         Files.writeString(tmpMap, mappingTtl);
         System.out.println("RML mapping template written to: " + tmpMap.toAbsolutePath());
 
-        // RMLMapper → individuals
+        // RMLMapper -> individuals
         String outputRdf = outputRdfDir + baseName + "_individuals.ttl";
-        Main.main(new String[] {"-m", tmpMap.toString(), "-o", outputRdf});
+        Main.main(new String[] {"-m", tmpMap.toString(), "-o", outputRdf, "-s", "turtle"});
         System.out.println("RDF output written to: " + outputRdf);
 
         // OWLAPI + reasoning
@@ -112,9 +124,14 @@ public class PartialApp {
             Paths.get(mappingOwl)
         );
 
+        BpmnModelBuilder builder = new BpmnModelBuilder(ontService, METHOD_DATA);
+
         // generate BPMN
         String bpmnOut = "src/main/resources/output/bpmn/" + baseName + ".bpmn";
-        new BpmnModelBuilder(ontService).generateBpmnModel(bpmnOut);
+        Path formsOut = Paths.get("src/main/resources/output/forms");
+        Files.createDirectories(formsOut);
+        builder.generateFormDefinitions(formsOut);
+        builder.generateBpmnModel(bpmnOut);
         System.out.println("BPMN model written to: " + bpmnOut);
 
         // save merged ontology

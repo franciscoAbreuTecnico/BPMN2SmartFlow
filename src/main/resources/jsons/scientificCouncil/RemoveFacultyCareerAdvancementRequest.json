@@ -1,0 +1,92 @@
+{
+  "name": {
+    "pt-PT": "Retirar Manifestação de Interesse no Âmbito do Processo de Valorização",
+    "en-GB": "Remove Expression of Interest in the Context of Faculty Career Advancement"
+  },
+  "description": {
+    "pt-PT": "Formulário retirar a manifestação de interesse no âmbito do processo de valorização.",
+    "en-GB": "Form remove expression of interest in career advancement by faculty members."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+      ],
+      "displayName": false,
+      "username": false
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Remove Expression of Interest"
+      }
+    ],
+    "onValidate": [
+    ],
+    "onResetValidate": [
+    ],
+    "onConclude": [
+    ],
+    "hideFlowFromRequester": true
+  },
+  "inputForm": {
+    "title": {
+      "pt-PT": "Proposta de Valorização",
+      "en-GB": "Proposal for Career Advancement"
+    },
+    "checks": {
+      "requirePersonalInformation": true,
+      "requirePhotograph": true,
+      "requireIdentity": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Informações Necessárias",
+          "en-GB": "Required Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Proposta de Valorização",
+              "en-GB": "Proposal for Career Advancement"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "field": "ORIGINAL_REQUEST",
+                "required": true,
+                "optionsProvider": "/paper-pusher-ist/requests/openCareerAdvancementRequests",
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Manifestação",
+                  "en-GB": "Expression"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": false,
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resultado",
+          "en-GB": "Result"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Resultado",
+              "en-GB": "Result"
+            },
+            "properties": [
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {}
+}

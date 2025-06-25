@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_d7b36c6f-72e6-4d49-bf17-64da3fcb7f68"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Sistema-FenixEdu" name="Sistema-FenixEdu">
+            <flowNodeRef>step-wait-sabbatical-leave-reports</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes</flowNodeRef>
+            <flowNodeRef>FINISH_WAITING-step-wait-sabbatical-leave-reports</flowNodeRef>
+         </lane>
+         <lane id="Presidencia-do-Instituto-Superior-Tecnico"
+               name="Presidencia-do-Instituto-Superior-Tecnico">
+            <flowNodeRef>step-president</flowNodeRef>
+            <flowNodeRef>REJECT-step-president</flowNodeRef>
+            <flowNodeRef>SIGN-step-president</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-president</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="Conselho-Cientifico" name="Conselho-Cientifico">
+            <flowNodeRef>step-scientific-council</flowNodeRef>
+            <flowNodeRef>REJECT-step-scientific-council</flowNodeRef>
+            <flowNodeRef>SIGN-step-scientific-council</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-scientific-council</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="requester-username" name="requester-username">
+            <flowNodeRef>submit-form-step-upload-sabbatical-leave-reports</flowNodeRef>
+            <flowNodeRef>step-upload-sabbatical-leave-reports</flowNodeRef>
+            <flowNodeRef>SIGN-step-upload-sabbatical-leave-reports</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+         <lane id="Nucleo-de-Docentes-e-Investigadores-Geral"
+               name="Nucleo-de-Docentes-e-Investigadores-Geral">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>reject-step-hr-processing</flowNodeRef>
+            <flowNodeRef>submit-form-step-hr-processing</flowNodeRef>
+            <flowNodeRef>step-hr-processing</flowNodeRef>
+            <flowNodeRef>REJECT-step-hr-processing</flowNodeRef>
+            <flowNodeRef>SIGN-step-hr-processing</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-hr-processing</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="Gestao-Administrativa" name="Gestao-Administrativa">
+            <flowNodeRef>step-administrator</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-administrator-Skip_Next_Nodes</flowNodeRef>
+            <flowNodeRef>REJECT-step-administrator</flowNodeRef>
+            <flowNodeRef>SIGN-step-administrator</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-administrator</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-president" name="The President">
+         <incoming>onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president</incoming>
+         <outgoing>step-president_to_ExclusiveGateway_step-president</outgoing>
+      </userTask>
+      <userTask id="submit-form-step-upload-sabbatical-leave-reports"
+                name="Submit Final Report">
+         <incoming>step-upload-sabbatical-leave-reports_to_submit-form-step-upload-sabbatical-leave-reports</incoming>
+         <outgoing>submit-form-step-upload-sabbatical-leave-reports_to_SIGN-step-upload-sabbatical-leave-reports</outgoing>
+      </userTask>
+      <userTask id="reject-step-hr-processing" name="Reject">
+         <incoming>ExclusiveGateway_step-hr-processing_to_reject-step-hr-processing</incoming>
+         <outgoing>reject-step-hr-processing_to_REJECT-step-hr-processing</outgoing>
+      </userTask>
+      <userTask id="submit-form-step-hr-processing" name="Verify Conditions">
+         <incoming>ExclusiveGateway_step-hr-processing_to_submit-form-step-hr-processing</incoming>
+         <outgoing>submit-form-step-hr-processing_to_SIGN-step-hr-processing</outgoing>
+      </userTask>
+      <userTask id="step-administrator" name="The Administrator">
+         <incoming>SIGN-step-scientific-council_to_step-administrator</incoming>
+         <outgoing>step-administrator_to_ExclusiveGateway_step-administrator</outgoing>
+      </userTask>
+      <userTask camunda:formRef="human-resources-processing-form"
+                camunda:formRefBinding="latest"
+                id="step-hr-processing"
+                name="Verification of Conditions">
+         <incoming>START-start-event_to_step-hr-processing</incoming>
+         <outgoing>step-hr-processing_to_ExclusiveGateway_step-hr-processing</outgoing>
+      </userTask>
+      <userTask id="step-scientific-council" name="Scientific Council">
+         <incoming>SIGN-step-hr-processing_to_step-scientific-council</incoming>
+         <outgoing>step-scientific-council_to_ExclusiveGateway_step-scientific-council</outgoing>
+      </userTask>
+      <userTask id="step-wait-sabbatical-leave-reports"
+                name="Waiting of the Sabbatical Leave Final Report">
+         <incoming>SIGN-step-president_to_step-wait-sabbatical-leave-reports</incoming>
+         <outgoing>step-wait-sabbatical-leave-reports_to_FINISH_WAITING-step-wait-sabbatical-leave-reports</outgoing>
+      </userTask>
+      <userTask camunda:formRef="sabbatical-report-form"
+                camunda:formRefBinding="latest"
+                id="step-upload-sabbatical-leave-reports"
+                name="The Collaborator">
+         <incoming>onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes_to_step-upload-sabbatical-leave-reports</incoming>
+         <outgoing>step-upload-sabbatical-leave-reports_to_submit-form-step-upload-sabbatical-leave-reports</outgoing>
+      </userTask>
+      <scriptTask id="onActionTransition-step-administrator-Skip_Next_Nodes"
+                  name="Skip Next Nodes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_892"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/servlet/PaperPusherISTServletContextListener.java#L892"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</incoming>
+         <outgoing>onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes"
+                  name="Do Flow Action After Time Passes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_624"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L624"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>FINISH_WAITING-step-wait-sabbatical-leave-reports_to_onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes</incoming>
+         <outgoing>onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes_to_step-upload-sabbatical-leave-reports</outgoing>
+      </scriptTask>
+      <serviceTask id="REJECT-step-president" name="REJECT">
+         <incoming>ExclusiveGateway_step-president_to_REJECT-step-president</incoming>
+         <outgoing>REJECT-step-president_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="FINISH_WAITING-step-wait-sabbatical-leave-reports"
+                   name="FINISH_WAITING">
+         <incoming>step-wait-sabbatical-leave-reports_to_FINISH_WAITING-step-wait-sabbatical-leave-reports</incoming>
+         <outgoing>FINISH_WAITING-step-wait-sabbatical-leave-reports_to_onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-administrator" name="REJECT">
+         <incoming>ExclusiveGateway_step-administrator_to_REJECT-step-administrator</incoming>
+         <outgoing>REJECT-step-administrator_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-scientific-council" name="REJECT">
+         <incoming>ExclusiveGateway_step-scientific-council_to_REJECT-step-scientific-council</incoming>
+         <outgoing>REJECT-step-scientific-council_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-hr-processing" name="REJECT">
+         <incoming>reject-step-hr-processing_to_REJECT-step-hr-processing</incoming>
+         <outgoing>REJECT-step-hr-processing_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-president" name="SIGN">
+         <incoming>ExclusiveGateway_step-president_to_SIGN-step-president</incoming>
+         <outgoing>SIGN-step-president_to_step-wait-sabbatical-leave-reports</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-scientific-council" name="SIGN">
+         <incoming>ExclusiveGateway_step-scientific-council_to_SIGN-step-scientific-council</incoming>
+         <outgoing>SIGN-step-scientific-council_to_step-administrator</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-administrator" name="SIGN">
+         <incoming>ExclusiveGateway_step-administrator_to_SIGN-step-administrator</incoming>
+         <outgoing>SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-upload-sabbatical-leave-reports" name="SIGN">
+         <incoming>submit-form-step-upload-sabbatical-leave-reports_to_SIGN-step-upload-sabbatical-leave-reports</incoming>
+         <outgoing>SIGN-step-upload-sabbatical-leave-reports_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-hr-processing" name="SIGN">
+         <incoming>submit-form-step-hr-processing_to_SIGN-step-hr-processing</incoming>
+         <outgoing>SIGN-step-hr-processing_to_step-scientific-council</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="START">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-hr-processing</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_step-scientific-council"
+                        name="ExclusiveGateway_step-scientific-council">
+         <incoming>step-scientific-council_to_ExclusiveGateway_step-scientific-council</incoming>
+         <outgoing>ExclusiveGateway_step-scientific-council_to_SIGN-step-scientific-council</outgoing>
+         <outgoing>ExclusiveGateway_step-scientific-council_to_REJECT-step-scientific-council</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-hr-processing"
+                        name="ExclusiveGateway_step-hr-processing">
+         <incoming>step-hr-processing_to_ExclusiveGateway_step-hr-processing</incoming>
+         <outgoing>ExclusiveGateway_step-hr-processing_to_submit-form-step-hr-processing</outgoing>
+         <outgoing>ExclusiveGateway_step-hr-processing_to_reject-step-hr-processing</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-administrator"
+                        name="ExclusiveGateway_step-administrator">
+         <incoming>step-administrator_to_ExclusiveGateway_step-administrator</incoming>
+         <outgoing>ExclusiveGateway_step-administrator_to_REJECT-step-administrator</outgoing>
+         <outgoing>ExclusiveGateway_step-administrator_to_SIGN-step-administrator</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-president"
+                        name="ExclusiveGateway_step-president">
+         <incoming>step-president_to_ExclusiveGateway_step-president</incoming>
+         <outgoing>ExclusiveGateway_step-president_to_SIGN-step-president</outgoing>
+         <outgoing>ExclusiveGateway_step-president_to_REJECT-step-president</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-step-scientific-council_to_FAILURE</incoming>
+         <incoming>REJECT-step-president_to_FAILURE</incoming>
+         <incoming>REJECT-step-administrator_to_FAILURE</incoming>
+         <incoming>REJECT-step-hr-processing_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>SIGN-step-upload-sabbatical-leave-reports_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="step-upload-sabbatical-leave-reports_to_submit-form-step-upload-sabbatical-leave-reports"
+                    name=""
+                    sourceRef="step-upload-sabbatical-leave-reports"
+                    targetRef="submit-form-step-upload-sabbatical-leave-reports"/>
+      <sequenceFlow id="ExclusiveGateway_step-president_to_SIGN-step-president"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-president"
+                    targetRef="SIGN-step-president"/>
+      <sequenceFlow id="ExclusiveGateway_step-hr-processing_to_submit-form-step-hr-processing"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-hr-processing"
+                    targetRef="submit-form-step-hr-processing"/>
+      <sequenceFlow id="ExclusiveGateway_step-president_to_REJECT-step-president"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-president"
+                    targetRef="REJECT-step-president"/>
+      <sequenceFlow id="step-president_to_ExclusiveGateway_step-president"
+                    name=""
+                    sourceRef="step-president"
+                    targetRef="ExclusiveGateway_step-president"/>
+      <sequenceFlow id="reject-step-hr-processing_to_REJECT-step-hr-processing"
+                    name=""
+                    sourceRef="reject-step-hr-processing"
+                    targetRef="REJECT-step-hr-processing"/>
+      <sequenceFlow id="REJECT-step-scientific-council_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-scientific-council"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="REJECT-step-president_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-president"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="step-scientific-council_to_ExclusiveGateway_step-scientific-council"
+                    name=""
+                    sourceRef="step-scientific-council"
+                    targetRef="ExclusiveGateway_step-scientific-council"/>
+      <sequenceFlow id="ExclusiveGateway_step-scientific-council_to_SIGN-step-scientific-council"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-scientific-council"
+                    targetRef="SIGN-step-scientific-council"/>
+      <sequenceFlow id="SIGN-step-upload-sabbatical-leave-reports_to_SUCCESS"
+                    name=""
+                    sourceRef="SIGN-step-upload-sabbatical-leave-reports"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="ExclusiveGateway_step-scientific-council_to_REJECT-step-scientific-council"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-scientific-council"
+                    targetRef="REJECT-step-scientific-council"/>
+      <sequenceFlow id="SIGN-step-hr-processing_to_step-scientific-council"
+                    name=""
+                    sourceRef="SIGN-step-hr-processing"
+                    targetRef="step-scientific-council"/>
+      <sequenceFlow id="submit-form-step-hr-processing_to_SIGN-step-hr-processing"
+                    name=""
+                    sourceRef="submit-form-step-hr-processing"
+                    targetRef="SIGN-step-hr-processing"/>
+      <sequenceFlow id="step-wait-sabbatical-leave-reports_to_FINISH_WAITING-step-wait-sabbatical-leave-reports"
+                    name=""
+                    sourceRef="step-wait-sabbatical-leave-reports"
+                    targetRef="FINISH_WAITING-step-wait-sabbatical-leave-reports"/>
+      <sequenceFlow id="ExclusiveGateway_step-hr-processing_to_reject-step-hr-processing"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-hr-processing"
+                    targetRef="reject-step-hr-processing"/>
+      <sequenceFlow id="submit-form-step-upload-sabbatical-leave-reports_to_SIGN-step-upload-sabbatical-leave-reports"
+                    name=""
+                    sourceRef="submit-form-step-upload-sabbatical-leave-reports"
+                    targetRef="SIGN-step-upload-sabbatical-leave-reports"/>
+      <sequenceFlow id="ExclusiveGateway_step-administrator_to_REJECT-step-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-administrator"
+                    targetRef="REJECT-step-administrator"/>
+      <sequenceFlow id="SIGN-step-scientific-council_to_step-administrator"
+                    name=""
+                    sourceRef="SIGN-step-scientific-council"
+                    targetRef="step-administrator"/>
+      <sequenceFlow id="REJECT-step-administrator_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-administrator"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="ExclusiveGateway_step-administrator_to_SIGN-step-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-administrator"
+                    targetRef="SIGN-step-administrator"/>
+      <sequenceFlow id="SIGN-step-president_to_step-wait-sabbatical-leave-reports"
+                    name=""
+                    sourceRef="SIGN-step-president"
+                    targetRef="step-wait-sabbatical-leave-reports"/>
+      <sequenceFlow id="REJECT-step-hr-processing_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-hr-processing"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="step-administrator_to_ExclusiveGateway_step-administrator"
+                    name=""
+                    sourceRef="step-administrator"
+                    targetRef="ExclusiveGateway_step-administrator"/>
+      <sequenceFlow id="step-hr-processing_to_ExclusiveGateway_step-hr-processing"
+                    name=""
+                    sourceRef="step-hr-processing"
+                    targetRef="ExclusiveGateway_step-hr-processing"/>
+      <sequenceFlow id="FINISH_WAITING-step-wait-sabbatical-leave-reports_to_onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="FINISH_WAITING-step-wait-sabbatical-leave-reports"
+                    targetRef="onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                    name=""
+                    sourceRef="SIGN-step-administrator"
+                    targetRef="onActionTransition-step-administrator-Skip_Next_Nodes"/>
+      <sequenceFlow id="START-start-event_to_step-hr-processing"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-hr-processing"/>
+      <sequenceFlow id="onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president"
+                    name=""
+                    sourceRef="onActionTransition-step-administrator-Skip_Next_Nodes"
+                    targetRef="step-president"/>
+      <sequenceFlow id="onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes_to_step-upload-sabbatical-leave-reports"
+                    name=""
+                    sourceRef="onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes"
+                    targetRef="step-upload-sabbatical-leave-reports"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="sabbatical-leave-flow" name="sabbatical-leave-flow">
+      <documentation id="documentation_3893b774-0efc-4b9f-b8ed-6575323bc9e2">{name=sabbatical-leave-flow, title={pt-PT=Processo de Pedido de Licença Sabática, en-GB=Sabbatical Leave Request Process}, description={pt-PT=Processo de Pedido de Licença Sabática, en-GB=Sabbatical Leave Request Process}, config={hideRevertProcess=true, actionProcessor={onSuccess=[{flowProcessor=Return Flow Approved To Request}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[], forms=[{id=human-resources-processing-form, title={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, form={pages=[{title={pt-PT=Informação_Adicional, en-GB=Additional_Information}, sections=[{title={pt-PT=Informação_da_categoria, en-GB=Category}, properties=[{type=Select, field=category, label={pt-PT=Categoria, en-GB=Category}, multiple=false, collapse=false, allowOther=false, required=true, options=[{label={pt-PT=Professor(a) Catedrático/a, en-GB=Full Professor}, value=fullProfessor}, {label={pt-PT=Professor(a) Associado/a, en-GB=Associate Professor}, value=associateProfessor}, {label={pt-PT=Professor(a) Auxiliar, en-GB=Assistant Professor}, value=assistantProfessor}]}, {type=DateTime, field=categoryStartDate, label={pt-PT=Desde, en-GB=Since}, required=true, date=true, time=false}]}, {title={pt-PT=Informação_da_Licença_Sabática_Anterior, en-GB=Information_on_the_Previous_Sabbatical_Leave}, properties=[{type=Select, field=previousSabbatical, multiple=false, collapse=false, allowOther=false, required=true, label={pt-PT=Foi concedida anteriormente uma licença sabática?, en-GB=Has a sabbatical leave been granted previously?}, options=[{label={pt-PT=Sim, foi concedida anteriormente uma licença sabática através do sistema., en-GB=Yes, a sabbatical leave was previously granted through the system.}, value=previousLeaveThroughSystem}, {label={pt-PT=Sim, foi concedida anteriormente uma licença sabática., en-GB=Yes, a sabbatical leave was granted previously.}, value=previousLeave}, {label={pt-PT=Não, não foi concedida anteriormente uma licença sabática., en-GB=No, a sabbatical leave was not granted previously.}, value=noPreviousLeave}]}, {type=AsyncSelect, field=previousSabbaticalOnSystem, required=true, label={pt-PT=Licença Sabática Anterior, en-GB=Previous Sabbatical Leave}, optionsProvider=/paper-pusher-ist/previousSabbaticalLeave/{{flowId}}, allowOther=false, negation=false, onlyIf={field=previousSabbatical, value={label={pt-PT=Sim, foi concedida anteriormente uma licença sabática através do sistema., en-GB=Yes, a sabbatical leave was previously granted through the system.}, value=previousLeaveThroughSystem}}}, {type=DateTime, field=sabbaticalStartDate, required=true, date=true, time=false, label={pt-PT=Data de Início da Licença Sabática Anterior, en-GB=Start Date of the Previous Sabbatical Leave}, onlyIf=[{field=previousSabbatical, value={label={pt-PT=Sim, foi concedida anteriormente uma licença sabática., en-GB=Yes, a sabbatical leave was granted previously.}, value=previousLeave}, negation=false}]}, {type=DateTime, field=sabbaticalEndDate, required=true, date=true, time=false, label={pt-PT=Data de Fim da Licença Sabática Anterior, en-GB=End Date of the Previous Sabbatical Leave}, onlyIf=[{field=previousSabbatical, value={label={pt-PT=Sim, foi concedida anteriormente uma licença sabática., en-GB=Yes, a sabbatical leave was granted previously.}, value=previousLeave}, negation=false}]}, {type=Boolean, field=reportDelivery, label={pt-PT=Houve entrega de relatório?, en-GB=Has a report been delivered?}, required=true, labelYes={pt-PT=Sim, houve entrega de relatório., en-GB=Yes, a report was submitted.}, labelNo={pt-PT=Não, não houve entrega de relatório., en-GB=No, a report was not submitted.}, onlyIf=[{field=previousSabbatical, value={label={pt-PT=Sim, foi concedida anteriormente uma licença sabática., en-GB=Yes, a sabbatical leave was granted previously.}, value=previousLeave}, negation=false}]}, {type=DateTime, field=reportDeliveryDate, label={pt-PT=Data de Entrega, en-GB=Delivery Date}, required=true, date=true, time=false, onlyIf=[{field=reportDelivery, value=true}]}]}, {title={pt-PT=Processamento_pela_Direção_de_Recursos_Humanos, en-GB=Processing_by_the_Human_Resources_Department}, properties=[{type=Boolean, field=inCondition, required=true, label={pt-PT=A pessoa reúne as condições para ser concedida a licença sabática?, en-GB=Does the person meet the conditions to be granted sabbatical leave?}, labelYes={pt-PT=Sim, en-GB=Yes}, labelNo={pt-PT=Não, en-GB=No}}, {field=justification, type=Text, multiline=true, required=true, label={pt-PT=Fundamentação, en-GB=Justification}}]}]}]}}, {id=sabbatical-report-form, title={pt-PT=Envio de Relatório Final da Licença Sabática, en-GB=Submission of the Sabbatical Leave Final Report}, form={pages=[{title={pt-PT=Relatório_Final_da_Licença_Sabática, en-GB=Sabbatical_Leave_Final_Report}, sections=[{title={pt-PT=Anexar_Documentos, en-GB=Attach_Documents}, properties=[{type=File, field=workResults, label={pt-PT=Relatório, en-GB=Report}, description={pt-PT=Relatório que inclua os resultados do trabalho e uma auto-avaliação (de acordo com o ponto 5.1 da Deliberação do CC de 2015.01.05)., en-GB=Report including the work results and a self-evaluation (in accordance with point 5.1 of the SC Resolution of 2015.01.05).}, required=true, allowedFileTypes=[.pdf], maxSizeMB=25}, {type=File, field=coordinatorAndPresidentOpinion, description={pt-PT=Pareceres do/a Coordenador(a) da Área Científica e do/a Presidente do Departamento (de acordo com o ponto 5.2. da mesma Deliberação)., en-GB=Opinions of the Scientific Area Coordinator and the President of the Department (in accordance with point 5.2 of the same Resolution).}, required=true, label={pt-PT=Pareceres, en-GB=Opinions}, allowedFileTypes=[.pdf], maxSizeMB=25}]}]}]}}], actionNodes=[{id=step-hr-processing, type=withForms, comment=false, title={pt-PT=Verificação de Condições, en-GB=Verification of Conditions}, description={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, buttons=[{id=submit-form-step-hr-processing, primary=true, label={pt-PT=Verificar Condições, en-GB=Verify Conditions}, handlers={form=human-resources-processing-form, action=SIGN-step-hr-processing}}, {id=reject-step-hr-processing, primary=false, label={pt-PT=Rejeitar, en-GB=Reject}, handlers={action=REJECT-step-hr-processing}}], actions=[{primary=true, to=step-scientific-council, label={pt-PT=Marcar como Processado, en-GB=Mark as Processed}, id=SIGN-step-hr-processing, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-hr-processing, name=REJECT}], blockUndo=true, queue=Nucleo-de-Docentes-e-Investigadores-Geral}, {id=step-scientific-council, type=generic, comment=true, title={pt-PT=Conselho Científico, en-GB=Scientific Council}, description={pt-PT=Deliberação do Conselho Científico, en-GB=Decision of the Scientific Council}, commentLabel={pt-PT=Deliberação do Conselho Científico, en-GB=Decision of the Scientific Council}, actions=[{primary=true, to=step-administrator, label={pt-PT=Autorizar, en-GB=Authorise}, id=SIGN-step-scientific-council, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-scientific-council, name=REJECT}], queue=Conselho-Cientifico}, {id=step-administrator, type=generic, comment=true, title={pt-PT=O/A Administrador(a), en-GB=The Administrator}, description={pt-PT=Parecer do/a Administrador(a), en-GB=Opinion of the Administrator}, commentLabel={pt-PT=Parecer do/a Administrador(a), en-GB=Opinion of the Administrator}, actions=[{primary=true, to=step-president, label={pt-PT=Concordar, en-GB=Agree}, id=SIGN-step-administrator, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-administrator, name=REJECT}], queue=Gestao-Administrativa, replaceTitleWithRole=true, hr-final-authorization-step=true, actionProcessor=[{applyOn=SIGN-step-administrator, flowProcessor=Skip Next Nodes, node-field-key=hr-final-authorization-step, id=onActionTransition-step-administrator-Skip_Next_Nodes, name=onActionTransition}]}, {id=step-president, type=generic, comment=true, title={pt-PT=O/A Presidente, en-GB=The President}, description={pt-PT=Parecer do/a Presidente, en-GB=Opinion of the President}, commentLabel={pt-PT=Parecer do/a Presidente, en-GB=Opinion of the President}, actions=[{primary=true, to=step-wait-sabbatical-leave-reports, label={pt-PT=Concordar, en-GB=Agree}, id=SIGN-step-president, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-president, name=REJECT}], queue=Presidencia-do-Instituto-Superior-Tecnico, replaceTitleWithRole=true, hr-final-authorization-step=true}, {id=step-wait-sabbatical-leave-reports, type=generic, comment=false, title={pt-PT=Em Espera da Conclusão da Licença Sabática, en-GB=Waiting of the Sabbatical Leave Final Report}, description={pt-PT=Em espera da conclusão da licença sabática, en-GB=Waiting of the final sabbatical Leave}, actions=[{primary=true, to=step-upload-sabbatical-leave-reports, label={pt-PT=Terminar espera da conclusão da licença sabática, en-GB=Finish Waiting for the Sabbatical Leave Final Report}, id=FINISH_WAITING-step-wait-sabbatical-leave-reports, name=FINISH_WAITING}], queue=Sistema-FenixEdu, actionProcessor=[{flowProcessor=Do Flow Action After Time Passes, flowAction=FINISH_WAITING, user=fenix, when={field=startDate, withMonthOfYear=12}, id=onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes, name=onEnterNode}], blockUndo=true}, {id=step-upload-sabbatical-leave-reports, type=withForms, comment=false, title={pt-PT=O/A Colaborador(a), en-GB=The Collaborator}, description={pt-PT=Envio de Relatório Final da Licença Sabática, en-GB=Submission of the Sabbatical Leave Final Report}, commentLabel={pt-PT=Envio de Relatório Final da Licença Sabática, en-GB=Submission of the Sabbatical Leave Final Report}, buttons=[{id=submit-form-step-upload-sabbatical-leave-reports, primary=true, label={pt-PT=Submeter Relatório Final, en-GB=Submit Final Report}, handlers={form=sabbatical-report-form, action=SIGN-step-upload-sabbatical-leave-reports}}], actions=[{primary=true, to=SUCCESS, label={pt-PT=Submeter Relatório Final, en-GB=Submit Final Report}, id=SIGN-step-upload-sabbatical-leave-reports, name=SIGN}], blockUndo=true, queue=requester-username}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="sabbatical-leave-flow" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="FINISH_WAITING-step-wait-sabbatical-leave-reports"
+                           id="Shape_FINISH_WAITING-step-wait-sabbatical-leave-reports">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-administrator"
+                           id="Shape_REJECT-step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1465.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-president" id="Shape_step-president">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-hr-processing"
+                           id="Shape_ExclusiveGateway_step-hr-processing">
+            <dc:Bounds height="40.0" width="40.0" x="680.0" y="900.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-step-hr-processing"
+                           id="Shape_submit-form-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="1050.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-scientific-council"
+                           id="Shape_ExclusiveGateway_step-scientific-council">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="500.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="682.5" y="1170.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-administrator-Skip_Next_Nodes"
+                           id="Shape_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="1305.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-president" id="Shape_SIGN-step-president">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-hr-processing"
+                           id="Shape_REJECT-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="890.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-administrator"
+                           id="Shape_ExclusiveGateway_step-administrator">
+            <dc:Bounds height="40.0" width="40.0" x="860.0" y="1315.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-hr-processing" id="Shape_step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="890.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-president" id="Shape_REJECT-step-president">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="1222.5" y="782.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-administrator"
+                           id="Shape_SIGN-step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1305.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-scientific-council"
+                           id="Shape_REJECT-step-scientific-council">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="490.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-administrator" id="Shape_step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1305.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-scientific-council"
+                           id="Shape_SIGN-step-scientific-council">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-hr-processing"
+                           id="Shape_SIGN-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1050.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes"
+                           id="Shape_onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-scientific-council"
+                           id="Shape_step-scientific-council">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="490.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-step-upload-sabbatical-leave-reports"
+                           id="Shape_submit-form-step-upload-sabbatical-leave-reports">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="770.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="902.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="reject-step-hr-processing"
+                           id="Shape_reject-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="890.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-upload-sabbatical-leave-reports"
+                           id="Shape_SIGN-step-upload-sabbatical-leave-reports">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="770.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-wait-sabbatical-leave-reports"
+                           id="Shape_step-wait-sabbatical-leave-reports">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-upload-sabbatical-leave-reports"
+                           id="Shape_step-upload-sabbatical-leave-reports">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="770.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="890.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-president"
+                           id="Shape_ExclusiveGateway_step-president">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="220.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Sistema-FenixEdu" id="Shape_Sistema-FenixEdu">
+            <dc:Bounds height="120.0" width="1220.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Presidencia-do-Instituto-Superior-Tecnico"
+                           id="Shape_Presidencia-do-Instituto-Superior-Tecnico">
+            <dc:Bounds height="280.0" width="1220.0" x="90.0" y="180.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Conselho-Cientifico" id="Shape_Conselho-Cientifico">
+            <dc:Bounds height="280.0" width="1220.0" x="90.0" y="460.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="requester-username" id="Shape_requester-username">
+            <dc:Bounds height="120.0" width="1220.0" x="90.0" y="740.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Docentes-e-Investigadores-Geral"
+                           id="Shape_Nucleo-de-Docentes-e-Investigadores-Geral">
+            <dc:Bounds height="280.0" width="1220.0" x="90.0" y="860.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Gestao-Administrativa" id="Shape_Gestao-Administrativa">
+            <dc:Bounds height="415.0" width="1220.0" x="90.0" y="1140.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="1495.0" width="1250.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="step-upload-sabbatical-leave-reports_to_submit-form-step-upload-sabbatical-leave-reports"
+                          id="Edge_step-upload-sabbatical-leave-reports_to_submit-form-step-upload-sabbatical-leave-reports">
+            <di:waypoint x="740.0" y="800.0"/>
+            <di:waypoint x="840.0" y="800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-president_to_SIGN-step-president"
+                          id="Edge_ExclusiveGateway_step-president_to_SIGN-step-president">
+            <di:waypoint x="360.0" y="240.0"/>
+            <di:waypoint x="393.0" y="240.0"/>
+            <di:waypoint x="393.0" y="400.0"/>
+            <di:waypoint x="480.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-hr-processing_to_submit-form-step-hr-processing"
+                          id="Edge_ExclusiveGateway_step-hr-processing_to_submit-form-step-hr-processing">
+            <di:waypoint x="720.0" y="920.0"/>
+            <di:waypoint x="753.0" y="920.0"/>
+            <di:waypoint x="753.0" y="1080.0"/>
+            <di:waypoint x="840.0" y="1080.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-president_to_REJECT-step-president"
+                          id="Edge_ExclusiveGateway_step-president_to_REJECT-step-president">
+            <di:waypoint x="360.0" y="240.0"/>
+            <di:waypoint x="480.0" y="240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-president_to_ExclusiveGateway_step-president"
+                          id="Edge_step-president_to_ExclusiveGateway_step-president">
+            <di:waypoint x="200.0" y="240.0"/>
+            <di:waypoint x="233.0" y="240.0"/>
+            <di:waypoint x="233.0" y="240.0"/>
+            <di:waypoint x="320.0" y="240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="reject-step-hr-processing_to_REJECT-step-hr-processing"
+                          id="Edge_reject-step-hr-processing_to_REJECT-step-hr-processing">
+            <di:waypoint x="920.0" y="920.0"/>
+            <di:waypoint x="1020.0" y="920.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-scientific-council_to_FAILURE"
+                          id="Edge_REJECT-step-scientific-council_to_FAILURE">
+            <di:waypoint x="560.0" y="520.0"/>
+            <di:waypoint x="593.0" y="520.0"/>
+            <di:waypoint x="593.0" y="1187.5"/>
+            <di:waypoint x="682.5" y="1187.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-president_to_FAILURE"
+                          id="Edge_REJECT-step-president_to_FAILURE">
+            <di:waypoint x="560.0" y="240.0"/>
+            <di:waypoint x="593.0" y="240.0"/>
+            <di:waypoint x="593.0" y="1187.5"/>
+            <di:waypoint x="682.5" y="1187.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-scientific-council_to_ExclusiveGateway_step-scientific-council"
+                          id="Edge_step-scientific-council_to_ExclusiveGateway_step-scientific-council">
+            <di:waypoint x="200.0" y="520.0"/>
+            <di:waypoint x="233.0" y="520.0"/>
+            <di:waypoint x="233.0" y="520.0"/>
+            <di:waypoint x="320.0" y="520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-scientific-council_to_SIGN-step-scientific-council"
+                          id="Edge_ExclusiveGateway_step-scientific-council_to_SIGN-step-scientific-council">
+            <di:waypoint x="360.0" y="520.0"/>
+            <di:waypoint x="393.0" y="520.0"/>
+            <di:waypoint x="393.0" y="680.0"/>
+            <di:waypoint x="480.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-upload-sabbatical-leave-reports_to_SUCCESS"
+                          id="Edge_SIGN-step-upload-sabbatical-leave-reports_to_SUCCESS">
+            <di:waypoint x="1100.0" y="800.0"/>
+            <di:waypoint x="1133.0" y="800.0"/>
+            <di:waypoint x="1133.0" y="800.0"/>
+            <di:waypoint x="1222.5" y="800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-scientific-council_to_REJECT-step-scientific-council"
+                          id="Edge_ExclusiveGateway_step-scientific-council_to_REJECT-step-scientific-council">
+            <di:waypoint x="360.0" y="520.0"/>
+            <di:waypoint x="480.0" y="520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-hr-processing_to_step-scientific-council"
+                          id="Edge_SIGN-step-hr-processing_to_step-scientific-council">
+            <di:waypoint x="1100.0" y="1080.0"/>
+            <di:waypoint x="1315.0" y="1080.0"/>
+            <di:waypoint x="1315.0" y="570.0"/>
+            <di:waypoint x="160.0" y="570.0"/>
+            <di:waypoint x="160.0" y="550.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-step-hr-processing_to_SIGN-step-hr-processing"
+                          id="Edge_submit-form-step-hr-processing_to_SIGN-step-hr-processing">
+            <di:waypoint x="920.0" y="1080.0"/>
+            <di:waypoint x="1020.0" y="1080.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-wait-sabbatical-leave-reports_to_FINISH_WAITING-step-wait-sabbatical-leave-reports"
+                          id="Edge_step-wait-sabbatical-leave-reports_to_FINISH_WAITING-step-wait-sabbatical-leave-reports">
+            <di:waypoint x="200.0" y="120.0"/>
+            <di:waypoint x="300.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-hr-processing_to_reject-step-hr-processing"
+                          id="Edge_ExclusiveGateway_step-hr-processing_to_reject-step-hr-processing">
+            <di:waypoint x="720.0" y="920.0"/>
+            <di:waypoint x="840.0" y="920.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-step-upload-sabbatical-leave-reports_to_SIGN-step-upload-sabbatical-leave-reports"
+                          id="Edge_submit-form-step-upload-sabbatical-leave-reports_to_SIGN-step-upload-sabbatical-leave-reports">
+            <di:waypoint x="920.0" y="800.0"/>
+            <di:waypoint x="1020.0" y="800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-administrator_to_REJECT-step-administrator"
+                          id="Edge_ExclusiveGateway_step-administrator_to_REJECT-step-administrator">
+            <di:waypoint x="900.0" y="1335.0"/>
+            <di:waypoint x="933.0" y="1335.0"/>
+            <di:waypoint x="933.0" y="1495.0"/>
+            <di:waypoint x="1020.0" y="1495.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-scientific-council_to_step-administrator"
+                          id="Edge_SIGN-step-scientific-council_to_step-administrator">
+            <di:waypoint x="560.0" y="680.0"/>
+            <di:waypoint x="593.0" y="680.0"/>
+            <di:waypoint x="593.0" y="1335.0"/>
+            <di:waypoint x="660.0" y="1335.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-administrator_to_FAILURE"
+                          id="Edge_REJECT-step-administrator_to_FAILURE">
+            <di:waypoint x="1100.0" y="1495.0"/>
+            <di:waypoint x="1315.0" y="1495.0"/>
+            <di:waypoint x="1315.0" y="1225.0"/>
+            <di:waypoint x="700.0" y="1225.0"/>
+            <di:waypoint x="700.0" y="1205.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-administrator_to_SIGN-step-administrator"
+                          id="Edge_ExclusiveGateway_step-administrator_to_SIGN-step-administrator">
+            <di:waypoint x="900.0" y="1335.0"/>
+            <di:waypoint x="1020.0" y="1335.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-president_to_step-wait-sabbatical-leave-reports"
+                          id="Edge_SIGN-step-president_to_step-wait-sabbatical-leave-reports">
+            <di:waypoint x="560.0" y="400.0"/>
+            <di:waypoint x="1315.0" y="400.0"/>
+            <di:waypoint x="1315.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-hr-processing_to_FAILURE"
+                          id="Edge_REJECT-step-hr-processing_to_FAILURE">
+            <di:waypoint x="1100.0" y="920.0"/>
+            <di:waypoint x="1315.0" y="920.0"/>
+            <di:waypoint x="1315.0" y="1225.0"/>
+            <di:waypoint x="700.0" y="1225.0"/>
+            <di:waypoint x="700.0" y="1205.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-administrator_to_ExclusiveGateway_step-administrator"
+                          id="Edge_step-administrator_to_ExclusiveGateway_step-administrator">
+            <di:waypoint x="740.0" y="1335.0"/>
+            <di:waypoint x="773.0" y="1335.0"/>
+            <di:waypoint x="773.0" y="1335.0"/>
+            <di:waypoint x="860.0" y="1335.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-hr-processing_to_ExclusiveGateway_step-hr-processing"
+                          id="Edge_step-hr-processing_to_ExclusiveGateway_step-hr-processing">
+            <di:waypoint x="560.0" y="920.0"/>
+            <di:waypoint x="593.0" y="920.0"/>
+            <di:waypoint x="593.0" y="920.0"/>
+            <di:waypoint x="680.0" y="920.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="FINISH_WAITING-step-wait-sabbatical-leave-reports_to_onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_FINISH_WAITING-step-wait-sabbatical-leave-reports_to_onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="380.0" y="120.0"/>
+            <di:waypoint x="480.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                          id="Edge_SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <di:waypoint x="1100.0" y="1335.0"/>
+            <di:waypoint x="1200.0" y="1335.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-hr-processing"
+                          id="Edge_START-start-event_to_step-hr-processing">
+            <di:waypoint x="380.0" y="920.0"/>
+            <di:waypoint x="480.0" y="920.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president"
+                          id="Edge_onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president">
+            <di:waypoint x="1280.0" y="1335.0"/>
+            <di:waypoint x="1315.0" y="1335.0"/>
+            <di:waypoint x="1315.0" y="290.0"/>
+            <di:waypoint x="160.0" y="290.0"/>
+            <di:waypoint x="160.0" y="270.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes_to_step-upload-sabbatical-leave-reports"
+                          id="Edge_onEnterNode-step-wait-sabbatical-leave-reports-Do_Flow_Action_After_Time_Passes_to_step-upload-sabbatical-leave-reports">
+            <di:waypoint x="560.0" y="120.0"/>
+            <di:waypoint x="593.0" y="120.0"/>
+            <di:waypoint x="593.0" y="800.0"/>
+            <di:waypoint x="660.0" y="800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="177.5" y="920.0"/>
+            <di:waypoint x="300.0" y="920.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,197 @@
+{
+  "flowTemplate" : {
+    "name" : "academic-general-purpose-request",
+    "title" : {
+      "pt-PT" : "Requerimento Livre",
+      "en-GB" : "General Purpose Request"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Tramitação de Requerimento Livre",
+      "en-GB" : "General Purpose Request Process"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onSuccess" : [ {
+          "flowProcessor" : "Copy Flow Form To Outcome",
+          "formId" : "opinion-form",
+          "mapper" : {
+            "opinion" : "opinion",
+            "justification" : "justification"
+          }
+        }, {
+          "flowProcessor" : "Send Free Request Outcome Documents to Signer Or Conclude"
+        } ],
+        "onFailure" : [ {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ {
+          "flowProcessor" : "Cancel Connected Requests"
+        } ]
+      },
+      "flowProcessors" : [ ],
+      "forms" : [ {
+        "id" : "opinion-form",
+        "title" : {
+          "pt-PT" : "Resposta",
+          "en-GB" : "Response"
+        },
+        "form" : {
+          "pages" : [ {
+            "title" : {
+              "pt-PT" : "Resposta",
+              "en-GB" : "Response"
+            },
+            "sections" : [ {
+              "title" : {
+                "pt-PT" : "Parecer e Fundamentação",
+                "en-GB" : "Opinion and Justification"
+              },
+              "properties" : [ {
+                "type" : "Boolean",
+                "field" : "opinion",
+                "label" : {
+                  "pt-PT" : "Parecer",
+                  "en-GB" : "Opinion"
+                },
+                "required" : true,
+                "labelYes" : {
+                  "pt-PT" : "Deferir",
+                  "en-GB" : "Approve"
+                },
+                "labelNo" : {
+                  "pt-PT" : "Indeferir",
+                  "en-GB" : "Reject"
+                }
+              }, {
+                "type" : "Text",
+                "field" : "justification",
+                "label" : {
+                  "pt-PT" : "Fundamentação",
+                  "en-GB" : "Justification"
+                },
+                "multiple" : true,
+                "required" : false
+              } ]
+            }, {
+              "title" : {
+                "pt-PT" : "Documentos",
+                "en-GB" : "Documents"
+              },
+              "properties" : [ {
+                "type" : "Array",
+                "field" : "documents",
+                "label" : {
+                  "pt-PT" : "Documentos",
+                  "en-GB" : "Documents"
+                },
+                "labelAddElement" : {
+                  "pt-PT" : "Adicionar documento",
+                  "en-GB" : "Add document"
+                },
+                "required" : false,
+                "properties" : [ {
+                  "type" : "Boolean",
+                  "field" : "isGoingToOutcomeForm",
+                  "label" : {
+                    "pt-PT" : "Este documento tem que ir para o formulário de resposta?",
+                    "en-GB" : "Does this document have to be in the outcome form?"
+                  },
+                  "required" : true,
+                  "labelYes" : {
+                    "pt-PT" : "Sim",
+                    "en-GB" : "Yes"
+                  },
+                  "labelNo" : {
+                    "pt-PT" : "Não",
+                    "en-GB" : "No"
+                  }
+                }, {
+                  "type" : "Boolean",
+                  "field" : "isGoingToSigner",
+                  "label" : {
+                    "pt-PT" : "Este documento tem que ser assinado digitalmente (Signer)?",
+                    "en-GB" : "Does this document have to be electronically signed (Signer)?"
+                  },
+                  "required" : true,
+                  "labelYes" : {
+                    "pt-PT" : "Sim",
+                    "en-GB" : "Yes"
+                  },
+                  "labelNo" : {
+                    "pt-PT" : "Não",
+                    "en-GB" : "No"
+                  },
+                  "onlyIf" : [ {
+                    "field" : "isGoingToOutcomeForm",
+                    "negation" : false,
+                    "value" : true
+                  } ]
+                }, {
+                  "type" : "AsyncSelect",
+                  "required" : true,
+                  "allowOther" : false,
+                  "field" : "signerQueue",
+                  "label" : {
+                    "pt-PT" : "Fila do Signer",
+                    "en-GB" : "Signer Queue"
+                  },
+                  "optionsProvider" : "/paper-pusher-ist/academic-request/{{flowId}}/signer-queues",
+                  "onlyIf" : [ {
+                    "field" : "isGoingToSigner",
+                    "negation" : false,
+                    "value" : true
+                  } ]
+                }, {
+                  "type" : "File",
+                  "field" : "document",
+                  "label" : {
+                    "pt-PT" : "Documento",
+                    "en-GB" : "Document"
+                  },
+                  "allowedFileTypes" : [ ".pdf" ],
+                  "required" : true,
+                  "maxSizeMB" : 25
+                } ]
+              } ]
+            } ]
+          } ]
+        }
+      } ],
+      "actionNodes" : [ {
+        "id" : "select-flow-steps",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Início",
+          "en-GB" : "Start"
+        },
+        "description" : {
+          "pt-PT" : "Dar início ao seguimento",
+          "en-GB" : "Start flow"
+        },
+        "actions" : {
+          "START" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Iniciar",
+              "en-GB" : "Start"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar",
+              "en-GB" : "Reject"
+            }
+          }
+        },
+        "queue" : "{{academic-office-queue}} - Requerimentos Entrada",
+        "canEditUpcomingActionNodes" : true,
+        "actionNodesProvider" : "ACADEMIC_REQUESTS"
+      } ]
+    }
+  }
+}

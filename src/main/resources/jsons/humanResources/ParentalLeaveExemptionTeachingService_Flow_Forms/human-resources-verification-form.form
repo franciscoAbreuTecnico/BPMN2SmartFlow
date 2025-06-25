@@ -1,0 +1,59 @@
+{
+  "id" : "Form_human-resources-verification-form",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Verification_of_Conditions",
+    "key" : "page_Verification_of_Conditions",
+    "label" : "Verification_of_Conditions",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Verification_of_Conditions",
+      "key" : "section_Verification_of_Conditions",
+      "label" : "Verification_of_Conditions",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "radio",
+        "id" : "Field_eligibilityVerify",
+        "key" : "eligibilityVerify",
+        "label" : "Is eligibility for exemption from teaching service after parental leave verified?",
+        "required" : false,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes",
+          "value" : 1
+        }, {
+          "label" : "No",
+          "value" : 0
+        } ]
+      }, {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_endDateExemption",
+        "key" : "endDateExemption",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_endDateExemption",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : false
+        }
+      } ]
+    } ]
+  } ]
+}

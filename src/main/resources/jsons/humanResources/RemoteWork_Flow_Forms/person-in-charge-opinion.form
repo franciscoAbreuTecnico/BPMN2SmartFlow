@@ -1,0 +1,73 @@
+{
+  "id" : "Form_person-in-charge-opinion",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Opinion_of_the_Person_in_Charge",
+    "key" : "page_Opinion_of_the_Person_in_Charge",
+    "label" : "Opinion_of_the_Person_in_Charge",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Requirements",
+      "key" : "section_Requirements",
+      "label" : "Requirements",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_declaration",
+        "key" : "declaration",
+        "label" : "Opinion of the Person in Charge",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "yes",
+          "label" : {
+            "en-GB" : "I declare that the employee meets all the the requirements listed above.",
+            "pt-PT" : "Declaro que o/a trabalhador(a) preenche todos os requisitos dispostos acima."
+          }
+        } ]
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Remote_Work",
+      "key" : "section_Remote_Work",
+      "label" : "Remote_Work",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_agreeRemoteWork",
+        "key" : "agreeRemoteWork",
+        "label" : "Do you agree to authorise remote working?",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "SIGN",
+          "label" : {
+            "en-GB" : "I agree to authorise remote working.",
+            "pt-PT" : "Concordo em autorizar o teletrabalho."
+          }
+        }, {
+          "value" : "REJECT",
+          "label" : {
+            "en-GB" : "I do not agree to authorize remote working.",
+            "pt-PT" : "Não concordo em autorizar o teletrabalho."
+          }
+        } ]
+      } ]
+    } ]
+  } ]
+}

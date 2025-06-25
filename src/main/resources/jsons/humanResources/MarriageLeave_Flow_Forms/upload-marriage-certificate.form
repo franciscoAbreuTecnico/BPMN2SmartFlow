@@ -1,0 +1,49 @@
+{
+  "id" : "Form_upload-marriage-certificate",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Marriage_Information",
+    "key" : "page_Marriage_Information",
+    "label" : "Marriage_Information",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Marriage_Information",
+      "key" : "section_Marriage_Information",
+      "label" : "Marriage_Information",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "radio",
+        "id" : "Field_requireMarriageCertificate",
+        "key" : "requireMarriageCertificate",
+        "label" : "Are you submitting the marriage certificate?",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes, I am submitting the marriage certificate.",
+          "value" : 1
+        }, {
+          "label" : "No, I am cancelling the marriage leave request.",
+          "value" : 0
+        } ]
+      }, {
+        "type" : "filepicker",
+        "id" : "Field_marriageCertificate",
+        "key" : "marriageCertificate",
+        "label" : "Marriage Certificate",
+        "required" : true,
+        "readOnly" : false,
+        "accept" : ".pdf",
+        "maxFileSize" : "10MB"
+      } ]
+    } ]
+  } ]
+}

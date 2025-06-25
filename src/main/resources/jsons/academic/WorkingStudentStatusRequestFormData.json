@@ -1,0 +1,52 @@
+{
+  "name": {
+    "pt-PT": "Estatudo de Trabalhador Estudante",
+    "en-GB": "Working Student Status"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar o estatuto de trabalhador estudante.",
+    "en-GB": "This form allows you to request working student status."
+  },
+  "context": {},
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requirePersonalInformation": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Estatudo de Trabalhador Estudante",
+          "en-GB": "Working Student Status"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Comprovativo de emprego",
+              "en-GB": "Employment proof"
+            },
+            "properties": [
+              {
+                "type": "File",
+                "field": "EMPLOYMENT_PROOF",
+                "required": true,
+                "label": {
+                  "pt-PT": "Comprovativo",
+                  "en-GB": "Proof"
+                },
+                "allowedFileTypes": [
+                  ".pdf",
+                  ".png",
+                  ".jpg"
+                ],
+                "maxSizeMB": 10
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {},
+  "cost": {}
+}

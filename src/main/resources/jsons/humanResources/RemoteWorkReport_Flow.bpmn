@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_23722f95-abbe-478f-aa64-42dfa3b3bffe"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+               name="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral">
+            <flowNodeRef>step-hr-processing</flowNodeRef>
+            <flowNodeRef>hr-processing-step-hr-processing</flowNodeRef>
+            <flowNodeRef>onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded</flowNodeRef>
+            <flowNodeRef>RENEW-step-hr-processing</flowNodeRef>
+            <flowNodeRef>CONCLUDE-step-hr-processing</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_hr-processing-step-hr-processing</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-hr-processing</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+         <lane id="Presidencia-do-Instituto-Superior-Tecnico"
+               name="Presidencia-do-Instituto-Superior-Tecnico">
+            <flowNodeRef>step-president</flowNodeRef>
+            <flowNodeRef>DONT_RENEW-step-president</flowNodeRef>
+            <flowNodeRef>RENEW-step-president</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-president</flowNodeRef>
+         </lane>
+         <lane id="requester-username" name="requester-username">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>upload-remote-work-report-step-upload-remote-work-report</flowNodeRef>
+            <flowNodeRef>step-upload-remote-work-report</flowNodeRef>
+            <flowNodeRef>DONT_RENEW-step-upload-remote-work-report</flowNodeRef>
+            <flowNodeRef>RENEW-step-upload-remote-work-report</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-upload-remote-work-report</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+         <lane id="Gestao-Administrativa" name="Gestao-Administrativa">
+            <flowNodeRef>step-administrator</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-administrator-Skip_Next_Nodes</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work</flowNodeRef>
+            <flowNodeRef>RENEW-step-administrator</flowNodeRef>
+            <flowNodeRef>DONT_RENEW-step-administrator</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_RENEW-step-administrator</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-administrator</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_DONT_RENEW-step-administrator</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-president" name="The President">
+         <incoming>onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work_to_step-president</incoming>
+         <incoming>onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president</incoming>
+         <outgoing>step-president_to_ExclusiveGateway_step-president</outgoing>
+      </userTask>
+      <userTask id="upload-remote-work-report-step-upload-remote-work-report"
+                name="Submit remote work report">
+         <incoming>ExclusiveGateway_step-upload-remote-work-report_to_upload-remote-work-report-step-upload-remote-work-report</incoming>
+         <outgoing>upload-remote-work-report-step-upload-remote-work-report_to_ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report</outgoing>
+      </userTask>
+      <userTask id="step-administrator" name="The Administrator">
+         <incoming>DONT_RENEW-step-upload-remote-work-report_to_step-administrator</incoming>
+         <outgoing>step-administrator_to_ExclusiveGateway_step-administrator</outgoing>
+      </userTask>
+      <userTask camunda:formRef="upload-remote-work-report"
+                camunda:formRefBinding="latest"
+                id="step-upload-remote-work-report"
+                name="Remote Work Report Submission">
+         <incoming>START-start-event_to_step-upload-remote-work-report</incoming>
+         <outgoing>step-upload-remote-work-report_to_ExclusiveGateway_step-upload-remote-work-report</outgoing>
+      </userTask>
+      <userTask id="step-hr-processing" name="The Human Resources Department">
+         <incoming>RENEW-step-president_to_step-hr-processing</incoming>
+         <incoming>DONT_RENEW-step-president_to_step-hr-processing</incoming>
+         <outgoing>step-hr-processing_to_ExclusiveGateway_step-hr-processing</outgoing>
+      </userTask>
+      <userTask id="hr-processing-step-hr-processing" name="Mark as Processed">
+         <incoming>ExclusiveGateway_step-hr-processing_to_hr-processing-step-hr-processing</incoming>
+         <outgoing>hr-processing-step-hr-processing_to_ExclusiveGateway_hr-processing-step-hr-processing</outgoing>
+      </userTask>
+      <scriptTask id="onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"
+                  name="Continue Main Flow After All Subflows In Node Are Concluded">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_464"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L464"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>CONCLUDE-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded</incoming>
+         <incoming>RENEW-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded</incoming>
+         <outgoing>onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded_to_SUCCESS</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-administrator-Skip_Next_Nodes"
+                  name="Skip Next Nodes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_892"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/servlet/PaperPusherISTServletContextListener.java#L892"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</incoming>
+         <incoming>ExclusiveGateway_DONT_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</incoming>
+         <outgoing>onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"
+                  name="Do Administrative Action For Remote Work">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_328"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/servlet/PaperPusherISTServletContextListener.java#L328"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_DONT_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work</incoming>
+         <incoming>ExclusiveGateway_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work</incoming>
+         <outgoing>onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work_to_step-president</outgoing>
+      </scriptTask>
+      <serviceTask id="DONT_RENEW-step-upload-remote-work-report" name="DONT_RENEW">
+         <incoming>ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_DONT_RENEW-step-upload-remote-work-report</incoming>
+         <outgoing>DONT_RENEW-step-upload-remote-work-report_to_step-administrator</outgoing>
+      </serviceTask>
+      <serviceTask id="RENEW-step-hr-processing" name="RENEW">
+         <incoming>ExclusiveGateway_hr-processing-step-hr-processing_to_RENEW-step-hr-processing</incoming>
+         <outgoing>RENEW-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded</outgoing>
+      </serviceTask>
+      <serviceTask id="DONT_RENEW-step-president" name="DONT_RENEW">
+         <incoming>ExclusiveGateway_step-president_to_DONT_RENEW-step-president</incoming>
+         <outgoing>DONT_RENEW-step-president_to_step-hr-processing</outgoing>
+      </serviceTask>
+      <serviceTask id="CONCLUDE-step-hr-processing" name="CONCLUDE">
+         <incoming>ExclusiveGateway_hr-processing-step-hr-processing_to_CONCLUDE-step-hr-processing</incoming>
+         <outgoing>CONCLUDE-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded</outgoing>
+      </serviceTask>
+      <serviceTask id="RENEW-step-president" name="RENEW">
+         <incoming>ExclusiveGateway_step-president_to_RENEW-step-president</incoming>
+         <outgoing>RENEW-step-president_to_step-hr-processing</outgoing>
+      </serviceTask>
+      <serviceTask id="RENEW-step-administrator" name="RENEW">
+         <incoming>ExclusiveGateway_step-administrator_to_RENEW-step-administrator</incoming>
+         <outgoing>RENEW-step-administrator_to_ExclusiveGateway_RENEW-step-administrator</outgoing>
+      </serviceTask>
+      <serviceTask id="RENEW-step-upload-remote-work-report" name="RENEW">
+         <incoming>ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_RENEW-step-upload-remote-work-report</incoming>
+         <outgoing>RENEW-step-upload-remote-work-report_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="DONT_RENEW-step-administrator" name="DONT_RENEW">
+         <incoming>ExclusiveGateway_step-administrator_to_DONT_RENEW-step-administrator</incoming>
+         <outgoing>DONT_RENEW-step-administrator_to_ExclusiveGateway_DONT_RENEW-step-administrator</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="START">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-upload-remote-work-report</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report"
+                        name="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report">
+         <incoming>upload-remote-work-report-step-upload-remote-work-report_to_ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report</incoming>
+         <outgoing>ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_RENEW-step-upload-remote-work-report</outgoing>
+         <outgoing>ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_DONT_RENEW-step-upload-remote-work-report</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_hr-processing-step-hr-processing"
+                        name="ExclusiveGateway_hr-processing-step-hr-processing">
+         <incoming>hr-processing-step-hr-processing_to_ExclusiveGateway_hr-processing-step-hr-processing</incoming>
+         <outgoing>ExclusiveGateway_hr-processing-step-hr-processing_to_RENEW-step-hr-processing</outgoing>
+         <outgoing>ExclusiveGateway_hr-processing-step-hr-processing_to_CONCLUDE-step-hr-processing</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_RENEW-step-administrator"
+                        name="ExclusiveGateway_RENEW-step-administrator">
+         <incoming>RENEW-step-administrator_to_ExclusiveGateway_RENEW-step-administrator</incoming>
+         <outgoing>ExclusiveGateway_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</outgoing>
+         <outgoing>ExclusiveGateway_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-hr-processing"
+                        name="ExclusiveGateway_step-hr-processing">
+         <incoming>step-hr-processing_to_ExclusiveGateway_step-hr-processing</incoming>
+         <outgoing>ExclusiveGateway_step-hr-processing_to_hr-processing-step-hr-processing</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-administrator"
+                        name="ExclusiveGateway_step-administrator">
+         <incoming>step-administrator_to_ExclusiveGateway_step-administrator</incoming>
+         <outgoing>ExclusiveGateway_step-administrator_to_RENEW-step-administrator</outgoing>
+         <outgoing>ExclusiveGateway_step-administrator_to_DONT_RENEW-step-administrator</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-president"
+                        name="ExclusiveGateway_step-president">
+         <incoming>step-president_to_ExclusiveGateway_step-president</incoming>
+         <outgoing>ExclusiveGateway_step-president_to_RENEW-step-president</outgoing>
+         <outgoing>ExclusiveGateway_step-president_to_DONT_RENEW-step-president</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_DONT_RENEW-step-administrator"
+                        name="ExclusiveGateway_DONT_RENEW-step-administrator">
+         <incoming>DONT_RENEW-step-administrator_to_ExclusiveGateway_DONT_RENEW-step-administrator</incoming>
+         <outgoing>ExclusiveGateway_DONT_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work</outgoing>
+         <outgoing>ExclusiveGateway_DONT_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-upload-remote-work-report"
+                        name="ExclusiveGateway_step-upload-remote-work-report">
+         <incoming>step-upload-remote-work-report_to_ExclusiveGateway_step-upload-remote-work-report</incoming>
+         <outgoing>ExclusiveGateway_step-upload-remote-work-report_to_upload-remote-work-report-step-upload-remote-work-report</outgoing>
+      </exclusiveGateway>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>RENEW-step-upload-remote-work-report_to_SUCCESS</incoming>
+         <incoming>onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="hr-processing-step-hr-processing_to_ExclusiveGateway_hr-processing-step-hr-processing"
+                    name=""
+                    sourceRef="hr-processing-step-hr-processing"
+                    targetRef="ExclusiveGateway_hr-processing-step-hr-processing"/>
+      <sequenceFlow id="CONCLUDE-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"
+                    name=""
+                    sourceRef="CONCLUDE-step-hr-processing"
+                    targetRef="onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"/>
+      <sequenceFlow id="ExclusiveGateway_step-upload-remote-work-report_to_upload-remote-work-report-step-upload-remote-work-report"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-upload-remote-work-report"
+                    targetRef="upload-remote-work-report-step-upload-remote-work-report"/>
+      <sequenceFlow id="ExclusiveGateway_step-president_to_RENEW-step-president"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-president"
+                    targetRef="RENEW-step-president"/>
+      <sequenceFlow id="DONT_RENEW-step-upload-remote-work-report_to_step-administrator"
+                    name=""
+                    sourceRef="DONT_RENEW-step-upload-remote-work-report"
+                    targetRef="step-administrator"/>
+      <sequenceFlow id="ExclusiveGateway_step-administrator_to_RENEW-step-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-administrator"
+                    targetRef="RENEW-step-administrator"/>
+      <sequenceFlow id="ExclusiveGateway_hr-processing-step-hr-processing_to_RENEW-step-hr-processing"
+                    name=""
+                    sourceRef="ExclusiveGateway_hr-processing-step-hr-processing"
+                    targetRef="RENEW-step-hr-processing"/>
+      <sequenceFlow id="RENEW-step-administrator_to_ExclusiveGateway_RENEW-step-administrator"
+                    name=""
+                    sourceRef="RENEW-step-administrator"
+                    targetRef="ExclusiveGateway_RENEW-step-administrator"/>
+      <sequenceFlow id="step-president_to_ExclusiveGateway_step-president"
+                    name=""
+                    sourceRef="step-president"
+                    targetRef="ExclusiveGateway_step-president"/>
+      <sequenceFlow id="ExclusiveGateway_DONT_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"
+                    name=""
+                    sourceRef="ExclusiveGateway_DONT_RENEW-step-administrator"
+                    targetRef="onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"/>
+      <sequenceFlow id="step-upload-remote-work-report_to_ExclusiveGateway_step-upload-remote-work-report"
+                    name=""
+                    sourceRef="step-upload-remote-work-report"
+                    targetRef="ExclusiveGateway_step-upload-remote-work-report"/>
+      <sequenceFlow id="ExclusiveGateway_step-president_to_DONT_RENEW-step-president"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-president"
+                    targetRef="DONT_RENEW-step-president"/>
+      <sequenceFlow id="DONT_RENEW-step-administrator_to_ExclusiveGateway_DONT_RENEW-step-administrator"
+                    name=""
+                    sourceRef="DONT_RENEW-step-administrator"
+                    targetRef="ExclusiveGateway_DONT_RENEW-step-administrator"/>
+      <sequenceFlow id="ExclusiveGateway_step-hr-processing_to_hr-processing-step-hr-processing"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-hr-processing"
+                    targetRef="hr-processing-step-hr-processing"/>
+      <sequenceFlow id="ExclusiveGateway_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                    name=""
+                    sourceRef="ExclusiveGateway_RENEW-step-administrator"
+                    targetRef="onActionTransition-step-administrator-Skip_Next_Nodes"/>
+      <sequenceFlow id="upload-remote-work-report-step-upload-remote-work-report_to_ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report"
+                    name=""
+                    sourceRef="upload-remote-work-report-step-upload-remote-work-report"
+                    targetRef="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report"/>
+      <sequenceFlow id="RENEW-step-upload-remote-work-report_to_SUCCESS"
+                    name=""
+                    sourceRef="RENEW-step-upload-remote-work-report"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="RENEW-step-president_to_step-hr-processing"
+                    name=""
+                    sourceRef="RENEW-step-president"
+                    targetRef="step-hr-processing"/>
+      <sequenceFlow id="onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded_to_SUCCESS"
+                    name=""
+                    sourceRef="onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="ExclusiveGateway_hr-processing-step-hr-processing_to_CONCLUDE-step-hr-processing"
+                    name=""
+                    sourceRef="ExclusiveGateway_hr-processing-step-hr-processing"
+                    targetRef="CONCLUDE-step-hr-processing"/>
+      <sequenceFlow id="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_RENEW-step-upload-remote-work-report"
+                    name=""
+                    sourceRef="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report"
+                    targetRef="RENEW-step-upload-remote-work-report"/>
+      <sequenceFlow id="onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work_to_step-president"
+                    name=""
+                    sourceRef="onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"
+                    targetRef="step-president"/>
+      <sequenceFlow id="RENEW-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"
+                    name=""
+                    sourceRef="RENEW-step-hr-processing"
+                    targetRef="onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"/>
+      <sequenceFlow id="DONT_RENEW-step-president_to_step-hr-processing"
+                    name=""
+                    sourceRef="DONT_RENEW-step-president"
+                    targetRef="step-hr-processing"/>
+      <sequenceFlow id="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_DONT_RENEW-step-upload-remote-work-report"
+                    name=""
+                    sourceRef="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report"
+                    targetRef="DONT_RENEW-step-upload-remote-work-report"/>
+      <sequenceFlow id="step-administrator_to_ExclusiveGateway_step-administrator"
+                    name=""
+                    sourceRef="step-administrator"
+                    targetRef="ExclusiveGateway_step-administrator"/>
+      <sequenceFlow id="ExclusiveGateway_DONT_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                    name=""
+                    sourceRef="ExclusiveGateway_DONT_RENEW-step-administrator"
+                    targetRef="onActionTransition-step-administrator-Skip_Next_Nodes"/>
+      <sequenceFlow id="ExclusiveGateway_step-administrator_to_DONT_RENEW-step-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-administrator"
+                    targetRef="DONT_RENEW-step-administrator"/>
+      <sequenceFlow id="step-hr-processing_to_ExclusiveGateway_step-hr-processing"
+                    name=""
+                    sourceRef="step-hr-processing"
+                    targetRef="ExclusiveGateway_step-hr-processing"/>
+      <sequenceFlow id="ExclusiveGateway_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"
+                    name=""
+                    sourceRef="ExclusiveGateway_RENEW-step-administrator"
+                    targetRef="onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"/>
+      <sequenceFlow id="START-start-event_to_step-upload-remote-work-report"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-upload-remote-work-report"/>
+      <sequenceFlow id="onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president"
+                    name=""
+                    sourceRef="onActionTransition-step-administrator-Skip_Next_Nodes"
+                    targetRef="step-president"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="remote-work-report-submission-template"
+                  name="remote-work-report-submission-template">
+      <documentation id="documentation_6173fcc4-92f7-42c0-b307-c3bed544cd37">{name=remote-work-report-submission-template, title={pt-PT=Processo de Submissão do Relatório de Teletrabalho, en-GB=Process of Remote Work Report Submission}, description={pt-PT=Processo de Submissão do Relatório de Teletrabalho, en-GB=Process of Remote Work Report Submission}, config={authorizationChainNodesRenewal={type=generic, title={pt-PT=Parecer do/a Responsável, en-GB=Opinion of The Person in Charge}, description={pt-PT=Declaro que o/a trabalhador(a) preenche todos os requisitos dispostos no actual regulamento de teletrabalho., en-GB=I declare that the employee fulfils all the the requirements set out in the current remote work regulations.}, comment=true, commentLabel={pt-PT=Parecer do/a Responsável, en-GB=Opinion of The Person in Charge}, actions={RENEW={primary=true, to=SUCCESS, label={pt-PT=Concordo com a renovação, en-GB=I agree with the renewal}}, DONT_RENEW={primary=false, to=SUCCESS, label={pt-PT=Discordo com a renovação, en-GB=I disagree with the renewal}}}, blockUndo=false}, authorizationChainNodesWithoutRenewal={type=generic, title={pt-PT=Parecer do/a Responsável, en-GB=Opinion of The Person in Charge}, description={pt-PT=Parecer do/a Responsável, en-GB=Opinion of The Person in Charge}, comment=true, commentLabel={pt-PT=Parecer do/a Responsável, en-GB=Opinion of The Person in Charge}, actions={DONT_RENEW={primary=true, to=SUCCESS, label={pt-PT=Concordar, en-GB=Agree}}}, actionProcessor={}, blockUndo=false}, actionProcessor={onSuccess=[], onFailure=[{flowProcessor=Return Flow Rejected To Main Flow}], onActionTransition=[], onCancel=[]}, flowProcessors=[{handle=hr-processing, flowProcessor=Do Action From Form Response For Remote Work}, {handle=action-from-remote-work-report-form, flowProcessor=Do Action From Form Response, formField=renewal}], forms=[{id=upload-remote-work-report, title={pt-PT=Submissão do Relatório de Teletrabalho, en-GB=Submission of the Remote Work Report}, form={pages=[{title={pt-PT=Informação_das_Tarefas_Realizadas, en-GB=Information_on_the_Completed_Tasks}, sections=[{title={pt-PT=Período, en-GB=Period}, description={pt-PT=Indicar o período relativo às atividades realizadas em regime de teletrabalho., en-GB=Specify the period corresponding to the activities carried out while in remote work.}, properties=[{type=Composite, field=period, required=true, properties=[{type=DateTime, field=startPeriodDate, required=true, date=true, time=false, label={pt-PT=Data de Início da Atividade, en-GB=Activity Start Date}}, {type=DateTime, field=endPeriodDate, required=true, date=true, time=false, label={pt-PT=Data de Fim da Atividade, en-GB=Activity End Date}}]}]}, {title={pt-PT=Descrição_das_Tarefas_Indicadas_no_Plano_de_Trabalhos, en-GB=Description_of_the_Tasks_Listed_in_the_Work_Plan}, properties=[{type=Text, field=tasksConcluded, required=true, inputType=plain, multiline=true, label={pt-PT=Tarefas Concluídas e Timing (quando critério de tempo foi aplicável), en-GB=Completed Tasks and Timing (when time criteria were applicable)}}, {type=Text, field=meetings, required=true, inputType=plain, multiline=true, label={pt-PT=Indicação das Reuniões e/ou Atividades Realizadas à Distância, en-GB=Specification of Meetings and/or Activities Carried Out Remotely}}, {type=Text, field=tasksNotConcluded, required=true, inputType=plain, multiline=true, label={pt-PT=Tarefas Pendentes/Não Concluídas e Justificação, en-GB=Pending/Incomplete Tasks and Justification}}]}, {title={pt-PT=Meios_Utilizados, en-GB=Methods_Used}, description={pt-PT=Indicação dos meios de comunicação utilizados em teletrabalho (em % aproximada de tempo)., en-GB=Indication of Communication Methods Used in Remote Work (in approximate % of time).}, properties=[{type=Quantity, field=email, required=true, min=0, max=100, label={pt-PT=E-mail, en-GB=E-mail}, step=1}, {type=Quantity, field=phone, required=true, min=0, max=100, label={pt-PT=Telefone, en-GB=Phone}, step=1}, {type=Quantity, field=chat, required=true, min=0, max=100, label={pt-PT=Chat, en-GB=Chat}, step=1}, {type=Quantity, field=other, required=true, min=0, max=100, label={pt-PT=Outro, en-GB=Other}, step=1}, {type=Text, field=otherMethods, required=false, inputType=plain, multiline=true, label={pt-PT=Outros Meios Utilizados, en-GB=Other Communication Methods Used}, description={pt-PT=Indique, se for caso disso, que outros meios foram utilizados., en-GB=Specify, if relevant, which other methods were used.}}]}, {title={pt-PT=Plataformas_e_Aplicações_Utilizadas, en-GB=Platforms_and_Applications_Used}, description={pt-PT=Indicação dos meios tecnológicos, plataformas e outras aplicações utilizadas na execução das tarefas., en-GB=Details of the technological tools, platforms, and other applications used while performing the tasks.}, properties=[{type=Text, field=platforms, required=true, inputType=plain, multiline=true, label={pt-PT=Plataformas e Aplicações Utilizadas, en-GB=Platforms and Applications Used}}]}]}, {title={pt-PT=Avaliação_do_Teletrabalho, en-GB=Remote_Work_Evaluation}, sections=[{title={pt-PT=Avaliação_do_Grau_de_Interação, en-GB=Evaluation_of_the_Degree_of_Interaction}, properties=[{type=Select, field=interactionWithStudents, required=true, allowOther=false, multiple=false, collapsed=false, label={pt-PT=Grau de Interação com os Estudantes, se Aplicável, en-GB=Degree of Interaction with the Students, if Applicable}, options=[{value=none, label={pt-PT=Nenhum, en-GB=None}}, {value=low, label={pt-PT=Baixo, en-GB=Low}}, {value=average, label={pt-PT=Médio, en-GB=Average}}, {value=high, label={pt-PT=Alto, en-GB=High}}, {value=total, label={pt-PT=Total, en-GB=Total}}]}, {type=Select, field=interactionOtherUsers, required=true, allowOther=false, multiple=false, collapsed=false, label={pt-PT=Grau de Interação com Outros Utentes, se Aplicável, en-GB=Degree of Interaction with Other Users, if Applicable}, options=[{value=none, label={pt-PT=Nenhum, en-GB=None}}, {value=low, label={pt-PT=Baixo, en-GB=Low}}, {value=average, label={pt-PT=Médio, en-GB=Average}}, {value=high, label={pt-PT=Alto, en-GB=High}}, {value=total, label={pt-PT=Total, en-GB=Total}}]}, {type=Select, field=interactionWithColleagues, required=true, allowOther=false, multiple=false, collapsed=false, label={pt-PT=Grau de Interação com os/as Colegas, en-GB=Degree of Interaction with Colleagues}, options=[{value=none, label={pt-PT=Nenhum, en-GB=None}}, {value=low, label={pt-PT=Baixo, en-GB=Low}}, {value=average, label={pt-PT=Médio, en-GB=Average}}, {value=high, label={pt-PT=Alto, en-GB=High}}, {value=total, label={pt-PT=Total, en-GB=Total}}]}, {type=Select, field=interactionWithHierarchicalSuperiors, required=true, allowOther=false, multiple=false, collapsed=false, label={pt-PT=Grau de Interação com os/as Responsáveis Hierárquicos, en-GB=Degree of Interaction with Hierarchical Superiors}, options=[{value=none, label={pt-PT=Nenhum, en-GB=None}}, {value=low, label={pt-PT=Baixo, en-GB=Low}}, {value=average, label={pt-PT=Médio, en-GB=Average}}, {value=high, label={pt-PT=Alto, en-GB=High}}, {value=total, label={pt-PT=Total, en-GB=Total}}]}]}, {title={pt-PT=Dificuldades, en-GB=Difficulties}, properties=[{type=Text, field=difficulties, required=true, inputType=plain, multiline=true, label={pt-PT=Dificuldades Sentidas no Desempenho da Atividade em Regime de Teletrabalho, en-GB=Difficulties Faced while Performing Tasks during Remote Work}}]}, {title={pt-PT=Formação, en-GB=Training}, properties=[{type=Boolean, field=trainingQuestion, required=true, label={pt-PT=Teve formação?, en-GB=Have you received training?}, labelYes={pt-PT=Sim, en-GB=Yes}, labelNo={pt-PT=Não, en-GB=No}}, {type=Array, field=training, required=true, label={pt-PT=Formação Recebida, en-GB=Training Received}, labelAddElement={pt-PT=Adicionar formação, en-GB=Add training}, min=1, onlyIf={field=trainingQuestion, value=true, negation=false}, properties=[{type=DateTime, field=trainingStartDate, required=true, label={pt-PT=Data de Início da Formação, en-GB=Training Start Date}, date=true, time=false}, {type=DateTime, field=endTrainingDate, required=true, label={pt-PT=Data de Fim da Formação, en-GB=Training End Date}, date=true, time=false}, {type=Text, field=lectures, required=true, inputType=plain, multiline=true, label={pt-PT=Formações Realizadas para o Teletrabalho Sugeridas na Página "Boas Práticas para o Teletrabalho", en-GB=Remote Work Training Completed as Recommended on the "Good Practices for Remote Work" Page}}, {type=Text, field=otherLectures, required=true, inputType=plain, multiline=true, label={pt-PT=Outras Formações Realizadas Relevantes para o Teletrabalho, en-GB=Other Completed Training Programs Relevant to Remote Work}}]}]}, {title={pt-PT=Apreciação_Global, en-GB=Global_Evaluation}, description={pt-PT=Apreciação Global do Teletrabalho no Período de Referência, en-GB=Global Evaluation of Remote Work in the Reference Period}, properties=[{type=Select, field=globalEvaluation, required=true, allowOther=false, multiple=false, collapsed=false, label={pt-PT=Apreciação Qualitativa, en-GB=Qualitative Evaluation}, options=[{value=veryUnsatisfied, label={pt-PT=Muito Insatisfeito, en-GB=Very Unsatisfied}}, {value=unsatisfied, label={pt-PT=Insatisfeito, en-GB=Unsatisfied}}, {value=satisfied, label={pt-PT=Satisfeito, en-GB=Satisfied}}, {value=verySatisfied, label={pt-PT=Muito Satisfeito, en-GB=Very Satisfied}}, {value=completelySatisfied, label={pt-PT=Totalmente Satisfeito, en-GB=Completely Satisfied}}]}, {type=Text, field=satisfactionJustification, required=true, inputType=plain, multiline=true, label={pt-PT=Justificação do Nível de Satisfação Selecionado, en-GB=Justification for the Selected Satisfaction Level}}]}]}, {title={pt-PT=Teletrabalho, en-GB=Remote_Work}, sections=[{title={pt-PT=Renovação_de_Teletrabalho, en-GB=Remote_Work_Renewal}, properties=[{type=Select, field=renewal, required=true, multiple=false, collapse=false, allowOther=false, label={pt-PT=Pretende renovar o regime de teletrabalho?, en-GB=Would you like to renew your remote work regime?}, options=[{value=RENEW, label={pt-PT=Sim, en-GB=Yes}}, {value=DONT_RENEW, label={pt-PT=Não, en-GB=No}}]}, {type=Boolean, field=changeRemoteWorkDays, required=true, label={pt-PT=Pretende alterar os dias de teletrabalho?, en-GB=Would you like to change the current days of remote work?}, labelYes={pt-PT=Sim, en-GB=Yes}, labelNo={pt-PT=Não, en-GB=No}, onlyIf={field=renewal, value={value=RENEW, label={pt-PT=Sim, en-GB=Yes}}, negation=false}}, {type=Select, field=daysOfWeek, required=true, allowOther=false, multiple=true, collapsed=false, label={pt-PT=Dias da Semana em Teletrabalho, en-GB=Days of the Week in Remote Work}, onlyIf={field=changeRemoteWorkDays, value=true, negation=false}, options=[{value=monday, label={pt-PT=Segunda-feira, en-GB=Monday}}, {value=tuesday, label={pt-PT=Terça-feira, en-GB=Tuesday}}, {value=wednesday, label={pt-PT=Quarta-feira, en-GB=Wednesday}}, {value=thursday, label={pt-PT=Quinta-feira, en-GB=Thursday}}, {value=friday, label={pt-PT=Sexta-feira, en-GB=Friday}}]}]}]}]}}], actionNodes=[{id=step-upload-remote-work-report, type=withForms, comment=false, title={pt-PT=Submissão do Relatório de Teletrabalho, en-GB=Remote Work Report Submission}, description={pt-PT=Submissão do Relatório de Teletrabalho, en-GB=Remote Work Report Submission}, buttons=[{id=upload-remote-work-report-step-upload-remote-work-report, primary=true, label={pt-PT=Submeter relatório de teletrabalho, en-GB=Submit remote work report}, handlers={form=upload-remote-work-report, afterForm=action-from-remote-work-report-form}}], actions=[{primary=true, to=SUCCESS, label={pt-PT=Confirmar Submissão com Renovação, en-GB=Confirm Submission With Renewal}, id=RENEW-step-upload-remote-work-report, name=RENEW}, {primary=false, to=step-administrator, label={pt-PT=Confirmar Submissão Sem Renovação, en-GB=Confirm Submission Without Renewal}, id=DONT_RENEW-step-upload-remote-work-report, name=DONT_RENEW}], queue=requester-username}, {id=step-administrator, type=generic, comment=true, title={pt-PT=O/A Administrador(a), en-GB=The Administrator}, description={pt-PT=Parecer do/a Administrador(a), en-GB=Opinion of the Administrator}, commentLabel={pt-PT=Parecer do/a Administrador(a), en-GB=Opinion of the Administrator}, actions=[{primary=true, to=step-president, label={pt-PT=Autorizo a renovação, en-GB=I authorize the renewal}, id=RENEW-step-administrator, name=RENEW}, {primary=false, to=step-president, label={pt-PT=Não autorizo a renovação, en-GB=I do not authorize the renewal}, id=DONT_RENEW-step-administrator, name=DONT_RENEW}], queue=Gestao-Administrativa, replaceTitleWithRole=true, hr-final-authorization-step=true, actionProcessor=[{flowProcessor=Do Administrative Action For Remote Work, user=ist24235, data=Autorização automática por concordância de todos os intervenientes, flowAction=RENEW, id=onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work, name=onEnterNode}, {applyOn=RENEW-step-administrator, flowProcessor=Skip Next Nodes, node-field-key=hr-final-authorization-step, id=onActionTransition-step-administrator-Skip_Next_Nodes, name=onActionTransition}, {applyOn=DONT_RENEW-step-administrator, flowProcessor=Skip Next Nodes, node-field-key=hr-final-authorization-step, id=onActionTransition-step-administrator-Skip_Next_Nodes, name=onActionTransition}]}, {id=step-president, type=generic, comment=true, title={pt-PT=O/A Presidente, en-GB=The President}, description={pt-PT=Parecer do/a Presidente, en-GB=Opinion of the President}, commentLabel={pt-PT=Parecer do/a Presidente, en-GB=Opinion of the President}, actions=[{primary=true, to=step-hr-processing, label={pt-PT=Autorizo a renovação, en-GB=I authorize the renewal}, id=RENEW-step-president, name=RENEW}, {primary=false, to=step-hr-processing, label={pt-PT=Não autorizo a renovação, en-GB=I do not authorize the renewal}, id=DONT_RENEW-step-president, name=DONT_RENEW}], queue=Presidencia-do-Instituto-Superior-Tecnico, replaceTitleWithRole=true, hr-final-authorization-step=true}, {id=step-hr-processing, type=withButtons, comment=false, title={pt-PT=A Direção de Recursos Humanos, en-GB=The Human Resources Department}, description={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, commentLabel={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, buttons=[{id=hr-processing-step-hr-processing, primary=true, label={pt-PT=Marcar como Processado, en-GB=Mark as Processed}, handler=process:hr-processing}], actions=[{primary=false, to=SUCCESS, label={pt-PT=Marcar como Processado - Renovar, en-GB=Mark as Processed - Renew}, id=RENEW-step-hr-processing, name=RENEW}, {primary=true, to=SUCCESS, label={pt-PT=Marcar como Processado - Terminar, en-GB=Mark as Processed - Conclude}, id=CONCLUDE-step-hr-processing, name=CONCLUDE}], actionProcessor=[{applyOn=RENEW-step-hr-processing, flowProcessor=Continue Main Flow After All Subflows In Node Are Concluded, action=RENEW, id=onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded, name=onSuccess}, {applyOn=CONCLUDE-step-hr-processing, flowProcessor=Continue Main Flow After All Subflows In Node Are Concluded, action=CONCLUDE, id=onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded, name=onSuccess}], queue=Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="remote-work-report-submission-template" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="RENEW-step-president" id="Shape_RENEW-step-president">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-hr-processing" id="Shape_step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-administrator"
+                           id="Shape_ExclusiveGateway_step-administrator">
+            <dc:Bounds height="40.0" width="40.0" x="1520.0" y="1075.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="RENEW-step-administrator"
+                           id="Shape_RENEW-step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="1660.0" y="1225.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="RENEW-step-hr-processing"
+                           id="Shape_RENEW-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="800.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-upload-remote-work-report"
+                           id="Shape_ExclusiveGateway_step-upload-remote-work-report">
+            <dc:Bounds height="40.0" width="40.0" x="660.0" y="795.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"
+                           id="Shape_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work">
+            <dc:Bounds height="60.0" width="80.0" x="1980.0" y="1225.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="DONT_RENEW-step-administrator"
+                           id="Shape_DONT_RENEW-step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="1660.0" y="1065.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"
+                           id="Shape_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded">
+            <dc:Bounds height="60.0" width="80.0" x="980.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="785.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-hr-processing"
+                           id="Shape_ExclusiveGateway_step-hr-processing">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_hr-processing-step-hr-processing"
+                           id="Shape_ExclusiveGateway_hr-processing-step-hr-processing">
+            <dc:Bounds height="40.0" width="40.0" x="660.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-upload-remote-work-report"
+                           id="Shape_step-upload-remote-work-report">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="785.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="797.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="RENEW-step-upload-remote-work-report"
+                           id="Shape_RENEW-step-upload-remote-work-report">
+            <dc:Bounds height="60.0" width="80.0" x="1160.0" y="945.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-administrator-Skip_Next_Nodes"
+                           id="Shape_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <dc:Bounds height="60.0" width="80.0" x="1980.0" y="1385.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-president"
+                           id="Shape_ExclusiveGateway_step-president">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="380.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="hr-processing-step-hr-processing"
+                           id="Shape_hr-processing-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="DONT_RENEW-step-president"
+                           id="Shape_DONT_RENEW-step-president">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-administrator" id="Shape_step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="1340.0" y="1065.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_DONT_RENEW-step-administrator"
+                           id="Shape_ExclusiveGateway_DONT_RENEW-step-administrator">
+            <dc:Bounds height="40.0" width="40.0" x="1840.0" y="1075.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="upload-remote-work-report-step-upload-remote-work-report"
+                           id="Shape_upload-remote-work-report-step-upload-remote-work-report">
+            <dc:Bounds height="60.0" width="80.0" x="800.0" y="785.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONCLUDE-step-hr-processing"
+                           id="Shape_CONCLUDE-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="800.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="DONT_RENEW-step-upload-remote-work-report"
+                           id="Shape_DONT_RENEW-step-upload-remote-work-report">
+            <dc:Bounds height="60.0" width="80.0" x="1160.0" y="785.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-president" id="Shape_step-president">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report"
+                           id="Shape_ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report">
+            <dc:Bounds height="40.0" width="40.0" x="1000.0" y="795.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_RENEW-step-administrator"
+                           id="Shape_ExclusiveGateway_RENEW-step-administrator">
+            <dc:Bounds height="40.0" width="40.0" x="1840.0" y="1235.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+                           id="Shape_Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral">
+            <dc:Bounds height="280.0" width="2000.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Presidencia-do-Instituto-Superior-Tecnico"
+                           id="Shape_Presidencia-do-Instituto-Superior-Tecnico">
+            <dc:Bounds height="280.0" width="2000.0" x="90.0" y="340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="requester-username" id="Shape_requester-username">
+            <dc:Bounds height="415.0" width="2000.0" x="90.0" y="620.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Gestao-Administrativa" id="Shape_Gestao-Administrativa">
+            <dc:Bounds height="440.0" width="2000.0" x="90.0" y="1035.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="1415.0" width="2030.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="hr-processing-step-hr-processing_to_ExclusiveGateway_hr-processing-step-hr-processing"
+                          id="Edge_hr-processing-step-hr-processing_to_ExclusiveGateway_hr-processing-step-hr-processing">
+            <di:waypoint x="560.0" y="120.0"/>
+            <di:waypoint x="593.0" y="120.0"/>
+            <di:waypoint x="593.0" y="120.0"/>
+            <di:waypoint x="660.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONCLUDE-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"
+                          id="Edge_CONCLUDE-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded">
+            <di:waypoint x="880.0" y="120.0"/>
+            <di:waypoint x="913.0" y="120.0"/>
+            <di:waypoint x="913.0" y="280.0"/>
+            <di:waypoint x="980.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-upload-remote-work-report_to_upload-remote-work-report-step-upload-remote-work-report"
+                          id="Edge_ExclusiveGateway_step-upload-remote-work-report_to_upload-remote-work-report-step-upload-remote-work-report">
+            <di:waypoint x="700.0" y="815.0"/>
+            <di:waypoint x="800.0" y="815.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-president_to_RENEW-step-president"
+                          id="Edge_ExclusiveGateway_step-president_to_RENEW-step-president">
+            <di:waypoint x="360.0" y="400.0"/>
+            <di:waypoint x="393.0" y="400.0"/>
+            <di:waypoint x="393.0" y="560.0"/>
+            <di:waypoint x="480.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="DONT_RENEW-step-upload-remote-work-report_to_step-administrator"
+                          id="Edge_DONT_RENEW-step-upload-remote-work-report_to_step-administrator">
+            <di:waypoint x="1240.0" y="815.0"/>
+            <di:waypoint x="1273.0" y="815.0"/>
+            <di:waypoint x="1273.0" y="1095.0"/>
+            <di:waypoint x="1340.0" y="1095.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-administrator_to_RENEW-step-administrator"
+                          id="Edge_ExclusiveGateway_step-administrator_to_RENEW-step-administrator">
+            <di:waypoint x="1560.0" y="1095.0"/>
+            <di:waypoint x="1593.0" y="1095.0"/>
+            <di:waypoint x="1593.0" y="1255.0"/>
+            <di:waypoint x="1660.0" y="1255.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_hr-processing-step-hr-processing_to_RENEW-step-hr-processing"
+                          id="Edge_ExclusiveGateway_hr-processing-step-hr-processing_to_RENEW-step-hr-processing">
+            <di:waypoint x="700.0" y="120.0"/>
+            <di:waypoint x="733.0" y="120.0"/>
+            <di:waypoint x="733.0" y="280.0"/>
+            <di:waypoint x="800.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="RENEW-step-administrator_to_ExclusiveGateway_RENEW-step-administrator"
+                          id="Edge_RENEW-step-administrator_to_ExclusiveGateway_RENEW-step-administrator">
+            <di:waypoint x="1740.0" y="1255.0"/>
+            <di:waypoint x="1773.0" y="1255.0"/>
+            <di:waypoint x="1773.0" y="1255.0"/>
+            <di:waypoint x="1840.0" y="1255.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-president_to_ExclusiveGateway_step-president"
+                          id="Edge_step-president_to_ExclusiveGateway_step-president">
+            <di:waypoint x="200.0" y="400.0"/>
+            <di:waypoint x="233.0" y="400.0"/>
+            <di:waypoint x="233.0" y="400.0"/>
+            <di:waypoint x="320.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_DONT_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"
+                          id="Edge_ExclusiveGateway_DONT_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work">
+            <di:waypoint x="1880.0" y="1095.0"/>
+            <di:waypoint x="1913.0" y="1095.0"/>
+            <di:waypoint x="1913.0" y="1255.0"/>
+            <di:waypoint x="1980.0" y="1255.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-upload-remote-work-report_to_ExclusiveGateway_step-upload-remote-work-report"
+                          id="Edge_step-upload-remote-work-report_to_ExclusiveGateway_step-upload-remote-work-report">
+            <di:waypoint x="560.0" y="815.0"/>
+            <di:waypoint x="593.0" y="815.0"/>
+            <di:waypoint x="593.0" y="815.0"/>
+            <di:waypoint x="660.0" y="815.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-president_to_DONT_RENEW-step-president"
+                          id="Edge_ExclusiveGateway_step-president_to_DONT_RENEW-step-president">
+            <di:waypoint x="360.0" y="400.0"/>
+            <di:waypoint x="480.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="DONT_RENEW-step-administrator_to_ExclusiveGateway_DONT_RENEW-step-administrator"
+                          id="Edge_DONT_RENEW-step-administrator_to_ExclusiveGateway_DONT_RENEW-step-administrator">
+            <di:waypoint x="1740.0" y="1095.0"/>
+            <di:waypoint x="1773.0" y="1095.0"/>
+            <di:waypoint x="1773.0" y="1095.0"/>
+            <di:waypoint x="1840.0" y="1095.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-hr-processing_to_hr-processing-step-hr-processing"
+                          id="Edge_ExclusiveGateway_step-hr-processing_to_hr-processing-step-hr-processing">
+            <di:waypoint x="360.0" y="120.0"/>
+            <di:waypoint x="480.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                          id="Edge_ExclusiveGateway_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <di:waypoint x="1880.0" y="1255.0"/>
+            <di:waypoint x="1913.0" y="1255.0"/>
+            <di:waypoint x="1913.0" y="1415.0"/>
+            <di:waypoint x="1980.0" y="1415.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="upload-remote-work-report-step-upload-remote-work-report_to_ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report"
+                          id="Edge_upload-remote-work-report-step-upload-remote-work-report_to_ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report">
+            <di:waypoint x="880.0" y="815.0"/>
+            <di:waypoint x="913.0" y="815.0"/>
+            <di:waypoint x="913.0" y="815.0"/>
+            <di:waypoint x="1000.0" y="815.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="RENEW-step-upload-remote-work-report_to_SUCCESS"
+                          id="Edge_RENEW-step-upload-remote-work-report_to_SUCCESS">
+            <di:waypoint x="1240.0" y="975.0"/>
+            <di:waypoint x="2095.0" y="975.0"/>
+            <di:waypoint x="2095.0" y="705.0"/>
+            <di:waypoint x="160.0" y="705.0"/>
+            <di:waypoint x="160.0" y="685.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="RENEW-step-president_to_step-hr-processing"
+                          id="Edge_RENEW-step-president_to_step-hr-processing">
+            <di:waypoint x="560.0" y="560.0"/>
+            <di:waypoint x="2095.0" y="560.0"/>
+            <di:waypoint x="2095.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded_to_SUCCESS"
+                          id="Edge_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded_to_SUCCESS">
+            <di:waypoint x="1060.0" y="280.0"/>
+            <di:waypoint x="2095.0" y="280.0"/>
+            <di:waypoint x="2095.0" y="705.0"/>
+            <di:waypoint x="160.0" y="705.0"/>
+            <di:waypoint x="160.0" y="685.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_hr-processing-step-hr-processing_to_CONCLUDE-step-hr-processing"
+                          id="Edge_ExclusiveGateway_hr-processing-step-hr-processing_to_CONCLUDE-step-hr-processing">
+            <di:waypoint x="700.0" y="120.0"/>
+            <di:waypoint x="800.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_RENEW-step-upload-remote-work-report"
+                          id="Edge_ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_RENEW-step-upload-remote-work-report">
+            <di:waypoint x="1040.0" y="815.0"/>
+            <di:waypoint x="1073.0" y="815.0"/>
+            <di:waypoint x="1073.0" y="975.0"/>
+            <di:waypoint x="1160.0" y="975.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work_to_step-president"
+                          id="Edge_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work_to_step-president">
+            <di:waypoint x="2060.0" y="1255.0"/>
+            <di:waypoint x="2095.0" y="1255.0"/>
+            <di:waypoint x="2095.0" y="450.0"/>
+            <di:waypoint x="160.0" y="450.0"/>
+            <di:waypoint x="160.0" y="430.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="RENEW-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded"
+                          id="Edge_RENEW-step-hr-processing_to_onSuccess-step-hr-processing-Continue_Main_Flow_After_All_Subflows_In_Node_Are_Concluded">
+            <di:waypoint x="880.0" y="280.0"/>
+            <di:waypoint x="980.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="DONT_RENEW-step-president_to_step-hr-processing"
+                          id="Edge_DONT_RENEW-step-president_to_step-hr-processing">
+            <di:waypoint x="560.0" y="400.0"/>
+            <di:waypoint x="2095.0" y="400.0"/>
+            <di:waypoint x="2095.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_DONT_RENEW-step-upload-remote-work-report"
+                          id="Edge_ExclusiveGateway_upload-remote-work-report-step-upload-remote-work-report_to_DONT_RENEW-step-upload-remote-work-report">
+            <di:waypoint x="1040.0" y="815.0"/>
+            <di:waypoint x="1160.0" y="815.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-administrator_to_ExclusiveGateway_step-administrator"
+                          id="Edge_step-administrator_to_ExclusiveGateway_step-administrator">
+            <di:waypoint x="1420.0" y="1095.0"/>
+            <di:waypoint x="1453.0" y="1095.0"/>
+            <di:waypoint x="1453.0" y="1095.0"/>
+            <di:waypoint x="1520.0" y="1095.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_DONT_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                          id="Edge_ExclusiveGateway_DONT_RENEW-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <di:waypoint x="1880.0" y="1095.0"/>
+            <di:waypoint x="1913.0" y="1095.0"/>
+            <di:waypoint x="1913.0" y="1415.0"/>
+            <di:waypoint x="1980.0" y="1415.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-administrator_to_DONT_RENEW-step-administrator"
+                          id="Edge_ExclusiveGateway_step-administrator_to_DONT_RENEW-step-administrator">
+            <di:waypoint x="1560.0" y="1095.0"/>
+            <di:waypoint x="1660.0" y="1095.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-hr-processing_to_ExclusiveGateway_step-hr-processing"
+                          id="Edge_step-hr-processing_to_ExclusiveGateway_step-hr-processing">
+            <di:waypoint x="200.0" y="120.0"/>
+            <di:waypoint x="233.0" y="120.0"/>
+            <di:waypoint x="233.0" y="120.0"/>
+            <di:waypoint x="320.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work"
+                          id="Edge_ExclusiveGateway_RENEW-step-administrator_to_onEnterNode-step-administrator-Do_Administrative_Action_For_Remote_Work">
+            <di:waypoint x="1880.0" y="1255.0"/>
+            <di:waypoint x="1980.0" y="1255.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-upload-remote-work-report"
+                          id="Edge_START-start-event_to_step-upload-remote-work-report">
+            <di:waypoint x="380.0" y="815.0"/>
+            <di:waypoint x="480.0" y="815.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president"
+                          id="Edge_onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president">
+            <di:waypoint x="2060.0" y="1415.0"/>
+            <di:waypoint x="2095.0" y="1415.0"/>
+            <di:waypoint x="2095.0" y="450.0"/>
+            <di:waypoint x="160.0" y="450.0"/>
+            <di:waypoint x="160.0" y="430.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="177.5" y="815.0"/>
+            <di:waypoint x="300.0" y="815.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

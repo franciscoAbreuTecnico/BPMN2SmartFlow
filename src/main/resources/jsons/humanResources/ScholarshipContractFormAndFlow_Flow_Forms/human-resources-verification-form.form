@@ -1,0 +1,60 @@
+{
+  "id" : "Form_human-resources-verification-form",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Review_of_Conditions",
+    "key" : "page_Review_of_Conditions",
+    "label" : "Review_of_Conditions",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Requirements_and_Work_Plan_Validation",
+      "key" : "section_Requirements_and_Work_Plan_Validation",
+      "label" : "Requirements_and_Work_Plan_Validation",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_validateRequirements",
+        "key" : "validateRequirements",
+        "label" : "Requirements of the Applicable Legislation and Regulations",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "meetsRequirements",
+          "label" : {
+            "en-GB" : "The request complies with the requirements set by the applicable laws and regulations.",
+            "pt-PT" : "O pedido cumpre os requisitos da legislação e regulamento aplicáveis."
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_validateWorkPlan",
+        "key" : "validateWorkPlan",
+        "label" : "Work Plan",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "workPlanComplies",
+          "label" : {
+            "en-GB" : "The work plan is compliant.",
+            "pt-PT" : "O plano de trabalho está conforme."
+          }
+        } ]
+      } ]
+    } ]
+  } ]
+}

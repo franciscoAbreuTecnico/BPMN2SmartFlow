@@ -1,0 +1,26 @@
+{
+  "id" : "Form_protest-form",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Protest_the_Decision",
+    "key" : "page_Protest_the_Decision",
+    "label" : "Protest_the_Decision",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Protest_the_Decision",
+      "key" : "section_Protest_the_Decision",
+      "label" : "Protest_the_Decision",
+      "showOutline" : true,
+      "components" : [ ]
+    } ]
+  } ]
+}

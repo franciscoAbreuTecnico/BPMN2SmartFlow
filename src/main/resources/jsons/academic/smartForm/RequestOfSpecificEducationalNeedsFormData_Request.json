@@ -1,0 +1,306 @@
+{
+  "name" : {
+    "pt-PT" : "Requerimento de Estatuto de Necessidades Educativas Específicas",
+    "en-GB" : "Request of Specific Educational Needs Status"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar um estatuto de necessidades educativas específicas",
+    "en-GB" : "This form allows you to request a specific educational needs status"
+  },
+  "context" : {
+    "onLock" : [ {
+      "requestProcessor" : "Move Queue",
+      "queue" : "Núcleo de Desenvolvimento Académico"
+    } ],
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request Or Load Flow To Edit",
+      "template" : "academic-specific-educational-needs-request",
+      "setSupervisorFromRequester" : true
+    },
+    "onConclude" : [ {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    } ]
+  },
+  "inputForm" : {
+    "checks" : {
+      "requireActiveRegistration" : true,
+      "requirePersonalInformation" : true,
+      "requireValidIdDocument" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Requerimento de Estatuto de Necessidades Educativas Específicas",
+        "en-GB" : "Request of Specific Educational Needs Status"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Condição e Apoios",
+          "en-GB" : "Condition and Support Measures"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "readonly" : false,
+          "multiline" : false,
+          "required" : true,
+          "maxLength" : 1000,
+          "field" : "CONDITION",
+          "label" : {
+            "pt-PT" : "Condição",
+            "en-GB" : "Condition"
+          },
+          "description" : {
+            "pt-PT" : "Requer a V. Ex.ª apoio ao abrigo do despacho n.º4208/2011, de 4 de março, publicado em DR, 2.ª série, n.º45 o estatuto de estudante com necessidades educativas Específicas, por motivo da sua condição de:",
+            "en-GB" : "Requests from Your Excellency support under Order No. 4208/2011, of March 4, published in Diário da República, 2nd series, No. 45, the status of a student with Specific educational needs, due to their condition of:"
+          }
+        }, {
+          "type" : "Text",
+          "readonly" : false,
+          "multiline" : true,
+          "required" : true,
+          "maxLength" : 1000,
+          "field" : "SUPPORT MEASURES",
+          "label" : {
+            "pt-PT" : "Apoios",
+            "en-GB" : "Support Measures"
+          },
+          "description" : {
+            "pt-PT" : "E que lhe sejam concedidos os seguintes apoios específicos:",
+            "en-GB" : "And that the following specific support measures are granted to you:"
+          }
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Atestado ou Relatório Clínico",
+          "en-GB" : "Certificate or Clinical Report"
+        },
+        "properties" : [ {
+          "type" : "File",
+          "field" : "ATTACHMENT_CERTIFICATE_MEDICAL_REPORT",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Anexo - Atestado/Relatório Clínico",
+            "en-GB" : "Attachment - Certificate/Clinical Report"
+          },
+          "allowedFileTypes" : [ ".pdf", ".png", ".jpg" ],
+          "maxSizeMB" : 25
+        }, {
+          "type" : "Array",
+          "field" : "extraAttachments",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Outros Anexos",
+            "en-GB" : "Other Attachments"
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Quer anexar outro documento?",
+            "en-GB" : "Do you want to attach another document?"
+          },
+          "properties" : [ {
+            "type" : "File",
+            "field" : "ATTACHMENT_OTHER",
+            "required" : true,
+            "label" : {
+              "pt-PT" : "Anexo - Outro",
+              "en-GB" : "Attachment - Other"
+            },
+            "allowedFileTypes" : [ ".pdf", ".png", ".jpg" ],
+            "maxSizeMB" : 25
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta",
+        "en-GB" : "Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Resposta",
+          "en-GB" : "Response"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "field" : "startTerm",
+          "readonly" : true,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Período de Início",
+            "en-GB" : "Start Term"
+          }
+        }, {
+          "type" : "AsyncSelect",
+          "field" : "endTerm",
+          "readonly" : true,
+          "allowOther" : false,
+          "label" : {
+            "pt-PT" : "Período de Fim",
+            "en-GB" : "End Term"
+          }
+        }, {
+          "type" : "DateTime",
+          "field" : "startDate",
+          "readonly" : true,
+          "date" : true,
+          "time" : false,
+          "label" : {
+            "pt-PT" : "Data de Início",
+            "en-GB" : "Start Date"
+          }
+        }, {
+          "type" : "DateTime",
+          "field" : "endDate",
+          "required" : true,
+          "date" : true,
+          "time" : false,
+          "label" : {
+            "pt-PT" : "Data de Fim",
+            "en-GB" : "End Date"
+          }
+        }, {
+          "type" : "Text",
+          "field" : "situation",
+          "required" : true,
+          "readonly" : true,
+          "multiline" : true,
+          "label" : {
+            "pt-PT" : "Situação do/a Estudante",
+            "en-GB" : "Student's Situation"
+          },
+          "description" : {
+            "pt-PT" : "A situação do/a estudante é a seguinte:",
+            "en-GB" : "The student's situation is as follows:"
+          }
+        }, {
+          "type" : "Text",
+          "field" : "objectives",
+          "required" : true,
+          "readonly" : true,
+          "multiline" : true,
+          "label" : {
+            "pt-PT" : "Objetivos a Alcançar",
+            "en-GB" : "Objectives to Achieve"
+          },
+          "description" : {
+            "pt-PT" : "Os objetivos a alcançar são os seguintes:",
+            "en-GB" : "The objectives to be achieved are as follows:"
+          }
+        }, {
+          "type" : "Select",
+          "field" : "SUPPORT_MEASURES_ACESSIBILITY_AND_ACCESS_LOCATIONS",
+          "required" : false,
+          "multiple" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Medidas de Acessibilidade e Acesso a locais",
+            "en-GB" : "Measures of Accessibility and Access to locations"
+          },
+          "description" : {
+            "pt-PT" : "As medidas de acessibilidade e acesso a locais são as seguintes:",
+            "en-GB" : "The measures of accessibility and access to locations are as follows:"
+          }
+        }, {
+          "type" : "Select",
+          "field" : "SUPPORT_MEASURES_EVALUATIONS",
+          "required" : false,
+          "multiple" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Medidas referentes a avaliações",
+            "en-GB" : "Measures related to evaluations"
+          },
+          "description" : {
+            "pt-PT" : "As medidas de avaliação são as seguintes:",
+            "en-GB" : "The evaluation measures are as follows:"
+          }
+        }, {
+          "type" : "Select",
+          "field" : "SUPPORT_MEASURES_SUPPORT_RESOURCES",
+          "required" : false,
+          "multiple" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Medidas referentes a recursos de apoio",
+            "en-GB" : "Measures related to support resources"
+          },
+          "description" : {
+            "pt-PT" : "Os recursos de apoio são os seguintes:",
+            "en-GB" : "The support resources are as follows:"
+          }
+        }, {
+          "type" : "Select",
+          "field" : "SUPPORT_MEASURES_CLASS_ATTENDANCE",
+          "required" : false,
+          "multiple" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Medidas referentes a aulas",
+            "en-GB" : "Measures related to classes"
+          },
+          "description" : {
+            "pt-PT" : "As medidas de aulas são as seguintes:",
+            "en-GB" : "The class measures are as follows:"
+          }
+        }, {
+          "type" : "Select",
+          "field" : "SUPPORT_MEASURES_APPROVAL_CP_CG",
+          "required" : false,
+          "multiple" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Medidades que carecem de aprovação do Conselho Pedagógico e Conselho de Gestão",
+            "en-GB" : "Measures that require approval from the Pedagogical Council and Management Council"
+          },
+          "description" : {
+            "pt-PT" : "As medidas que carecem de aprovação do conselho pedagógico e do conselho de gestão são as seguintes:",
+            "en-GB" : "The measures that require approval from the pedagogical council and the management council are as follows:"
+          }
+        }, {
+          "type" : "Array",
+          "field" : "otherSupportMeasures",
+          "required" : false,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Outras Medidas de Apoio",
+            "en-GB" : "Other Support Measures"
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Quer adicionar outra medida de apoio?",
+            "en-GB" : "Do you want to add another support measure?"
+          },
+          "description" : {
+            "pt-PT" : "Outras medidas de apoio",
+            "en-GB" : "Other support measures"
+          },
+          "properties" : [ {
+            "type" : "Text",
+            "readonly" : true,
+            "required" : false,
+            "field" : "OTHER_SUPPORT_MEASURE",
+            "label" : {
+              "pt-PT" : "Medida de Apoio",
+              "en-GB" : "Support Measure"
+            }
+          } ]
+        }, {
+          "type" : "Text",
+          "field" : "OBSERVATIONS",
+          "required" : false,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Observações",
+            "en-GB" : "Observations"
+          },
+          "description" : {
+            "pt-PT" : "Outras observações",
+            "en-GB" : "Other observations"
+          }
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

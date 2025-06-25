@@ -3,6 +3,20 @@
   "configurations": [
     {
         "type": "java",
+        "name": "AppValidateSingle",
+        "request": "launch",
+        "mainClass": "com.rdf.archived.AppValidateSingle",
+        "projectName": "BPMN2SmartFlow"
+    },
+    {
+        "type": "java",
+        "name": "AppValidate",
+        "request": "launch",
+        "mainClass": "com.rdf.AppValidate",
+        "projectName": "BPMN2SmartFlow"
+    },
+    {
+        "type": "java",
         "name": "PartialApp",
         "request": "launch",
         "mainClass": "com.rdf.archived.PartialApp",

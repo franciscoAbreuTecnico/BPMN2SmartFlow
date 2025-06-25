@@ -1,0 +1,26 @@
+{
+  "id" : "Form_fund-reservation",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Projects_and_Budget_Execution_Department",
+    "key" : "page_Projects_and_Budget_Execution_Department",
+    "label" : "Projects_and_Budget_Execution_Department",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_FFund_Allocation",
+      "key" : "section_FFund_Allocation",
+      "label" : "Reserve/Fund_Allocation",
+      "showOutline" : true,
+      "components" : [ ]
+    } ]
+  } ]
+}

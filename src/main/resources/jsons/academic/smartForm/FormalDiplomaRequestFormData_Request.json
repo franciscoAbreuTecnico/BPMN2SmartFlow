@@ -1,0 +1,270 @@
+{
+  "name" : {
+    "pt-PT" : "Carta de Curso",
+    "en-GB" : "Formal Diploma"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar a emissão da Carta de Curso.",
+    "en-GB" : "This form allows you to request the issuance of the Formal Diploma."
+  },
+  "context" : {
+    "sendValidationEmail" : "false",
+    "requestKeywords" : {
+      "fields" : [ "REGISTRATION", "PROGRAMME_CONCLUSION_TYPE", "REGISTRY_CODE", "LOCALE" ],
+      "displayName" : false,
+      "username" : false
+    },
+    "onLock" : [ {
+      "requestProcessor" : "Check Has No Previous Same Degree And Cycle Request"
+    }, {
+      "requestProcessor" : "Check Has Certificate of Registration With Confirmed Degree Conclusion If Not PreBologna With Request"
+    }, {
+      "requestProcessor" : "Change Academic Request Queue",
+      "queueMapper" : {
+        "Área de Graduação" : "Núcleo de Certificação Académica"
+      }
+    } ],
+    "onPayOrExempt" : {
+      "requestProcessor" : "Auto Validate"
+    },
+    "onValidate" : [ {
+      "requestProcessor" : "Check Has Certificate of Registration With Registry Code If Not PreBologna With Request"
+    }, {
+      "requestProcessor" : "Change Academic Request Queue",
+      "queueMapper" : {
+        "Área de Graduação" : "Núcleo de Certificação Académica"
+      }
+    }, {
+      "requestProcessor" : "Fill Delivery Location From Degree"
+    }, {
+      "requestProcessor" : "Fill Registry Code From Formal Diploma Or Certificate of Registration"
+    }, {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "formal-diploma-flow",
+      "setSupervisorFromRequester" : true,
+      "actionNodesProvider" : "Academic Office Flow - formal-diploma-flow"
+    } ],
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : [ {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }, {
+      "requestProcessor" : "Change Academic Request Queue",
+      "queueMapper" : {
+        "Área de Graduação" : "Núcleo de Registo Académico"
+      }
+    } ]
+  },
+  "inputForm" : {
+    "checks" : {
+      "requireIdentity" : true,
+      "requirePersonalInformation" : true,
+      "requireTaxInformation" : true,
+      "requireValidIdDocument" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Pedido de Carta de Curso",
+        "en-GB" : "Formal Diploma Request"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Curso e Grau Concluídos",
+          "en-GB" : "Concluded Degree and Level"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "readonly" : false,
+          "required" : true,
+          "allowOther" : false,
+          "field" : "REGISTRATION",
+          "label" : {
+            "pt-PT" : "Matrícula",
+            "en-GB" : "Registration"
+          },
+          "optionsProvider" : "/paper-pusher-ist/registrations"
+        }, {
+          "type" : "AsyncSelect",
+          "readonly" : false,
+          "required" : true,
+          "field" : "PROGRAMME_CONCLUSION_TYPE",
+          "onlyIf" : {
+            "field" : "REGISTRATION",
+            "negation" : true,
+            "value" : null
+          },
+          "label" : {
+            "pt-PT" : "Nível do Grau",
+            "en-GB" : "Graduation Level"
+          },
+          "optionsProvider" : "/paper-pusher-ist/programmeConclusions",
+          "optionsLimitedBy" : {
+            "field" : "REGISTRATION"
+          }
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Língua do Documento",
+          "en-GB" : "Document Language"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "readonly" : false,
+          "required" : true,
+          "field" : "LOCALE",
+          "label" : {
+            "pt-PT" : "Língua",
+            "en-GB" : "Language"
+          },
+          "optionsProvider" : "/paper-pusher-ist/locales"
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta ao Pedido de Carta de Curso",
+        "en-GB" : "Formal Diploma Request Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Informação Administrativa",
+          "en-GB" : "Administrative Information"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "field" : "REGISTRY_CODE",
+          "required" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Código de Registo",
+            "en-GB" : "Registry Code"
+          },
+          "multiline" : false,
+          "inputType" : "plain"
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Entrega do Documento",
+          "en-GB" : "Document Delivery"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "field" : "deliveryLocation",
+          "required" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Local de Entrega",
+            "en-GB" : "Delivery Location"
+          },
+          "optionsProvider" : "/paper-pusher-ist/administrativeOffices",
+          "allowOther" : false
+        }, {
+          "type" : "File",
+          "field" : "FORMAL_DIPLOMA",
+          "required" : true,
+          "readonly" : true,
+          "hidden" : true,
+          "label" : {
+            "pt-PT" : "Carta de Curso",
+            "en-GB" : "Formal Diploma"
+          },
+          "allowedFileTypes" : [ ".pdf" ]
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : {
+    "description" : {
+      "pt-PT" : "Pedido de Carta de Curso",
+      "en-GB" : "Formal Diploma Request"
+    },
+    "value" : 100.0,
+    "accountId" : "287762860391",
+    "productCode" : "0037",
+    "productDescription" : "EMOLUMENTOS",
+    "onLock" : [ {
+      "costProcessor" : "Add Request Keywords to Cost Description"
+    }, {
+      "costProcessor" : "Change Value According To Cycle Type"
+    } ],
+    "costMappings" : [ {
+      "cycleType" : "FIRST_CYCLE",
+      "value" : "100.00"
+    }, {
+      "cycleType" : "SECOND_CYCLE",
+      "value" : "125.00"
+    }, {
+      "cycleType" : "THIRD_CYCLE",
+      "value" : "175.00"
+    } ]
+  },
+  "views" : [ {
+    "id" : "Default",
+    "columns" : [ {
+      "title" : {
+        "pt-PT" : "Submetido",
+        "en-GB" : "Submitted"
+      },
+      "type" : "Request Info",
+      "info" : "lockInstant"
+    }, {
+      "title" : {
+        "pt-PT" : "Aluno",
+        "en-GB" : "Student"
+      },
+      "type" : "Request Info",
+      "info" : "requester"
+    }, {
+      "title" : {
+        "pt-PT" : "Estado do Pedido",
+        "en-GB" : "Request State"
+      },
+      "type" : "Request State"
+    }, {
+      "title" : {
+        "pt-PT" : "Revisão",
+        "en-GB" : "Revision"
+      },
+      "type" : "Request Info",
+      "info" : "revisionDeadline"
+    }, {
+      "title" : {
+        "pt-PT" : "Pagamento",
+        "en-GB" : "Payment"
+      },
+      "type" : "Payment State"
+    }, {
+      "title" : {
+        "pt-PT" : "Estado do Processo",
+        "en-GB" : "Process State"
+      },
+      "type" : "Flow State From Request"
+    }, {
+      "title" : {
+        "pt-PT" : "Grau",
+        "en-GB" : "Level"
+      },
+      "type" : "Form Field",
+      "form" : "inputForm",
+      "field" : "PROGRAMME_CONCLUSION_TYPE"
+    }, {
+      "title" : {
+        "pt-PT" : "Curso",
+        "en-GB" : "Degree"
+      },
+      "type" : "Function",
+      "getter" : "Get Degree From Request Registration"
+    }, {
+      "title" : {
+        "pt-PT" : "Língua",
+        "en-GB" : "Language"
+      },
+      "type" : "Form Field",
+      "form" : "inputForm",
+      "field" : "LOCALE"
+    } ]
+  } ]
+}

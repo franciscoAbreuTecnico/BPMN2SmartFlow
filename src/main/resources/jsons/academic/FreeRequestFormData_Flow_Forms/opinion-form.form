@@ -1,0 +1,55 @@
+{
+  "id" : "Form_opinion-form",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Response",
+    "key" : "page_Response",
+    "label" : "Response",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Documents",
+      "key" : "section_Documents",
+      "label" : "Documents",
+      "showOutline" : true,
+      "components" : [ ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Opinion_and_Justification",
+      "key" : "section_Opinion_and_Justification",
+      "label" : "Opinion_and_Justification",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "text",
+        "id" : "Field_justification",
+        "key" : "justification",
+        "label" : "Justification",
+        "text" : "Justification",
+        "required" : false,
+        "readOnly" : false
+      }, {
+        "type" : "radio",
+        "id" : "Field_opinion",
+        "key" : "opinion",
+        "label" : "Opinion",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Approve",
+          "value" : 1
+        }, {
+          "label" : "Reject",
+          "value" : 0
+        } ]
+      } ]
+    } ]
+  } ]
+}

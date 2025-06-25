@@ -1,0 +1,35 @@
+{
+  "id" : "Form_upload-transcript-records",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Transcript_of_Records",
+    "key" : "page_Transcript_of_Records",
+    "label" : "Transcript_of_Records",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Transcript_of_Records",
+      "key" : "section_Transcript_of_Records",
+      "label" : "Transcript_of_Records",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "filepicker",
+        "id" : "Field_transcriptOfRecords",
+        "key" : "transcriptOfRecords",
+        "label" : "Transcript of Records",
+        "required" : false,
+        "readOnly" : false,
+        "accept" : ".pdf",
+        "maxFileSize" : "10MB"
+      } ]
+    } ]
+  } ]
+}

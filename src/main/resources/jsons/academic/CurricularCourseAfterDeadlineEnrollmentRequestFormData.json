@@ -1,0 +1,69 @@
+{
+    "name": {
+        "pt-PT": "Inscrição Fora de Prazo a Unidade Curricular",
+        "en-GB": "Curricular Course Enrollment After Deadline"
+    },
+    "description": {
+        "pt-PT": "Este formulário permite-lhe solicitar a inscrição a uma unidade curriculare após o prazo para a inscrição ter lapsado.",
+        "en-GB": "This form allows you to request to be enrolled in a curricular course after the deadline for registration has passed."
+    },
+    "context": {},
+    "inputForm": {
+        "checks": {
+            "requireIdentity": true,
+            "requirePersonalInformation": true,
+            "requireUser": true
+        },
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Inscrição a Unidade Curricular",
+                    "en-GB": "Curricular Course Enrollment"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Unidade Curricular",
+                            "en-GB": "Curricular Course"
+                        },
+                        "properties": [
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "CURRICULAR_COURSE",
+                                "label": {
+                                    "pt-PT": "Unidade Curricular",
+                                    "en-GB": "Curricular Course"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/courses"
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Justificação",
+                            "en-GB": "Justification"
+                        },
+                        "properties": [
+                            {
+                                "type": "Text",
+                                "required": true,
+                                "maxLength": 250,
+                                "field": "JUSTIFICATION",
+                                "label": {
+                                    "pt-PT": "Justificação",
+                                    "en-GB": "Justification"
+                                },
+                                "multiline": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "outcomeForm": {},
+    "cost": {}
+}

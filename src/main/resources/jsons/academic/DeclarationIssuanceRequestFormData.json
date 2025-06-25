@@ -1,0 +1,68 @@
+{
+  "name": {
+    "pt-PT": "Emitir Declaração",
+    "en-GB": "Issue Declaration"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar a emissão de uma declaração.",
+    "en-GB": "This form allows you to request the issuance of a declaration."
+  },
+  "context": {},
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requirePersonalInformation": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Declaração a emitir",
+          "en-GB": "Declaration to issue"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Declaração a emitir",
+              "en-GB": "Declaração a emitir"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "readonly": false,
+                "required": true,
+                "allowOther": true,
+                "field": "DECLARATION_TYPE",
+                "label": {
+                  "pt-PT": "Tipo de declaração",
+                  "en-GB": "Declaration type"
+                },
+                "options": [
+                  {
+                    "value": "TO_BE_FILLED",
+                    "label": {
+                      "pt-PT": "ESTE CAMPO AINDA NÃO TEM OPÇÕES",
+                      "en-GB": "THIS FIELD DOESN'T HAVE ANY OPTIONS YET"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "Text",
+                "readonly": false,
+                "required": false,
+                "maxLength": 100,
+                "field": "ENTITY",
+                "label": {
+                  "pt-PT": "Entidade a que se destina",
+                  "en-GB": "Recipient entity"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {},
+  "cost": {}
+}

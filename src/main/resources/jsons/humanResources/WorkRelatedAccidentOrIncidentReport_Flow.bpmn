@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_3a449bdc-43d2-4a83-a673-d87da354f1ae"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Presidencia-do-Instituto-Superior-Tecnico"
+               name="Presidencia-do-Instituto-Superior-Tecnico">
+            <flowNodeRef>step-president</flowNodeRef>
+            <flowNodeRef>REJECT-step-president</flowNodeRef>
+            <flowNodeRef>SIGN-step-president</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-president</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+         <lane id="Gestao-Administrativa" name="Gestao-Administrativa">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-administrator</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-administrator-Skip_Next_Nodes</flowNodeRef>
+            <flowNodeRef>REJECT-step-administrator</flowNodeRef>
+            <flowNodeRef>SIGN-step-administrator</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-administrator</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-president" name="The President">
+         <incoming>onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president</incoming>
+         <outgoing>step-president_to_ExclusiveGateway_step-president</outgoing>
+      </userTask>
+      <userTask id="step-administrator" name="The Administrator">
+         <incoming>START-start-event_to_step-administrator</incoming>
+         <outgoing>step-administrator_to_ExclusiveGateway_step-administrator</outgoing>
+      </userTask>
+      <scriptTask id="onActionTransition-step-administrator-Skip_Next_Nodes"
+                  name="Skip Next Nodes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_892"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/servlet/PaperPusherISTServletContextListener.java#L892"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</incoming>
+         <outgoing>onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president</outgoing>
+      </scriptTask>
+      <serviceTask id="REJECT-step-president" name="REJECT">
+         <incoming>ExclusiveGateway_step-president_to_REJECT-step-president</incoming>
+         <outgoing>REJECT-step-president_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-administrator" name="REJECT">
+         <incoming>ExclusiveGateway_step-administrator_to_REJECT-step-administrator</incoming>
+         <outgoing>REJECT-step-administrator_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-president" name="SIGN">
+         <incoming>ExclusiveGateway_step-president_to_SIGN-step-president</incoming>
+         <outgoing>SIGN-step-president_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-administrator" name="SIGN">
+         <incoming>ExclusiveGateway_step-administrator_to_SIGN-step-administrator</incoming>
+         <outgoing>SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="START">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-administrator</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_step-administrator"
+                        name="ExclusiveGateway_step-administrator">
+         <incoming>step-administrator_to_ExclusiveGateway_step-administrator</incoming>
+         <outgoing>ExclusiveGateway_step-administrator_to_REJECT-step-administrator</outgoing>
+         <outgoing>ExclusiveGateway_step-administrator_to_SIGN-step-administrator</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-president"
+                        name="ExclusiveGateway_step-president">
+         <incoming>step-president_to_ExclusiveGateway_step-president</incoming>
+         <outgoing>ExclusiveGateway_step-president_to_SIGN-step-president</outgoing>
+         <outgoing>ExclusiveGateway_step-president_to_REJECT-step-president</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-step-administrator_to_FAILURE</incoming>
+         <incoming>REJECT-step-president_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>SIGN-step-president_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="ExclusiveGateway_step-administrator_to_REJECT-step-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-administrator"
+                    targetRef="REJECT-step-administrator"/>
+      <sequenceFlow id="REJECT-step-administrator_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-administrator"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="ExclusiveGateway_step-president_to_SIGN-step-president"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-president"
+                    targetRef="SIGN-step-president"/>
+      <sequenceFlow id="ExclusiveGateway_step-president_to_REJECT-step-president"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-president"
+                    targetRef="REJECT-step-president"/>
+      <sequenceFlow id="step-president_to_ExclusiveGateway_step-president"
+                    name=""
+                    sourceRef="step-president"
+                    targetRef="ExclusiveGateway_step-president"/>
+      <sequenceFlow id="ExclusiveGateway_step-administrator_to_SIGN-step-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-administrator"
+                    targetRef="SIGN-step-administrator"/>
+      <sequenceFlow id="START-start-event_to_step-administrator"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-administrator"/>
+      <sequenceFlow id="step-administrator_to_ExclusiveGateway_step-administrator"
+                    name=""
+                    sourceRef="step-administrator"
+                    targetRef="ExclusiveGateway_step-administrator"/>
+      <sequenceFlow id="REJECT-step-president_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-president"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="SIGN-step-president_to_SUCCESS"
+                    name=""
+                    sourceRef="SIGN-step-president"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                    name=""
+                    sourceRef="SIGN-step-administrator"
+                    targetRef="onActionTransition-step-administrator-Skip_Next_Nodes"/>
+      <sequenceFlow id="onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president"
+                    name=""
+                    sourceRef="onActionTransition-step-administrator-Skip_Next_Nodes"
+                    targetRef="step-president"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="report-accident-flow" name="report-accident-flow">
+      <documentation id="documentation_ef807dc4-7624-4e66-b46f-45b79acfb26f">{name=report-accident-flow, title={pt-PT=Processo de Participação de Acidente/Incidente em Serviço, en-GB=Work-Related Accident/Incident Report Process}, description={pt-PT=Processo de Participação de Acidente/Incidente em Serviço, en-GB=Work-Related Accident/Incident Report Process}, config={hideRevertProcess=true, authorizationChainNodes={title={pt-PT=Envio de Notificação, en-GB=Send Notification}, description={pt-PT=Envio de notificação para o/a responsável, en-GB=Send notification to the person in charge}, comment=false, actions={NOTIFY={primary=true, to=SUCCESS, label={pt-PT=Enviar Notificação, en-GB=Send Notification}}}, actionProcessor={onEnterNode=[{flowProcessor=Send e-mail, template=email-notification-work-accident, notifyFlowMembers=true, registered=true, sender=1977853914648083, parameters={}}, {flowProcessor=Do Flow Action, flowAction=NOTIFY}]}, blockUndo=true}, actionProcessor={onSuccess=[{flowProcessor=Return Flow Approved To Request}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[], actionNodes=[{id=step-administrator, type=generic, comment=true, title={pt-PT=O/A Administrador(a), en-GB=The Administrator}, description={pt-PT=Parecer do/a Administrador(a), en-GB=Opinion of the Administrator}, commentLabel={pt-PT=Parecer do/a Administrador(a), en-GB=Opinion of the Administrator}, actions=[{primary=true, to=step-president, label={pt-PT=Concordar, en-GB=Agree}, id=SIGN-step-administrator, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-administrator, name=REJECT}], queue=Gestao-Administrativa, replaceTitleWithRole=true, hr-final-authorization-step=true, actionProcessor=[{applyOn=SIGN-step-administrator, flowProcessor=Skip Next Nodes, node-field-key=hr-final-authorization-step, id=onActionTransition-step-administrator-Skip_Next_Nodes, name=onActionTransition}]}, {id=step-president, type=generic, comment=true, title={pt-PT=O/A Presidente, en-GB=The President}, description={pt-PT=Parecer do/a Presidente, en-GB=Opinion of the President}, commentLabel={pt-PT=Parecer do/a Presidente, en-GB=Opinion of the President}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Concordar, en-GB=Agree}, id=SIGN-step-president, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-president, name=REJECT}], queue=Presidencia-do-Instituto-Superior-Tecnico, replaceTitleWithRole=true, hr-final-authorization-step=true}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="report-accident-flow" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-president" id="Shape_SIGN-step-president">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-administrator"
+                           id="Shape_ExclusiveGateway_step-administrator">
+            <dc:Bounds height="40.0" width="40.0" x="660.0" y="380.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-administrator" id="Shape_step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-administrator-Skip_Next_Nodes"
+                           id="Shape_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <dc:Bounds height="60.0" width="80.0" x="980.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-administrator"
+                           id="Shape_SIGN-step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="800.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-president" id="Shape_step-president">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="542.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-administrator"
+                           id="Shape_REJECT-step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="800.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="662.5" y="262.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="382.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-president"
+                           id="Shape_ExclusiveGateway_step-president">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-president" id="Shape_REJECT-step-president">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Presidencia-do-Instituto-Superior-Tecnico"
+                           id="Shape_Presidencia-do-Instituto-Superior-Tecnico">
+            <dc:Bounds height="280.0" width="1000.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Gestao-Administrativa" id="Shape_Gestao-Administrativa">
+            <dc:Bounds height="280.0" width="1000.0" x="90.0" y="340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="560.0" width="1030.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-administrator_to_REJECT-step-administrator"
+                          id="Edge_ExclusiveGateway_step-administrator_to_REJECT-step-administrator">
+            <di:waypoint x="700.0" y="400.0"/>
+            <di:waypoint x="733.0" y="400.0"/>
+            <di:waypoint x="733.0" y="560.0"/>
+            <di:waypoint x="800.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-administrator_to_FAILURE"
+                          id="Edge_REJECT-step-administrator_to_FAILURE">
+            <di:waypoint x="880.0" y="560.0"/>
+            <di:waypoint x="1095.0" y="560.0"/>
+            <di:waypoint x="1095.0" y="597.5"/>
+            <di:waypoint x="160.0" y="597.5"/>
+            <di:waypoint x="160.0" y="577.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-president_to_SIGN-step-president"
+                          id="Edge_ExclusiveGateway_step-president_to_SIGN-step-president">
+            <di:waypoint x="360.0" y="120.0"/>
+            <di:waypoint x="393.0" y="120.0"/>
+            <di:waypoint x="393.0" y="280.0"/>
+            <di:waypoint x="480.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-president_to_REJECT-step-president"
+                          id="Edge_ExclusiveGateway_step-president_to_REJECT-step-president">
+            <di:waypoint x="360.0" y="120.0"/>
+            <di:waypoint x="480.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-president_to_ExclusiveGateway_step-president"
+                          id="Edge_step-president_to_ExclusiveGateway_step-president">
+            <di:waypoint x="200.0" y="120.0"/>
+            <di:waypoint x="233.0" y="120.0"/>
+            <di:waypoint x="233.0" y="120.0"/>
+            <di:waypoint x="320.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-administrator_to_SIGN-step-administrator"
+                          id="Edge_ExclusiveGateway_step-administrator_to_SIGN-step-administrator">
+            <di:waypoint x="700.0" y="400.0"/>
+            <di:waypoint x="800.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-administrator"
+                          id="Edge_START-start-event_to_step-administrator">
+            <di:waypoint x="380.0" y="400.0"/>
+            <di:waypoint x="480.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-administrator_to_ExclusiveGateway_step-administrator"
+                          id="Edge_step-administrator_to_ExclusiveGateway_step-administrator">
+            <di:waypoint x="560.0" y="400.0"/>
+            <di:waypoint x="593.0" y="400.0"/>
+            <di:waypoint x="593.0" y="400.0"/>
+            <di:waypoint x="660.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-president_to_FAILURE"
+                          id="Edge_REJECT-step-president_to_FAILURE">
+            <di:waypoint x="560.0" y="120.0"/>
+            <di:waypoint x="1095.0" y="120.0"/>
+            <di:waypoint x="1095.0" y="597.5"/>
+            <di:waypoint x="160.0" y="597.5"/>
+            <di:waypoint x="160.0" y="577.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-president_to_SUCCESS"
+                          id="Edge_SIGN-step-president_to_SUCCESS">
+            <di:waypoint x="560.0" y="280.0"/>
+            <di:waypoint x="593.0" y="280.0"/>
+            <di:waypoint x="593.0" y="280.0"/>
+            <di:waypoint x="662.5" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                          id="Edge_SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <di:waypoint x="880.0" y="400.0"/>
+            <di:waypoint x="980.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president"
+                          id="Edge_onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president">
+            <di:waypoint x="1060.0" y="400.0"/>
+            <di:waypoint x="1095.0" y="400.0"/>
+            <di:waypoint x="1095.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="177.5" y="400.0"/>
+            <di:waypoint x="300.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

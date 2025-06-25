@@ -1,0 +1,247 @@
+{
+  "name" : {
+    "pt-PT" : "Certidão de Programas e Cargas Horárias",
+    "en-GB" : "Programmes and Workloads Certificate"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar a emissão de certidões de programas e cargas horárias.",
+    "en-GB" : "This form allows you to request the issuance of programmes and workloads certificates."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "REGISTRATION" ],
+      "displayName" : true,
+      "username" : true
+    },
+    "onLock" : {
+      "requestProcessor" : "Change Academic Request Queue",
+      "queueMapper" : {
+        "Área de Graduação" : "Núcleo de Registo Académico"
+      }
+    },
+    "onPayOrExempt" : {
+      "requestProcessor" : "Auto Validate"
+    },
+    "onValidate" : [ {
+      "requestProcessor" : "Change Academic Request Queue",
+      "queueMapper" : {
+        "Área de Graduação" : "Núcleo de Registo Académico"
+      }
+    }, {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "programmes-and-workloads-certificate-flow",
+      "setSupervisorFromRequester" : true,
+      "actionNodesProvider" : "Academic Office Flow"
+    } ],
+    "onResetValidate" : {
+      "requestProcessor" : "Cancel Flow"
+    },
+    "onConclude" : [ {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    }, {
+      "requestProcessor" : "Change Academic Request Queue",
+      "queueMapper" : {
+        "Área de Graduação" : "Núcleo de Registo Académico"
+      }
+    } ],
+    "cutoffExecutionYear" : "2006/2007"
+  },
+  "inputForm" : {
+    "checks" : {
+      "requireIdentity" : true,
+      "requireTaxInformation" : true,
+      "requirePersonalInformation" : true,
+      "requireValidIdDocument" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Pedido de Certidão de Programas e Cargas Horárias",
+        "en-GB" : "Programmes and Workloads Certificate Request"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Curso",
+          "en-GB" : "Degree"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "readonly" : false,
+          "required" : true,
+          "allowOther" : false,
+          "field" : "REGISTRATION",
+          "label" : {
+            "pt-PT" : "Matrícula",
+            "en-GB" : "Registration"
+          },
+          "optionsProvider" : "/paper-pusher-ist/registrations"
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Unidades Curriculares",
+          "en-GB" : "Curricular Units"
+        },
+        "properties" : [ {
+          "type" : "Boolean",
+          "field" : "INCLUDE_ALL_UNITS",
+          "required" : true,
+          "description" : {
+            "pt-PT" : "* Só constarão as unidades curriculares com nota lançada em pauta. Confira que não tem notas por lançar no portal de Estudante -> Consultar -> Currículo.",
+            "en-GB" : "* Only the curricular units with submitted grades will appear. Check that you do not have grades yet to be submitted in the Student portal -> View -> Curriculum."
+          },
+          "label" : {
+            "pt-PT" : "Incluir todas as unidades curriculares?",
+            "en-GB" : "Include all curricular units?"
+          },
+          "labelYes" : {
+            "pt-PT" : "Sim, incluir todas.",
+            "en-GB" : "Yes, include all of them."
+          },
+          "labelNo" : {
+            "pt-PT" : "Não, pretendo apenas algumas.",
+            "en-GB" : "No, I only want some of them."
+          }
+        }, {
+          "type" : "Array",
+          "field" : "CURRICULAR_UNITS",
+          "label" : {
+            "pt-PT" : "Unidades Curriculares a Incluir",
+            "en-GB" : "Curricular Units to Include"
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar unidade curricular",
+            "en-GB" : "Add curricular unit"
+          },
+          "required" : true,
+          "onlyIf" : {
+            "field" : "INCLUDE_ALL_UNITS",
+            "value" : false,
+            "negation" : false
+          },
+          "properties" : [ {
+            "type" : "AsyncSelect",
+            "readonly" : false,
+            "required" : true,
+            "allowOther" : false,
+            "field" : "CURRICULAR_UNIT",
+            "label" : {
+              "pt-PT" : "Unidade Curricular",
+              "en-GB" : "Curricular Unit"
+            },
+            "optionsProvider" : "/paper-pusher-ist/enrolments",
+            "optionsLimitedBy" : {
+              "field" : "REGISTRATION"
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta ao Pedido de Certidão de Programas e Cargas Horárias",
+        "en-GB" : "Programmes and Workloads Certificate Request Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Entrega dos Documentos",
+          "en-GB" : "Documents Delivery"
+        },
+        "properties" : [ {
+          "type" : "File",
+          "field" : "PROGRAMMES_AND_WORKLOADS_CERTIFICATE_PORTUGUESE",
+          "required" : true,
+          "readonly" : true,
+          "hidden" : true,
+          "label" : {
+            "pt-PT" : "Certidão de Programas e Cargas Horárias (Português)",
+            "en-GB" : "Programmes and Workloads Certificate (Portuguese)"
+          },
+          "allowedFileTypes" : [ ".pdf" ]
+        }, {
+          "type" : "File",
+          "field" : "PROGRAMMES_AND_WORKLOADS_CERTIFICATE_ENGLISH",
+          "required" : true,
+          "readonly" : true,
+          "hidden" : true,
+          "label" : {
+            "pt-PT" : "Certidão de Programas e Cargas Horárias (Inglês)",
+            "en-GB" : "Programmes and Workloads Certificate (English)"
+          },
+          "allowedFileTypes" : [ ".pdf" ]
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : {
+    "description" : {
+      "pt-PT" : "Pedido de Certidão de Programas e Cargas Horárias",
+      "en-GB" : "Programmes and Workloads Certificate Request"
+    },
+    "value" : 40.0,
+    "accountId" : "287762860391",
+    "productCode" : "0037",
+    "productDescription" : "EMOLUMENTOS",
+    "onLock" : {
+      "costProcessor" : "Add Request Keywords to Cost Description"
+    }
+  },
+  "views" : [ {
+    "id" : "Default",
+    "columns" : [ {
+      "title" : {
+        "pt-PT" : "Submetido",
+        "en-GB" : "Submitted"
+      },
+      "type" : "Request Info",
+      "info" : "lockInstant"
+    }, {
+      "title" : {
+        "pt-PT" : "Aluno",
+        "en-GB" : "Student"
+      },
+      "type" : "Request Info",
+      "info" : "requester"
+    }, {
+      "title" : {
+        "pt-PT" : "Estado do Pedido",
+        "en-GB" : "Request State"
+      },
+      "type" : "Request State"
+    }, {
+      "title" : {
+        "pt-PT" : "Revisão",
+        "en-GB" : "Revision"
+      },
+      "type" : "Request Info",
+      "info" : "revisionDeadline"
+    }, {
+      "title" : {
+        "pt-PT" : "Pagamento",
+        "en-GB" : "Payment"
+      },
+      "type" : "Payment State"
+    }, {
+      "title" : {
+        "pt-PT" : "Estado do Processo",
+        "en-GB" : "Process State"
+      },
+      "type" : "Flow State From Request"
+    }, {
+      "title" : {
+        "pt-PT" : "Curso",
+        "en-GB" : "Degree"
+      },
+      "type" : "Function",
+      "getter" : "Get Degree From Request Registration"
+    }, {
+      "title" : {
+        "pt-PT" : "Língua",
+        "en-GB" : "Language"
+      },
+      "type" : "Form Field",
+      "form" : "inputForm",
+      "field" : "LOCALE"
+    } ]
+  } ]
+}

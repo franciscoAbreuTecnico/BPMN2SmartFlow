@@ -1,0 +1,1995 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_400ccbe8-6e38-4cf6-bccd-2acbb5a5d5ce"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Sistema-FenixEdu" name="Sistema-FenixEdu">
+            <flowNodeRef>protest-decision-step-protest</flowNodeRef>
+            <flowNodeRef>step-review-application</flowNodeRef>
+            <flowNodeRef>step-protest</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-review-application-Copy_Request_Form</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-review-application-Send_Request_for_Revision</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-protest-Send_e-mail</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-protest-Open_Protest_Period</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-review-application-Terminate_Revision_Period</flowNodeRef>
+            <flowNodeRef>FINISH_WAITING-step-protest</flowNodeRef>
+            <flowNodeRef>PROTEST-step-protest</flowNodeRef>
+            <flowNodeRef>FINISH_WAITING-step-review-application</flowNodeRef>
+            <flowNodeRef>CHANGES_SUBMITTED-step-review-application</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_PROTEST-step-protest</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-protest</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_FINISH_WAITING-step-protest</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-review-application</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_FINISH_WAITING-step-review-application</flowNodeRef>
+         </lane>
+         <lane id="Area-de-Pos-Graduacao-Geral" name="Area-de-Pos-Graduacao-Geral">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-1-b-wait-for-letters-of-recommendation</flowNodeRef>
+            <flowNodeRef>step-1-a-request-letters-of-recommendation</flowNodeRef>
+            <flowNodeRef>step-1-c-letters-of-recommendation-received</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action</flowNodeRef>
+            <flowNodeRef>REQUEST_LETTERS-step-1-a-request-letters-of-recommendation</flowNodeRef>
+            <flowNodeRef>REVERT-step-1-c-letters-of-recommendation-received</flowNodeRef>
+            <flowNodeRef>CONCLUDE-step-1-c-letters-of-recommendation-received</flowNodeRef>
+            <flowNodeRef>CONCLUDE-step-1-b-wait-for-letters-of-recommendation</flowNodeRef>
+            <flowNodeRef>ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-1-c-letters-of-recommendation-received</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation</flowNodeRef>
+         </lane>
+         <lane id="degree-coordinator" name="degree-coordinator">
+            <flowNodeRef>step-degree-coordinator-evaluation</flowNodeRef>
+            <flowNodeRef>step-degree-coordinator-evaluation-protest</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form</flowNodeRef>
+            <flowNodeRef>REJECT-step-degree-coordinator-evaluation-protest</flowNodeRef>
+            <flowNodeRef>CONFIRM-step-degree-coordinator-evaluation-protest</flowNodeRef>
+            <flowNodeRef>CONFIRM-step-degree-coordinator-evaluation</flowNodeRef>
+            <flowNodeRef>REJECT-step-degree-coordinator-evaluation</flowNodeRef>
+            <flowNodeRef>REQUEST_REVISION-step-degree-coordinator-evaluation</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-degree-coordinator-evaluation-protest</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-degree-coordinator-evaluation</flowNodeRef>
+         </lane>
+         <lane id="advisor-queue" name="advisor-queue">
+            <flowNodeRef>step-advisor-accept-0</flowNodeRef>
+            <flowNodeRef>ACCEPT-step-advisor-accept-0</flowNodeRef>
+            <flowNodeRef>REJECT-step-advisor-accept-0</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-advisor-accept-0</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao"
+               name="Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao">
+            <flowNodeRef>step-check-qualifications</flowNodeRef>
+            <flowNodeRef>step-officialize</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-check-qualifications-Set_Request_Outcome_Form</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application</flowNodeRef>
+            <flowNodeRef>REQUEST_REVISION-step-check-qualifications</flowNodeRef>
+            <flowNodeRef>CONFIRM-step-officialize</flowNodeRef>
+            <flowNodeRef>CONFIRM-step-check-qualifications</flowNodeRef>
+            <flowNodeRef>REJECT-step-officialize</flowNodeRef>
+            <flowNodeRef>REJECT-step-check-qualifications</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-officialize</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_REJECT-step-check-qualifications</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-check-qualifications</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-check-qualifications" name="Check Qualifications">
+         <incoming>CONCLUDE-step-1-c-letters-of-recommendation-received_to_step-check-qualifications</incoming>
+         <incoming>onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-check-qualifications</incoming>
+         <outgoing>step-check-qualifications_to_ExclusiveGateway_step-check-qualifications</outgoing>
+      </userTask>
+      <userTask id="step-advisor-accept-0" name="Accept Advisor Position">
+         <incoming>onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-advisor-accept-0</incoming>
+         <outgoing>step-advisor-accept-0_to_ExclusiveGateway_step-advisor-accept-0</outgoing>
+      </userTask>
+      <userTask id="step-1-b-wait-for-letters-of-recommendation"
+                name="Await Reception of Letters">
+         <incoming>onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests_to_step-1-b-wait-for-letters-of-recommendation</incoming>
+         <incoming>onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application_to_step-1-b-wait-for-letters-of-recommendation</incoming>
+         <incoming>REVERT-step-1-c-letters-of-recommendation-received_to_step-1-b-wait-for-letters-of-recommendation</incoming>
+         <incoming>onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action_to_step-1-b-wait-for-letters-of-recommendation</incoming>
+         <outgoing>step-1-b-wait-for-letters-of-recommendation_to_ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation</outgoing>
+      </userTask>
+      <userTask id="protest-decision-step-protest" name="Protest the Decision">
+         <incoming>ExclusiveGateway_step-protest_to_protest-decision-step-protest</incoming>
+         <outgoing>protest-decision-step-protest_to_PROTEST-step-protest</outgoing>
+      </userTask>
+      <userTask id="step-review-application" name="Awaiting Application Review">
+         <incoming>REQUEST_REVISION-step-degree-coordinator-evaluation_to_step-review-application</incoming>
+         <incoming>onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-review-application</incoming>
+         <outgoing>step-review-application_to_ExclusiveGateway_step-review-application</outgoing>
+      </userTask>
+      <userTask id="step-officialize" name="Officialization">
+         <incoming>onEnterNode-step-protest-Open_Protest_Period_to_step-officialize</incoming>
+         <incoming>onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form_to_step-officialize</incoming>
+         <incoming>onEnterNode-step-protest-Send_e-mail_to_step-officialize</incoming>
+         <incoming>onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form_to_step-officialize</incoming>
+         <incoming>onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-officialize</incoming>
+         <incoming>onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-officialize</incoming>
+         <incoming>onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion_to_step-officialize</incoming>
+         <outgoing>step-officialize_to_ExclusiveGateway_step-officialize</outgoing>
+      </userTask>
+      <userTask id="step-degree-coordinator-evaluation"
+                name="Assessment of the application">
+         <incoming>REJECT-step-officialize_to_step-degree-coordinator-evaluation</incoming>
+         <incoming>onEnterNode-step-review-application-Send_Request_for_Revision_to_step-degree-coordinator-evaluation</incoming>
+         <incoming>ACCEPT-step-advisor-accept-0_to_step-degree-coordinator-evaluation</incoming>
+         <incoming>onActionTransition-step-review-application-Copy_Request_Form_to_step-degree-coordinator-evaluation</incoming>
+         <incoming>onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation</incoming>
+         <incoming>onActionTransition-step-review-application-Terminate_Revision_Period_to_step-degree-coordinator-evaluation</incoming>
+         <outgoing>step-degree-coordinator-evaluation_to_ExclusiveGateway_step-degree-coordinator-evaluation</outgoing>
+      </userTask>
+      <userTask camunda:formRef="protest-form"
+                camunda:formRefBinding="latest"
+                id="step-protest"
+                name="Protest the Decision">
+         <incoming>onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-protest</incoming>
+         <incoming>onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-protest</incoming>
+         <incoming>onActionTransition-step-check-qualifications-Set_Request_Outcome_Form_to_step-protest</incoming>
+         <outgoing>step-protest_to_ExclusiveGateway_step-protest</outgoing>
+      </userTask>
+      <userTask id="step-1-a-request-letters-of-recommendation"
+                name="Request Reference Letters">
+         <incoming>START-start-event_to_step-1-a-request-letters-of-recommendation</incoming>
+         <outgoing>step-1-a-request-letters-of-recommendation_to_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation</outgoing>
+      </userTask>
+      <userTask id="step-degree-coordinator-evaluation-protest"
+                name="Re-assessment of the application">
+         <incoming>onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation-protest</incoming>
+         <incoming>onEnterNode-step-protest-Open_Protest_Period_to_step-degree-coordinator-evaluation-protest</incoming>
+         <incoming>onEnterNode-step-protest-Send_e-mail_to_step-degree-coordinator-evaluation-protest</incoming>
+         <outgoing>step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_step-degree-coordinator-evaluation-protest</outgoing>
+      </userTask>
+      <userTask id="step-1-c-letters-of-recommendation-received"
+                name="Letters Received">
+         <incoming>onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-1-c-letters-of-recommendation-received</incoming>
+         <outgoing>step-1-c-letters-of-recommendation-received_to_ExclusiveGateway_step-1-c-letters-of-recommendation-received</outgoing>
+      </userTask>
+      <scriptTask id="onActionTransition-step-review-application-Copy_Request_Form"
+                  name="Copy Request Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_200"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L200"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form</incoming>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form</incoming>
+         <outgoing>onActionTransition-step-review-application-Copy_Request_Form_to_step-degree-coordinator-evaluation</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-check-qualifications-Set_Request_Outcome_Form"
+                  name="Set Request Outcome Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_845"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L845"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_REJECT-step-check-qualifications_to_onActionTransition-step-check-qualifications-Set_Request_Outcome_Form</incoming>
+         <outgoing>onActionTransition-step-check-qualifications-Set_Request_Outcome_Form_to_step-protest</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"
+                  name="Do Flow Action After Time Passes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_624"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L624"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes</incoming>
+         <incoming>ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes</incoming>
+         <outgoing>onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation-protest</outgoing>
+         <outgoing>onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-officialize</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests"
+                  name="Send All Reference Letter Requests">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_1301"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/servlet/PaperPusherISTServletContextListener.java#L1301"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests</incoming>
+         <outgoing>onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests_to_step-1-b-wait-for-letters-of-recommendation</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-review-application-Send_Request_for_Revision"
+                  name="Send Request for Revision">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_948"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L948"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision</incoming>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision</incoming>
+         <outgoing>onEnterNode-step-review-application-Send_Request_for_Revision_to_step-degree-coordinator-evaluation</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"
+                  name="Do Flow Action After Time Passes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_624"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L624"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes</incoming>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes</incoming>
+         <outgoing>onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"
+                  name="Set Request Outcome Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_845"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L845"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form</incoming>
+         <incoming>ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form</incoming>
+         <outgoing>onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form_to_step-officialize</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-protest-Send_e-mail" name="Send e-mail">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_262"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L262"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Send_e-mail</incoming>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Send_e-mail</incoming>
+         <outgoing>onEnterNode-step-protest-Send_e-mail_to_step-officialize</outgoing>
+         <outgoing>onEnterNode-step-protest-Send_e-mail_to_step-degree-coordinator-evaluation-protest</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"
+                  name="Do Flow Action After Time Passes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_624"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L624"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes</incoming>
+         <incoming>CONCLUDE-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes</incoming>
+         <outgoing>onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-1-c-letters-of-recommendation-received</outgoing>
+         <outgoing>onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-check-qualifications</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                  name="Check Qualifications for PHD Application">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_4183"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L4183"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>CONFIRM-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application</incoming>
+         <incoming>ExclusiveGateway_REJECT-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application</incoming>
+         <incoming>REQUEST_REVISION-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application</incoming>
+         <outgoing>onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-protest</outgoing>
+         <outgoing>onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-advisor-accept-0</outgoing>
+         <outgoing>onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-review-application</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application"
+                  name="Init Recommendation Letters For PHD Application">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_1221"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/servlet/PaperPusherISTServletContextListener.java#L1221"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application</incoming>
+         <outgoing>onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application_to_step-1-b-wait-for-letters-of-recommendation</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"
+                  name="Set Response In Protest Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_3517"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L3517"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form</incoming>
+         <incoming>ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form</incoming>
+         <outgoing>onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form_to_step-officialize</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-protest-Open_Protest_Period"
+                  name="Open Protest Period">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_3449"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L3449"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Open_Protest_Period</incoming>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Open_Protest_Period</incoming>
+         <outgoing>onEnterNode-step-protest-Open_Protest_Period_to_step-officialize</outgoing>
+         <outgoing>onEnterNode-step-protest-Open_Protest_Period_to_step-degree-coordinator-evaluation-protest</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"
+                  name="Revert Request Conclusion">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_942"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L942"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion</incoming>
+         <incoming>ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion</incoming>
+         <outgoing>onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion_to_step-officialize</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-review-application-Terminate_Revision_Period"
+                  name="Terminate Revision Period">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_955"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L955"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period</incoming>
+         <incoming>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period</incoming>
+         <outgoing>onActionTransition-step-review-application-Terminate_Revision_Period_to_step-degree-coordinator-evaluation</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"
+                  name="Set Request Outcome Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_845"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L845"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>CONFIRM-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form</incoming>
+         <incoming>REJECT-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form</incoming>
+         <outgoing>onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-protest</outgoing>
+         <outgoing>onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-officialize</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action"
+                  name="Do Flow Action">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_607"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L607"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action</incoming>
+         <outgoing>onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action_to_step-1-b-wait-for-letters-of-recommendation</outgoing>
+      </scriptTask>
+      <serviceTask id="FINISH_WAITING-step-protest" name="FINISH_WAITING">
+         <incoming>ExclusiveGateway_step-protest_to_FINISH_WAITING-step-protest</incoming>
+         <outgoing>FINISH_WAITING-step-protest_to_ExclusiveGateway_FINISH_WAITING-step-protest</outgoing>
+      </serviceTask>
+      <serviceTask id="REQUEST_REVISION-step-check-qualifications" name="REQUEST_REVISION">
+         <incoming>ExclusiveGateway_step-check-qualifications_to_REQUEST_REVISION-step-check-qualifications</incoming>
+         <outgoing>REQUEST_REVISION-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application</outgoing>
+      </serviceTask>
+      <serviceTask id="CONFIRM-step-officialize" name="CONFIRM">
+         <incoming>ExclusiveGateway_step-officialize_to_CONFIRM-step-officialize</incoming>
+         <outgoing>CONFIRM-step-officialize_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="ACCEPT-step-advisor-accept-0" name="ACCEPT">
+         <incoming>ExclusiveGateway_step-advisor-accept-0_to_ACCEPT-step-advisor-accept-0</incoming>
+         <outgoing>ACCEPT-step-advisor-accept-0_to_step-degree-coordinator-evaluation</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-degree-coordinator-evaluation-protest" name="REJECT">
+         <incoming>ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_REJECT-step-degree-coordinator-evaluation-protest</incoming>
+         <outgoing>REJECT-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest</outgoing>
+      </serviceTask>
+      <serviceTask id="REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                   name="REQUEST_LETTERS">
+         <incoming>step-1-a-request-letters-of-recommendation_to_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation</incoming>
+         <outgoing>REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation</outgoing>
+      </serviceTask>
+      <serviceTask id="CONFIRM-step-check-qualifications" name="CONFIRM">
+         <incoming>ExclusiveGateway_step-check-qualifications_to_CONFIRM-step-check-qualifications</incoming>
+         <outgoing>CONFIRM-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application</outgoing>
+      </serviceTask>
+      <serviceTask id="PROTEST-step-protest" name="PROTEST">
+         <incoming>protest-decision-step-protest_to_PROTEST-step-protest</incoming>
+         <outgoing>PROTEST-step-protest_to_ExclusiveGateway_PROTEST-step-protest</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-officialize" name="REJECT">
+         <incoming>ExclusiveGateway_step-officialize_to_REJECT-step-officialize</incoming>
+         <outgoing>REJECT-step-officialize_to_step-degree-coordinator-evaluation</outgoing>
+      </serviceTask>
+      <serviceTask id="REVERT-step-1-c-letters-of-recommendation-received" name="REVERT">
+         <incoming>ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_REVERT-step-1-c-letters-of-recommendation-received</incoming>
+         <outgoing>REVERT-step-1-c-letters-of-recommendation-received_to_step-1-b-wait-for-letters-of-recommendation</outgoing>
+      </serviceTask>
+      <serviceTask id="CONCLUDE-step-1-c-letters-of-recommendation-received"
+                   name="CONCLUDE">
+         <incoming>ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_CONCLUDE-step-1-c-letters-of-recommendation-received</incoming>
+         <outgoing>CONCLUDE-step-1-c-letters-of-recommendation-received_to_step-check-qualifications</outgoing>
+      </serviceTask>
+      <serviceTask id="FINISH_WAITING-step-review-application" name="FINISH_WAITING">
+         <incoming>ExclusiveGateway_step-review-application_to_FINISH_WAITING-step-review-application</incoming>
+         <outgoing>FINISH_WAITING-step-review-application_to_ExclusiveGateway_FINISH_WAITING-step-review-application</outgoing>
+      </serviceTask>
+      <serviceTask id="CONCLUDE-step-1-b-wait-for-letters-of-recommendation"
+                   name="CONCLUDE">
+         <incoming>ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_CONCLUDE-step-1-b-wait-for-letters-of-recommendation</incoming>
+         <outgoing>CONCLUDE-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes</outgoing>
+      </serviceTask>
+      <serviceTask id="CHANGES_SUBMITTED-step-review-application" name="CHANGES_SUBMITTED">
+         <incoming>ExclusiveGateway_step-review-application_to_CHANGES_SUBMITTED-step-review-application</incoming>
+         <outgoing>CHANGES_SUBMITTED-step-review-application_to_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application</outgoing>
+      </serviceTask>
+      <serviceTask id="CONFIRM-step-degree-coordinator-evaluation-protest" name="CONFIRM">
+         <incoming>ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_CONFIRM-step-degree-coordinator-evaluation-protest</incoming>
+         <outgoing>CONFIRM-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest</outgoing>
+      </serviceTask>
+      <serviceTask id="CONFIRM-step-degree-coordinator-evaluation" name="CONFIRM">
+         <incoming>ExclusiveGateway_step-degree-coordinator-evaluation_to_CONFIRM-step-degree-coordinator-evaluation</incoming>
+         <outgoing>CONFIRM-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-degree-coordinator-evaluation" name="REJECT">
+         <incoming>ExclusiveGateway_step-degree-coordinator-evaluation_to_REJECT-step-degree-coordinator-evaluation</incoming>
+         <outgoing>REJECT-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-check-qualifications" name="REJECT">
+         <incoming>ExclusiveGateway_step-check-qualifications_to_REJECT-step-check-qualifications</incoming>
+         <outgoing>REJECT-step-check-qualifications_to_ExclusiveGateway_REJECT-step-check-qualifications</outgoing>
+      </serviceTask>
+      <serviceTask id="REQUEST_REVISION-step-degree-coordinator-evaluation"
+                   name="REQUEST_REVISION">
+         <incoming>ExclusiveGateway_step-degree-coordinator-evaluation_to_REQUEST_REVISION-step-degree-coordinator-evaluation</incoming>
+         <outgoing>REQUEST_REVISION-step-degree-coordinator-evaluation_to_step-review-application</outgoing>
+      </serviceTask>
+      <serviceTask id="ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation"
+                   name="ALL_RECEIVED">
+         <incoming>ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation</incoming>
+         <outgoing>ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="START">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-1-a-request-letters-of-recommendation</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-advisor-accept-0" name="REJECT">
+         <incoming>ExclusiveGateway_step-advisor-accept-0_to_REJECT-step-advisor-accept-0</incoming>
+         <outgoing>REJECT-step-advisor-accept-0_to_FAILURE</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_step-1-c-letters-of-recommendation-received"
+                        name="ExclusiveGateway_step-1-c-letters-of-recommendation-received">
+         <incoming>step-1-c-letters-of-recommendation-received_to_ExclusiveGateway_step-1-c-letters-of-recommendation-received</incoming>
+         <outgoing>ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_REVERT-step-1-c-letters-of-recommendation-received</outgoing>
+         <outgoing>ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_CONCLUDE-step-1-c-letters-of-recommendation-received</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation"
+                        name="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation">
+         <incoming>step-1-b-wait-for-letters-of-recommendation_to_ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation</incoming>
+         <outgoing>ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_CONCLUDE-step-1-b-wait-for-letters-of-recommendation</outgoing>
+         <outgoing>ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-officialize"
+                        name="ExclusiveGateway_step-officialize">
+         <incoming>step-officialize_to_ExclusiveGateway_step-officialize</incoming>
+         <outgoing>ExclusiveGateway_step-officialize_to_REJECT-step-officialize</outgoing>
+         <outgoing>ExclusiveGateway_step-officialize_to_CONFIRM-step-officialize</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_REJECT-step-check-qualifications"
+                        name="ExclusiveGateway_REJECT-step-check-qualifications">
+         <incoming>REJECT-step-check-qualifications_to_ExclusiveGateway_REJECT-step-check-qualifications</incoming>
+         <outgoing>ExclusiveGateway_REJECT-step-check-qualifications_to_onActionTransition-step-check-qualifications-Set_Request_Outcome_Form</outgoing>
+         <outgoing>ExclusiveGateway_REJECT-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest"
+                        name="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest">
+         <incoming>CONFIRM-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest</incoming>
+         <outgoing>ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion</outgoing>
+         <outgoing>ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form</outgoing>
+         <outgoing>ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest"
+                        name="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest">
+         <incoming>REJECT-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest</incoming>
+         <outgoing>ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion</outgoing>
+         <outgoing>ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form</outgoing>
+         <outgoing>ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-degree-coordinator-evaluation-protest"
+                        name="ExclusiveGateway_step-degree-coordinator-evaluation-protest">
+         <incoming>step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_step-degree-coordinator-evaluation-protest</incoming>
+         <outgoing>ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_REJECT-step-degree-coordinator-evaluation-protest</outgoing>
+         <outgoing>ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_CONFIRM-step-degree-coordinator-evaluation-protest</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-advisor-accept-0"
+                        name="ExclusiveGateway_step-advisor-accept-0">
+         <incoming>step-advisor-accept-0_to_ExclusiveGateway_step-advisor-accept-0</incoming>
+         <outgoing>ExclusiveGateway_step-advisor-accept-0_to_ACCEPT-step-advisor-accept-0</outgoing>
+         <outgoing>ExclusiveGateway_step-advisor-accept-0_to_REJECT-step-advisor-accept-0</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_PROTEST-step-protest"
+                        name="ExclusiveGateway_PROTEST-step-protest">
+         <incoming>PROTEST-step-protest_to_ExclusiveGateway_PROTEST-step-protest</incoming>
+         <outgoing>ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Send_e-mail</outgoing>
+         <outgoing>ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Open_Protest_Period</outgoing>
+         <outgoing>ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"
+                        name="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application">
+         <incoming>CHANGES_SUBMITTED-step-review-application_to_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application</incoming>
+         <outgoing>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision</outgoing>
+         <outgoing>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form</outgoing>
+         <outgoing>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period</outgoing>
+         <outgoing>ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-degree-coordinator-evaluation"
+                        name="ExclusiveGateway_step-degree-coordinator-evaluation">
+         <incoming>step-degree-coordinator-evaluation_to_ExclusiveGateway_step-degree-coordinator-evaluation</incoming>
+         <outgoing>ExclusiveGateway_step-degree-coordinator-evaluation_to_CONFIRM-step-degree-coordinator-evaluation</outgoing>
+         <outgoing>ExclusiveGateway_step-degree-coordinator-evaluation_to_REQUEST_REVISION-step-degree-coordinator-evaluation</outgoing>
+         <outgoing>ExclusiveGateway_step-degree-coordinator-evaluation_to_REJECT-step-degree-coordinator-evaluation</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-protest" name="ExclusiveGateway_step-protest">
+         <incoming>step-protest_to_ExclusiveGateway_step-protest</incoming>
+         <outgoing>ExclusiveGateway_step-protest_to_FINISH_WAITING-step-protest</outgoing>
+         <outgoing>ExclusiveGateway_step-protest_to_protest-decision-step-protest</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_FINISH_WAITING-step-protest"
+                        name="ExclusiveGateway_FINISH_WAITING-step-protest">
+         <incoming>FINISH_WAITING-step-protest_to_ExclusiveGateway_FINISH_WAITING-step-protest</incoming>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes</outgoing>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Send_e-mail</outgoing>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Open_Protest_Period</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-review-application"
+                        name="ExclusiveGateway_step-review-application">
+         <incoming>step-review-application_to_ExclusiveGateway_step-review-application</incoming>
+         <outgoing>ExclusiveGateway_step-review-application_to_CHANGES_SUBMITTED-step-review-application</outgoing>
+         <outgoing>ExclusiveGateway_step-review-application_to_FINISH_WAITING-step-review-application</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                        name="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation">
+         <incoming>REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation</incoming>
+         <outgoing>ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action</outgoing>
+         <outgoing>ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests</outgoing>
+         <outgoing>ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_FINISH_WAITING-step-review-application"
+                        name="ExclusiveGateway_FINISH_WAITING-step-review-application">
+         <incoming>FINISH_WAITING-step-review-application_to_ExclusiveGateway_FINISH_WAITING-step-review-application</incoming>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period</outgoing>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision</outgoing>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form</outgoing>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-check-qualifications"
+                        name="ExclusiveGateway_step-check-qualifications">
+         <incoming>step-check-qualifications_to_ExclusiveGateway_step-check-qualifications</incoming>
+         <outgoing>ExclusiveGateway_step-check-qualifications_to_REJECT-step-check-qualifications</outgoing>
+         <outgoing>ExclusiveGateway_step-check-qualifications_to_CONFIRM-step-check-qualifications</outgoing>
+         <outgoing>ExclusiveGateway_step-check-qualifications_to_REQUEST_REVISION-step-check-qualifications</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-step-advisor-accept-0_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>CONFIRM-step-officialize_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-protest"
+                    targetRef="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_CONCLUDE-step-1-b-wait-for-letters-of-recommendation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation"
+                    targetRef="CONCLUDE-step-1-b-wait-for-letters-of-recommendation"/>
+      <sequenceFlow id="ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Send_e-mail"
+                    name=""
+                    sourceRef="ExclusiveGateway_PROTEST-step-protest"
+                    targetRef="onEnterNode-step-protest-Send_e-mail"/>
+      <sequenceFlow id="REJECT-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest"
+                    name=""
+                    sourceRef="REJECT-step-degree-coordinator-evaluation-protest"
+                    targetRef="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest"/>
+      <sequenceFlow id="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-protest"
+                    name=""
+                    sourceRef="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                    targetRef="step-protest"/>
+      <sequenceFlow id="step-officialize_to_ExclusiveGateway_step-officialize"
+                    name=""
+                    sourceRef="step-officialize"
+                    targetRef="ExclusiveGateway_step-officialize"/>
+      <sequenceFlow id="onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests_to_step-1-b-wait-for-letters-of-recommendation"
+                    name=""
+                    sourceRef="onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests"
+                    targetRef="step-1-b-wait-for-letters-of-recommendation"/>
+      <sequenceFlow id="ExclusiveGateway_step-degree-coordinator-evaluation_to_CONFIRM-step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-degree-coordinator-evaluation"
+                    targetRef="CONFIRM-step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_REVERT-step-1-c-letters-of-recommendation-received"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1-c-letters-of-recommendation-received"
+                    targetRef="REVERT-step-1-c-letters-of-recommendation-received"/>
+      <sequenceFlow id="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation-protest"
+                    name=""
+                    sourceRef="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"
+                    targetRef="step-degree-coordinator-evaluation-protest"/>
+      <sequenceFlow id="onEnterNode-step-protest-Open_Protest_Period_to_step-officialize"
+                    name=""
+                    sourceRef="onEnterNode-step-protest-Open_Protest_Period"
+                    targetRef="step-officialize"/>
+      <sequenceFlow id="CONFIRM-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="CONFIRM-step-degree-coordinator-evaluation"
+                    targetRef="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="REJECT-step-officialize_to_step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="REJECT-step-officialize"
+                    targetRef="step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Open_Protest_Period"
+                    name=""
+                    sourceRef="ExclusiveGateway_PROTEST-step-protest"
+                    targetRef="onEnterNode-step-protest-Open_Protest_Period"/>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Send_e-mail"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-protest"
+                    targetRef="onEnterNode-step-protest-Send_e-mail"/>
+      <sequenceFlow id="onEnterNode-step-review-application-Send_Request_for_Revision_to_step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="onEnterNode-step-review-application-Send_Request_for_Revision"
+                    targetRef="step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"
+                    name=""
+                    sourceRef="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest"
+                    targetRef="onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"/>
+      <sequenceFlow id="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action"
+                    name=""
+                    sourceRef="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                    targetRef="onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action"/>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-review-application"
+                    targetRef="onActionTransition-step-review-application-Terminate_Revision_Period"/>
+      <sequenceFlow id="ExclusiveGateway_step-advisor-accept-0_to_ACCEPT-step-advisor-accept-0"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-advisor-accept-0"
+                    targetRef="ACCEPT-step-advisor-accept-0"/>
+      <sequenceFlow id="onEnterNode-step-protest-Open_Protest_Period_to_step-degree-coordinator-evaluation-protest"
+                    name=""
+                    sourceRef="onEnterNode-step-protest-Open_Protest_Period"
+                    targetRef="step-degree-coordinator-evaluation-protest"/>
+      <sequenceFlow id="ExclusiveGateway_REJECT-step-check-qualifications_to_onActionTransition-step-check-qualifications-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="ExclusiveGateway_REJECT-step-check-qualifications"
+                    targetRef="onActionTransition-step-check-qualifications-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="ExclusiveGateway_PROTEST-step-protest"
+                    targetRef="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-advisor-accept-0"
+                    name=""
+                    sourceRef="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                    targetRef="step-advisor-accept-0"/>
+      <sequenceFlow id="REJECT-step-check-qualifications_to_ExclusiveGateway_REJECT-step-check-qualifications"
+                    name=""
+                    sourceRef="REJECT-step-check-qualifications"
+                    targetRef="ExclusiveGateway_REJECT-step-check-qualifications"/>
+      <sequenceFlow id="onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application_to_step-1-b-wait-for-letters-of-recommendation"
+                    name=""
+                    sourceRef="onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application"
+                    targetRef="step-1-b-wait-for-letters-of-recommendation"/>
+      <sequenceFlow id="step-degree-coordinator-evaluation_to_ExclusiveGateway_step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="step-degree-coordinator-evaluation"
+                    targetRef="ExclusiveGateway_step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Open_Protest_Period"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-protest"
+                    targetRef="onEnterNode-step-protest-Open_Protest_Period"/>
+      <sequenceFlow id="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-protest"
+                    name=""
+                    sourceRef="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"
+                    targetRef="step-protest"/>
+      <sequenceFlow id="CONFIRM-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                    name=""
+                    sourceRef="CONFIRM-step-check-qualifications"
+                    targetRef="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"/>
+      <sequenceFlow id="ExclusiveGateway_step-review-application_to_CHANGES_SUBMITTED-step-review-application"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-review-application"
+                    targetRef="CHANGES_SUBMITTED-step-review-application"/>
+      <sequenceFlow id="ExclusiveGateway_step-advisor-accept-0_to_REJECT-step-advisor-accept-0"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-advisor-accept-0"
+                    targetRef="REJECT-step-advisor-accept-0"/>
+      <sequenceFlow id="ACCEPT-step-advisor-accept-0_to_step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="ACCEPT-step-advisor-accept-0"
+                    targetRef="step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision"
+                    name=""
+                    sourceRef="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"
+                    targetRef="onEnterNode-step-review-application-Send_Request_for_Revision"/>
+      <sequenceFlow id="step-1-b-wait-for-letters-of-recommendation_to_ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation"
+                    name=""
+                    sourceRef="step-1-b-wait-for-letters-of-recommendation"
+                    targetRef="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation"/>
+      <sequenceFlow id="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form_to_step-officialize"
+                    name=""
+                    sourceRef="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"
+                    targetRef="step-officialize"/>
+      <sequenceFlow id="onEnterNode-step-protest-Send_e-mail_to_step-officialize"
+                    name=""
+                    sourceRef="onEnterNode-step-protest-Send_e-mail"
+                    targetRef="step-officialize"/>
+      <sequenceFlow id="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"
+                    name=""
+                    sourceRef="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest"
+                    targetRef="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"/>
+      <sequenceFlow id="ExclusiveGateway_REJECT-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                    name=""
+                    sourceRef="ExclusiveGateway_REJECT-step-check-qualifications"
+                    targetRef="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"/>
+      <sequenceFlow id="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"
+                    name=""
+                    sourceRef="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest"
+                    targetRef="onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"/>
+      <sequenceFlow id="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form"
+                    name=""
+                    sourceRef="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"
+                    targetRef="onActionTransition-step-review-application-Copy_Request_Form"/>
+      <sequenceFlow id="REVERT-step-1-c-letters-of-recommendation-received_to_step-1-b-wait-for-letters-of-recommendation"
+                    name=""
+                    sourceRef="REVERT-step-1-c-letters-of-recommendation-received"
+                    targetRef="step-1-b-wait-for-letters-of-recommendation"/>
+      <sequenceFlow id="step-1-c-letters-of-recommendation-received_to_ExclusiveGateway_step-1-c-letters-of-recommendation-received"
+                    name=""
+                    sourceRef="step-1-c-letters-of-recommendation-received"
+                    targetRef="ExclusiveGateway_step-1-c-letters-of-recommendation-received"/>
+      <sequenceFlow id="onActionTransition-step-review-application-Copy_Request_Form_to_step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="onActionTransition-step-review-application-Copy_Request_Form"
+                    targetRef="step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period"
+                    name=""
+                    sourceRef="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"
+                    targetRef="onActionTransition-step-review-application-Terminate_Revision_Period"/>
+      <sequenceFlow id="ExclusiveGateway_step-protest_to_FINISH_WAITING-step-protest"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-protest"
+                    targetRef="FINISH_WAITING-step-protest"/>
+      <sequenceFlow id="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-1-c-letters-of-recommendation-received"
+                    name=""
+                    sourceRef="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"
+                    targetRef="step-1-c-letters-of-recommendation-received"/>
+      <sequenceFlow id="step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_step-degree-coordinator-evaluation-protest"
+                    name=""
+                    sourceRef="step-degree-coordinator-evaluation-protest"
+                    targetRef="ExclusiveGateway_step-degree-coordinator-evaluation-protest"/>
+      <sequenceFlow id="REQUEST_REVISION-step-degree-coordinator-evaluation_to_step-review-application"
+                    name=""
+                    sourceRef="REQUEST_REVISION-step-degree-coordinator-evaluation"
+                    targetRef="step-review-application"/>
+      <sequenceFlow id="ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_REJECT-step-degree-coordinator-evaluation-protest"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-degree-coordinator-evaluation-protest"
+                    targetRef="REJECT-step-degree-coordinator-evaluation-protest"/>
+      <sequenceFlow id="CONCLUDE-step-1-c-letters-of-recommendation-received_to_step-check-qualifications"
+                    name=""
+                    sourceRef="CONCLUDE-step-1-c-letters-of-recommendation-received"
+                    targetRef="step-check-qualifications"/>
+      <sequenceFlow id="FINISH_WAITING-step-protest_to_ExclusiveGateway_FINISH_WAITING-step-protest"
+                    name=""
+                    sourceRef="FINISH_WAITING-step-protest"
+                    targetRef="ExclusiveGateway_FINISH_WAITING-step-protest"/>
+      <sequenceFlow id="ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation"
+                    targetRef="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"
+                    name=""
+                    sourceRef="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest"
+                    targetRef="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"/>
+      <sequenceFlow id="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form_to_step-officialize"
+                    name=""
+                    sourceRef="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"
+                    targetRef="step-officialize"/>
+      <sequenceFlow id="ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_CONCLUDE-step-1-c-letters-of-recommendation-received"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1-c-letters-of-recommendation-received"
+                    targetRef="CONCLUDE-step-1-c-letters-of-recommendation-received"/>
+      <sequenceFlow id="ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_CONFIRM-step-degree-coordinator-evaluation-protest"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-degree-coordinator-evaluation-protest"
+                    targetRef="CONFIRM-step-degree-coordinator-evaluation-protest"/>
+      <sequenceFlow id="step-protest_to_ExclusiveGateway_step-protest"
+                    name=""
+                    sourceRef="step-protest"
+                    targetRef="ExclusiveGateway_step-protest"/>
+      <sequenceFlow id="ExclusiveGateway_step-check-qualifications_to_REJECT-step-check-qualifications"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-check-qualifications"
+                    targetRef="REJECT-step-check-qualifications"/>
+      <sequenceFlow id="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-officialize"
+                    name=""
+                    sourceRef="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"
+                    targetRef="step-officialize"/>
+      <sequenceFlow id="ExclusiveGateway_step-check-qualifications_to_CONFIRM-step-check-qualifications"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-check-qualifications"
+                    targetRef="CONFIRM-step-check-qualifications"/>
+      <sequenceFlow id="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-officialize"
+                    name=""
+                    sourceRef="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"
+                    targetRef="step-officialize"/>
+      <sequenceFlow id="ExclusiveGateway_step-degree-coordinator-evaluation_to_REQUEST_REVISION-step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-degree-coordinator-evaluation"
+                    targetRef="REQUEST_REVISION-step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-review-application"
+                    targetRef="onEnterNode-step-review-application-Send_Request_for_Revision"/>
+      <sequenceFlow id="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"
+                    targetRef="onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="FINISH_WAITING-step-review-application_to_ExclusiveGateway_FINISH_WAITING-step-review-application"
+                    name=""
+                    sourceRef="FINISH_WAITING-step-review-application"
+                    targetRef="ExclusiveGateway_FINISH_WAITING-step-review-application"/>
+      <sequenceFlow id="onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"
+                    targetRef="step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="onEnterNode-step-protest-Send_e-mail_to_step-degree-coordinator-evaluation-protest"
+                    name=""
+                    sourceRef="onEnterNode-step-protest-Send_e-mail"
+                    targetRef="step-degree-coordinator-evaluation-protest"/>
+      <sequenceFlow id="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-review-application"
+                    name=""
+                    sourceRef="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                    targetRef="step-review-application"/>
+      <sequenceFlow id="step-check-qualifications_to_ExclusiveGateway_step-check-qualifications"
+                    name=""
+                    sourceRef="step-check-qualifications"
+                    targetRef="ExclusiveGateway_step-check-qualifications"/>
+      <sequenceFlow id="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests"
+                    name=""
+                    sourceRef="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                    targetRef="onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests"/>
+      <sequenceFlow id="REQUEST_REVISION-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                    name=""
+                    sourceRef="REQUEST_REVISION-step-check-qualifications"
+                    targetRef="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"/>
+      <sequenceFlow id="CONFIRM-step-officialize_to_SUCCESS"
+                    name=""
+                    sourceRef="CONFIRM-step-officialize"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-review-application"
+                    targetRef="onActionTransition-step-review-application-Copy_Request_Form"/>
+      <sequenceFlow id="ExclusiveGateway_step-officialize_to_REJECT-step-officialize"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-officialize"
+                    targetRef="REJECT-step-officialize"/>
+      <sequenceFlow id="step-1-a-request-letters-of-recommendation_to_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                    name=""
+                    sourceRef="step-1-a-request-letters-of-recommendation"
+                    targetRef="REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+      <sequenceFlow id="CHANGES_SUBMITTED-step-review-application_to_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"
+                    name=""
+                    sourceRef="CHANGES_SUBMITTED-step-review-application"
+                    targetRef="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"/>
+      <sequenceFlow id="REJECT-step-advisor-accept-0_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-advisor-accept-0"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="REJECT-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="REJECT-step-degree-coordinator-evaluation"
+                    targetRef="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion_to_step-officialize"
+                    name=""
+                    sourceRef="onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"
+                    targetRef="step-officialize"/>
+      <sequenceFlow id="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application"
+                    name=""
+                    sourceRef="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                    targetRef="onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application"/>
+      <sequenceFlow id="protest-decision-step-protest_to_PROTEST-step-protest"
+                    name=""
+                    sourceRef="protest-decision-step-protest"
+                    targetRef="PROTEST-step-protest"/>
+      <sequenceFlow id="step-review-application_to_ExclusiveGateway_step-review-application"
+                    name=""
+                    sourceRef="step-review-application"
+                    targetRef="ExclusiveGateway_step-review-application"/>
+      <sequenceFlow id="onActionTransition-step-review-application-Terminate_Revision_Period_to_step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="onActionTransition-step-review-application-Terminate_Revision_Period"
+                    targetRef="step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="step-advisor-accept-0_to_ExclusiveGateway_step-advisor-accept-0"
+                    name=""
+                    sourceRef="step-advisor-accept-0"
+                    targetRef="ExclusiveGateway_step-advisor-accept-0"/>
+      <sequenceFlow id="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation"
+                    targetRef="ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation"/>
+      <sequenceFlow id="ExclusiveGateway_step-degree-coordinator-evaluation_to_REJECT-step-degree-coordinator-evaluation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-degree-coordinator-evaluation"
+                    targetRef="REJECT-step-degree-coordinator-evaluation"/>
+      <sequenceFlow id="onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action_to_step-1-b-wait-for-letters-of-recommendation"
+                    name=""
+                    sourceRef="onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action"
+                    targetRef="step-1-b-wait-for-letters-of-recommendation"/>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-review-application"
+                    targetRef="onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="onActionTransition-step-check-qualifications-Set_Request_Outcome_Form_to_step-protest"
+                    name=""
+                    sourceRef="onActionTransition-step-check-qualifications-Set_Request_Outcome_Form"
+                    targetRef="step-protest"/>
+      <sequenceFlow id="ExclusiveGateway_step-officialize_to_CONFIRM-step-officialize"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-officialize"
+                    targetRef="CONFIRM-step-officialize"/>
+      <sequenceFlow id="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest"
+                    targetRef="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="PROTEST-step-protest_to_ExclusiveGateway_PROTEST-step-protest"
+                    name=""
+                    sourceRef="PROTEST-step-protest"
+                    targetRef="ExclusiveGateway_PROTEST-step-protest"/>
+      <sequenceFlow id="CONFIRM-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest"
+                    name=""
+                    sourceRef="CONFIRM-step-degree-coordinator-evaluation-protest"
+                    targetRef="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest"/>
+      <sequenceFlow id="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest"
+                    targetRef="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                    name=""
+                    sourceRef="REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                    targetRef="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"/>
+      <sequenceFlow id="CONCLUDE-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="CONCLUDE-step-1-b-wait-for-letters-of-recommendation"
+                    targetRef="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-check-qualifications"
+                    name=""
+                    sourceRef="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"
+                    targetRef="step-check-qualifications"/>
+      <sequenceFlow id="START-start-event_to_step-1-a-request-letters-of-recommendation"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-1-a-request-letters-of-recommendation"/>
+      <sequenceFlow id="ExclusiveGateway_step-review-application_to_FINISH_WAITING-step-review-application"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-review-application"
+                    targetRef="FINISH_WAITING-step-review-application"/>
+      <sequenceFlow id="ExclusiveGateway_step-check-qualifications_to_REQUEST_REVISION-step-check-qualifications"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-check-qualifications"
+                    targetRef="REQUEST_REVISION-step-check-qualifications"/>
+      <sequenceFlow id="ExclusiveGateway_step-protest_to_protest-decision-step-protest"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-protest"
+                    targetRef="protest-decision-step-protest"/>
+   </process>
+   <collaboration id="phd-application" name="phd-application">
+      <documentation id="documentation_85a1e487-dd64-444d-b23f-826e96ba7a4c">{name=phd-application, title={pt-PT=Processo de Candidatura a Doutoramento, en-GB=PHD Application Process}, description={pt-PT=Processo de Candidatura a Doutoramento, en-GB=PHD Application Process}, config={actionProcessor={onCreate=[], onSuccess=[{flowProcessor=Create Phd Application}, {flowProcessor=Return Flow Approved To Request}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[{handle=manage-reference-letter-requests, flowProcessor=Manage Reference Letters}, {handle=send-all-reference-letter-requests, flowProcessor=Send All Reference Letter Requests}], forms=[{id=protest-form, title={pt-PT=Reclamação da Decisão, en-GB=Protest the Decision}, form={pages=[{title={pt-PT=Reclamação_da_Decisão, en-GB=Protest_the_Decision}, sections=[{title={pt-PT=Reclamação_da_Decisão, en-GB=Protest_the_Decision}, properties=[{type=Array, field=PROTESTS, label={pt-PT=Reclamações, en-GB=Protests}, labelAddElement={pt-PT=Adicionar reclamação, en-GB=Add protest}, required=false, properties=[{type=AsyncSelect, field=PROTEST_REQUEST, required=true, readonly=true, optionsProvider=paper-pusher-ist/requests/allowedToProtest, allowOther=false, label={pt-PT=Pedido, en-GB=Request}}, {type=Text, field=PROTEST, required=true, readonly=true, label={pt-PT=Fundamentação, en-GB=Substantiation}, multiline=true, inputType=plain}, {type=File, field=ATTACHMENT, required=false, readonly=true, label={pt-PT=Elementos probatórios, en-GB=Evidence}, allowedFileTypes=[.pdf], maxSizeMB=10}, {type=Text, field=RESPONSE, required=true, label={pt-PT=Resposta, en-GB=Response}, multiline=true, inputType=plain}]}]}]}]}}], actionNodes=[{id=step-1-a-request-letters-of-recommendation, type=generic, comment=false, title={pt-PT=Solicitar Cartas de Recomendação, en-GB=Request Reference Letters}, description={pt-PT=Solicitar Cartas de Recomendação, en-GB=Request Reference Letters}, actions=[{primary=true, to=step-1-b-wait-for-letters-of-recommendation, label={pt-PT=Requerer Cartas de Recomendação, en-GB=Request Reference Letters}, id=REQUEST_LETTERS-step-1-a-request-letters-of-recommendation, name=REQUEST_LETTERS}], queue=Area-de-Pos-Graduacao-Geral, actionProcessor=[{flowProcessor=Init Recommendation Letters For PHD Application, id=onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application, name=onEnterNode}, {flowProcessor=Send All Reference Letter Requests, id=onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests, name=onEnterNode}, {flowProcessor=Do Flow Action, flowAction=REQUEST_LETTERS, id=onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action, name=onEnterNode}]}, {id=step-1-b-wait-for-letters-of-recommendation, type=withButtons, comment=false, title={pt-PT=Aguardar Receção de Cartas, en-GB=Await Reception of Letters}, description={pt-PT=Aguardar Receção de Cartas, en-GB=Await Reception of Letters}, buttons=[{primary=true, label={pt-PT=Gerir Pedidos, en-GB=Manage Requests}, handler=process:manage-reference-letter-requests}, {primary=false, label={pt-PT=Terminar Receção de Cartas, en-GB=Conclude Reception of Letters}, handler=action:CONCLUDE}], actions=[{primary=false, to=step-check-qualifications, label={pt-PT=Terminar Receção de Cartas, en-GB=Conclude Reception of Letters}, id=CONCLUDE-step-1-b-wait-for-letters-of-recommendation, name=CONCLUDE}, {primary=true, to=step-1-c-letters-of-recommendation-received, label={pt-PT=Cartas Recebidas, en-GB=Letters Received}, id=ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation, name=ALL_RECEIVED}], queue=Area-de-Pos-Graduacao-Geral, actionProcessor=[{flowProcessor=Do Flow Action After Time Passes, flowAction=CONCLUDE, user=fenix, when={plusWorkingDays=6}, id=onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes, name=onEnterNode}]}, {id=step-1-c-letters-of-recommendation-received, type=generic, comment=false, title={pt-PT=Cartas Recebidas, en-GB=Letters Received}, description={pt-PT=Cartas Recebidas, en-GB=Letters Received}, actions=[{primary=false, to=step-1-b-wait-for-letters-of-recommendation, label={pt-PT=Reverter para Gerir Pedidos de Cartas, en-GB=Revert to Manage Letter Requests}, id=REVERT-step-1-c-letters-of-recommendation-received, name=REVERT}, {primary=true, to=step-check-qualifications, label={pt-PT=Terminar Receção de Cartas, en-GB=Conclude Reception of Letters}, id=CONCLUDE-step-1-c-letters-of-recommendation-received, name=CONCLUDE}], queue=Area-de-Pos-Graduacao-Geral}, {id=step-check-qualifications, type=generic, comment=true, title={pt-PT=Verificar Qualificações, en-GB=Check Qualifications}, description={pt-PT=Verificar Qualificações, en-GB=Check Qualifications}, commentLabel={pt-PT=Comentário / Observações, en-GB=Observations}, actions=[{primary=true, to=step-advisor-accept-0, label={pt-PT=Confirmar Elegibilidade, en-GB=Confirm Eligibility}, id=CONFIRM-step-check-qualifications, name=CONFIRM}, {primary=false, to=step-protest, label={pt-PT=Não Colocar Candidato, en-GB=Do Not Place Applicant}, id=REJECT-step-check-qualifications, name=REJECT}, {primary=false, to=step-review-application, label={pt-PT=Solicitar Informação Adicional, en-GB=Request Additional Information}, id=REQUEST_REVISION-step-check-qualifications, name=REQUEST_REVISION}], actionProcessor=[{flowProcessor=Check Qualifications for PHD Application, flowAction=CONFIRM, data=Verificado automáticamente pelas habilitações declaradas na candidatura. Auto-verified by the declared qualifications., id=onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application, name=onEnterNode}, {applyOn=REJECT-step-check-qualifications, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=not accepted, label={pt-PT=Não Aceite, en-GB=Declined}}}, conclude=true, id=onActionTransition-step-check-qualifications-Set_Request_Outcome_Form, name=onActionTransition}], queue=Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao}, {id=step-advisor-accept-0, type=generic, comment=false, title={pt-PT=Aceitar Posição de Orientação, en-GB=Accept Advisor Position}, description={pt-PT=Aceitar Posição de Orientação, en-GB=Accept Advisor Position}, actions=[{primary=true, to=step-degree-coordinator-evaluation, label={pt-PT=Aceitar Posição de Orientação, en-GB=Accept Advisor Position}, id=ACCEPT-step-advisor-accept-0, name=ACCEPT}, {primary=false, to=FAILURE, label={pt-PT=Não Aceitar, en-GB=Do Not Accept}, id=REJECT-step-advisor-accept-0, name=REJECT}], queue=advisor-queue}, {id=step-degree-coordinator-evaluation, type=generic, comment=true, title={pt-PT=Apreciação da candidatura, en-GB=Assessment of the application}, description={pt-PT=Avalia o mérito e elegibilidade da candidatura, en-GB=Evaluate the merit and pertinency of the application}, commentLabel={pt-PT=Parecer do(a) coordenador(a), en-GB=Advisory opinion by the coordinator}, actions=[{primary=true, to=step-officialize, label={pt-PT=Colocar Candidato, en-GB=Place Applicant}, id=CONFIRM-step-degree-coordinator-evaluation, name=CONFIRM}, {primary=false, to=step-protest, label={pt-PT=Não Colocar Candidato, en-GB=Do Not Place Applicant}, id=REJECT-step-degree-coordinator-evaluation, name=REJECT}, {primary=false, to=step-review-application, label={pt-PT=Solicitar Informação Adicional, en-GB=Request Additional Information}, id=REQUEST_REVISION-step-degree-coordinator-evaluation, name=REQUEST_REVISION}], actionProcessor=[{applyOn=CONFIRM-step-degree-coordinator-evaluation, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=accepted, label={pt-PT=Admitido(a), en-GB=Accepted}}}, conclude=true, id=onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form, name=onActionTransition}, {applyOn=REJECT-step-degree-coordinator-evaluation, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=not accepted, label={pt-PT=Não Aceite, en-GB=Declined}}}, conclude=true, id=onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form, name=onActionTransition}], queue=degree-coordinator}, {id=step-review-application, type=generic, comment=false, title={pt-PT=Aguardar Revisão da Candidatura, en-GB=Awaiting Application Review}, description={pt-PT=Aguardar Revisão da Candidatura, en-GB=Awaiting Application Review}, actions=[{primary=true, to=step-degree-coordinator-evaluation, label={pt-PT=Alterações Submetidas, en-GB=Changes Submitted}, id=CHANGES_SUBMITTED-step-review-application, name=CHANGES_SUBMITTED}, {primary=false, to=step-degree-coordinator-evaluation, label={pt-PT=Nenhuma Informação Adicional Prestada, en-GB=No Additional Information was Provided}, id=FINISH_WAITING-step-review-application, name=FINISH_WAITING}], queue=Sistema-FenixEdu, actionProcessor=[{flowProcessor=Send Request for Revision, when={plusWorkingDays=5}, id=onEnterNode-step-review-application-Send_Request_for_Revision, name=onEnterNode}, {flowProcessor=Do Flow Action After Time Passes, flowAction=FINISH_WAITING, user=fenix, when={plusWorkingDays=5}, id=onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes, name=onEnterNode}, {flowProcessor=Copy Request Form, setSectionWithRequesterInfo=true, id=onActionTransition-step-review-application-Copy_Request_Form, name=onActionTransition}, {flowProcessor=Terminate Revision Period, setSectionWithRequesterInfo=true, id=onActionTransition-step-review-application-Terminate_Revision_Period, name=onActionTransition}]}, {id=step-protest, type=withForms, comment=false, title={pt-PT=Reclamação da Decisão, en-GB=Protest the Decision}, description={pt-PT=Requerer impugnação administrativa, en-GB=Request administrative challenge}, buttons=[{id=protest-decision-step-protest, primary=true, label={pt-PT=Reclamação da Decisão, en-GB=Protest the Decision}, handlers={form=protest-form, action=PROTEST-step-protest}}], actions=[{primary=true, to=step-degree-coordinator-evaluation-protest, label={pt-PT=Reclamação da Decisão, en-GB=Protest the Decision}, id=PROTEST-step-protest, name=PROTEST}, {primary=false, to=step-officialize, label={pt-PT=Aceitar Decisão por Ausência de Reclamação, en-GB=Accept Decision by Absence of Protest}, id=FINISH_WAITING-step-protest, name=FINISH_WAITING}], queue=Sistema-FenixEdu, actionProcessor=[{flowProcessor=Open Protest Period, id=onEnterNode-step-protest-Open_Protest_Period, name=onEnterNode}, {flowProcessor=Send e-mail, template=email-notification-application-not-accepted, notifyFlowMembers=false, registered=true, sender=1696378937945232, parameters={}, id=onEnterNode-step-protest-Send_e-mail, name=onEnterNode}, {flowProcessor=Do Flow Action After Time Passes, flowAction=FINISH_WAITING, user=fenix, when={plusWorkingDays=10}, id=onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes, name=onEnterNode}]}, {id=step-degree-coordinator-evaluation-protest, type=generic, comment=true, title={pt-PT=Re-apreciação da candidatura, en-GB=Re-assessment of the application}, description={pt-PT=Avalia o mérito e elegibilidade da candidatura, en-GB=Evaluate the merit and pertinency of the application}, commentLabel={pt-PT=Parecer do(a) coordenador(a), en-GB=Advisory opinion by the coordinator}, actions=[{primary=true, to=step-officialize, label={pt-PT=Colocar Candidato, en-GB=Place Applicant}, id=CONFIRM-step-degree-coordinator-evaluation-protest, name=CONFIRM}, {primary=false, to=step-officialize, label={pt-PT=Não Colocar Candidato, en-GB=Do Not Place Applicant}, id=REJECT-step-degree-coordinator-evaluation-protest, name=REJECT}], actionProcessor=[{flowProcessor=Revert Request Conclusion, id=onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion, name=onEnterNode}, {applyOn=CONFIRM-step-degree-coordinator-evaluation-protest, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=accepted, label={pt-PT=Admitido(a), en-GB=Accepted}}}, conclude=true, id=onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form, name=onActionTransition}, {applyOn=REJECT-step-degree-coordinator-evaluation-protest, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=not accepted, label={pt-PT=Não Aceite, en-GB=Declined}}}, conclude=true, id=onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form, name=onActionTransition}, {flowProcessor=Set Response In Protest Form, queue=Área de Pós-Graduação, conclude=true, id=onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form, name=onActionTransition}], queue=degree-coordinator}, {id=step-officialize, type=generic, comment=false, title={pt-PT=Homologação, en-GB=Officialization}, description={pt-PT=Homologação do resultado da candidatura, en-GB=Officialize application results}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Homologar, en-GB=Officialize}, id=CONFIRM-step-officialize, name=CONFIRM}, {primary=false, to=step-degree-coordinator-evaluation, label={pt-PT=Devolver ao Coordenador, en-GB=Return to Coordinator}, id=REJECT-step-officialize, name=REJECT}], queue=Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="phd-application" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                           id="Shape_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation">
+            <dc:Bounds height="40.0" width="40.0" x="860.0" y="1180.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONFIRM-step-degree-coordinator-evaluation"
+                           id="Shape_CONFIRM-step-degree-coordinator-evaluation">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="2090.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CHANGES_SUBMITTED-step-review-application"
+                           id="Shape_CHANGES_SUBMITTED-step-review-application">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="570.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_REJECT-step-check-qualifications"
+                           id="Shape_ExclusiveGateway_REJECT-step-check-qualifications">
+            <dc:Bounds height="40.0" width="40.0" x="2880.0" y="3460.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-protest-Open_Protest_Period"
+                           id="Shape_onEnterNode-step-protest-Open_Protest_Period">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_PROTEST-step-protest"
+                           id="Shape_ExclusiveGateway_PROTEST-step-protest">
+            <dc:Bounds height="40.0" width="40.0" x="860.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"
+                           id="Shape_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application">
+            <dc:Bounds height="40.0" width="40.0" x="680.0" y="580.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FINISH_WAITING-step-protest"
+                           id="Shape_FINISH_WAITING-step-protest">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-officialize"
+                           id="Shape_REJECT-step-officialize">
+            <dc:Bounds height="60.0" width="80.0" x="1520.0" y="3130.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-advisor-accept-0" id="Shape_step-advisor-accept-0">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="2690.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests"
+                           id="Shape_onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1330.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONFIRM-step-officialize"
+                           id="Shape_CONFIRM-step-officialize">
+            <dc:Bounds height="60.0" width="80.0" x="1520.0" y="2970.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-advisor-accept-0"
+                           id="Shape_ExclusiveGateway_step-advisor-accept-0">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="2700.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                           id="Shape_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1170.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-review-application"
+                           id="Shape_step-review-application">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-officialize" id="Shape_step-officialize">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="2970.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONFIRM-step-degree-coordinator-evaluation-protest"
+                           id="Shape_CONFIRM-step-degree-coordinator-evaluation-protest">
+            <dc:Bounds height="60.0" width="80.0" x="1520.0" y="2090.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"
+                           id="Shape_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"
+                           id="Shape_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form">
+            <dc:Bounds height="60.0" width="80.0" x="1880.0" y="2410.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-review-application"
+                           id="Shape_ExclusiveGateway_step-review-application">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="260.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-1-b-wait-for-letters-of-recommendation"
+                           id="Shape_step-1-b-wait-for-letters-of-recommendation">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="1330.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-protest" id="Shape_step-protest">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ACCEPT-step-advisor-accept-0"
+                           id="Shape_ACCEPT-step-advisor-accept-0">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="2850.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action"
+                           id="Shape_onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1490.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-1-c-letters-of-recommendation-received"
+                           id="Shape_step-1-c-letters-of-recommendation-received">
+            <dc:Bounds height="60.0" width="80.0" x="1880.0" y="1490.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-review-application-Copy_Request_Form"
+                           id="Shape_onActionTransition-step-review-application-Copy_Request_Form">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="890.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-protest-Send_e-mail"
+                           id="Shape_onEnterNode-step-protest-Send_e-mail">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="410.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation"
+                           id="Shape_ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation">
+            <dc:Bounds height="60.0" width="80.0" x="1520.0" y="1330.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-officialize"
+                           id="Shape_ExclusiveGateway_step-officialize">
+            <dc:Bounds height="40.0" width="40.0" x="1380.0" y="2980.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-check-qualifications-Set_Request_Outcome_Form"
+                           id="Shape_onActionTransition-step-check-qualifications-Set_Request_Outcome_Form">
+            <dc:Bounds height="60.0" width="80.0" x="3020.0" y="3450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REVERT-step-1-c-letters-of-recommendation-received"
+                           id="Shape_REVERT-step-1-c-letters-of-recommendation-received">
+            <dc:Bounds height="60.0" width="80.0" x="2200.0" y="1650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest"
+                           id="Shape_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest">
+            <dc:Bounds height="40.0" width="40.0" x="1720.0" y="2260.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REQUEST_REVISION-step-check-qualifications"
+                           id="Shape_REQUEST_REVISION-step-check-qualifications">
+            <dc:Bounds height="60.0" width="80.0" x="2700.0" y="3130.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-degree-coordinator-evaluation"
+                           id="Shape_REJECT-step-degree-coordinator-evaluation">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="1770.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation"
+                           id="Shape_ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation">
+            <dc:Bounds height="40.0" width="40.0" x="1380.0" y="1340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="1182.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONFIRM-step-check-qualifications"
+                           id="Shape_CONFIRM-step-check-qualifications">
+            <dc:Bounds height="60.0" width="80.0" x="2700.0" y="3290.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="1722.5" y="2982.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-check-qualifications"
+                           id="Shape_ExclusiveGateway_step-check-qualifications">
+            <dc:Bounds height="40.0" width="40.0" x="2560.0" y="3140.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-1-c-letters-of-recommendation-received"
+                           id="Shape_ExclusiveGateway_step-1-c-letters-of-recommendation-received">
+            <dc:Bounds height="40.0" width="40.0" x="2060.0" y="1500.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REQUEST_REVISION-step-degree-coordinator-evaluation"
+                           id="Shape_REQUEST_REVISION-step-degree-coordinator-evaluation">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="1930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest"
+                           id="Shape_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest">
+            <dc:Bounds height="40.0" width="40.0" x="1720.0" y="2100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="682.5" y="2702.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-protest"
+                           id="Shape_ExclusiveGateway_step-protest">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-degree-coordinator-evaluation"
+                           id="Shape_step-degree-coordinator-evaluation">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="1770.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="protest-decision-step-protest"
+                           id="Shape_protest-decision-step-protest">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"
+                           id="Shape_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="570.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONCLUDE-step-1-b-wait-for-letters-of-recommendation"
+                           id="Shape_CONCLUDE-step-1-b-wait-for-letters-of-recommendation">
+            <dc:Bounds height="60.0" width="80.0" x="1520.0" y="1490.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-degree-coordinator-evaluation"
+                           id="Shape_ExclusiveGateway_step-degree-coordinator-evaluation">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="1780.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"
+                           id="Shape_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form">
+            <dc:Bounds height="60.0" width="80.0" x="1880.0" y="2250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"
+                           id="Shape_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="570.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_FINISH_WAITING-step-protest"
+                           id="Shape_ExclusiveGateway_FINISH_WAITING-step-protest">
+            <dc:Bounds height="40.0" width="40.0" x="680.0" y="260.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-1-a-request-letters-of-recommendation"
+                           id="Shape_step-1-a-request-letters-of-recommendation">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="1170.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="1170.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-review-application-Send_Request_for_Revision"
+                           id="Shape_onEnterNode-step-review-application-Send_Request_for_Revision">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="1050.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"
+                           id="Shape_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion">
+            <dc:Bounds height="60.0" width="80.0" x="1880.0" y="2570.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                           id="Shape_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application">
+            <dc:Bounds height="60.0" width="80.0" x="3020.0" y="3290.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-degree-coordinator-evaluation-protest"
+                           id="Shape_REJECT-step-degree-coordinator-evaluation-protest">
+            <dc:Bounds height="60.0" width="80.0" x="1520.0" y="2250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application"
+                           id="Shape_onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1170.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_FINISH_WAITING-step-review-application"
+                           id="Shape_ExclusiveGateway_FINISH_WAITING-step-review-application">
+            <dc:Bounds height="40.0" width="40.0" x="680.0" y="420.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"
+                           id="Shape_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes">
+            <dc:Bounds height="60.0" width="80.0" x="1700.0" y="1490.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-advisor-accept-0"
+                           id="Shape_REJECT-step-advisor-accept-0">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="2690.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FINISH_WAITING-step-review-application"
+                           id="Shape_FINISH_WAITING-step-review-application">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="410.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONCLUDE-step-1-c-letters-of-recommendation-received"
+                           id="Shape_CONCLUDE-step-1-c-letters-of-recommendation-received">
+            <dc:Bounds height="60.0" width="80.0" x="2200.0" y="1490.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="PROTEST-step-protest" id="Shape_PROTEST-step-protest">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-review-application-Terminate_Revision_Period"
+                           id="Shape_onActionTransition-step-review-application-Terminate_Revision_Period">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="730.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-degree-coordinator-evaluation-protest"
+                           id="Shape_ExclusiveGateway_step-degree-coordinator-evaluation-protest">
+            <dc:Bounds height="40.0" width="40.0" x="1380.0" y="2100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-degree-coordinator-evaluation-protest"
+                           id="Shape_step-degree-coordinator-evaluation-protest">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="2090.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-check-qualifications"
+                           id="Shape_step-check-qualifications">
+            <dc:Bounds height="60.0" width="80.0" x="2380.0" y="3130.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-check-qualifications"
+                           id="Shape_REJECT-step-check-qualifications">
+            <dc:Bounds height="60.0" width="80.0" x="2700.0" y="3450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Sistema-FenixEdu" id="Shape_Sistema-FenixEdu">
+            <dc:Bounds height="1080.0" width="3040.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Area-de-Pos-Graduacao-Geral"
+                           id="Shape_Area-de-Pos-Graduacao-Geral">
+            <dc:Bounds height="600.0" width="3040.0" x="90.0" y="1140.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="degree-coordinator" id="Shape_degree-coordinator">
+            <dc:Bounds height="920.0" width="3040.0" x="90.0" y="1740.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="advisor-queue" id="Shape_advisor-queue">
+            <dc:Bounds height="280.0" width="3040.0" x="90.0" y="2660.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao"
+                           id="Shape_Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao">
+            <dc:Bounds height="600.0" width="3040.0" x="90.0" y="2940.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="3480.0" width="3070.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="720.0" y="280.0"/>
+            <di:waypoint x="753.0" y="280.0"/>
+            <di:waypoint x="753.0" y="600.0"/>
+            <di:waypoint x="1020.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_CONCLUDE-step-1-b-wait-for-letters-of-recommendation"
+                          id="Edge_ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_CONCLUDE-step-1-b-wait-for-letters-of-recommendation">
+            <di:waypoint x="1420.0" y="1360.0"/>
+            <di:waypoint x="1453.0" y="1360.0"/>
+            <di:waypoint x="1453.0" y="1520.0"/>
+            <di:waypoint x="1520.0" y="1520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Send_e-mail"
+                          id="Edge_ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Send_e-mail">
+            <di:waypoint x="900.0" y="120.0"/>
+            <di:waypoint x="933.0" y="120.0"/>
+            <di:waypoint x="933.0" y="440.0"/>
+            <di:waypoint x="1020.0" y="440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest"
+                          id="Edge_REJECT-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest">
+            <di:waypoint x="1600.0" y="2280.0"/>
+            <di:waypoint x="1633.0" y="2280.0"/>
+            <di:waypoint x="1633.0" y="2280.0"/>
+            <di:waypoint x="1720.0" y="2280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-protest"
+                          id="Edge_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-protest">
+            <di:waypoint x="3100.0" y="3320.0"/>
+            <di:waypoint x="3135.0" y="3320.0"/>
+            <di:waypoint x="3135.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-officialize_to_ExclusiveGateway_step-officialize"
+                          id="Edge_step-officialize_to_ExclusiveGateway_step-officialize">
+            <di:waypoint x="1280.0" y="3000.0"/>
+            <di:waypoint x="1313.0" y="3000.0"/>
+            <di:waypoint x="1313.0" y="3000.0"/>
+            <di:waypoint x="1380.0" y="3000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests_to_step-1-b-wait-for-letters-of-recommendation"
+                          id="Edge_onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests_to_step-1-b-wait-for-letters-of-recommendation">
+            <di:waypoint x="1100.0" y="1360.0"/>
+            <di:waypoint x="1200.0" y="1360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-degree-coordinator-evaluation_to_CONFIRM-step-degree-coordinator-evaluation"
+                          id="Edge_ExclusiveGateway_step-degree-coordinator-evaluation_to_CONFIRM-step-degree-coordinator-evaluation">
+            <di:waypoint x="360.0" y="1800.0"/>
+            <di:waypoint x="393.0" y="1800.0"/>
+            <di:waypoint x="393.0" y="2120.0"/>
+            <di:waypoint x="480.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_REVERT-step-1-c-letters-of-recommendation-received"
+                          id="Edge_ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_REVERT-step-1-c-letters-of-recommendation-received">
+            <di:waypoint x="2100.0" y="1520.0"/>
+            <di:waypoint x="2133.0" y="1520.0"/>
+            <di:waypoint x="2133.0" y="1680.0"/>
+            <di:waypoint x="2200.0" y="1680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation-protest"
+                          id="Edge_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation-protest">
+            <di:waypoint x="1100.0" y="600.0"/>
+            <di:waypoint x="1133.0" y="600.0"/>
+            <di:waypoint x="1133.0" y="2120.0"/>
+            <di:waypoint x="1200.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-protest-Open_Protest_Period_to_step-officialize"
+                          id="Edge_onEnterNode-step-protest-Open_Protest_Period_to_step-officialize">
+            <di:waypoint x="1100.0" y="280.0"/>
+            <di:waypoint x="1133.0" y="280.0"/>
+            <di:waypoint x="1133.0" y="3000.0"/>
+            <di:waypoint x="1200.0" y="3000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONFIRM-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"
+                          id="Edge_CONFIRM-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form">
+            <di:waypoint x="560.0" y="2120.0"/>
+            <di:waypoint x="660.0" y="2120.0"/>
+            <di:waypoint x="660.0" y="1960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-officialize_to_step-degree-coordinator-evaluation"
+                          id="Edge_REJECT-step-officialize_to_step-degree-coordinator-evaluation">
+            <di:waypoint x="1600.0" y="3160.0"/>
+            <di:waypoint x="3135.0" y="3160.0"/>
+            <di:waypoint x="3135.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1830.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Open_Protest_Period"
+                          id="Edge_ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Open_Protest_Period">
+            <di:waypoint x="900.0" y="120.0"/>
+            <di:waypoint x="933.0" y="120.0"/>
+            <di:waypoint x="933.0" y="280.0"/>
+            <di:waypoint x="1020.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Send_e-mail"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Send_e-mail">
+            <di:waypoint x="720.0" y="280.0"/>
+            <di:waypoint x="753.0" y="280.0"/>
+            <di:waypoint x="753.0" y="440.0"/>
+            <di:waypoint x="1020.0" y="440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-review-application-Send_Request_for_Revision_to_step-degree-coordinator-evaluation"
+                          id="Edge_onEnterNode-step-review-application-Send_Request_for_Revision_to_step-degree-coordinator-evaluation">
+            <di:waypoint x="920.0" y="1080.0"/>
+            <di:waypoint x="3135.0" y="1080.0"/>
+            <di:waypoint x="3135.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1830.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"
+                          id="Edge_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion">
+            <di:waypoint x="1760.0" y="2280.0"/>
+            <di:waypoint x="1793.0" y="2280.0"/>
+            <di:waypoint x="1793.0" y="2600.0"/>
+            <di:waypoint x="1880.0" y="2600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action"
+                          id="Edge_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action">
+            <di:waypoint x="900.0" y="1200.0"/>
+            <di:waypoint x="933.0" y="1200.0"/>
+            <di:waypoint x="933.0" y="1520.0"/>
+            <di:waypoint x="1020.0" y="1520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period">
+            <di:waypoint x="720.0" y="440.0"/>
+            <di:waypoint x="753.0" y="440.0"/>
+            <di:waypoint x="753.0" y="760.0"/>
+            <di:waypoint x="840.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-advisor-accept-0_to_ACCEPT-step-advisor-accept-0"
+                          id="Edge_ExclusiveGateway_step-advisor-accept-0_to_ACCEPT-step-advisor-accept-0">
+            <di:waypoint x="360.0" y="2720.0"/>
+            <di:waypoint x="393.0" y="2720.0"/>
+            <di:waypoint x="393.0" y="2880.0"/>
+            <di:waypoint x="480.0" y="2880.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-protest-Open_Protest_Period_to_step-degree-coordinator-evaluation-protest"
+                          id="Edge_onEnterNode-step-protest-Open_Protest_Period_to_step-degree-coordinator-evaluation-protest">
+            <di:waypoint x="1100.0" y="280.0"/>
+            <di:waypoint x="1133.0" y="280.0"/>
+            <di:waypoint x="1133.0" y="2120.0"/>
+            <di:waypoint x="1200.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_REJECT-step-check-qualifications_to_onActionTransition-step-check-qualifications-Set_Request_Outcome_Form"
+                          id="Edge_ExclusiveGateway_REJECT-step-check-qualifications_to_onActionTransition-step-check-qualifications-Set_Request_Outcome_Form">
+            <di:waypoint x="2920.0" y="3480.0"/>
+            <di:waypoint x="3020.0" y="3480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_ExclusiveGateway_PROTEST-step-protest_to_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="900.0" y="120.0"/>
+            <di:waypoint x="933.0" y="120.0"/>
+            <di:waypoint x="933.0" y="600.0"/>
+            <di:waypoint x="1020.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-advisor-accept-0"
+                          id="Edge_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-advisor-accept-0">
+            <di:waypoint x="3100.0" y="3320.0"/>
+            <di:waypoint x="3135.0" y="3320.0"/>
+            <di:waypoint x="3135.0" y="2770.0"/>
+            <di:waypoint x="160.0" y="2770.0"/>
+            <di:waypoint x="160.0" y="2750.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-check-qualifications_to_ExclusiveGateway_REJECT-step-check-qualifications"
+                          id="Edge_REJECT-step-check-qualifications_to_ExclusiveGateway_REJECT-step-check-qualifications">
+            <di:waypoint x="2780.0" y="3480.0"/>
+            <di:waypoint x="2813.0" y="3480.0"/>
+            <di:waypoint x="2813.0" y="3480.0"/>
+            <di:waypoint x="2880.0" y="3480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application_to_step-1-b-wait-for-letters-of-recommendation"
+                          id="Edge_onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application_to_step-1-b-wait-for-letters-of-recommendation">
+            <di:waypoint x="1100.0" y="1200.0"/>
+            <di:waypoint x="1133.0" y="1200.0"/>
+            <di:waypoint x="1133.0" y="1360.0"/>
+            <di:waypoint x="1200.0" y="1360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-degree-coordinator-evaluation_to_ExclusiveGateway_step-degree-coordinator-evaluation"
+                          id="Edge_step-degree-coordinator-evaluation_to_ExclusiveGateway_step-degree-coordinator-evaluation">
+            <di:waypoint x="200.0" y="1800.0"/>
+            <di:waypoint x="233.0" y="1800.0"/>
+            <di:waypoint x="233.0" y="1800.0"/>
+            <di:waypoint x="320.0" y="1800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Open_Protest_Period"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-protest_to_onEnterNode-step-protest-Open_Protest_Period">
+            <di:waypoint x="720.0" y="280.0"/>
+            <di:waypoint x="1020.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-protest"
+                          id="Edge_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-protest">
+            <di:waypoint x="740.0" y="1960.0"/>
+            <di:waypoint x="3135.0" y="1960.0"/>
+            <di:waypoint x="3135.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONFIRM-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                          id="Edge_CONFIRM-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application">
+            <di:waypoint x="2780.0" y="3320.0"/>
+            <di:waypoint x="3020.0" y="3320.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-review-application_to_CHANGES_SUBMITTED-step-review-application"
+                          id="Edge_ExclusiveGateway_step-review-application_to_CHANGES_SUBMITTED-step-review-application">
+            <di:waypoint x="360.0" y="280.0"/>
+            <di:waypoint x="393.0" y="280.0"/>
+            <di:waypoint x="393.0" y="600.0"/>
+            <di:waypoint x="480.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-advisor-accept-0_to_REJECT-step-advisor-accept-0"
+                          id="Edge_ExclusiveGateway_step-advisor-accept-0_to_REJECT-step-advisor-accept-0">
+            <di:waypoint x="360.0" y="2720.0"/>
+            <di:waypoint x="480.0" y="2720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ACCEPT-step-advisor-accept-0_to_step-degree-coordinator-evaluation"
+                          id="Edge_ACCEPT-step-advisor-accept-0_to_step-degree-coordinator-evaluation">
+            <di:waypoint x="560.0" y="2880.0"/>
+            <di:waypoint x="3135.0" y="2880.0"/>
+            <di:waypoint x="3135.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1830.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision"
+                          id="Edge_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision">
+            <di:waypoint x="720.0" y="600.0"/>
+            <di:waypoint x="753.0" y="600.0"/>
+            <di:waypoint x="753.0" y="1080.0"/>
+            <di:waypoint x="840.0" y="1080.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-1-b-wait-for-letters-of-recommendation_to_ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation"
+                          id="Edge_step-1-b-wait-for-letters-of-recommendation_to_ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation">
+            <di:waypoint x="1280.0" y="1360.0"/>
+            <di:waypoint x="1313.0" y="1360.0"/>
+            <di:waypoint x="1313.0" y="1360.0"/>
+            <di:waypoint x="1380.0" y="1360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form_to_step-officialize"
+                          id="Edge_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form_to_step-officialize">
+            <di:waypoint x="1960.0" y="2440.0"/>
+            <di:waypoint x="3135.0" y="2440.0"/>
+            <di:waypoint x="3135.0" y="3050.0"/>
+            <di:waypoint x="1240.0" y="3050.0"/>
+            <di:waypoint x="1240.0" y="3030.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-protest-Send_e-mail_to_step-officialize"
+                          id="Edge_onEnterNode-step-protest-Send_e-mail_to_step-officialize">
+            <di:waypoint x="1100.0" y="440.0"/>
+            <di:waypoint x="1133.0" y="440.0"/>
+            <di:waypoint x="1133.0" y="3000.0"/>
+            <di:waypoint x="1200.0" y="3000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"
+                          id="Edge_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form">
+            <di:waypoint x="1760.0" y="2280.0"/>
+            <di:waypoint x="1793.0" y="2280.0"/>
+            <di:waypoint x="1793.0" y="2440.0"/>
+            <di:waypoint x="1880.0" y="2440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_REJECT-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                          id="Edge_ExclusiveGateway_REJECT-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application">
+            <di:waypoint x="2920.0" y="3480.0"/>
+            <di:waypoint x="3020.0" y="3480.0"/>
+            <di:waypoint x="3020.0" y="3320.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion"
+                          id="Edge_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion">
+            <di:waypoint x="1760.0" y="2120.0"/>
+            <di:waypoint x="1793.0" y="2120.0"/>
+            <di:waypoint x="1793.0" y="2600.0"/>
+            <di:waypoint x="1880.0" y="2600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form"
+                          id="Edge_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form">
+            <di:waypoint x="720.0" y="600.0"/>
+            <di:waypoint x="753.0" y="600.0"/>
+            <di:waypoint x="753.0" y="920.0"/>
+            <di:waypoint x="840.0" y="920.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REVERT-step-1-c-letters-of-recommendation-received_to_step-1-b-wait-for-letters-of-recommendation"
+                          id="Edge_REVERT-step-1-c-letters-of-recommendation-received_to_step-1-b-wait-for-letters-of-recommendation">
+            <di:waypoint x="2280.0" y="1680.0"/>
+            <di:waypoint x="3135.0" y="1680.0"/>
+            <di:waypoint x="3135.0" y="1410.0"/>
+            <di:waypoint x="1240.0" y="1410.0"/>
+            <di:waypoint x="1240.0" y="1390.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-1-c-letters-of-recommendation-received_to_ExclusiveGateway_step-1-c-letters-of-recommendation-received"
+                          id="Edge_step-1-c-letters-of-recommendation-received_to_ExclusiveGateway_step-1-c-letters-of-recommendation-received">
+            <di:waypoint x="1960.0" y="1520.0"/>
+            <di:waypoint x="1993.0" y="1520.0"/>
+            <di:waypoint x="1993.0" y="1520.0"/>
+            <di:waypoint x="2060.0" y="1520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-review-application-Copy_Request_Form_to_step-degree-coordinator-evaluation"
+                          id="Edge_onActionTransition-step-review-application-Copy_Request_Form_to_step-degree-coordinator-evaluation">
+            <di:waypoint x="920.0" y="920.0"/>
+            <di:waypoint x="3135.0" y="920.0"/>
+            <di:waypoint x="3135.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1830.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period"
+                          id="Edge_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onActionTransition-step-review-application-Terminate_Revision_Period">
+            <di:waypoint x="720.0" y="600.0"/>
+            <di:waypoint x="753.0" y="600.0"/>
+            <di:waypoint x="753.0" y="760.0"/>
+            <di:waypoint x="840.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-protest_to_FINISH_WAITING-step-protest"
+                          id="Edge_ExclusiveGateway_step-protest_to_FINISH_WAITING-step-protest">
+            <di:waypoint x="360.0" y="120.0"/>
+            <di:waypoint x="393.0" y="120.0"/>
+            <di:waypoint x="393.0" y="280.0"/>
+            <di:waypoint x="480.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-1-c-letters-of-recommendation-received"
+                          id="Edge_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-1-c-letters-of-recommendation-received">
+            <di:waypoint x="1780.0" y="1520.0"/>
+            <di:waypoint x="1880.0" y="1520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_step-degree-coordinator-evaluation-protest"
+                          id="Edge_step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_step-degree-coordinator-evaluation-protest">
+            <di:waypoint x="1280.0" y="2120.0"/>
+            <di:waypoint x="1313.0" y="2120.0"/>
+            <di:waypoint x="1313.0" y="2120.0"/>
+            <di:waypoint x="1380.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REQUEST_REVISION-step-degree-coordinator-evaluation_to_step-review-application"
+                          id="Edge_REQUEST_REVISION-step-degree-coordinator-evaluation_to_step-review-application">
+            <di:waypoint x="560.0" y="1960.0"/>
+            <di:waypoint x="3135.0" y="1960.0"/>
+            <di:waypoint x="3135.0" y="330.0"/>
+            <di:waypoint x="160.0" y="330.0"/>
+            <di:waypoint x="160.0" y="310.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_REJECT-step-degree-coordinator-evaluation-protest"
+                          id="Edge_ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_REJECT-step-degree-coordinator-evaluation-protest">
+            <di:waypoint x="1420.0" y="2120.0"/>
+            <di:waypoint x="1453.0" y="2120.0"/>
+            <di:waypoint x="1453.0" y="2280.0"/>
+            <di:waypoint x="1520.0" y="2280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONCLUDE-step-1-c-letters-of-recommendation-received_to_step-check-qualifications"
+                          id="Edge_CONCLUDE-step-1-c-letters-of-recommendation-received_to_step-check-qualifications">
+            <di:waypoint x="2280.0" y="1520.0"/>
+            <di:waypoint x="2313.0" y="1520.0"/>
+            <di:waypoint x="2313.0" y="3160.0"/>
+            <di:waypoint x="2380.0" y="3160.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="FINISH_WAITING-step-protest_to_ExclusiveGateway_FINISH_WAITING-step-protest"
+                          id="Edge_FINISH_WAITING-step-protest_to_ExclusiveGateway_FINISH_WAITING-step-protest">
+            <di:waypoint x="560.0" y="280.0"/>
+            <di:waypoint x="593.0" y="280.0"/>
+            <di:waypoint x="593.0" y="280.0"/>
+            <di:waypoint x="680.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="1600.0" y="1360.0"/>
+            <di:waypoint x="1633.0" y="1360.0"/>
+            <di:waypoint x="1633.0" y="1520.0"/>
+            <di:waypoint x="1700.0" y="1520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form"
+                          id="Edge_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Response_In_Protest_Form">
+            <di:waypoint x="1760.0" y="2120.0"/>
+            <di:waypoint x="1793.0" y="2120.0"/>
+            <di:waypoint x="1793.0" y="2440.0"/>
+            <di:waypoint x="1880.0" y="2440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form_to_step-officialize"
+                          id="Edge_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form_to_step-officialize">
+            <di:waypoint x="1960.0" y="2280.0"/>
+            <di:waypoint x="3135.0" y="2280.0"/>
+            <di:waypoint x="3135.0" y="3050.0"/>
+            <di:waypoint x="1240.0" y="3050.0"/>
+            <di:waypoint x="1240.0" y="3030.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_CONCLUDE-step-1-c-letters-of-recommendation-received"
+                          id="Edge_ExclusiveGateway_step-1-c-letters-of-recommendation-received_to_CONCLUDE-step-1-c-letters-of-recommendation-received">
+            <di:waypoint x="2100.0" y="1520.0"/>
+            <di:waypoint x="2200.0" y="1520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_CONFIRM-step-degree-coordinator-evaluation-protest"
+                          id="Edge_ExclusiveGateway_step-degree-coordinator-evaluation-protest_to_CONFIRM-step-degree-coordinator-evaluation-protest">
+            <di:waypoint x="1420.0" y="2120.0"/>
+            <di:waypoint x="1520.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-protest_to_ExclusiveGateway_step-protest"
+                          id="Edge_step-protest_to_ExclusiveGateway_step-protest">
+            <di:waypoint x="200.0" y="120.0"/>
+            <di:waypoint x="233.0" y="120.0"/>
+            <di:waypoint x="233.0" y="120.0"/>
+            <di:waypoint x="320.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-check-qualifications_to_REJECT-step-check-qualifications"
+                          id="Edge_ExclusiveGateway_step-check-qualifications_to_REJECT-step-check-qualifications">
+            <di:waypoint x="2600.0" y="3160.0"/>
+            <di:waypoint x="2633.0" y="3160.0"/>
+            <di:waypoint x="2633.0" y="3480.0"/>
+            <di:waypoint x="2700.0" y="3480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-officialize"
+                          id="Edge_onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes_to_step-officialize">
+            <di:waypoint x="1100.0" y="600.0"/>
+            <di:waypoint x="1133.0" y="600.0"/>
+            <di:waypoint x="1133.0" y="3000.0"/>
+            <di:waypoint x="1200.0" y="3000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-check-qualifications_to_CONFIRM-step-check-qualifications"
+                          id="Edge_ExclusiveGateway_step-check-qualifications_to_CONFIRM-step-check-qualifications">
+            <di:waypoint x="2600.0" y="3160.0"/>
+            <di:waypoint x="2633.0" y="3160.0"/>
+            <di:waypoint x="2633.0" y="3320.0"/>
+            <di:waypoint x="2700.0" y="3320.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-officialize"
+                          id="Edge_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form_to_step-officialize">
+            <di:waypoint x="740.0" y="1960.0"/>
+            <di:waypoint x="773.0" y="1960.0"/>
+            <di:waypoint x="773.0" y="3000.0"/>
+            <di:waypoint x="1200.0" y="3000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-degree-coordinator-evaluation_to_REQUEST_REVISION-step-degree-coordinator-evaluation"
+                          id="Edge_ExclusiveGateway_step-degree-coordinator-evaluation_to_REQUEST_REVISION-step-degree-coordinator-evaluation">
+            <di:waypoint x="360.0" y="1800.0"/>
+            <di:waypoint x="393.0" y="1800.0"/>
+            <di:waypoint x="393.0" y="1960.0"/>
+            <di:waypoint x="480.0" y="1960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Send_Request_for_Revision">
+            <di:waypoint x="720.0" y="440.0"/>
+            <di:waypoint x="753.0" y="440.0"/>
+            <di:waypoint x="753.0" y="1080.0"/>
+            <di:waypoint x="840.0" y="1080.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="720.0" y="600.0"/>
+            <di:waypoint x="840.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="FINISH_WAITING-step-review-application_to_ExclusiveGateway_FINISH_WAITING-step-review-application"
+                          id="Edge_FINISH_WAITING-step-review-application_to_ExclusiveGateway_FINISH_WAITING-step-review-application">
+            <di:waypoint x="560.0" y="440.0"/>
+            <di:waypoint x="593.0" y="440.0"/>
+            <di:waypoint x="593.0" y="440.0"/>
+            <di:waypoint x="680.0" y="440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation"
+                          id="Edge_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes_to_step-degree-coordinator-evaluation">
+            <di:waypoint x="920.0" y="600.0"/>
+            <di:waypoint x="3135.0" y="600.0"/>
+            <di:waypoint x="3135.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1830.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-protest-Send_e-mail_to_step-degree-coordinator-evaluation-protest"
+                          id="Edge_onEnterNode-step-protest-Send_e-mail_to_step-degree-coordinator-evaluation-protest">
+            <di:waypoint x="1100.0" y="440.0"/>
+            <di:waypoint x="1133.0" y="440.0"/>
+            <di:waypoint x="1133.0" y="2120.0"/>
+            <di:waypoint x="1200.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-review-application"
+                          id="Edge_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application_to_step-review-application">
+            <di:waypoint x="3100.0" y="3320.0"/>
+            <di:waypoint x="3135.0" y="3320.0"/>
+            <di:waypoint x="3135.0" y="330.0"/>
+            <di:waypoint x="160.0" y="330.0"/>
+            <di:waypoint x="160.0" y="310.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-check-qualifications_to_ExclusiveGateway_step-check-qualifications"
+                          id="Edge_step-check-qualifications_to_ExclusiveGateway_step-check-qualifications">
+            <di:waypoint x="2460.0" y="3160.0"/>
+            <di:waypoint x="2493.0" y="3160.0"/>
+            <di:waypoint x="2493.0" y="3160.0"/>
+            <di:waypoint x="2560.0" y="3160.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests"
+                          id="Edge_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Send_All_Reference_Letter_Requests">
+            <di:waypoint x="900.0" y="1200.0"/>
+            <di:waypoint x="933.0" y="1200.0"/>
+            <di:waypoint x="933.0" y="1360.0"/>
+            <di:waypoint x="1020.0" y="1360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REQUEST_REVISION-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application"
+                          id="Edge_REQUEST_REVISION-step-check-qualifications_to_onEnterNode-step-check-qualifications-Check_Qualifications_for_PHD_Application">
+            <di:waypoint x="2780.0" y="3160.0"/>
+            <di:waypoint x="2813.0" y="3160.0"/>
+            <di:waypoint x="2813.0" y="3320.0"/>
+            <di:waypoint x="3020.0" y="3320.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONFIRM-step-officialize_to_SUCCESS"
+                          id="Edge_CONFIRM-step-officialize_to_SUCCESS">
+            <di:waypoint x="1600.0" y="3000.0"/>
+            <di:waypoint x="1633.0" y="3000.0"/>
+            <di:waypoint x="1633.0" y="3000.0"/>
+            <di:waypoint x="1722.5" y="3000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-review-application_to_onActionTransition-step-review-application-Copy_Request_Form">
+            <di:waypoint x="720.0" y="440.0"/>
+            <di:waypoint x="753.0" y="440.0"/>
+            <di:waypoint x="753.0" y="920.0"/>
+            <di:waypoint x="840.0" y="920.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-officialize_to_REJECT-step-officialize"
+                          id="Edge_ExclusiveGateway_step-officialize_to_REJECT-step-officialize">
+            <di:waypoint x="1420.0" y="3000.0"/>
+            <di:waypoint x="1453.0" y="3000.0"/>
+            <di:waypoint x="1453.0" y="3160.0"/>
+            <di:waypoint x="1520.0" y="3160.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-1-a-request-letters-of-recommendation_to_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                          id="Edge_step-1-a-request-letters-of-recommendation_to_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation">
+            <di:waypoint x="560.0" y="1200.0"/>
+            <di:waypoint x="660.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="177.5" y="1200.0"/>
+            <di:waypoint x="300.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CHANGES_SUBMITTED-step-review-application_to_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application"
+                          id="Edge_CHANGES_SUBMITTED-step-review-application_to_ExclusiveGateway_CHANGES_SUBMITTED-step-review-application">
+            <di:waypoint x="560.0" y="600.0"/>
+            <di:waypoint x="593.0" y="600.0"/>
+            <di:waypoint x="593.0" y="600.0"/>
+            <di:waypoint x="680.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-advisor-accept-0_to_FAILURE"
+                          id="Edge_REJECT-step-advisor-accept-0_to_FAILURE">
+            <di:waypoint x="560.0" y="2720.0"/>
+            <di:waypoint x="593.0" y="2720.0"/>
+            <di:waypoint x="593.0" y="2720.0"/>
+            <di:waypoint x="682.5" y="2720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form"
+                          id="Edge_REJECT-step-degree-coordinator-evaluation_to_onActionTransition-step-degree-coordinator-evaluation-Set_Request_Outcome_Form">
+            <di:waypoint x="560.0" y="1800.0"/>
+            <di:waypoint x="593.0" y="1800.0"/>
+            <di:waypoint x="593.0" y="1960.0"/>
+            <di:waypoint x="660.0" y="1960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion_to_step-officialize"
+                          id="Edge_onEnterNode-step-degree-coordinator-evaluation-protest-Revert_Request_Conclusion_to_step-officialize">
+            <di:waypoint x="1960.0" y="2600.0"/>
+            <di:waypoint x="3135.0" y="2600.0"/>
+            <di:waypoint x="3135.0" y="3050.0"/>
+            <di:waypoint x="1240.0" y="3050.0"/>
+            <di:waypoint x="1240.0" y="3030.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application"
+                          id="Edge_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_onEnterNode-step-1-a-request-letters-of-recommendation-Init_Recommendation_Letters_For_PHD_Application">
+            <di:waypoint x="900.0" y="1200.0"/>
+            <di:waypoint x="1020.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="protest-decision-step-protest_to_PROTEST-step-protest"
+                          id="Edge_protest-decision-step-protest_to_PROTEST-step-protest">
+            <di:waypoint x="560.0" y="120.0"/>
+            <di:waypoint x="660.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-review-application_to_ExclusiveGateway_step-review-application"
+                          id="Edge_step-review-application_to_ExclusiveGateway_step-review-application">
+            <di:waypoint x="200.0" y="280.0"/>
+            <di:waypoint x="233.0" y="280.0"/>
+            <di:waypoint x="233.0" y="280.0"/>
+            <di:waypoint x="320.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-review-application-Terminate_Revision_Period_to_step-degree-coordinator-evaluation"
+                          id="Edge_onActionTransition-step-review-application-Terminate_Revision_Period_to_step-degree-coordinator-evaluation">
+            <di:waypoint x="920.0" y="760.0"/>
+            <di:waypoint x="3135.0" y="760.0"/>
+            <di:waypoint x="3135.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1850.0"/>
+            <di:waypoint x="160.0" y="1830.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-advisor-accept-0_to_ExclusiveGateway_step-advisor-accept-0"
+                          id="Edge_step-advisor-accept-0_to_ExclusiveGateway_step-advisor-accept-0">
+            <di:waypoint x="200.0" y="2720.0"/>
+            <di:waypoint x="233.0" y="2720.0"/>
+            <di:waypoint x="233.0" y="2720.0"/>
+            <di:waypoint x="320.0" y="2720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation"
+                          id="Edge_ExclusiveGateway_step-1-b-wait-for-letters-of-recommendation_to_ALL_RECEIVED-step-1-b-wait-for-letters-of-recommendation">
+            <di:waypoint x="1420.0" y="1360.0"/>
+            <di:waypoint x="1520.0" y="1360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-degree-coordinator-evaluation_to_REJECT-step-degree-coordinator-evaluation"
+                          id="Edge_ExclusiveGateway_step-degree-coordinator-evaluation_to_REJECT-step-degree-coordinator-evaluation">
+            <di:waypoint x="360.0" y="1800.0"/>
+            <di:waypoint x="480.0" y="1800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action_to_step-1-b-wait-for-letters-of-recommendation"
+                          id="Edge_onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action_to_step-1-b-wait-for-letters-of-recommendation">
+            <di:waypoint x="1100.0" y="1520.0"/>
+            <di:waypoint x="1200.0" y="1520.0"/>
+            <di:waypoint x="1200.0" y="1360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-review-application_to_onEnterNode-step-review-application-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="720.0" y="440.0"/>
+            <di:waypoint x="753.0" y="440.0"/>
+            <di:waypoint x="753.0" y="600.0"/>
+            <di:waypoint x="840.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-check-qualifications-Set_Request_Outcome_Form_to_step-protest"
+                          id="Edge_onActionTransition-step-check-qualifications-Set_Request_Outcome_Form_to_step-protest">
+            <di:waypoint x="3100.0" y="3480.0"/>
+            <di:waypoint x="3135.0" y="3480.0"/>
+            <di:waypoint x="3135.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-officialize_to_CONFIRM-step-officialize"
+                          id="Edge_ExclusiveGateway_step-officialize_to_CONFIRM-step-officialize">
+            <di:waypoint x="1420.0" y="3000.0"/>
+            <di:waypoint x="1520.0" y="3000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"
+                          id="Edge_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form">
+            <di:waypoint x="1760.0" y="2120.0"/>
+            <di:waypoint x="1793.0" y="2120.0"/>
+            <di:waypoint x="1793.0" y="2280.0"/>
+            <di:waypoint x="1880.0" y="2280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="PROTEST-step-protest_to_ExclusiveGateway_PROTEST-step-protest"
+                          id="Edge_PROTEST-step-protest_to_ExclusiveGateway_PROTEST-step-protest">
+            <di:waypoint x="740.0" y="120.0"/>
+            <di:waypoint x="773.0" y="120.0"/>
+            <di:waypoint x="773.0" y="120.0"/>
+            <di:waypoint x="860.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONFIRM-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest"
+                          id="Edge_CONFIRM-step-degree-coordinator-evaluation-protest_to_ExclusiveGateway_CONFIRM-step-degree-coordinator-evaluation-protest">
+            <di:waypoint x="1600.0" y="2120.0"/>
+            <di:waypoint x="1633.0" y="2120.0"/>
+            <di:waypoint x="1633.0" y="2120.0"/>
+            <di:waypoint x="1720.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form"
+                          id="Edge_ExclusiveGateway_REJECT-step-degree-coordinator-evaluation-protest_to_onActionTransition-step-degree-coordinator-evaluation-protest-Set_Request_Outcome_Form">
+            <di:waypoint x="1760.0" y="2280.0"/>
+            <di:waypoint x="1880.0" y="2280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation"
+                          id="Edge_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation_to_ExclusiveGateway_REQUEST_LETTERS-step-1-a-request-letters-of-recommendation">
+            <di:waypoint x="740.0" y="1200.0"/>
+            <di:waypoint x="773.0" y="1200.0"/>
+            <di:waypoint x="773.0" y="1200.0"/>
+            <di:waypoint x="860.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONCLUDE-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_CONCLUDE-step-1-b-wait-for-letters-of-recommendation_to_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="1600.0" y="1520.0"/>
+            <di:waypoint x="1700.0" y="1520.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-check-qualifications"
+                          id="Edge_onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes_to_step-check-qualifications">
+            <di:waypoint x="1780.0" y="1520.0"/>
+            <di:waypoint x="1813.0" y="1520.0"/>
+            <di:waypoint x="1813.0" y="3160.0"/>
+            <di:waypoint x="2380.0" y="3160.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-1-a-request-letters-of-recommendation"
+                          id="Edge_START-start-event_to_step-1-a-request-letters-of-recommendation">
+            <di:waypoint x="380.0" y="1200.0"/>
+            <di:waypoint x="480.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-review-application_to_FINISH_WAITING-step-review-application"
+                          id="Edge_ExclusiveGateway_step-review-application_to_FINISH_WAITING-step-review-application">
+            <di:waypoint x="360.0" y="280.0"/>
+            <di:waypoint x="393.0" y="280.0"/>
+            <di:waypoint x="393.0" y="440.0"/>
+            <di:waypoint x="480.0" y="440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-check-qualifications_to_REQUEST_REVISION-step-check-qualifications"
+                          id="Edge_ExclusiveGateway_step-check-qualifications_to_REQUEST_REVISION-step-check-qualifications">
+            <di:waypoint x="2600.0" y="3160.0"/>
+            <di:waypoint x="2700.0" y="3160.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-protest_to_protest-decision-step-protest"
+                          id="Edge_ExclusiveGateway_step-protest_to_protest-decision-step-protest">
+            <di:waypoint x="360.0" y="120.0"/>
+            <di:waypoint x="480.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

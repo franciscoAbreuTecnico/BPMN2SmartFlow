@@ -1,0 +1,254 @@
+{
+  "name": {
+    "pt-PT": "Registo de Informação Complementar",
+    "en-GB": "Complementary Information Registration"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe registar informação complementar, que poderá constar do Suplemento ao Diploma emitido aquando do pedido de Certidão de Registo.",
+    "en-GB": "This form allows you to register complementary information, that may appear in the Diploma Supplement issued in the Certificate of Registration request."
+  },
+  "context": {
+    "requestKeywords": {
+      "displayName": true,
+      "username": true
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Change Academic Request Queue",
+        "queueMapper": {
+          "Área de Graduação": "Núcleo de Certificação Académica"
+        }
+      },
+      {
+        "requestProcessor": "Check Overlap Complementary Information"
+      }
+    ],
+    "onValidate": [
+      {
+        "requestProcessor": "Copy Input to Outcome",
+        "mapper": {
+          "REGISTRATION": "REGISTRATION",
+          "COMPLEMENTARY_INFORMATION_TYPE" : "COMPLEMENTARY_INFORMATION_TYPE",
+          "COMPLEMENTARY_INFORMATION_START" : "COMPLEMENTARY_INFORMATION_START",
+          "COMPLEMENTARY_INFORMATION_END" : "COMPLEMENTARY_INFORMATION_END",
+          "COMPLEMENTARY_INFORMATION_PROOF" : "COMPLEMENTARY_INFORMATION_PROOF"
+        }
+      }
+    ],
+    "onConclude": [
+      {
+        "requestProcessor": "Register Complementary Information"
+      }
+    ]
+  },
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requirePersonalInformation": true,
+      "requireValidIdDocument": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Pedido de Registo de Informação Complementar",
+          "en-GB": "Complementary Information Registration Request"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Informação Complementar",
+              "en-GB": "Complementary Information"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "allowOther": false,
+                "field": "REGISTRATION",
+                "label": {
+                  "pt-PT": "Matrícula",
+                  "en-GB": "Registration"
+                },
+                "optionsProvider": "/paper-pusher-ist/registrations"
+              },
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "allowOther": true,
+                "description": {
+                  "pt-PT": "Lista das opções oficiais reconhecidas, a escolha de 'outra opção' implica a aprovação pelos Órgãos Superiores da mesma",
+                  "en-GB": "Official recognized options, choosing 'other option' means that the Higher Offices must approve it"
+                },
+                "field": "COMPLEMENTARY_INFORMATION_TYPE",
+                "label": {
+                  "pt-PT": "Tipo de Informação Complementar",
+                  "en-GB": "Complementary Information Type"
+                },
+                "optionsProvider": "/paper-pusher-ist/complementaryInformationTypes"
+              },
+              {
+                "type": "Composite",
+                "field": "COMPLEMENTARY_INFORMATION_DATES",
+                "properties": [
+                  {
+                    "type": "DateTime",
+                    "field": "COMPLEMENTARY_INFORMATION_START",
+                    "required": true,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Início",
+                      "en-GB": "Start Date"
+                    }
+                  },
+                  {
+                    "type": "DateTime",
+                    "field": "COMPLEMENTARY_INFORMATION_END",
+                    "required": true,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Fim",
+                      "en-GB": "End Date"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "File",
+                "field": "COMPLEMENTARY_INFORMATION_PROOF",
+                "required": true,
+                "label": {
+                  "pt-PT": "Comprovativo",
+                  "en-GB": "Proof"
+                },
+                "allowedFileTypes": [
+                  ".pdf",
+                  ".png",
+                  ".jpg"
+                ],
+                "maxSizeMB": 10
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta ao Pedido de Registo de Informação Complementar",
+          "en-GB": "Complementary Information Registration Request Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Informação Complementar Registada",
+              "en-GB": "Registered Complementary Information"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "allowOther": false,
+                "field": "COMPLEMENTARY_INFORMATION_TYPE",
+                "label": {
+                  "pt-PT": "Tipo de Informação Complementar",
+                  "en-GB": "Complementary Information Type"
+                },
+                "optionsProvider": "/paper-pusher-ist/complementaryInformationTypes"
+              },
+              {
+                "type": "Composite",
+                "field": "COMPLEMENTARY_INFORMATION_DATES",
+                "properties": [
+                  {
+                    "type": "DateTime",
+                    "field": "COMPLEMENTARY_INFORMATION_START",
+                    "required": true,
+                    "readonly": false,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Início",
+                      "en-GB": "Start Date"
+                    }
+                  },
+                  {
+                    "type": "DateTime",
+                    "field": "COMPLEMENTARY_INFORMATION_END",
+                    "required": true,
+                    "readonly": false,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Fim",
+                      "en-GB": "End Date"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {},
+  "views": [
+    {
+      "id": "Default",
+      "columns": [
+        {
+          "title": { "pt-PT": "Submetido", "en-GB": "Submitted" },
+          "type": "Request Info",
+          "info": "lockInstant"
+        },
+        {
+          "title": { "pt-PT": "Aluno", "en-GB": "Student" },
+          "type": "Request Info",
+          "info": "requester"
+        },
+        {
+          "title": { "pt-PT": "Estado do Pedido", "en-GB": "Request State" },
+          "type": "Request State"
+        },
+        {
+          "title": { "pt-PT": "Revisão", "en-GB": "Revision" },
+          "type": "Request Info",
+          "info": "revisionDeadline"
+        },
+        {
+          "title": { "pt-PT": "Pagamento", "en-GB": "Payment" },
+          "type": "Payment State"
+        },
+        {
+          "title": { "pt-PT": "Estado do Processo", "en-GB": "Process State" },
+          "type": "Flow State From Request"
+        },
+        {
+          "title": { "pt-PT": "Curso", "en-GB": "Degree" },
+          "type": "Function",
+          "getter": "Get Degree From Request Registration"
+        },
+        {
+          "title": { "pt-PT": "Início", "en-GB": "Start" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "COMPLEMENTARY_INFORMATION_START"
+        },
+        {
+          "title": { "pt-PT": "Fim", "en-GB": "End" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "COMPLEMENTARY_INFORMATION_END"
+        }
+      ]
+    }
+  ]
+}

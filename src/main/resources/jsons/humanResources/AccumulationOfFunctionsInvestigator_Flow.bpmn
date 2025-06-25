@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_258a4175-eb09-4232-8ecb-d501060ec0a3"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="requester-username" name="requester-username">
+            <flowNodeRef>step-upload-signed-service-provision-contract</flowNodeRef>
+            <flowNodeRef>SIGN-step-upload-signed-service-provision-contract</flowNodeRef>
+            <flowNodeRef>REJECT-step-upload-signed-service-provision-contract</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-upload-signed-service-provision-contract</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+         <lane id="Nucleo-de-Prestacao-de-Trabalho-Geral"
+               name="Nucleo-de-Prestacao-de-Trabalho-Geral">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-hr-processing</flowNodeRef>
+            <flowNodeRef>SIGN-step-hr-processing</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-upload-signed-service-provision-contract"
+                name="The Colaborator">
+         <incoming>SIGN-step-hr-processing_to_step-upload-signed-service-provision-contract</incoming>
+         <outgoing>step-upload-signed-service-provision-contract_to_ExclusiveGateway_step-upload-signed-service-provision-contract</outgoing>
+      </userTask>
+      <userTask id="step-hr-processing" name="The Department of Human Resources ">
+         <incoming>START-start-event_to_step-hr-processing</incoming>
+         <outgoing>step-hr-processing_to_SIGN-step-hr-processing</outgoing>
+      </userTask>
+      <serviceTask id="SIGN-step-upload-signed-service-provision-contract" name="SIGN">
+         <incoming>ExclusiveGateway_step-upload-signed-service-provision-contract_to_SIGN-step-upload-signed-service-provision-contract</incoming>
+         <outgoing>SIGN-step-upload-signed-service-provision-contract_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-upload-signed-service-provision-contract" name="REJECT">
+         <incoming>ExclusiveGateway_step-upload-signed-service-provision-contract_to_REJECT-step-upload-signed-service-provision-contract</incoming>
+         <outgoing>REJECT-step-upload-signed-service-provision-contract_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-hr-processing" name="SIGN">
+         <incoming>step-hr-processing_to_SIGN-step-hr-processing</incoming>
+         <outgoing>SIGN-step-hr-processing_to_step-upload-signed-service-provision-contract</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="START">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-hr-processing</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_step-upload-signed-service-provision-contract"
+                        name="ExclusiveGateway_step-upload-signed-service-provision-contract">
+         <incoming>step-upload-signed-service-provision-contract_to_ExclusiveGateway_step-upload-signed-service-provision-contract</incoming>
+         <outgoing>ExclusiveGateway_step-upload-signed-service-provision-contract_to_SIGN-step-upload-signed-service-provision-contract</outgoing>
+         <outgoing>ExclusiveGateway_step-upload-signed-service-provision-contract_to_REJECT-step-upload-signed-service-provision-contract</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-step-upload-signed-service-provision-contract_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>SIGN-step-upload-signed-service-provision-contract_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="SIGN-step-upload-signed-service-provision-contract_to_SUCCESS"
+                    name=""
+                    sourceRef="SIGN-step-upload-signed-service-provision-contract"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="ExclusiveGateway_step-upload-signed-service-provision-contract_to_SIGN-step-upload-signed-service-provision-contract"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-upload-signed-service-provision-contract"
+                    targetRef="SIGN-step-upload-signed-service-provision-contract"/>
+      <sequenceFlow id="step-hr-processing_to_SIGN-step-hr-processing"
+                    name=""
+                    sourceRef="step-hr-processing"
+                    targetRef="SIGN-step-hr-processing"/>
+      <sequenceFlow id="SIGN-step-hr-processing_to_step-upload-signed-service-provision-contract"
+                    name=""
+                    sourceRef="SIGN-step-hr-processing"
+                    targetRef="step-upload-signed-service-provision-contract"/>
+      <sequenceFlow id="step-upload-signed-service-provision-contract_to_ExclusiveGateway_step-upload-signed-service-provision-contract"
+                    name=""
+                    sourceRef="step-upload-signed-service-provision-contract"
+                    targetRef="ExclusiveGateway_step-upload-signed-service-provision-contract"/>
+      <sequenceFlow id="REJECT-step-upload-signed-service-provision-contract_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-upload-signed-service-provision-contract"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="START-start-event_to_step-hr-processing"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-hr-processing"/>
+      <sequenceFlow id="ExclusiveGateway_step-upload-signed-service-provision-contract_to_REJECT-step-upload-signed-service-provision-contract"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-upload-signed-service-provision-contract"
+                    targetRef="REJECT-step-upload-signed-service-provision-contract"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="accumulation-of-investigator-functions"
+                  name="accumulation-of-investigator-functions">
+      <documentation id="documentation_698100a0-d1fc-4a1c-9131-b25116617634">{name=accumulation-of-investigator-functions, title={pt-PT=Acumulação de Funções, en-GB=Accumulation of Functions}, description={pt-PT=Fluxo de trabalho para pedido de acumulação de funções, en-GB=Workflow for requesting accumulation of functions}, config={actionProcessor={onSuccess=[{flowProcessor=Return Flow Approved To Request}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[{handle=upload-signed-service-provision-contract, flowProcessor=Create Request From Flow, RequestType=Contrato Prestação Serviço Assinado, mapper={}}], actionNodes=[{id=step-hr-processing, type=generic, comment=false, title={pt-PT=A Direção de Recursos Humanos, en-GB=The Department of Human Resources }, description={pt-PT=Processamento pela Direção de Recursos Humanos., en-GB=Processing by the Department of Human Resources.}, commentLabel={pt-PT=Processamento pela Direção de Recursos Humanos., en-GB=Processing by the Department of Human Resources.}, actions=[{primary=true, to=step-upload-signed-service-provision-contract, label={pt-PT=Marcar como Processado, en-GB=Mark as Processed}, id=SIGN-step-hr-processing, name=SIGN}], queue=Nucleo-de-Prestacao-de-Trabalho-Geral}, {id=step-upload-signed-service-provision-contract, type=withButtons, comment=false, title={pt-PT=O/A Colaborador(a), en-GB=The Colaborator}, description={pt-PT=Contrato de Prestação de Serviço Assinado., en-GB=Signed service provision contract.}, commentLabel={pt-PT=Contrato de Prestação de Serviço Assinado., en-GB=Signed service provision contract.}, buttons=[{primary=true, label={pt-PT=Apresentar Contrato de Prestação de Serviço Assinado, en-GB=Present a Signed Service Provision Contract}, handler=process:upload-signed-service-provision-contract}], actions=[{primary=true, to=SUCCESS, label={pt-PT=Validar Documento, en-GB=Validate Document}, id=SIGN-step-upload-signed-service-provision-contract, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar Documento, en-GB=Reject Document}, id=REJECT-step-upload-signed-service-provision-contract, name=REJECT}], queue=requester-username, blockUndo=true}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="accumulation-of-investigator-functions" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="382.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="682.5" y="262.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-hr-processing"
+                           id="Shape_SIGN-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-upload-signed-service-provision-contract"
+                           id="Shape_step-upload-signed-service-provision-contract">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-hr-processing" id="Shape_step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="682.5" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-upload-signed-service-provision-contract"
+                           id="Shape_REJECT-step-upload-signed-service-provision-contract">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-upload-signed-service-provision-contract"
+                           id="Shape_ExclusiveGateway_step-upload-signed-service-provision-contract">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-upload-signed-service-provision-contract"
+                           id="Shape_SIGN-step-upload-signed-service-provision-contract">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="requester-username" id="Shape_requester-username">
+            <dc:Bounds height="280.0" width="680.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Prestacao-de-Trabalho-Geral"
+                           id="Shape_Nucleo-de-Prestacao-de-Trabalho-Geral">
+            <dc:Bounds height="120.0" width="680.0" x="90.0" y="340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="400.0" width="710.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-upload-signed-service-provision-contract_to_SUCCESS"
+                          id="Edge_SIGN-step-upload-signed-service-provision-contract_to_SUCCESS">
+            <di:waypoint x="560.0" y="280.0"/>
+            <di:waypoint x="593.0" y="280.0"/>
+            <di:waypoint x="593.0" y="280.0"/>
+            <di:waypoint x="682.5" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-upload-signed-service-provision-contract_to_SIGN-step-upload-signed-service-provision-contract"
+                          id="Edge_ExclusiveGateway_step-upload-signed-service-provision-contract_to_SIGN-step-upload-signed-service-provision-contract">
+            <di:waypoint x="360.0" y="120.0"/>
+            <di:waypoint x="393.0" y="120.0"/>
+            <di:waypoint x="393.0" y="280.0"/>
+            <di:waypoint x="480.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-hr-processing_to_SIGN-step-hr-processing"
+                          id="Edge_step-hr-processing_to_SIGN-step-hr-processing">
+            <di:waypoint x="560.0" y="400.0"/>
+            <di:waypoint x="660.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-hr-processing_to_step-upload-signed-service-provision-contract"
+                          id="Edge_SIGN-step-hr-processing_to_step-upload-signed-service-provision-contract">
+            <di:waypoint x="740.0" y="400.0"/>
+            <di:waypoint x="775.0" y="400.0"/>
+            <di:waypoint x="775.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-upload-signed-service-provision-contract_to_ExclusiveGateway_step-upload-signed-service-provision-contract"
+                          id="Edge_step-upload-signed-service-provision-contract_to_ExclusiveGateway_step-upload-signed-service-provision-contract">
+            <di:waypoint x="200.0" y="120.0"/>
+            <di:waypoint x="233.0" y="120.0"/>
+            <di:waypoint x="233.0" y="120.0"/>
+            <di:waypoint x="320.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-upload-signed-service-provision-contract_to_FAILURE"
+                          id="Edge_REJECT-step-upload-signed-service-provision-contract_to_FAILURE">
+            <di:waypoint x="560.0" y="120.0"/>
+            <di:waypoint x="593.0" y="120.0"/>
+            <di:waypoint x="593.0" y="120.0"/>
+            <di:waypoint x="682.5" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-hr-processing"
+                          id="Edge_START-start-event_to_step-hr-processing">
+            <di:waypoint x="380.0" y="400.0"/>
+            <di:waypoint x="480.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-upload-signed-service-provision-contract_to_REJECT-step-upload-signed-service-provision-contract"
+                          id="Edge_ExclusiveGateway_step-upload-signed-service-provision-contract_to_REJECT-step-upload-signed-service-provision-contract">
+            <di:waypoint x="360.0" y="120.0"/>
+            <di:waypoint x="480.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="177.5" y="400.0"/>
+            <di:waypoint x="300.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

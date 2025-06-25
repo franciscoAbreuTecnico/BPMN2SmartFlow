@@ -1,0 +1,2447 @@
+{
+  "name": {
+    "pt-PT": "Candidatura a Doutoramento",
+    "en-GB": "PHD Application"
+  },
+  "description": {
+    "pt-PT": "Submeter uma candidatura a um doutoramento",
+    "en-GB": "Apply to a PHD"
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "DEGREE"
+      ],
+      "displayName": false,
+      "username": false
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Move Queue",
+        "queue": "Área de Pós-Graduação"
+      }
+    ],
+    "onValidate": [
+      {
+        "requestProcessor": "Create Flow From Request",
+        "template": "phd-application",
+        "setSupervisorFromRequester": false,
+        "setSectionWithRequesterInfo": true,
+        "actionNodesProvider": "PHD Application Flow"
+      }
+    ],
+    "onConclude": [
+    ],
+    "protestQueue": "Serviços Académicos"
+  },
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requireTaxInformation": true,
+      "requirePersonalInformation": true,
+      "requireValidIdDocument": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Sobre a Candidatura",
+          "en-GB": "About the Application"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Sobre o Programa",
+              "en-GB": "About the Program"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "field": "DEGREE",
+                "required": true,
+                "optionsProvider": "paper-pusher-ist/possiblePhdDegreesForApplication",
+                "allowOther": false,
+                "label": {
+                  "pt-PT": "Curso",
+                  "en-GB": "Degree"
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Referências",
+              "en-GB": "References"
+            },
+            "properties": [
+              {
+                "field": "referenceContacts",
+                "label": {
+                  "pt-PT": "Indicação de Pessoas Idóneas",
+                  "en-GB": "Indication of Suitable Persons"
+                },
+                "description": {
+                  "pt-PT": "Devem ser indicadas no máximo 3 pessoas para serem solicitadas cartas de referência.",
+                  "en-GB": "Indicate at most three individuals to whom reference letters will be requested."
+                },
+                "type": "Array",
+                "required": true,
+                "max": 3,
+                "properties": [
+                  {
+                    "field": "referenceName",
+                    "type": "Text",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Nome",
+                      "en-GB": "Name"
+                    }
+                  },
+                  {
+                    "field": "referenceEmail",
+                    "type": "Text",
+                    "inputType": "email",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Endereço de E-mail",
+                      "en-GB": "E-mail Address"
+                    }
+                  },
+                  {
+                    "field": "referenceAffiliation",
+                    "type": "Text",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Título/Instituição",
+                      "en-GB": "Title/Institution"
+                    }
+                  },
+                  {
+                    "field": "referenceLocale",
+                    "type": "Select",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Idioma",
+                      "en-GB": "Language"
+                    },
+                    "description": {
+                      "en-GB": "Language of the e-mail to be sent.",
+                      "pt-PT": "Idioma do e-mail a ser enviado."
+                    },
+                    "options": [
+                      {
+                        "value": "pt-PT",
+                        "label": {
+                          "pt-PT": "Português",
+                          "en-GB": "Portuguese"
+                        }
+                      },
+                      {
+                        "value": "en-GB",
+                        "label": {
+                          "pt-PT": "Inglês",
+                          "en-GB": "English"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Orientadores",
+              "en-GB": "Advisors"
+            },
+            "properties": [
+              {
+                "field": "advisors",
+                "label": {
+                  "pt-PT": "Indicação do(s) Orientador(es)",
+                  "en-GB": "Indication of the Advisor(s)"
+                },
+                "description": {
+                  "pt-PT": "Deve indicar pelo menos 1 Orientador do Técnico e no máximo 3 orientadores/co-orientadores no total.",
+                  "en-GB": "Indicate at least 1 Técnico Advisor and at most 3 advisors/co-advisors."
+                },
+                "type": "Array",
+                "required": true,
+                "min": 1,
+                "max": 3,
+                "properties": [
+                  {
+                    "field": "isIstAdvisor",
+                    "type": "Boolean",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Orientador é do Técnico?",
+                      "en-GB": "Is Advisor from Técnico?"
+                    },
+                    "labelYes": {
+                      "pt-PT": "Sim",
+                      "en-GB": "Yes"
+                    },
+                    "labelNo": {
+                      "pt-PT": "Não",
+                      "en-GB": "No"
+                    }
+                  },
+                  {
+                    "type": "AsyncSelect",
+                    "field": "istAdvisor",
+                    "label": {
+                      "pt-PT": "Nome/TécnicoID",
+                      "en-GB": "Name/TécnicoID"
+                    },
+                    "optionsProvider": "paper-pusher-ist/user",
+                    "allowOther": false,
+                    "collapse": true,
+                    "required": true,
+                    "readonly": false,
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": true,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorName",
+                    "type": "Text",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Nome",
+                      "en-GB": "Name"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorTitle",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Título (ex.Prof)",
+                      "en-GB": "Title (eg.Prof)"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorDegree",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Grau Académico",
+                      "en-GB": "Academic Degree"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorCategory",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Categoria",
+                      "en-GB": "Category"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorAffiliation",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Afiliação",
+                      "en-GB": "Affiliation"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorInstitution",
+                    "type": "Text",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Instituição",
+                      "en-GB": "Institution"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorAddress",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Morada",
+                      "en-GB": "Address"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorEmail",
+                    "type": "Text",
+                    "inputType": "email",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Endereço de E-mail",
+                      "en-GB": "E-mail Address"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalAdvisorTelephone",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Telefone",
+                      "en-GB": "Telephone"
+                    },
+                    "onlyIf": {
+                      "field": "isIstAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Co-Orientadores",
+              "en-GB": "Co-Advisors"
+            },
+            "properties": [
+              {
+                "field": "coAdvisors",
+                "label": {
+                  "pt-PT": "Indicação do(s) Co-Orientador(es)",
+                  "en-GB": "Indication of the Co-Advisor(s)"
+                },
+                "description": {
+                  "pt-PT": "Deve indicar pelo menos 1 Orientador do Técnico e no máximo 3 orientadores/co-orientadores no total.",
+                  "en-GB": "Indicate at least 1 Técnico Advisor and at most 3 advisors/co-advisors."
+                },
+                "type": "Array",
+                "required": false,
+                "max": 3,
+                "properties": [
+                  {
+                    "field": "isIstCoAdvisor",
+                    "type": "Boolean",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Co-Orientador é do Técnico?",
+                      "en-GB": "Is Co-Advisor from Técnico?"
+                    },
+                    "labelYes": {
+                      "pt-PT": "Sim",
+                      "en-GB": "Yes"
+                    },
+                    "labelNo": {
+                      "pt-PT": "Não",
+                      "en-GB": "No"
+                    }
+                  },
+                  {
+                    "type": "AsyncSelect",
+                    "field": "istCoAdvisor",
+                    "label": {
+                      "pt-PT": "Nome/TécnicoID",
+                      "en-GB": "Name/TécnicoID"
+                    },
+                    "optionsProvider": "paper-pusher-ist/user",
+                    "allowOther": false,
+                    "collapse": true,
+                    "required": true,
+                    "readonly": false,
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": true,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorName",
+                    "type": "Text",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Nome",
+                      "en-GB": "Name"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorTitle",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Título (ex.Prof)",
+                      "en-GB": "Title (eg.Prof)"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorDegree",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Grau Académico",
+                      "en-GB": "Academic Degree"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorCategory",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Categoria",
+                      "en-GB": "Category"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorAffiliation",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Afiliação",
+                      "en-GB": "Affiliation"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorInstitution",
+                    "type": "Text",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Instituição",
+                      "en-GB": "Institution"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorAddress",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Morada",
+                      "en-GB": "Address"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorEmail",
+                    "type": "Text",
+                    "inputType": "email",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Endereço de E-mail",
+                      "en-GB": "E-mail Address"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  },
+                  {
+                    "field": "externalCoAdvisorTelephone",
+                    "type": "Text",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Telefone",
+                      "en-GB": "Telephone"
+                    },
+                    "onlyIf": {
+                      "field": "isIstCoAdvisor",
+                      "value": false,
+                      "negation": false
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Educação e Treino",
+          "en-GB": "Education and Training"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Habilitações",
+              "en-GB": "Qualifications"
+            },
+            "description": {
+              "pt-PT": "Informação sobre os cursos concluídos e realizados. Por exemplo, um mestrado e/ou o ensino secundário.",
+              "en-GB": "Information regarding degrees and qualifications obtained or attended. For example, a masters or your high school education."
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "qualifications",
+                "label": {
+                  "pt-PT": "Habilitação",
+                  "en-GB": "Qualification"
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar outra habilitação",
+                  "en-GB": "Add another qualification"
+                },
+                "required": true,
+                "properties": [
+                  {
+                    "type": "AsyncSelect",
+                    "field": "qualificationCountry",
+                    "required": true,
+                    "optionsProvider": "ist-admissions/supported-countries",
+                    "label": {
+                      "pt-PT": "País em que obteve a habilitação",
+                      "en-GB": "Country in which the qualification was granted"
+                    }
+                  },
+                  {
+                    "type": "Select",
+                    "multiple": false,
+                    "field": "qualificationLevel",
+                    "required": true,
+                    "collapse": true,
+                    "label": {
+                      "pt-PT": "Nível de Qualificação",
+                      "en-GB": "Qualification level"
+                    },
+                    "options": [
+                      {
+                        "value": "15",
+                        "label": {
+                          "pt-PT": "Ensino secundário (12.º ano de escolaridade completo) ou equivalente",
+                          "en-GB": "High school (full 12th grade) or equivalent"
+                        }
+                      },
+                      {
+                        "value": "16",
+                        "label": {
+                          "pt-PT": "Ensino médio",
+                          "en-GB": "Middle education"
+                        }
+                      },
+                      {
+                        "value": "17",
+                        "label": {
+                          "pt-PT": "Ensino pós-secundário não superior - curso de especialização tecnológica ou equivalente",
+                          "en-GB": "Non-higher post-High school - technological specialisation course or equivalent"
+                        }
+                      },
+                      {
+                        "value": "31",
+                        "label": {
+                          "pt-PT": "Ensino superior - curso técnico superior profissional ou equivalente",
+                          "en-GB": "Higher education - higher technical course or equivalent"
+                        }
+                      },
+                      {
+                        "value": "18",
+                        "label": {
+                          "pt-PT": "Ensino superior - bacharelato ou equivalente",
+                          "en-GB": "Higher education - BSc or equivalent"
+                        }
+                      },
+                      {
+                        "value": "30",
+                        "label": {
+                          "pt-PT": "Ensino superior - licenciatura 1.º ciclo ou equivalente",
+                          "en-GB": "Higher education - BSc, 1st cycle or equivalent"
+                        }
+                      },
+                      {
+                        "value": "19",
+                        "label": {
+                          "pt-PT": "Ensino superior - licenciatura pré-bolonha ou equivalente",
+                          "en-GB": "Higher education - 5-year degree or equivalent"
+                        }
+                      },
+                      {
+                        "value": "20",
+                        "label": {
+                          "pt-PT": "Ensino superior - mestrado ou equivalente",
+                          "en-GB": "Higher education - MSc or equivalent"
+                        }
+                      },
+                      {
+                        "value": "21",
+                        "label": {
+                          "pt-PT": "Ensino superior - doutoramento ou equivalente",
+                          "en-GB": "Higher education - PhD or equivalent"
+                        }
+                      },
+                      {
+                        "value": "22",
+                        "label": {
+                          "pt-PT": "Não disponível",
+                          "en-GB": "N/A"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "AsyncSelect",
+                    "field": "qualificationInstitution",
+                    "required": true,
+                    "optionsProvider": "ist-admissions/supported-universities",
+                    "allowOther": true,
+                    "optionsLimitedBy": {
+                      "field": "qualificationCountry"
+                    },
+                    "label": {
+                      "pt-PT": "Estabelecimento de ensino",
+                      "en-GB": "Education institution"
+                    },
+                    "onlyIf": [
+                      {
+                        "field": "qualificationCountry",
+                        "value": {
+                          "label": {
+                            "pt-PT": "Portugal",
+                            "en-GB": "Portugal"
+                          },
+                          "value": "PT"
+                        },
+                        "negation": true
+                      },
+                      {
+                        "field": "qualificationLevel",
+                        "value": {
+                          "value": "15",
+                          "label": {
+                            "pt-PT": "Ensino secundário (12.º ano de escolaridade completo) ou equivalente",
+                            "en-GB": "High school (full 12th grade) or equivalent"
+                          }
+                        },
+                        "negation": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "AsyncSelect",
+                    "field": "qualificationInstitution$PTHigher",
+                    "required": true,
+                    "optionsProvider": "ist-admissions/supported-raides-institutions",
+                    "label": {
+                      "pt-PT": "Estabelecimento de ensino",
+                      "en-GB": "Education institution"
+                    },
+                    "onlyIf": [
+                      {
+                        "field": "qualificationCountry",
+                        "value": {
+                          "label": {
+                            "pt-PT": "Portugal",
+                            "en-GB": "Portugal"
+                          },
+                          "value": "PT"
+                        }
+                      },
+                      {
+                        "field": "qualificationLevel",
+                        "value": [
+                          {
+                            "value": "18",
+                            "label": {
+                              "pt-PT": "Ensino superior - bacharelato ou equivalente",
+                              "en-GB": "Higher education - BSc or equivalent"
+                            }
+                          },
+                          {
+                            "value": "19",
+                            "label": {
+                              "pt-PT": "Ensino superior - licenciatura pré-bolonha ou equivalente",
+                              "en-GB": "Higher education - 5-year degree or equivalent"
+                            }
+                          },
+                          {
+                            "value": "30",
+                            "label": {
+                              "pt-PT": "Ensino superior - licenciatura 1.º ciclo ou equivalente",
+                              "en-GB": "Higher education - BSc, 1st cycle or equivalent"
+                            }
+                          },
+                          {
+                            "value": "31",
+                            "label": {
+                              "pt-PT": "Ensino superior - curso técnico superior profissional ou equivalente",
+                              "en-GB": "Higher education - higher technical course or equivalent"
+                            }
+                          },
+                          {
+                            "value": "20",
+                            "label": {
+                              "pt-PT": "Ensino superior - mestrado ou equivalente",
+                              "en-GB": "Higher education - MSc or equivalent"
+                            }
+                          },
+                          {
+                            "value": "21",
+                            "label": {
+                              "pt-PT": "Ensino superior - doutoramento ou equivalente",
+                              "en-GB": "Higher education - PhD or equivalent"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Text",
+                    "field": "qualificationInstitution$PTRest",
+                    "required": true,
+                    "multiline": false,
+                    "label": {
+                      "pt-PT": "Estabelecimento de ensino",
+                      "en-GB": "Education institution"
+                    },
+                    "onlyIf": [
+                      {
+                        "field": "qualificationCountry",
+                        "value": {
+                          "label": {
+                            "pt-PT": "Portugal",
+                            "en-GB": "Portugal"
+                          },
+                          "value": "PT"
+                        }
+                      },
+                      {
+                        "field": "qualificationLevel",
+                        "value": [
+                          {
+                            "value": "16",
+                            "label": {
+                              "pt-PT": "Ensino médio",
+                              "en-GB": "Middle education"
+                            }
+                          },
+                          {
+                            "value": "17",
+                            "label": {
+                              "pt-PT": "Ensino pós-secundário não superior - curso de especialização tecnológica ou equivalente",
+                              "en-GB": "Non-higher post-High school - technological specialisation course or equivalent"
+                            }
+                          },
+                          {
+                            "value": "22",
+                            "label": {
+                              "pt-PT": "Não disponível",
+                              "en-GB": "N/A"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Select",
+                    "field": "highSchoolType",
+                    "required": true,
+                    "collapse": true,
+                    "allowOther": false,
+                    "label": {
+                      "pt-PT": "Tipo de Estabelecimento frequentado no Ensino Secundário",
+                      "en-GB": "Kind of High School"
+                    },
+                    "options": [
+                      {
+                        "value": "PUBLIC_HIGH_SCHOOL",
+                        "label": {
+                          "pt-PT": "Estabelecimento Público de Ensino Secundário",
+                          "en-GB": "Public High School"
+                        }
+                      },
+                      {
+                        "value": "PRIVATE_HIGH_SCHOOL",
+                        "label": {
+                          "pt-PT": "Estabelecimento Privado de Ensino Secundário",
+                          "en-GB": "Private High School"
+                        }
+                      },
+                      {
+                        "value": "PRIVATE_AND_PUBLIC_HIGH_SCHOOL",
+                        "label": {
+                          "pt-PT": "Estabelecimento Público e Privado de Ensino Secundário",
+                          "en-GB": "Public and Private High School"
+                        }
+                      }
+                    ],
+                    "onlyIf": {
+                      "field": "qualificationLevel",
+                      "value": {
+                        "value": "15",
+                        "label": {
+                          "pt-PT": "Ensino secundário (12.º ano de escolaridade completo) ou equivalente",
+                          "en-GB": "High school (full 12th grade) or equivalent"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "Text",
+                    "multiline": false,
+                    "field": "qualificationCourse$Outside",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Curso ou Tema Principal",
+                      "en-GB": "Course or Principal Subject"
+                    },
+                    "description": {
+                      "pt-PT": "Indicação da designação do curso ou do tema principal dos estudos.",
+                      "en-GB": "Name of the attended course or the main subject of the education."
+                    },
+                    "onlyIf": [
+                      {
+                        "field": "qualificationCountry",
+                        "negation": true,
+                        "value": {
+                          "label": {
+                            "pt-PT": "Portugal",
+                            "en-GB": "Portugal"
+                          },
+                          "value": "PT"
+                        }
+                      },
+                      {
+                        "field": "qualificationLevel",
+                        "value": {
+                          "value": "15",
+                          "label": {
+                            "pt-PT": "Ensino secundário (12.º ano de escolaridade completo) ou equivalente",
+                            "en-GB": "High school (full 12th grade) or equivalent"
+                          }
+                        },
+                        "negation": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Text",
+                    "multiline": false,
+                    "field": "qualificationCourse",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Curso ou Tema Principal",
+                      "en-GB": "Course or Principal Subject"
+                    },
+                    "description": {
+                      "pt-PT": "Indicação da designação do curso ou do tema principal dos estudos.",
+                      "en-GB": "Name of the attended course or the main subject of the education."
+                    },
+                    "onlyIf": [
+                      {
+                        "field": "qualificationLevel",
+                        "negation": true,
+                        "value": [
+                          {
+                            "value": "15",
+                            "label": {
+                              "pt-PT": "Ensino secundário (12.º ano de escolaridade completo) ou equivalente",
+                              "en-GB": "High school (full 12th grade) or equivalent"
+                            }
+                          },
+                          {
+                            "value": "18",
+                            "label": {
+                              "pt-PT": "Ensino superior - bacharelato ou equivalente",
+                              "en-GB": "Higher education - BSc or equivalent"
+                            }
+                          },
+                          {
+                            "value": "19",
+                            "label": {
+                              "pt-PT": "Ensino superior - licenciatura pré-bolonha ou equivalente",
+                              "en-GB": "Higher education - 5-year degree or equivalent"
+                            }
+                          },
+                          {
+                            "value": "30",
+                            "label": {
+                              "pt-PT": "Ensino superior - licenciatura 1.º ciclo ou equivalente",
+                              "en-GB": "Higher education - BSc, 1st cycle or equivalent"
+                            }
+                          },
+                          {
+                            "value": "31",
+                            "label": {
+                              "pt-PT": "Ensino superior - curso técnico superior profissional ou equivalente",
+                              "en-GB": "Higher education - higher technical course or equivalent"
+                            }
+                          },
+                          {
+                            "value": "20",
+                            "label": {
+                              "pt-PT": "Ensino superior - mestrado ou equivalente",
+                              "en-GB": "Higher education - MSc or equivalent"
+                            }
+                          },
+                          {
+                            "value": "21",
+                            "label": {
+                              "pt-PT": "Ensino superior - doutoramento ou equivalente",
+                              "en-GB": "Higher education - PhD or equivalent"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "field": "qualificationCountry",
+                        "value": {
+                          "label": {
+                            "pt-PT": "Portugal",
+                            "en-GB": "Portugal"
+                          },
+                          "value": "PT"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "AsyncSelect",
+                    "field": "qualificationCourse$PT",
+                    "optionsProvider": "ist-admissions/supported-degree-designations",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Curso ou Tema Principal",
+                      "en-GB": "Course or Principal Subject"
+                    },
+                    "description": {
+                      "pt-PT": "Indicação da designação do curso ou do tema principal dos estudos.",
+                      "en-GB": "Name of the attended course or the main subject of the education."
+                    },
+                    "optionsLimitedBy": {
+                      "field": "qualificationInstitution$PTHigher"
+                    },
+                    "onlyIf": [
+                      {
+                        "field": "qualificationLevel",
+                        "value": [
+                          {
+                            "value": "18",
+                            "label": {
+                              "pt-PT": "Ensino superior - bacharelato ou equivalente",
+                              "en-GB": "Higher education - BSc or equivalent"
+                            }
+                          },
+                          {
+                            "value": "19",
+                            "label": {
+                              "pt-PT": "Ensino superior - licenciatura pré-bolonha ou equivalente",
+                              "en-GB": "Higher education - 5-year degree or equivalent"
+                            }
+                          },
+                          {
+                            "value": "30",
+                            "label": {
+                              "pt-PT": "Ensino superior - licenciatura 1.º ciclo ou equivalente",
+                              "en-GB": "Higher education - BSc, 1st cycle or equivalent"
+                            }
+                          },
+                          {
+                            "value": "20",
+                            "label": {
+                              "pt-PT": "Ensino superior - mestrado ou equivalente",
+                              "en-GB": "Higher education - MSc or equivalent"
+                            }
+                          },
+                          {
+                            "value": "21",
+                            "label": {
+                              "pt-PT": "Ensino superior - doutoramento ou equivalente",
+                              "en-GB": "Higher education - PhD or equivalent"
+                            }
+                          },
+                          {
+                            "value": "31",
+                            "label": {
+                              "pt-PT": "Ensino superior - curso técnico superior profissional ou equivalente",
+                              "en-GB": "Higher education - higher technical course or equivalent"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "field": "qualificationCountry",
+                        "value": {
+                          "label": {
+                            "pt-PT": "Portugal",
+                            "en-GB": "Portugal"
+                          },
+                          "value": "PT"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "DateTime",
+                    "field": "qualificationStart",
+                    "required": true,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Início",
+                      "en-GB": "Studies Start"
+                    }
+                  },
+                  {
+                    "type": "DateTime",
+                    "field": "qualificationEnd",
+                    "required": false,
+                    "date": true,
+                    "time": false,
+                    "label": {
+                      "pt-PT": "Data de Conclusão",
+                      "en-GB": "Conclusion Date"
+                    },
+                    "description": {
+                      "pt-PT": "Preencher apenas se os estudos foram concluídos e obtido grau/certificado",
+                      "en-GB": "Only fill in if studies were completed and a degree/certificate obtained"
+                    }
+                  },
+                  {
+                    "type": "Text",
+                    "multiline": false,
+                    "field": "qualificationGrade",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Média final do curso/escala",
+                      "en-GB": "Degree final grade/scale"
+                    },
+                    "description": {
+                      "pt-PT": "Exemplo: 15 (0-20); 5 (0-10); B (F até A+)",
+                      "en-GB": "Example: 15 (0-20); 5 (0-10); B (F to A+)"
+                    }
+                  },
+                  {
+                    "field": "PROOF_OR_CERTIFICATE",
+                    "type": "File",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Certificado de Habilitações ou equivalente",
+                      "en-GB": "Proof of Qualifications or equivalent document"
+                    },
+                    "description": {
+                      "pt-PT": "Descriminado com as respetivas classificações e ECTS correspondentes",
+                      "en-GB": "Detailed with grades and respective ECTS"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 25
+                  },
+                  {
+                    "field": "SCALE",
+                    "type": "File",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Documento que especifica a escala de avaliação utilizada",
+                      "en-GB": "Grade scale explanation document"
+                    },
+                    "description": {
+                      "pt-PT": "Obrigatório para alunos internacionais",
+                      "en-GB": "Mandatory for foreign students"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 25
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Outras Atividades e Competências",
+              "en-GB": "Other Activites and Competences"
+            },
+            "description": {
+              "pt-PT": "Informação sobre outras acçõoes de formação e atividades relevantes.",
+              "en-GB": "Information regarding other education and relevante activities."
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "otherEducation",
+                "label": {
+                  "pt-PT": "Outras Atividades Relevantes",
+                  "en-GB": "Other Relevant Activities"
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar outra atividade",
+                  "en-GB": "Add another activity"
+                },
+                "required": false,
+                "properties": [
+                  {
+                    "type": "Text",
+                    "multiline": false,
+                    "field": "otherActivityDescription",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Descrição",
+                      "en-GB": "Description"
+                    },
+                    "description": {
+                      "pt-PT": "Descrição da actividade ou da formação.",
+                      "en-GB": "Description of the activity ou training."
+                    }
+                  },
+                  {
+                    "field": "PROOF_OR_CERTIFICATE_OF_ACTIVITY",
+                    "type": "File",
+                    "required": false,
+                    "label": {
+                      "pt-PT": "Certificado ou prova",
+                      "en-GB": "Proof or certificate"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 25
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Habilidades Pessoais",
+          "en-GB": "Personal Skills"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Línguas",
+              "en-GB": "Languages"
+            },
+            "description": {
+              "pt-PT": "Informação sobre as línguas que domina.",
+              "en-GB": "Information regarding spoken and written languages."
+            },
+            "properties": [
+              {
+                "type": "Text",
+                "multiline": false,
+                "field": "motherLanguage",
+                "required": true,
+                "label": {
+                  "pt-PT": "Língua materna",
+                  "en-GB": "Mother language"
+                },
+                "description": {
+                  "pt-PT": "A língua principal que domina",
+                  "en-GB": "Your native language"
+                }
+              },
+              {
+                "type": "Array",
+                "field": "otherLanguages",
+                "label": {
+                  "pt-PT": "Outra Língua",
+                  "en-GB": "Other Language"
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar outra língua",
+                  "en-GB": "Add another language"
+                },
+                "description": {
+                  "pt-PT": "Liste todas as línguas nas quais tem algum nível de proficiência, descrevendo o seu conhecimento das mesmas de acordo com o Quadro Europeu Comum de Referência para as Línguas.",
+                  "en-GB": "List all the languages in which you are somewhat proficient, describing your skill according to the Common European Framework of Reference for Languages."
+                },
+                "properties": [
+                  {
+                    "type": "Text",
+                    "multiline": false,
+                    "field": "language",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Outra Língua",
+                      "en-GB": "Other Language"
+                    }
+                  },
+                  {
+                    "type": "Composite",
+                    "field": "language_understanding",
+                    "properties": [
+                      {
+                        "type": "Select",
+                        "field": "languageUnderstandingListening",
+                        "collapse": false,
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Compreender - Compreensão Oral",
+                          "en-GB": "Understanding – Listening"
+                        },
+                        "options": [
+                          {
+                            "value": "A1",
+                            "label": {
+                              "pt-PT": "A1 Utilizador Básico",
+                              "en-GB": "A1 Basic User"
+                            }
+                          },
+                          {
+                            "value": "A2",
+                            "label": {
+                              "pt-PT": "A2 Utilizador Básico",
+                              "en-GB": "A2 Basic User"
+                            }
+                          },
+                          {
+                            "value": "B1",
+                            "label": {
+                              "pt-PT": "B1 Utilizador Independente",
+                              "en-GB": "B1 Independent User"
+                            }
+                          },
+                          {
+                            "value": "B2",
+                            "label": {
+                              "pt-PT": "B2 Utilizador Independente",
+                              "en-GB": "B2 Independent User"
+                            }
+                          },
+                          {
+                            "value": "C1",
+                            "label": {
+                              "pt-PT": "C1 Utilizador Avançado",
+                              "en-GB": "C1 Proficient User"
+                            }
+                          },
+                          {
+                            "value": "C2",
+                            "label": {
+                              "pt-PT": "C2 Utilizador Avançado",
+                              "en-GB": "C2 Proficient User"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Select",
+                        "field": "languageUnderstandingReading",
+                        "collapse": false,
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Compreender – Leitura",
+                          "en-GB": "Understanding – Reading"
+                        },
+                        "options": [
+                          {
+                            "value": "A1",
+                            "label": {
+                              "pt-PT": "A1 Utilizador Básico",
+                              "en-GB": "A1 Basic User"
+                            }
+                          },
+                          {
+                            "value": "A2",
+                            "label": {
+                              "pt-PT": "A2 Utilizador Básico",
+                              "en-GB": "A2 Basic User"
+                            }
+                          },
+                          {
+                            "value": "B1",
+                            "label": {
+                              "pt-PT": "B1 Utilizador Independente",
+                              "en-GB": "B1 Independent User"
+                            }
+                          },
+                          {
+                            "value": "B2",
+                            "label": {
+                              "pt-PT": "B2 Utilizador Independente",
+                              "en-GB": "B2 Independent User"
+                            }
+                          },
+                          {
+                            "value": "C1",
+                            "label": {
+                              "pt-PT": "C1 Utilizador Avançado",
+                              "en-GB": "C1 Proficient User"
+                            }
+                          },
+                          {
+                            "value": "C2",
+                            "label": {
+                              "pt-PT": "C2 Utilizador Avançado",
+                              "en-GB": "C2 Proficient User"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Composite",
+                    "field": "language_speaking",
+                    "properties": [
+                      {
+                        "type": "Select",
+                        "field": "languageSpeakingSpokenInteraction",
+                        "collapse": false,
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Falar - Interação Oral",
+                          "en-GB": "Speaking - Spoken Interaction"
+                        },
+                        "options": [
+                          {
+                            "value": "A1",
+                            "label": {
+                              "pt-PT": "A1 Utilizador Básico",
+                              "en-GB": "A1 Basic User"
+                            }
+                          },
+                          {
+                            "value": "A2",
+                            "label": {
+                              "pt-PT": "A2 Utilizador Básico",
+                              "en-GB": "A2 Basic User"
+                            }
+                          },
+                          {
+                            "value": "B1",
+                            "label": {
+                              "pt-PT": "B1 Utilizador Independente",
+                              "en-GB": "B1 Independent User"
+                            }
+                          },
+                          {
+                            "value": "B2",
+                            "label": {
+                              "pt-PT": "B2 Utilizador Independente",
+                              "en-GB": "B2 Independent User"
+                            }
+                          },
+                          {
+                            "value": "C1",
+                            "label": {
+                              "pt-PT": "C1 Utilizador Avançado",
+                              "en-GB": "C1 Proficient User"
+                            }
+                          },
+                          {
+                            "value": "C2",
+                            "label": {
+                              "pt-PT": "C2 Utilizador Avançado",
+                              "en-GB": "C2 Proficient User"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Select",
+                        "field": "languageSpeakingSpokenProduction",
+                        "collapse": false,
+                        "required": true,
+                        "label": {
+                          "pt-PT": "Falar - Produção Oral",
+                          "en-GB": "Speaking - Spoken Production"
+                        },
+                        "options": [
+                          {
+                            "value": "A1",
+                            "label": {
+                              "pt-PT": "A1 Utilizador Básico",
+                              "en-GB": "A1 Basic User"
+                            }
+                          },
+                          {
+                            "value": "A2",
+                            "label": {
+                              "pt-PT": "A2 Utilizador Básico",
+                              "en-GB": "A2 Basic User"
+                            }
+                          },
+                          {
+                            "value": "B1",
+                            "label": {
+                              "pt-PT": "B1 Utilizador Independente",
+                              "en-GB": "B1 Independent User"
+                            }
+                          },
+                          {
+                            "value": "B2",
+                            "label": {
+                              "pt-PT": "B2 Utilizador Independente",
+                              "en-GB": "B2 Independent User"
+                            }
+                          },
+                          {
+                            "value": "C1",
+                            "label": {
+                              "pt-PT": "C1 Utilizador Avançado",
+                              "en-GB": "C1 Proficient User"
+                            }
+                          },
+                          {
+                            "value": "C2",
+                            "label": {
+                              "pt-PT": "C2 Utilizador Avançado",
+                              "en-GB": "C2 Proficient User"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Select",
+                    "field": "languageWriting",
+                    "collapse": false,
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Escrita",
+                      "en-GB": "Writing"
+                    },
+                    "options": [
+                      {
+                        "value": "A1",
+                        "label": {
+                          "pt-PT": "A1 Utilizador Básico",
+                          "en-GB": "A1 Basic User"
+                        }
+                      },
+                      {
+                        "value": "A2",
+                        "label": {
+                          "pt-PT": "A2 Utilizador Básico",
+                          "en-GB": "A2 Basic User"
+                        }
+                      },
+                      {
+                        "value": "B1",
+                        "label": {
+                          "pt-PT": "B1 Utilizador Independente",
+                          "en-GB": "B1 Independent User"
+                        }
+                      },
+                      {
+                        "value": "B2",
+                        "label": {
+                          "pt-PT": "B2 Utilizador Independente",
+                          "en-GB": "B2 Independent User"
+                        }
+                      },
+                      {
+                        "value": "C1",
+                        "label": {
+                          "pt-PT": "C1 Utilizador Avançado",
+                          "en-GB": "C1 Proficient User"
+                        }
+                      },
+                      {
+                        "value": "C2",
+                        "label": {
+                          "pt-PT": "C2 Utilizador Avançado",
+                          "en-GB": "C2 Proficient User"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Outra Informação",
+          "en-GB": "Other Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Deficiências",
+              "en-GB": "Disabilities"
+            },
+            "description": {
+              "pt-PT": "Informação relativa a deficiências, incapacidades e/ou limitações.",
+              "en-GB": "Information regarding disabilities or limitations."
+            },
+            "properties": [
+              {
+                "type": "Boolean",
+                "field": "disabilities",
+                "required": true,
+                "sensitive": true,
+                "label": {
+                  "pt-PT": "Portador de deficiências?",
+                  "en-GB": "Do you have any disabilities?"
+                },
+                "labelYes": {
+                  "pt-PT": "Sim, sou portador de deficiências",
+                  "en-GB": "Yes, I am disabled"
+                },
+                "labelNo": {
+                  "pt-PT": "Não sou portador de deficiências",
+                  "en-GB": "No, I do not have any disabilities"
+                }
+              },
+              {
+                "type": "Text",
+                "multiline": true,
+                "field": "disabilitiesDescription",
+                "required": false,
+                "sensitive": true,
+                "label": {
+                  "pt-PT": "Detalhes",
+                  "en-GB": "Details"
+                },
+                "description": {
+                  "pt-PT": "Se respondeu 'Sim' na pergunta anterior detalhe por favor.",
+                  "en-GB": "If you answered 'Yes' to the previous question please detail."
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Informação Adicional",
+              "en-GB": "Additional Information"
+            },
+            "description": {
+              "pt-PT": "Outra informação relevante.",
+              "en-GB": "Other pertinent information."
+            },
+            "properties": [
+              {
+                "type": "Text",
+                "multiline": true,
+                "field": "additionalInformation",
+                "required": false,
+                "label": {
+                  "pt-PT": "Informação Adicional",
+                  "en-GB": "Additional Information"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": {
+          "pt-PT": "Documentos",
+          "en-GB": "Documents"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Documentos a submeter",
+              "en-GB": "Documents to submit"
+            },
+            "description": {
+              "pt-PT": "Documentos necessários para prosseguir com a candidatura. O tamanho máximo dos ficheiros é de 25MB.",
+              "en-GB": "Necessary documents to proceed with the application. The maximum file size is 25MB."
+            },
+            "properties": [
+              {
+                "field": "CURRICULUM",
+                "type": "File",
+                "required": true,
+                "label": {
+                  "pt-PT": "Curriculum Vitae",
+                  "en-GB": "Curriculum Vitae"
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ],
+                "maxSizeMB": 25
+              },
+              {
+                "field": "STUDY_PLAN",
+                "type": "File",
+                "required": false,
+                "label": {
+                  "pt-PT": "Plano de Investigação",
+                  "en-GB": "Study plan"
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ],
+                "maxSizeMB": 25
+              },
+              {
+                "field": "MOTIVATION_LETTER",
+                "type": "File",
+                "required": false,
+                "label": {
+                  "pt-PT": "Carta de Motivação",
+                  "en-GB": "Motivation Letter"
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ],
+                "maxSizeMB": 25
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resultado da Candidatura",
+          "en-GB": "Application Result"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Informação sobre a Colocação",
+              "en-GB": "Placement Information"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "required": true,
+                "field": "decision",
+                "label": {
+                  "pt-PT": "Resultado da Colocação",
+                  "en-GB": "Placement Result"
+                },
+                "multiple": false,
+                "collapse": false,
+                "allowOther": false,
+                "options": [
+                  {
+                    "value": "accepted",
+                    "label": {
+                      "pt-PT": "Admitido(a)",
+                      "en-GB": "Accepted"
+                    }
+                  },
+                  {
+                    "value": "not accepted",
+                    "label": {
+                      "pt-PT": "Não Aceite",
+                      "en-GB": "Declined"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {
+    "description": {
+      "pt-PT": "Emolumento de Candidatura",
+      "en-GB": "Application Fee"
+    },
+    "value": 100.00,
+    "accountId": "287762860391",
+    "productCode": "0031",
+    "productDescription": "TAXAS DE MATRICULA",
+    "onLock": {
+      "costProcessor": "Add Request Keywords to Cost Description"
+    }
+  },
+  "views": [
+    {
+      "id": "Default",
+      "columns": [
+        {
+          "title": { "pt-PT": "Submetido", "en-GB": "Submitted" },
+          "type": "Request Info",
+          "info": "lockInstant"
+        },
+        {
+          "title": { "pt-PT": "Aluno", "en-GB": "Student" },
+          "type": "Request Info",
+          "info": "requester"
+        },
+        {
+          "title": { "pt-PT": "Estado do Pedido", "en-GB": "Request State" },
+          "type": "Request State"
+        },
+        {
+          "title": { "pt-PT": "Revisão", "en-GB": "Revision" },
+          "type": "Request Info",
+          "info": "revisionDeadline"
+        },
+        {
+          "title": { "pt-PT": "Pagamento", "en-GB": "Payment" },
+          "type": "Payment State"
+        },
+        {
+          "title": { "pt-PT": "Estado do Processo", "en-GB": "Process State" },
+          "type": "Flow State From Request"
+        },
+        {
+          "title": { "pt-PT": "Curso", "en-GB": "Degree" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "DEGREE"
+        }
+      ]
+    }
+  ],
+  "flowTemplate": {
+    "name": "phd-application",
+    "title": {
+      "pt-PT": "Processo de Candidatura a Doutoramento",
+      "en-GB": "PHD Application Process"
+    },
+    "description": {
+      "pt-PT": "Processo de Candidatura a Doutoramento",
+      "en-GB": "PHD Application Process"
+    },
+    "config": {
+      "actionProcessor": {
+        "onCreate": [],
+        "onSuccess": [
+          {
+            "flowProcessor": "Create Phd Application"
+          },
+          {
+            "flowProcessor": "Return Flow Approved To Request"
+          }
+        ],
+        "onFailure": [
+          {
+            "flowProcessor": "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition": [
+        ],
+        "onCancel": [
+          {
+            "flowProcessor": "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors": [
+        {
+          "handle": "manage-reference-letter-requests",
+          "flowProcessor": "Manage Reference Letters"
+        },
+        {
+          "handle": "send-all-reference-letter-requests",
+          "flowProcessor": "Send All Reference Letter Requests"
+        }
+      ],
+      "forms": [
+        {
+          "id": "protest-form",
+          "title": {
+            "pt-PT": "Reclamação da Decisão",
+            "en-GB": "Protest the Decision"
+          },
+          "form": {
+            "pages": [
+              {
+                "title": {
+                  "pt-PT": "Reclamação da Decisão",
+                  "en-GB": "Protest the Decision"
+                },
+                "sections": [
+                  {
+                    "title": {
+                      "pt-PT": "Reclamação da Decisão",
+                      "en-GB": "Protest the Decision"
+                    },
+                    "properties": [
+                      {
+                        "type": "Array",
+                        "field": "PROTESTS",
+                        "label": {
+                          "pt-PT": "Reclamações",
+                          "en-GB": "Protests"
+                        },
+                        "labelAddElement": {
+                          "pt-PT": "Adicionar reclamação",
+                          "en-GB": "Add protest"
+                        },
+                        "required": false,
+                        "properties": [
+                          {
+                            "type": "AsyncSelect",
+                            "field": "PROTEST_REQUEST",
+                            "required": true,
+                            "readonly": true,
+                            "optionsProvider": "paper-pusher-ist/requests/allowedToProtest",
+                            "allowOther": false,
+                            "label": {
+                              "pt-PT": "Pedido",
+                              "en-GB": "Request"
+                            }
+                          },
+                          {
+                            "type": "Text",
+                            "field": "PROTEST",
+                            "required": true,
+                            "readonly": true,
+                            "label": {
+                              "pt-PT": "Fundamentação",
+                              "en-GB": "Substantiation"
+                            },
+                            "multiline": true,
+                            "inputType": "plain"
+                          },
+                          {
+                            "type": "File",
+                            "field": "ATTACHMENT",
+                            "required": false,
+                            "readonly": true,
+                            "label": {
+                              "pt-PT": "Elementos probatórios",
+                              "en-GB": "Evidence"
+                            },
+                            "allowedFileTypes": [
+                              ".pdf"
+                            ],
+                            "maxSizeMB": 10
+                          },
+                          {
+                            "type": "Text",
+                            "field": "RESPONSE",
+                            "required": true,
+                            "label": {
+                              "pt-PT": "Resposta",
+                              "en-GB": "Response"
+                            },
+                            "multiline": true,
+                            "inputType": "plain"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "actionNodes": [
+        {
+          "id": "step-1-a-request-letters-of-recommendation",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "Solicitar Cartas de Recomendação",
+            "en-GB": "Request Reference Letters"
+          },
+          "description": {
+            "pt-PT": "Solicitar Cartas de Recomendação",
+            "en-GB": "Request Reference Letters"
+          },
+          "actions": {
+            "REQUEST_LETTERS": {
+              "primary": true,
+              "to": "step-1-b-wait-for-letters-of-recommendation",
+              "label": {
+                "pt-PT": "Requerer Cartas de Recomendação",
+                "en-GB": "Request Reference Letters"
+              }
+            }
+          },
+          "queue": "Área de Pós-Graduação - Geral",
+          "actionProcessor": {
+            "onEnterNode": [
+              {
+                "flowProcessor": "Init Recommendation Letters For PHD Application"
+              },
+              {
+                "flowProcessor": "Send All Reference Letter Requests"
+              },
+              {
+                "flowProcessor": "Do Flow Action",
+                "flowAction": "REQUEST_LETTERS"
+              }
+            ]
+          }
+        },
+        {
+          "id": "step-1-b-wait-for-letters-of-recommendation",
+          "type": "withButtons",
+          "comment": false,
+          "title": {
+            "pt-PT": "Aguardar Receção de Cartas",
+            "en-GB": "Await Reception of Letters"
+          },
+          "description": {
+            "pt-PT": "Aguardar Receção de Cartas",
+            "en-GB": "Await Reception of Letters"
+          },
+          "buttons": [
+            {
+              "primary": true,
+              "label": {
+                "pt-PT": "Gerir Pedidos",
+                "en-GB": "Manage Requests"
+              },
+              "handler": "process:manage-reference-letter-requests"
+            },
+            {
+              "primary": false,
+              "label": {
+                "pt-PT": "Terminar Receção de Cartas",
+                "en-GB": "Conclude Reception of Letters"
+              },
+              "handler": "action:CONCLUDE"
+            }
+          ],
+          "actions": {
+            "CONCLUDE": {
+              "primary": false,
+              "to": "step-check-qualifications",
+              "label": {
+                "pt-PT": "Terminar Receção de Cartas",
+                "en-GB": "Conclude Reception of Letters"
+              }
+            },
+            "ALL_RECEIVED": {
+              "primary": true,
+              "to": "step-1-c-letters-of-recommendation-received",
+              "label": {
+                "pt-PT": "Cartas Recebidas",
+                "en-GB": "Letters Received"
+              }
+            }
+          },
+          "queue": "Área de Pós-Graduação - Geral",
+          "actionProcessor": {
+            "onEnterNode": [
+              {
+                "flowProcessor": "Do Flow Action After Time Passes",
+                "flowAction": "CONCLUDE",
+                "user": "fenix",
+                "when": {
+                  "plusWorkingDays": "6"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "step-1-c-letters-of-recommendation-received",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "Cartas Recebidas",
+            "en-GB": "Letters Received"
+          },
+          "description": {
+            "pt-PT": "Cartas Recebidas",
+            "en-GB": "Letters Received"
+          },
+          "actions": {
+            "REVERT": {
+              "primary": false,
+              "to": "step-1-b-wait-for-letters-of-recommendation",
+              "label": {
+                "pt-PT": "Reverter para Gerir Pedidos de Cartas",
+                "en-GB": "Revert to Manage Letter Requests"
+              }
+            },
+            "CONCLUDE": {
+              "primary": true,
+              "to": "step-check-qualifications",
+              "label": {
+                "pt-PT": "Terminar Receção de Cartas",
+                "en-GB": "Conclude Reception of Letters"
+              }
+            }
+          },
+          "queue": "Área de Pós-Graduação - Geral"
+        },
+        {
+          "id": "step-check-qualifications",
+          "type": "generic",
+          "comment": true,
+          "title": {
+            "pt-PT": "Verificar Qualificações",
+            "en-GB": "Check Qualifications"
+          },
+          "description": {
+            "pt-PT": "Verificar Qualificações",
+            "en-GB": "Check Qualifications"
+          },
+          "commentLabel": {
+            "pt-PT": "Comentário / Observações",
+            "en-GB": "Observations"
+          },
+          "actions": {
+            "CONFIRM": {
+              "primary": true,
+              "to": "step-advisor-accept-0",
+              "label": {
+                "pt-PT": "Confirmar Elegibilidade",
+                "en-GB": "Confirm Eligibility"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "step-protest",
+              "label": {
+                "pt-PT": "Não Colocar Candidato",
+                "en-GB": "Do Not Place Applicant"
+              }
+            },
+            "REQUEST_REVISION": {
+              "primary": false,
+              "to": "step-review-application",
+              "label": {
+                "pt-PT": "Solicitar Informação Adicional",
+                "en-GB": "Request Additional Information"
+              }
+            }
+          },
+          "actionProcessor": {
+            "onEnterNode": [
+              {
+                "flowProcessor": "Check Qualifications for PHD Application",
+                "flowAction": "CONFIRM",
+                "data": "Verificado automáticamente pelas habilitações declaradas na candidatura. Auto-verified by the declared qualifications."
+              }
+            ],
+            "onActionTransition": [
+              {
+                "applyOn": "REJECT",
+                "flowProcessor": "Set Request Outcome Form",
+                "outcomeFormValues": {
+                  "decision": {
+                    "value": "not accepted",
+                    "label": {
+                      "pt-PT": "Não Aceite",
+                      "en-GB": "Declined"
+                    }
+                  }
+                },
+                "conclude": true
+              }
+            ]
+          },
+          "queue": "Conselho Científico - Formação Avançada e a Investigação"
+        },
+        {
+          "id": "step-advisor-accept-0",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "Aceitar Posição de Orientação",
+            "en-GB": "Accept Advisor Position"
+          },
+          "description": {
+            "pt-PT": "Aceitar Posição de Orientação",
+            "en-GB": "Accept Advisor Position"
+          },
+          "actions": {
+            "ACCEPT": {
+              "primary": true,
+              "to": "step-degree-coordinator-evaluation",
+              "label": {
+                "pt-PT": "Aceitar Posição de Orientação",
+                "en-GB": "Accept Advisor Position"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "FAILURE",
+              "label": {
+                "pt-PT": "Não Aceitar",
+                "en-GB": "Do Not Accept"
+              }
+            }
+          },
+          "queue": "{{advisor-queue}}"
+        },
+        {
+          "id": "step-degree-coordinator-evaluation",
+          "type": "generic",
+          "comment": true,
+          "title": {
+            "pt-PT": "Apreciação da candidatura",
+            "en-GB": "Assessment of the application"
+          },
+          "description": {
+            "pt-PT": "Avalia o mérito e elegibilidade da candidatura",
+            "en-GB": "Evaluate the merit and pertinency of the application"
+          },
+          "commentLabel": {
+            "pt-PT": "Parecer do(a) coordenador(a)",
+            "en-GB": "Advisory opinion by the coordinator"
+          },
+          "actions": {
+            "CONFIRM": {
+              "primary": true,
+              "to": "step-officialize",
+              "label": {
+                "pt-PT": "Colocar Candidato",
+                "en-GB": "Place Applicant"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "step-protest",
+              "label": {
+                "pt-PT": "Não Colocar Candidato",
+                "en-GB": "Do Not Place Applicant"
+              }
+            },
+            "REQUEST_REVISION": {
+              "primary": false,
+              "to": "step-review-application",
+              "label": {
+                "pt-PT": "Solicitar Informação Adicional",
+                "en-GB": "Request Additional Information"
+              }
+            }
+          },
+          "actionProcessor": {
+            "onActionTransition": [
+              {
+                "applyOn": "CONFIRM",
+                "flowProcessor": "Set Request Outcome Form",
+                "outcomeFormValues": {
+                  "decision": {
+                    "value": "accepted",
+                    "label": {
+                      "pt-PT": "Admitido(a)",
+                      "en-GB": "Accepted"
+                    }
+                  }
+                },
+                "conclude": true
+              },
+              {
+                "applyOn": "REJECT",
+                "flowProcessor": "Set Request Outcome Form",
+                "outcomeFormValues": {
+                  "decision": {
+                    "value": "not accepted",
+                    "label": {
+                      "pt-PT": "Não Aceite",
+                      "en-GB": "Declined"
+                    }
+                  }
+                },
+                "conclude": true
+              }
+            ]
+          },
+          "queue": "{{degree-coordinator}}"
+        },
+        {
+          "id": "step-review-application",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "Aguardar Revisão da Candidatura",
+            "en-GB": "Awaiting Application Review"
+          },
+          "description": {
+            "pt-PT": "Aguardar Revisão da Candidatura",
+            "en-GB": "Awaiting Application Review"
+          },
+          "actions": {
+            "CHANGES_SUBMITTED": {
+              "primary": true,
+              "to": "step-degree-coordinator-evaluation",
+              "label": {
+                "pt-PT": "Alterações Submetidas",
+                "en-GB": "Changes Submitted"
+              }
+            },
+            "FINISH_WAITING": {
+              "primary": false,
+              "to": "step-degree-coordinator-evaluation",
+              "label": {
+                "pt-PT": "Nenhuma Informação Adicional Prestada",
+                "en-GB": "No Additional Information was Provided"
+              }
+            }
+          },
+          "queue": "Sistema FenixEdu",
+          "actionProcessor": {
+            "onEnterNode": [
+              {
+                "flowProcessor": "Send Request for Revision",
+                "when": {
+                  "plusWorkingDays": "5"
+                }
+              },
+              {
+                "flowProcessor": "Do Flow Action After Time Passes",
+                "flowAction": "FINISH_WAITING",
+                "user": "fenix",
+                "when": {
+                  "plusWorkingDays": "5"
+                }
+              }
+            ],
+            "onActionTransition": [
+              {
+                "flowProcessor": "Copy Request Form",
+                "setSectionWithRequesterInfo": true
+              },
+              {
+                "flowProcessor": "Terminate Revision Period",
+                "setSectionWithRequesterInfo": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "step-protest",
+          "type": "withForms",
+          "comment": false,
+          "title": {
+            "pt-PT": "Reclamação da Decisão",
+            "en-GB": "Protest the Decision"
+          },
+          "description": {
+            "pt-PT": "Requerer impugnação administrativa",
+            "en-GB": "Request administrative challenge"
+          },
+          "buttons": [
+            {
+              "id": "protest-decision",
+              "primary": true,
+              "label": {
+                "pt-PT": "Reclamação da Decisão",
+                "en-GB": "Protest the Decision"
+              },
+              "handlers": {
+                "form": "protest-form",
+                "action": "PROTEST"
+              }
+            }
+          ],
+          "actions": {
+            "PROTEST": {
+              "primary": true,
+              "to": "step-degree-coordinator-evaluation-protest",
+              "label": {
+                "pt-PT": "Reclamação da Decisão",
+                "en-GB": "Protest the Decision"
+              }
+            },
+            "FINISH_WAITING": {
+              "primary": false,
+              "to": "step-officialize",
+              "label": {
+                "pt-PT": "Aceitar Decisão por Ausência de Reclamação",
+                "en-GB": "Accept Decision by Absence of Protest"
+              }
+            }
+          },
+          "queue": "Sistema FenixEdu",
+          "actionProcessor": {
+            "onEnterNode": [
+              {
+                "flowProcessor": "Open Protest Period"
+              },
+              {
+                "flowProcessor": "Send e-mail",
+                "template": "email-notification-application-not-accepted",
+                "notifyFlowMembers": false,
+                "registered": true,
+                "sender": "1696378937945232",
+                "parameters": {
+                }
+              },
+              {
+                "flowProcessor": "Do Flow Action After Time Passes",
+                "flowAction": "FINISH_WAITING",
+                "user": "fenix",
+                "when": {
+                  "plusWorkingDays": "10"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "step-degree-coordinator-evaluation-protest",
+          "type": "generic",
+          "comment": true,
+          "title": {
+            "pt-PT": "Re-apreciação da candidatura",
+            "en-GB": "Re-assessment of the application"
+          },
+          "description": {
+            "pt-PT": "Avalia o mérito e elegibilidade da candidatura",
+            "en-GB": "Evaluate the merit and pertinency of the application"
+          },
+          "commentLabel": {
+            "pt-PT": "Parecer do(a) coordenador(a)",
+            "en-GB": "Advisory opinion by the coordinator"
+          },
+          "actions": {
+            "CONFIRM": {
+              "primary": true,
+              "to": "step-officialize",
+              "label": {
+                "pt-PT": "Colocar Candidato",
+                "en-GB": "Place Applicant"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "step-officialize",
+              "label": {
+                "pt-PT": "Não Colocar Candidato",
+                "en-GB": "Do Not Place Applicant"
+              }
+            }
+          },
+          "actionProcessor": {
+            "onEnterNode": [
+              {
+                "flowProcessor": "Revert Request Conclusion"
+              }
+            ],
+            "onActionTransition": [
+              {
+                "applyOn": "CONFIRM",
+                "flowProcessor": "Set Request Outcome Form",
+                "outcomeFormValues": {
+                  "decision": {
+                    "value": "accepted",
+                    "label": {
+                      "pt-PT": "Admitido(a)",
+                      "en-GB": "Accepted"
+                    }
+                  }
+                },
+                "conclude": true
+              },
+              {
+                "applyOn": "REJECT",
+                "flowProcessor": "Set Request Outcome Form",
+                "outcomeFormValues": {
+                  "decision": {
+                    "value": "not accepted",
+                    "label": {
+                      "pt-PT": "Não Aceite",
+                      "en-GB": "Declined"
+                    }
+                  }
+                },
+                "conclude": true
+              },
+              {
+                "flowProcessor": "Set Response In Protest Form",
+                "queue": "Área de Pós-Graduação",
+                "conclude": true
+              }
+            ]
+          },
+          "queue": "{{degree-coordinator}}"
+        },
+        {
+          "id": "step-officialize",
+          "type": "generic",
+          "comment": false,
+          "title": {
+            "pt-PT": "Homologação",
+            "en-GB": "Officialization"
+          },
+          "description": {
+            "pt-PT": "Homologação do resultado da candidatura",
+            "en-GB": "Officialize application results"
+          },
+          "actions": {
+            "CONFIRM": {
+              "primary": true,
+              "to": "SUCCESS",
+              "label": {
+                "pt-PT": "Homologar",
+                "en-GB": "Officialize"
+              }
+            },
+            "REJECT": {
+              "primary": false,
+              "to": "step-degree-coordinator-evaluation",
+              "label": {
+                "pt-PT": "Devolver ao Coordenador",
+                "en-GB": "Return to Coordinator"
+              }
+            }
+          },
+          "queue": "Conselho Científico - Formação Avançada e a Investigação"
+        }
+      ]
+    }
+  }
+}

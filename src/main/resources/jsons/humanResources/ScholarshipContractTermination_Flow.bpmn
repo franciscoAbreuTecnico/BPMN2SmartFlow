@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_11642cb9-fa3d-4ee7-9349-8ae63b902753"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros"
+               name="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-hr-processing</flowNodeRef>
+            <flowNodeRef>PROCESS-step-hr-processing</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-hr-processing" name="The Human Resources Department">
+         <incoming>START-start-event_to_step-hr-processing</incoming>
+         <outgoing>step-hr-processing_to_PROCESS-step-hr-processing</outgoing>
+      </userTask>
+      <serviceTask id="PROCESS-step-hr-processing" name="PROCESS">
+         <incoming>step-hr-processing_to_PROCESS-step-hr-processing</incoming>
+         <outgoing>PROCESS-step-hr-processing_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="START">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-hr-processing</outgoing>
+      </serviceTask>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>PROCESS-step-hr-processing_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="PROCESS-step-hr-processing_to_SUCCESS"
+                    name=""
+                    sourceRef="PROCESS-step-hr-processing"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="step-hr-processing_to_PROCESS-step-hr-processing"
+                    name=""
+                    sourceRef="step-hr-processing"
+                    targetRef="PROCESS-step-hr-processing"/>
+      <sequenceFlow id="START-start-event_to_step-hr-processing"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-hr-processing"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="scholarship-contract-termination-flow"
+                  name="scholarship-contract-termination-flow">
+      <documentation id="documentation_b07df211-6e9d-47cd-9642-d73a49776371">{name=scholarship-contract-termination-flow, title={pt-PT=Processo de Pedido de Rescisão de Contrato de Bolsa, en-GB=Scholarship Contract Termination Request Process}, description={pt-PT=Processo de Pedido de Rescisão de Contrato de Bolsa, en-GB=Scholarship Contract Termination Request Process}, config={authorizationChainNodes={description={pt-PT=Tomada de conhecimento, en-GB=Acknowledgment}, commentLabel={pt-PT=Tomada de conhecimento, en-GB=Acknowledgment}, actions={ACKNOWLEDGE={primary=true, to=SUCCESS, label={pt-PT=Tomei conhecimento do processo, en-GB=I confirm that I am aware of this process}}}}, actionProcessor={onSuccess=[{flowProcessor=Return Flow Approved To Request}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[], actionNodes=[{id=step-hr-processing, type=generic, comment=false, title={pt-PT=A Direção de Recursos Humanos, en-GB=The Human Resources Department}, description={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, commentLabel={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Marcar como Processado, en-GB=Mark as Processed}, id=PROCESS-step-hr-processing, name=PROCESS}], queue=Nucleo-de-Tecnicos-Administrativos-e-Bolseiros}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="scholarship-contract-termination-flow" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="PROCESS-step-hr-processing"
+                           id="Shape_PROCESS-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="615.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="795.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="255.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-hr-processing" id="Shape_step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="435.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros"
+                           id="Shape_Nucleo-de-Tecnicos-Administrativos-e-Bolseiros">
+            <dc:Bounds height="120.0" width="770.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="120.0" width="800.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="PROCESS-step-hr-processing_to_SUCCESS"
+                          id="Edge_PROCESS-step-hr-processing_to_SUCCESS">
+            <di:waypoint x="695.0" y="120.0"/>
+            <di:waypoint x="728.0" y="120.0"/>
+            <di:waypoint x="728.0" y="120.0"/>
+            <di:waypoint x="795.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-hr-processing_to_PROCESS-step-hr-processing"
+                          id="Edge_step-hr-processing_to_PROCESS-step-hr-processing">
+            <di:waypoint x="515.0" y="120.0"/>
+            <di:waypoint x="615.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-hr-processing"
+                          id="Edge_START-start-event_to_step-hr-processing">
+            <di:waypoint x="335.0" y="120.0"/>
+            <di:waypoint x="435.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="155.0" y="120.0"/>
+            <di:waypoint x="255.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

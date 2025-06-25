@@ -1,0 +1,119 @@
+{
+  "name": {
+    "pt-PT": "Completar Informação Curricular",
+    "en-GB": "Complete Curricular Information"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe completar a informação associada a um currículo.",
+    "en-GB": "This form allows you to complete the information associated to a curriculum."
+  },
+  "context": {
+    "onValidate": {
+      "requestProcessor": "Link Attachments to Curricular Units",
+      "concludeRequest": true
+    },
+    "onConclude": [
+      {
+        "requestProcessor": "Call Flow Action",
+        "flowAction": "COMPLETE_INFORMATION"
+      }
+    ],
+    "onDelete": [
+      {
+        "requestProcessor": "Remove From Connected Flow"
+      }
+    ]
+  },
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requireUser": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Completar Informação Curricular",
+          "en-GB": "Complete Curricular Information"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Curso com Informação a Completar",
+              "en-GB": "Degree with Information to Complete"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": true,
+                "required": true,
+                "allowOther": false,
+                "field": "REGISTRATION",
+                "label": {
+                  "pt-PT": "Matrícula",
+                  "en-GB": "Registration"
+                },
+                "optionsProvider": "/paper-pusher-ist/registrations"
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Unidades Curriculares",
+              "en-GB": "Curricular Units"
+            },
+            "properties": [
+              {
+                "type": "Array",
+                "field": "CURRICULAR_UNITS_INFO",
+                "label": {
+                  "pt-PT": "Informação das Unidades Curriculares",
+                  "en-GB": "Curricular Units Information"
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar unidade curricular",
+                  "en-GB": "Add curricular unit"
+                },
+                "required": true,
+                "readonly": false,
+                "properties": [
+                  {
+                    "type": "AsyncSelect",
+                    "readonly": true,
+                    "required": true,
+                    "allowOther": false,
+                    "field": "CURRICULAR_UNIT",
+                    "label": {
+                      "pt-PT": "Unidade Curricular",
+                      "en-GB": "Curricular Unit"
+                    },
+                    "optionsProvider": "/paper-pusher-ist/enrolments",
+                    "optionsLimitedBy": {
+                      "field": "REGISTRATION"
+                    }
+                  },
+                  {
+                    "type": "File",
+                    "readonly": false,
+                    "required": true,
+                    "allowOther": false,
+                    "field": "CURRICULAR_UNIT_INFO",
+                    "label": {
+                      "pt-PT": "Informação da Unidade Curricular",
+                      "en-GB": "Curricular Unit Information"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf"
+                    ],
+                    "maxSizeMB": 50
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {},
+  "cost": {}
+}

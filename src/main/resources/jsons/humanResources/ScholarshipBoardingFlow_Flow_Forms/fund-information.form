@@ -1,0 +1,34 @@
+{
+  "id" : "Form_fund-information",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Reservations_and_Fund_Allocation",
+    "key" : "page_Reservations_and_Fund_Allocation",
+    "label" : "Reservations_and_Fund_Allocation",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Details",
+      "key" : "section_Details",
+      "label" : "Details",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "text",
+        "id" : "Field_commitmentNumbers",
+        "key" : "commitmentNumbers",
+        "label" : "Commitment Number(s)",
+        "text" : "Commitment Number(s)",
+        "required" : false,
+        "readOnly" : false
+      } ]
+    } ]
+  } ]
+}

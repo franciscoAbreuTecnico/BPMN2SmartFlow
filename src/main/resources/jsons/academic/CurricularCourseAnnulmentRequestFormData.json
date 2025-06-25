@@ -1,0 +1,84 @@
+{
+    "name": {
+        "pt-PT": "Anulação de Inscrição a Unidade Curricular",
+        "en-GB": "Curricular Course Annulment"
+    },
+    "description": {
+        "pt-PT": "Este formulário permite-lhe solicitar a anulação de uma unidade curricular.",
+        "en-GB": "This form allows you to request annulment of a curricular course."
+    },
+    "context": {},
+    "inputForm": {
+        "checks": {
+            "requireIdentity": true,
+            "requirePersonalInformation": true,
+            "requireUser": true
+        },
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Anulação de Unidade Curricular",
+                    "en-GB": "Curricular Course Annulment"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Unidade Curricular",
+                            "en-GB": "Curricular Course"
+                        },
+                        "properties": [
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "REGISTRATION",
+                                "label": {
+                                    "pt-PT": "Curso",
+                                    "en-GB": "Degree"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/registrations"
+                            },
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "CURRICULAR_COURSE",
+                                "label": {
+                                    "pt-PT": "Unidade Curricular",
+                                    "en-GB": "Curricular Course"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/enrolments",
+                                "optionsLimitedBy": {
+                                    "field": "REGISTRATION"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Justificação",
+                            "en-GB": "Justification"
+                        },
+                        "properties": [
+                            {
+                                "type": "Text",
+                                "required": true,
+                                "maxLength": 250,
+                                "field": "JUSTIFICATION",
+                                "label": {
+                                    "pt-PT": "Justificação",
+                                    "en-GB": "Justification"
+                                },
+                                "multiline": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "outcomeForm": {},
+    "cost": {}
+}

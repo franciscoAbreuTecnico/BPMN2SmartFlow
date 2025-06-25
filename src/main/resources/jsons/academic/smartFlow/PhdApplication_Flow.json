@@ -1,0 +1,620 @@
+{
+  "flowTemplate" : {
+    "name" : "phd-application",
+    "title" : {
+      "pt-PT" : "Processo de Candidatura a Doutoramento",
+      "en-GB" : "PHD Application Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Candidatura a Doutoramento",
+      "en-GB" : "PHD Application Process"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onCreate" : [ ],
+        "onSuccess" : [ {
+          "flowProcessor" : "Create Phd Application"
+        }, {
+          "flowProcessor" : "Return Flow Approved To Request"
+        } ],
+        "onFailure" : [ {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ {
+          "flowProcessor" : "Cancel Connected Requests"
+        } ]
+      },
+      "flowProcessors" : [ {
+        "handle" : "manage-reference-letter-requests",
+        "flowProcessor" : "Manage Reference Letters"
+      }, {
+        "handle" : "send-all-reference-letter-requests",
+        "flowProcessor" : "Send All Reference Letter Requests"
+      } ],
+      "forms" : [ {
+        "id" : "protest-form",
+        "title" : {
+          "pt-PT" : "Reclamação da Decisão",
+          "en-GB" : "Protest the Decision"
+        },
+        "form" : {
+          "pages" : [ {
+            "title" : {
+              "pt-PT" : "Reclamação da Decisão",
+              "en-GB" : "Protest the Decision"
+            },
+            "sections" : [ {
+              "title" : {
+                "pt-PT" : "Reclamação da Decisão",
+                "en-GB" : "Protest the Decision"
+              },
+              "properties" : [ {
+                "type" : "Array",
+                "field" : "PROTESTS",
+                "label" : {
+                  "pt-PT" : "Reclamações",
+                  "en-GB" : "Protests"
+                },
+                "labelAddElement" : {
+                  "pt-PT" : "Adicionar reclamação",
+                  "en-GB" : "Add protest"
+                },
+                "required" : false,
+                "properties" : [ {
+                  "type" : "AsyncSelect",
+                  "field" : "PROTEST_REQUEST",
+                  "required" : true,
+                  "readonly" : true,
+                  "optionsProvider" : "paper-pusher-ist/requests/allowedToProtest",
+                  "allowOther" : false,
+                  "label" : {
+                    "pt-PT" : "Pedido",
+                    "en-GB" : "Request"
+                  }
+                }, {
+                  "type" : "Text",
+                  "field" : "PROTEST",
+                  "required" : true,
+                  "readonly" : true,
+                  "label" : {
+                    "pt-PT" : "Fundamentação",
+                    "en-GB" : "Substantiation"
+                  },
+                  "multiline" : true,
+                  "inputType" : "plain"
+                }, {
+                  "type" : "File",
+                  "field" : "ATTACHMENT",
+                  "required" : false,
+                  "readonly" : true,
+                  "label" : {
+                    "pt-PT" : "Elementos probatórios",
+                    "en-GB" : "Evidence"
+                  },
+                  "allowedFileTypes" : [ ".pdf" ],
+                  "maxSizeMB" : 10
+                }, {
+                  "type" : "Text",
+                  "field" : "RESPONSE",
+                  "required" : true,
+                  "label" : {
+                    "pt-PT" : "Resposta",
+                    "en-GB" : "Response"
+                  },
+                  "multiline" : true,
+                  "inputType" : "plain"
+                } ]
+              } ]
+            } ]
+          } ]
+        }
+      } ],
+      "actionNodes" : [ {
+        "id" : "step-1-a-request-letters-of-recommendation",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Solicitar Cartas de Recomendação",
+          "en-GB" : "Request Reference Letters"
+        },
+        "description" : {
+          "pt-PT" : "Solicitar Cartas de Recomendação",
+          "en-GB" : "Request Reference Letters"
+        },
+        "actions" : {
+          "REQUEST_LETTERS" : {
+            "primary" : true,
+            "to" : "step-1-b-wait-for-letters-of-recommendation",
+            "label" : {
+              "pt-PT" : "Requerer Cartas de Recomendação",
+              "en-GB" : "Request Reference Letters"
+            }
+          }
+        },
+        "queue" : "Área de Pós-Graduação - Geral",
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Init Recommendation Letters For PHD Application"
+          }, {
+            "flowProcessor" : "Send All Reference Letter Requests"
+          }, {
+            "flowProcessor" : "Do Flow Action",
+            "flowAction" : "REQUEST_LETTERS"
+          } ]
+        }
+      }, {
+        "id" : "step-1-b-wait-for-letters-of-recommendation",
+        "type" : "withButtons",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Aguardar Receção de Cartas",
+          "en-GB" : "Await Reception of Letters"
+        },
+        "description" : {
+          "pt-PT" : "Aguardar Receção de Cartas",
+          "en-GB" : "Await Reception of Letters"
+        },
+        "buttons" : [ {
+          "primary" : true,
+          "label" : {
+            "pt-PT" : "Gerir Pedidos",
+            "en-GB" : "Manage Requests"
+          },
+          "handler" : "process:manage-reference-letter-requests"
+        }, {
+          "primary" : false,
+          "label" : {
+            "pt-PT" : "Terminar Receção de Cartas",
+            "en-GB" : "Conclude Reception of Letters"
+          },
+          "handler" : "action:CONCLUDE"
+        } ],
+        "actions" : {
+          "CONCLUDE" : {
+            "primary" : false,
+            "to" : "step-check-qualifications",
+            "label" : {
+              "pt-PT" : "Terminar Receção de Cartas",
+              "en-GB" : "Conclude Reception of Letters"
+            }
+          },
+          "ALL_RECEIVED" : {
+            "primary" : true,
+            "to" : "step-1-c-letters-of-recommendation-received",
+            "label" : {
+              "pt-PT" : "Cartas Recebidas",
+              "en-GB" : "Letters Received"
+            }
+          }
+        },
+        "queue" : "Área de Pós-Graduação - Geral",
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Do Flow Action After Time Passes",
+            "flowAction" : "CONCLUDE",
+            "user" : "fenix",
+            "when" : {
+              "plusWorkingDays" : "6"
+            }
+          } ]
+        }
+      }, {
+        "id" : "step-1-c-letters-of-recommendation-received",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Cartas Recebidas",
+          "en-GB" : "Letters Received"
+        },
+        "description" : {
+          "pt-PT" : "Cartas Recebidas",
+          "en-GB" : "Letters Received"
+        },
+        "actions" : {
+          "REVERT" : {
+            "primary" : false,
+            "to" : "step-1-b-wait-for-letters-of-recommendation",
+            "label" : {
+              "pt-PT" : "Reverter para Gerir Pedidos de Cartas",
+              "en-GB" : "Revert to Manage Letter Requests"
+            }
+          },
+          "CONCLUDE" : {
+            "primary" : true,
+            "to" : "step-check-qualifications",
+            "label" : {
+              "pt-PT" : "Terminar Receção de Cartas",
+              "en-GB" : "Conclude Reception of Letters"
+            }
+          }
+        },
+        "queue" : "Área de Pós-Graduação - Geral"
+      }, {
+        "id" : "step-check-qualifications",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "Verificar Qualificações",
+          "en-GB" : "Check Qualifications"
+        },
+        "description" : {
+          "pt-PT" : "Verificar Qualificações",
+          "en-GB" : "Check Qualifications"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Comentário / Observações",
+          "en-GB" : "Observations"
+        },
+        "actions" : {
+          "CONFIRM" : {
+            "primary" : true,
+            "to" : "step-advisor-accept-0",
+            "label" : {
+              "pt-PT" : "Confirmar Elegibilidade",
+              "en-GB" : "Confirm Eligibility"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "step-protest",
+            "label" : {
+              "pt-PT" : "Não Colocar Candidato",
+              "en-GB" : "Do Not Place Applicant"
+            }
+          },
+          "REQUEST_REVISION" : {
+            "primary" : false,
+            "to" : "step-review-application",
+            "label" : {
+              "pt-PT" : "Solicitar Informação Adicional",
+              "en-GB" : "Request Additional Information"
+            }
+          }
+        },
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Check Qualifications for PHD Application",
+            "flowAction" : "CONFIRM",
+            "data" : "Verificado automáticamente pelas habilitações declaradas na candidatura. Auto-verified by the declared qualifications."
+          } ],
+          "onActionTransition" : [ {
+            "applyOn" : "REJECT",
+            "flowProcessor" : "Set Request Outcome Form",
+            "outcomeFormValues" : {
+              "decision" : {
+                "value" : "not accepted",
+                "label" : {
+                  "pt-PT" : "Não Aceite",
+                  "en-GB" : "Declined"
+                }
+              }
+            },
+            "conclude" : true
+          } ]
+        },
+        "queue" : "Conselho Científico - Formação Avançada e a Investigação"
+      }, {
+        "id" : "step-advisor-accept-0",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Aceitar Posição de Orientação",
+          "en-GB" : "Accept Advisor Position"
+        },
+        "description" : {
+          "pt-PT" : "Aceitar Posição de Orientação",
+          "en-GB" : "Accept Advisor Position"
+        },
+        "actions" : {
+          "ACCEPT" : {
+            "primary" : true,
+            "to" : "step-degree-coordinator-evaluation",
+            "label" : {
+              "pt-PT" : "Aceitar Posição de Orientação",
+              "en-GB" : "Accept Advisor Position"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Não Aceitar",
+              "en-GB" : "Do Not Accept"
+            }
+          }
+        },
+        "queue" : "{{advisor-queue}}"
+      }, {
+        "id" : "step-degree-coordinator-evaluation",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "Apreciação da candidatura",
+          "en-GB" : "Assessment of the application"
+        },
+        "description" : {
+          "pt-PT" : "Avalia o mérito e elegibilidade da candidatura",
+          "en-GB" : "Evaluate the merit and pertinency of the application"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Parecer do(a) coordenador(a)",
+          "en-GB" : "Advisory opinion by the coordinator"
+        },
+        "actions" : {
+          "CONFIRM" : {
+            "primary" : true,
+            "to" : "step-officialize",
+            "label" : {
+              "pt-PT" : "Colocar Candidato",
+              "en-GB" : "Place Applicant"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "step-protest",
+            "label" : {
+              "pt-PT" : "Não Colocar Candidato",
+              "en-GB" : "Do Not Place Applicant"
+            }
+          },
+          "REQUEST_REVISION" : {
+            "primary" : false,
+            "to" : "step-review-application",
+            "label" : {
+              "pt-PT" : "Solicitar Informação Adicional",
+              "en-GB" : "Request Additional Information"
+            }
+          }
+        },
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "CONFIRM",
+            "flowProcessor" : "Set Request Outcome Form",
+            "outcomeFormValues" : {
+              "decision" : {
+                "value" : "accepted",
+                "label" : {
+                  "pt-PT" : "Admitido(a)",
+                  "en-GB" : "Accepted"
+                }
+              }
+            },
+            "conclude" : true
+          }, {
+            "applyOn" : "REJECT",
+            "flowProcessor" : "Set Request Outcome Form",
+            "outcomeFormValues" : {
+              "decision" : {
+                "value" : "not accepted",
+                "label" : {
+                  "pt-PT" : "Não Aceite",
+                  "en-GB" : "Declined"
+                }
+              }
+            },
+            "conclude" : true
+          } ]
+        },
+        "queue" : "{{degree-coordinator}}"
+      }, {
+        "id" : "step-review-application",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Aguardar Revisão da Candidatura",
+          "en-GB" : "Awaiting Application Review"
+        },
+        "description" : {
+          "pt-PT" : "Aguardar Revisão da Candidatura",
+          "en-GB" : "Awaiting Application Review"
+        },
+        "actions" : {
+          "CHANGES_SUBMITTED" : {
+            "primary" : true,
+            "to" : "step-degree-coordinator-evaluation",
+            "label" : {
+              "pt-PT" : "Alterações Submetidas",
+              "en-GB" : "Changes Submitted"
+            }
+          },
+          "FINISH_WAITING" : {
+            "primary" : false,
+            "to" : "step-degree-coordinator-evaluation",
+            "label" : {
+              "pt-PT" : "Nenhuma Informação Adicional Prestada",
+              "en-GB" : "No Additional Information was Provided"
+            }
+          }
+        },
+        "queue" : "Sistema FenixEdu",
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Send Request for Revision",
+            "when" : {
+              "plusWorkingDays" : "5"
+            }
+          }, {
+            "flowProcessor" : "Do Flow Action After Time Passes",
+            "flowAction" : "FINISH_WAITING",
+            "user" : "fenix",
+            "when" : {
+              "plusWorkingDays" : "5"
+            }
+          } ],
+          "onActionTransition" : [ {
+            "flowProcessor" : "Copy Request Form",
+            "setSectionWithRequesterInfo" : true
+          }, {
+            "flowProcessor" : "Terminate Revision Period",
+            "setSectionWithRequesterInfo" : true
+          } ]
+        }
+      }, {
+        "id" : "step-protest",
+        "type" : "withForms",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Reclamação da Decisão",
+          "en-GB" : "Protest the Decision"
+        },
+        "description" : {
+          "pt-PT" : "Requerer impugnação administrativa",
+          "en-GB" : "Request administrative challenge"
+        },
+        "buttons" : [ {
+          "id" : "protest-decision",
+          "primary" : true,
+          "label" : {
+            "pt-PT" : "Reclamação da Decisão",
+            "en-GB" : "Protest the Decision"
+          },
+          "handlers" : {
+            "form" : "protest-form",
+            "action" : "PROTEST"
+          }
+        } ],
+        "actions" : {
+          "PROTEST" : {
+            "primary" : true,
+            "to" : "step-degree-coordinator-evaluation-protest",
+            "label" : {
+              "pt-PT" : "Reclamação da Decisão",
+              "en-GB" : "Protest the Decision"
+            }
+          },
+          "FINISH_WAITING" : {
+            "primary" : false,
+            "to" : "step-officialize",
+            "label" : {
+              "pt-PT" : "Aceitar Decisão por Ausência de Reclamação",
+              "en-GB" : "Accept Decision by Absence of Protest"
+            }
+          }
+        },
+        "queue" : "Sistema FenixEdu",
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Open Protest Period"
+          }, {
+            "flowProcessor" : "Send e-mail",
+            "template" : "email-notification-application-not-accepted",
+            "notifyFlowMembers" : false,
+            "registered" : true,
+            "sender" : "1696378937945232",
+            "parameters" : { }
+          }, {
+            "flowProcessor" : "Do Flow Action After Time Passes",
+            "flowAction" : "FINISH_WAITING",
+            "user" : "fenix",
+            "when" : {
+              "plusWorkingDays" : "10"
+            }
+          } ]
+        }
+      }, {
+        "id" : "step-degree-coordinator-evaluation-protest",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "Re-apreciação da candidatura",
+          "en-GB" : "Re-assessment of the application"
+        },
+        "description" : {
+          "pt-PT" : "Avalia o mérito e elegibilidade da candidatura",
+          "en-GB" : "Evaluate the merit and pertinency of the application"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Parecer do(a) coordenador(a)",
+          "en-GB" : "Advisory opinion by the coordinator"
+        },
+        "actions" : {
+          "CONFIRM" : {
+            "primary" : true,
+            "to" : "step-officialize",
+            "label" : {
+              "pt-PT" : "Colocar Candidato",
+              "en-GB" : "Place Applicant"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "step-officialize",
+            "label" : {
+              "pt-PT" : "Não Colocar Candidato",
+              "en-GB" : "Do Not Place Applicant"
+            }
+          }
+        },
+        "actionProcessor" : {
+          "onEnterNode" : [ {
+            "flowProcessor" : "Revert Request Conclusion"
+          } ],
+          "onActionTransition" : [ {
+            "applyOn" : "CONFIRM",
+            "flowProcessor" : "Set Request Outcome Form",
+            "outcomeFormValues" : {
+              "decision" : {
+                "value" : "accepted",
+                "label" : {
+                  "pt-PT" : "Admitido(a)",
+                  "en-GB" : "Accepted"
+                }
+              }
+            },
+            "conclude" : true
+          }, {
+            "applyOn" : "REJECT",
+            "flowProcessor" : "Set Request Outcome Form",
+            "outcomeFormValues" : {
+              "decision" : {
+                "value" : "not accepted",
+                "label" : {
+                  "pt-PT" : "Não Aceite",
+                  "en-GB" : "Declined"
+                }
+              }
+            },
+            "conclude" : true
+          }, {
+            "flowProcessor" : "Set Response In Protest Form",
+            "queue" : "Área de Pós-Graduação",
+            "conclude" : true
+          } ]
+        },
+        "queue" : "{{degree-coordinator}}"
+      }, {
+        "id" : "step-officialize",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Homologação",
+          "en-GB" : "Officialization"
+        },
+        "description" : {
+          "pt-PT" : "Homologação do resultado da candidatura",
+          "en-GB" : "Officialize application results"
+        },
+        "actions" : {
+          "CONFIRM" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Homologar",
+              "en-GB" : "Officialize"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "step-degree-coordinator-evaluation",
+            "label" : {
+              "pt-PT" : "Devolver ao Coordenador",
+              "en-GB" : "Return to Coordinator"
+            }
+          }
+        },
+        "queue" : "Conselho Científico - Formação Avançada e a Investigação"
+      } ]
+    }
+  }
+}

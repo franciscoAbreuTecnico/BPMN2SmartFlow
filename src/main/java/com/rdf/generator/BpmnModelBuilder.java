@@ -843,4 +843,12 @@ public void generateFormDefinitions(Path formsDir) throws IOException {
         }
         return id;
     }
+
+    public boolean hasFormsToGenerate() {
+        try {
+            return !ontService.getInstances("Form", false).isEmpty();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

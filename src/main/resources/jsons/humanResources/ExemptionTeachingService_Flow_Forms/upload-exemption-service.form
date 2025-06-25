@@ -1,0 +1,35 @@
+{
+  "id" : "Form_upload-exemption-service",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Sabbatical_Leave_Final_Report",
+    "key" : "page_Sabbatical_Leave_Final_Report",
+    "label" : "Sabbatical_Leave_Final_Report",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Attach_Documents",
+      "key" : "section_Attach_Documents",
+      "label" : "Attach_Documents",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "filepicker",
+        "id" : "Field_workResults",
+        "key" : "workResults",
+        "label" : "Report",
+        "required" : true,
+        "readOnly" : false,
+        "accept" : ".pdf",
+        "maxFileSize" : "25MB"
+      } ]
+    } ]
+  } ]
+}

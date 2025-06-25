@@ -1,0 +1,64 @@
+{
+  "flowTemplate" : {
+    "name" : "faculty-career-advancement-department-confirmation",
+    "title" : {
+      "pt-PT" : "Processo de Manifestação de Interesse no Âmbito do Processo de Valorização - Confirmação do Departamento",
+      "en-GB" : "Process of Expression of Interest in the Context of Faculty Career Advancement - Department Confirmation"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Avaliação de Manifestação de Interesse no Âmbito do Processo de Valorização - Confirmação do Departamento",
+      "en-GB" : "Process of Evaluation of Expression of Interest in the Context of Faculty Career Advancement - Department Confirmation"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onSuccess" : [ {
+          "flowProcessor" : "Continue Main Flow After All Subflows In Node Are Concluded"
+        } ],
+        "onFailure" : [ {
+          "flowProcessor" : "Continue Main Flow After All Subflows In Node Are Concluded",
+          "action" : "REJECT"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ ]
+      },
+      "flowProcessors" : [ ],
+      "forms" : [ ],
+      "actionNodes" : [ {
+        "id" : "step-1",
+        "type" : "generic",
+        "comment" : true,
+        "title" : {
+          "pt-PT" : "Confirmar Parecer",
+          "en-GB" : "Confirm Declaration"
+        },
+        "description" : {
+          "pt-PT" : "Confirmar Parecer",
+          "en-GB" : "Confirm Declaration"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Analisar processo e adicionar parecer",
+          "en-GB" : "Analyse process and add opinion"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Decisão Positiva",
+              "en-GB" : "Positive Decision"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Decisão Negativa",
+              "en-GB" : "Negative Decision"
+            }
+          }
+        },
+        "queue" : "{{department-queue}} - Comissão de Vagas"
+      } ]
+    }
+  }
+}

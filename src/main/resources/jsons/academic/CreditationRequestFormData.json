@@ -1,0 +1,62 @@
+{
+    "name": {
+        "pt-PT": "Pedido de Creditação",
+        "en-GB": "Creditation Request"
+    },
+    "description": {
+        "pt-PT": "Este formulário permite-lhe solicitar a creditação a uma unidade curricular.",
+        "en-GB": "This form allows you to request creditation for a curricular unit."
+    },
+    "context": {},
+    "inputForm": {
+        "checks": {
+            "requireIdentity": true,
+            "requirePersonalInformation": true,
+            "requireUser": true
+        },
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Pedido de Creditação",
+                    "en-GB": "Creditation Request"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Unidade Curricular",
+                            "en-GB": "Curricular Course"
+                        },
+                        "properties": [
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "REGISTRATION",
+                                "label": {
+                                    "pt-PT": "Curso",
+                                    "en-GB": "Degree"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/registrations"
+                            },
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "CURRICULAR_COURSE",
+                                "label": {
+                                    "pt-PT": "Unidade Curricular",
+                                    "en-GB": "Curricular Course"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/courses"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "outcomeForm": {},
+    "cost": {}
+}

@@ -1,0 +1,188 @@
+{
+  "name": {
+    "pt-PT": "2.ª Via de Documento",
+    "en-GB": "Duplicate Document"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar a emissão da 2.ª via de um documento que já tenha solicitado anteriormente.",
+    "en-GB": "This form allows you to request a Duplicate of a document you have already requested in the past."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "ORIGINAL_REQUEST"
+      ],
+      "displayName": false,
+      "username": false
+    },
+    "onPayOrExempt": {
+      "requestProcessor": "Transform Duplicate Request"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requireTaxInformation": true,
+      "requirePersonalInformation": true,
+      "requireValidIdDocument": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "2.ª Via de Documento",
+          "en-GB": "Duplicate of a Document"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Documento Original",
+              "en-GB": "Original Document"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "allowOther": false,
+                "field": "ORIGINAL_REQUEST",
+                "label": {
+                  "pt-PT": "Documento a reemitir",
+                  "en-GB": "Document to reissue"
+                },
+                "optionsProvider": "/paper-pusher-ist/requestsAvailableForDuplicateDocument"
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Opções",
+              "en-GB": "Options"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "field": "LOCALE",
+                "label": {
+                  "pt-PT": "Língua",
+                  "en-GB": "Language"
+                },
+                "description": {
+                  "pt-PT": "Esta opção apenas terá efeito nos documentos onde essa opção é aplicável.",
+                  "en-GB": "This option will only have an effect on documents for which it is applicable."
+                },
+                "optionsProvider": "/paper-pusher-ist/locales"
+              },
+              {
+                "type": "Boolean",
+                "field": "IS_DIGITAL",
+                "required": true,
+                "label": {
+                  "pt-PT": "Pretende que o documento seja emitido em formato eletrónico (PDF) e assinado eletronicamente?",
+                  "en-GB": "Would you like the document to be in digital format (PDF) and digitally signed?"
+                },
+                "description": {
+                  "pt-PT": "Esta opção apenas terá efeito nos documentos onde essa opção é aplicável.",
+                  "en-GB": "This option will only have an effect on documents for which it is applicable."
+                },
+                "labelYes": {
+                  "pt-PT": "Sim, pretendo que o documento seja emitido em formato eletrónico (PDF) e assinado eletronicamente.",
+                  "en-GB": "Yes, I want the document to be in digital format (PDF) and digitally signed."
+                },
+                "labelNo": {
+                  "pt-PT": "Não, pretendo que o documento esteja em formato físico (papel) e assinado fisicamente.",
+                  "en-GB": "No, I want the document to be in physical format (paper) and physically signed."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta ao Pedido de 2.ª Via de Documento",
+          "en-GB": "Duplicate Document Request Response"
+        },
+        "sections": [
+        ]
+      }
+    ]
+  },
+  "cost": {
+    "description": {
+      "pt-PT": "Pedido de 2.ª Via de Documento",
+      "en-GB": "Duplicate Document Request"
+    },
+    "value": 25.00,
+    "accountId": "287762860391",
+    "productCode": "0037",
+    "productDescription": "EMOLUMENTOS",
+    "onLock": [
+      {
+        "costProcessor": "Change Value According To Original Request Type"
+      },
+      {
+        "costProcessor": "Add Request Keywords to Cost Description"
+      }
+    ],
+    "costMappings": [
+      {
+        "requestType": "Formal Diploma",
+        "value": "80.00"
+      }
+    ]
+  },
+  "views": [
+    {
+      "id": "Default",
+      "columns": [
+        {
+          "title": { "pt-PT": "Submetido", "en-GB": "Submitted" },
+          "type": "Request Info",
+          "info": "lockInstant"
+        },
+        {
+          "title": { "pt-PT": "Aluno", "en-GB": "Student" },
+          "type": "Request Info",
+          "info": "requester"
+        },
+        {
+          "title": { "pt-PT": "Estado do Pedido", "en-GB": "Request State" },
+          "type": "Request State"
+        },
+        {
+          "title": { "pt-PT": "Revisão", "en-GB": "Revision" },
+          "type": "Request Info",
+          "info": "revisionDeadline"
+        },
+        {
+          "title": { "pt-PT": "Pagamento", "en-GB": "Payment" },
+          "type": "Payment State"
+        },
+        {
+          "title": { "pt-PT": "Pedido", "en-GB": "Request" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "ORIGINAL_REQUEST"
+        },
+        {
+          "title": { "pt-PT": "Língua", "en-GB": "Language" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "LOCALE"
+        },
+        {
+          "title": { "pt-PT": "Digital", "en-GB": "Digital" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "IS_DIGITAL"
+        }
+      ]
+    }
+  ]
+}

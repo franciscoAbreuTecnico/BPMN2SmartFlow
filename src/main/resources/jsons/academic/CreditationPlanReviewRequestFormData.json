@@ -1,0 +1,99 @@
+{
+  "name": {
+    "pt-PT": "Revisão do Plano de Creditação",
+    "en-GB": "Creditation Plan Review"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar a revisão do plano de creditação. É preciso primeiro um Pedido de Creditação concluído.",
+    "en-GB": "This form allows you to request a review of a plan of creditation. You first need a concluded Creditation request."
+  },
+  "context": {},
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requirePersonalInformation": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Pedido de Creditação",
+          "en-GB": "Creditation Request"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Creditação",
+              "en-GB": "Creditation"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "allowOther": false,
+                "field": "CREDITATION_REQUEST",
+                "label": {
+                  "pt-PT": "Pedido de Creditação",
+                  "en-GB": "Creditation request"
+                },
+                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/requests?concluded=true&name=Pedido%20de%20Creditação"
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Justificação",
+              "en-GB": "Justification"
+            },
+            "properties": [
+              {
+                "type": "Text",
+                "required": true,
+                "maxLength": 250,
+                "field": "JUSTIFICATION",
+                "label": {
+                  "pt-PT": "Justificação",
+                  "en-GB": "Justification"
+                },
+                "multiline": true
+              },
+              {
+                "type": "Array",
+                "readonly": false,
+                "required": false,
+                "field": "ATTACHMENTS",
+                "label": {
+                  "pt-PT": "Anexos",
+                  "en-GB": "Attachments"
+                },
+                "labelAddElement": {
+                  "pt-PT": "Adicionar anexo",
+                  "en-GB": "Add attachment"
+                },
+                "properties": [
+                  {
+                    "type": "File",
+                    "field": "ATTACHMENT",
+                    "required": true,
+                    "label": {
+                      "pt-PT": "Anexo",
+                      "en-GB": "Attachment"
+                    },
+                    "allowedFileTypes": [
+                      ".pdf",
+                      ".png",
+                      ".jpg"
+                    ],
+                    "maxSizeMB": 10
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {},
+  "cost": {}
+}

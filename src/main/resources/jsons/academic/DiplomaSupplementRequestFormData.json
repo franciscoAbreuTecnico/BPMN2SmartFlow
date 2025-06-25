@@ -1,0 +1,322 @@
+{
+  "name": {
+    "pt-PT": "Suplemento ao Diploma",
+    "en-GB": "Diploma Supplement"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar a emissão do Suplemento ao Diploma.",
+    "en-GB": "This form allows you to request the issuance of the Diploma Supplement."
+  },
+  "context": {
+    "sendValidationEmail": "false",
+    "requestKeywords": {
+      "fields": [
+        "REGISTRATION",
+        "PROGRAMME_CONCLUSION_TYPE",
+        "REGISTRY_CODE"
+      ],
+      "displayName": false,
+      "username": false
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Change Academic Request Queue",
+        "queueMapper": {
+          "Área de Graduação": "Núcleo de Certificação Académica"
+        }
+      },
+      {
+        "requestProcessor": "Auto Validate"
+      }
+    ],
+    "onPayOrExempt": {
+      "requestProcessor": "Auto Validate"
+    },
+    "onValidate": [
+      {
+        "requestProcessor": "Change Academic Request Queue",
+        "queueMapper": {
+          "Área de Graduação": "Núcleo de Certificação Académica"
+        }
+      },
+      {
+        "requestProcessor": "Copy Input to Outcome",
+        "mapper": {
+          "IS_DIGITAL": "IS_DIGITAL"
+        }
+      },
+      {
+        "requestProcessor": "Fill Delivery Location From Degree"
+      },
+      {
+        "requestProcessor": "Fill Registry Code From Certificate of Registration"
+      },
+      {
+        "requestProcessor": "Generate Documents",
+        "team": "a474a698-6af4-4510-9745-4b2183af6dd7",
+        "template": "da331728-3f5d-477d-9006-2bdb110a8a4d",
+        "files": {
+          "pt-PT": {
+            "outcome-form-field": "0.1.DIPLOMA_SUPPLEMENT_PORTUGUESE",
+            "filenameProvider": "Get Academic Document Filename"
+          },
+          "en-GB": {
+            "outcome-form-field": "0.1.DIPLOMA_SUPPLEMENT_ENGLISH",
+            "filenameProvider": "Get Academic Document Filename"
+          }
+        },
+        "contentType": "application/pdf",
+        "payloadProviders": "Diploma Supplement Papyrus Payload"
+      },
+      {
+        "requestProcessor": "Send Documents to Signer if Applicable",
+        "files": {
+          "pt-PT": {
+            "fileField": "DIPLOMA_SUPPLEMENT_PORTUGUESE",
+            "titleProvider": "Get Academic Document Title",
+            "description": "Suplemento ao Diploma - {{request}}",
+            "filenameProvider": "Get Academic Document Filename"
+          },
+          "en-GB": {
+            "fileField": "DIPLOMA_SUPPLEMENT_ENGLISH",
+            "titleProvider": "Get Academic Document Title",
+            "description": "Diploma Supplement - {{request}}",
+            "filenameProvider": "Get Academic Document Filename"
+          }
+        },
+        "requestQueues": [
+          "Presidente do Instituto Superior Técnico - Assinatura Eletrónica"
+        ],
+        "queue": "TKEI6IZ9",
+        "signatureField": "signatureField"
+      }
+    ],
+    "onConclude": {
+      "requestProcessor": "Change Academic Request Queue",
+      "queueMapper": {
+        "Área de Graduação": "Núcleo de Registo Académico"
+      }
+    },
+    "onReject": {
+      "requestProcessor": "Block Reject"
+    },
+    "queuesAllowedToChangeTo": [
+      "Núcleo de Certificação Académica",
+      "Núcleo de Registo Académico",
+      "Área de Pós-Graduação",
+      "Área de Gestão de Recursos Humanos e Académicos do Taguspark",
+      "Presidente do Instituto Superior Técnico - Assinatura Física"
+    ]
+  },
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requirePersonalInformation": true,
+      "requireTaxInformation": true,
+      "requireValidIdDocument": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Pedido de Suplemento ao Diploma",
+          "en-GB": "Diploma Supplement Request"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Curso e Informações Complementares",
+              "en-GB": "Degree and Complementary Information"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": true,
+                "required": true,
+                "allowOther": false,
+                "field": "REGISTRATION",
+                "label": {
+                  "pt-PT": "Matrícula",
+                  "en-GB": "Registration"
+                },
+                "optionsProvider": "paper-pusher-ist/registrations"
+              },
+              {
+                "type": "AsyncSelect",
+                "readonly": true,
+                "required": true,
+                "field": "PROGRAMME_CONCLUSION_TYPE",
+                "onlyIf": {
+                  "field": "REGISTRATION",
+                  "negation": true,
+                  "value": null
+                },
+                "label": {
+                  "pt-PT": "Nível do Grau",
+                  "en-GB": "Graduation Level"
+                },
+                "optionsProvider": "paper-pusher-ist/programmeConclusions",
+                "optionsLimitedBy": {
+                  "field": "REGISTRATION"
+                }
+              },
+              {
+                "type": "Boolean",
+                "field": "INCLUDE_COMPLEMENTARY_INFORMATION",
+                "readonly": true,
+                "required": true,
+                "description": {
+                  "pt-PT": "* Verifique se todas as informações complementares estão registadas no sistema. Caso haja alguma em falta, faça um pedido de Registo de Informação Complementar.",
+                  "en-GB": "* Verify if all of the complementary information are registered in the system. If not, make an Complementary Information Registration request."
+                },
+                "label": {
+                  "pt-PT": "Pretende incluir as informações complementares no Suplemento ao Diploma?",
+                  "en-GB": "Would you like to include the complementary information in the Diploma Supplement?"
+                },
+                "labelYes": {
+                  "pt-PT": "Sim, pretendo incluir as informações complementares.",
+                  "en-GB": "Yes, I would like to include complementary information."
+                },
+                "labelNo": {
+                  "pt-PT": "Não, não pretendo incluir as informações complementares.",
+                  "en-GB": "No, I would not like to include complementary information."
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Formato do Suplemento ao Diploma",
+              "en-GB": "Diploma Supplement Format"
+            },
+            "properties": [
+              {
+                "type": "Boolean",
+                "field": "IS_DIGITAL",
+                "readonly": true,
+                "required": true,
+                "label": {
+                  "pt-PT": "Pretende que o Suplemento ao Diploma esteja em formato eletrónico (PDF) e assinado eletronicamente?",
+                  "en-GB": "Would you like the Diploma Supplement to be in digital format (PDF) and digitally signed?"
+                },
+                "labelYes": {
+                  "pt-PT": "Sim, pretendo que o Suplemento ao Diploma esteja em formato eletrónico (PDF) e assinado eletronicamente.",
+                  "en-GB": "Yes, I want the Diploma Supplement to be in digital format (PDF) and digitally signed."
+                },
+                "labelNo": {
+                  "pt-PT": "Não, pretendo que o Suplemento ao Diploma esteja em formato físico (papel) e assinado fisicamente.",
+                  "en-GB": "No, I want the Diploma Supplement to be in physical format (paper) and physically signed."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta ao Pedido de Suplemento ao Diploma",
+          "en-GB": "Diploma Supplement Request Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Informação Administrativa",
+              "en-GB": "Administrative Information"
+            },
+            "properties": [
+              {
+                "type": "Text",
+                "field": "REGISTRY_CODE",
+                "required": true,
+                "readonly": true,
+                "label": {
+                  "pt-PT": "Código de Registo",
+                  "en-GB": "Registry Code"
+                },
+                "multiline": false,
+                "inputType": "plain"
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Entrega do Suplemento ao Diploma",
+              "en-GB": "Diploma Supplement Delivery"
+            },
+            "properties": [
+              {
+                "type": "Boolean",
+                "field": "IS_DIGITAL",
+                "required": true,
+                "readonly": true,
+                "label": {
+                  "pt-PT": "O Suplemento ao Diploma é entregue em formato eletrónico (PDF) e assinado eletronicamente?",
+                  "en-GB": "Is the Diploma Supplement delivered in digital format (PDF) and digitally signed?"
+                },
+                "labelYes": {
+                  "pt-PT": "Sim, o Suplemento ao Diploma é entregue em formato eletrónico (PDF) e assinado eletronicamente.",
+                  "en-GB": "Yes, the Diploma Supplement is delivered in digital format (PDF) and digitally signed."
+                },
+                "labelNo": {
+                  "pt-PT": "Não, o Suplemento ao Diploma é entregue em formato físico (papel) e deve ser impresso e assinado fisicamente.",
+                  "en-GB": "No, the Diploma Supplement is delivered in physical format (paper) and must be printed and physically signed."
+                }
+              },
+              {
+                "type": "AsyncSelect",
+                "field": "deliveryLocation",
+                "required": false,
+                "readonly": true,
+                "onlyIf": {
+                  "field": "IS_DIGITAL",
+                  "value": false,
+                  "negation": false
+                },
+                "label": {
+                  "pt-PT": "Local de Entrega",
+                  "en-GB": "Delivery Location"
+                },
+                "multiple": false,
+                "collapse": false,
+                "optionsProvider": "/paper-pusher-ist/administrativeOffices",
+                "allowOther": false
+              },
+              {
+                "type": "File",
+                "field": "DIPLOMA_SUPPLEMENT_PORTUGUESE",
+                "required": true,
+                "readonly": true,
+                "hidden": true,
+                "label": {
+                  "pt-PT": "Suplemento ao Diploma (Português)",
+                  "en-GB": "Diploma Supplement (Portuguese)"
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ]
+              },
+              {
+                "type": "File",
+                "field": "DIPLOMA_SUPPLEMENT_ENGLISH",
+                "required": true,
+                "readonly": true,
+                "hidden": true,
+                "label": {
+                  "pt-PT": "Suplemento ao Diploma (Inglês)",
+                  "en-GB": "Diploma Supplement (English)"
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {}
+}

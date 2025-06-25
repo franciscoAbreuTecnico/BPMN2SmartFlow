@@ -1,0 +1,35 @@
+{
+  "id" : "Form_upload-signed-service-provision-contract",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Service_Provision_Contract_Information",
+    "key" : "page_Service_Provision_Contract_Information",
+    "label" : "Service_Provision_Contract_Information",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Service_Provision_Contract",
+      "key" : "section_Service_Provision_Contract",
+      "label" : "Service_Provision_Contract",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "filepicker",
+        "id" : "Field_serviceProvisionContract",
+        "key" : "serviceProvisionContract",
+        "label" : "Service Provision Contract",
+        "required" : false,
+        "readOnly" : false,
+        "accept" : ".pdf",
+        "maxFileSize" : "10MB"
+      } ]
+    } ]
+  } ]
+}

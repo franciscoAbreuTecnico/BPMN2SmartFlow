@@ -1,0 +1,40 @@
+{
+  "id" : "Form_work-plan",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Detailed_Work_Plan",
+    "key" : "page_Detailed_Work_Plan",
+    "label" : "Detailed_Work_Plan",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Detailed_Work_Plan",
+      "key" : "section_Detailed_Work_Plan",
+      "label" : "Detailed_Work_Plan",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "textarea",
+        "id" : "Field_workPlan_en-GB",
+        "key" : "workPlan_en-GB",
+        "label" : "Detailed Work Plan (en-GB)",
+        "required" : true,
+        "readOnly" : false
+      }, {
+        "type" : "textarea",
+        "id" : "Field_workPlan_pt-PT",
+        "key" : "workPlan_pt-PT",
+        "label" : "Plano de Trabalhos Detalhado (pt-PT)",
+        "required" : true,
+        "readOnly" : false
+      } ]
+    } ]
+  } ]
+}

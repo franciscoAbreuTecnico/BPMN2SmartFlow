@@ -1,0 +1,88 @@
+{
+    "name": {
+        "pt-PT": "Anulação de Matrícula",
+        "en-GB": "Enrolment Annulment"
+    },
+    "description": {
+        "pt-PT": "Este formulário permite-lhe solicitar a anulação da sua matrícula.",
+        "en-GB": "This form allows you to request annulment of your enrolment."
+    },
+    "context": {},
+    "inputForm": {
+        "checks": {
+            "requireIdentity": true,
+            "requirePersonalInformation": true,
+            "requireUser": true
+        },
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Anulação de Matrícula",
+                    "en-GB": "Enrolment Annulment"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Matrícula",
+                            "en-GB": "Enrolment"
+                        },
+                        "properties": [
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "REGISTRATION",
+                                "label": {
+                                    "pt-PT": "Curso",
+                                    "en-GB": "Degree"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/registrations"
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Justificação",
+                            "en-GB": "Justification"
+                        },
+                        "properties": [
+                            {
+                                "type": "Select",
+                                "required": true,
+                                "multiple": false,
+                                "field": "MOTIVE",
+                                "label": {
+                                    "pt-PT": "Motivo",
+                                    "en-GB": "Motive"
+                                },
+                                "options": [
+                                    {
+                                        "value": "TO_BE_FILLED",
+                                        "label": {
+                                            "pt-PT": "ESTE CAMPO AINDA NÃO TEM OPÇÕES",
+                                            "en-GB": "THIS FIELD DOESN'T HAVE ANY OPTIONS YET"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Text",
+                                "required": true,
+                                "maxLength": 250,
+                                "field": "JUSTIFICATION",
+                                "label": {
+                                    "pt-PT": "Justificação",
+                                    "en-GB": "Justification"
+                                },
+                                "multiline": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "outcomeForm": {},
+    "cost": {}
+}

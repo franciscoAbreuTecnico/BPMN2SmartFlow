@@ -1,0 +1,325 @@
+{
+  "id" : "Form_information-for-contract-form",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Funding",
+    "key" : "page_Funding",
+    "label" : "Funding",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Cost_Allocation",
+      "key" : "section_Cost_Allocation",
+      "label" : "Cost_Allocation",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_operationalProgramme",
+        "key" : "operationalProgramme",
+        "label" : "Operational Programme",
+        "required" : false,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "erasmus+",
+          "label" : {
+            "en-GB" : "Erasmus+",
+            "pt-PT" : "Erasmus+"
+          }
+        }, {
+          "value" : "prr",
+          "label" : {
+            "en-GB" : "Recovery and Resilience Plan (RRP)",
+            "pt-PT" : "Plano de Recuperação e Resiliência (PRR)"
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_fundingEntity",
+        "key" : "fundingEntity",
+        "label" : "Funding Entity",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "eu",
+          "label" : {
+            "en-GB" : "European Union (EU)",
+            "pt-PT" : "União Europeia (UE)"
+          }
+        }, {
+          "value" : "ist",
+          "label" : {
+            "en-GB" : "Instituto Superior Técnico (IST)",
+            "pt-PT" : "Instituto Superior Técnico (IST)"
+          }
+        }, {
+          "value" : "ani",
+          "label" : {
+            "en-GB" : "Agência Nacional de Inovação (ANI)",
+            "pt-PT" : "Agência Nacional de Inovação (ANI)"
+          }
+        }, {
+          "value" : "fct",
+          "label" : {
+            "en-GB" : "Fundação para a Ciência e a Tecnologia (FCT)",
+            "pt-PT" : "Fundação para a Ciência e a Tecnologia (FCT)"
+          }
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "group",
+    "id" : "Page_Research_Scholarship_Information",
+    "key" : "page_Research_Scholarship_Information",
+    "label" : "Research_Scholarship_Information",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Type_and_Context",
+      "key" : "section_Type_and_Context",
+      "label" : "Type_and_Context",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_researchScholarshipType",
+        "key" : "researchScholarshipType",
+        "label" : "Scholarship Type",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "BI",
+          "label" : {
+            "en-GB" : "Research",
+            "pt-PT" : "Investigação"
+          }
+        }, {
+          "value" : "BII",
+          "label" : {
+            "en-GB" : "Research Initiation",
+            "pt-PT" : "Iniciação à Investigação"
+          }
+        }, {
+          "value" : "BIPD",
+          "label" : {
+            "en-GB" : "Post-Doctoral Research",
+            "pt-PT" : "Investigação Pós-Doutoral"
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_cycleType",
+        "key" : "cycleType",
+        "label" : "Graduation Level",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "CYCLE_3",
+          "label" : {
+            "en-GB" : "Doctoral Programmes",
+            "pt-PT" : "Cursos de Doutoramento"
+          }
+        }, {
+          "value" : "CYCLE_2",
+          "label" : {
+            "en-GB" : "Master Degrees",
+            "pt-PT" : "Cursos de Mestrado"
+          }
+        }, {
+          "value" : "CYCLE_0",
+          "label" : {
+            "en-GB" : "Non-degree Course",
+            "pt-PT" : "Curso não conferente de grau académico"
+          }
+        } ]
+      }, {
+        "type" : "text",
+        "id" : "Field_reference",
+        "key" : "reference",
+        "label" : "Reference",
+        "text" : "Reference",
+        "required" : true,
+        "readOnly" : false
+      }, {
+        "type" : "number",
+        "id" : "Field_researchGrantMonthDuration",
+        "key" : "researchGrantMonthDuration",
+        "label" : "researchGrantMonthDuration",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_researchGrantExpectedStart",
+        "key" : "researchGrantExpectedStart",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_researchGrantExpectedStart",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : true
+        }
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Scholarship_Term",
+      "key" : "section_Scholarship_Term",
+      "label" : "Scholarship_Term",
+      "showOutline" : true,
+      "components" : [ ]
+    } ]
+  }, {
+    "type" : "group",
+    "id" : "Page_Costs_Information",
+    "key" : "page_Costs_Information",
+    "label" : "Costs_Information",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Scholarship_Remuneration",
+      "key" : "section_Scholarship_Remuneration",
+      "label" : "Scholarship_Remuneration",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "number",
+        "id" : "Field_monthlyRemuneration",
+        "key" : "monthlyRemuneration",
+        "label" : "monthlyRemuneration",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Definitive_Costs",
+      "key" : "section_Definitive_Costs",
+      "label" : "Definitive_Costs",
+      "showOutline" : true,
+      "components" : [ ]
+    } ]
+  }, {
+    "type" : "group",
+    "id" : "Page_Scholarship_Applicant_Information",
+    "key" : "page_Scholarship_Applicant_Information",
+    "label" : "Scholarship_Applicant_Information",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Bank_Data",
+      "key" : "section_Bank_Data",
+      "label" : "Bank_Data",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "text",
+        "id" : "Field_swift",
+        "key" : "swift",
+        "label" : "SWIFT / BIC",
+        "text" : "SWIFT / BIC",
+        "required" : true,
+        "readOnly" : false
+      }, {
+        "type" : "text",
+        "id" : "Field_iban",
+        "key" : "iban",
+        "label" : "IBAN - International Bank Account Number",
+        "text" : "IBAN - International Bank Account Number",
+        "required" : true,
+        "readOnly" : false
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Voluntary_Social_Security",
+      "key" : "section_Voluntary_Social_Security",
+      "label" : "Voluntary_Social_Security",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_socialSecurity",
+        "key" : "socialSecurity",
+        "label" : "Subscription to Voluntary Social Security",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "no",
+          "label" : {
+            "en-GB" : "I hereby declare that, at present, I do not wish to join the voluntary social security scheme, but I reserve the right to do so during the course of the Scholarship.",
+            "pt-PT" : "Declaro que na presente data não pretendo aderir ao regime do seguro social voluntário, reservando o direito de o fazer durante a vigência da Bolsa."
+          }
+        }, {
+          "value" : "yes",
+          "label" : {
+            "en-GB" : "I hereby declare, in accordance with Article 10 of Law No. 40/2004 of 18 August, as amended and republished by Decree-Law No. 202/2012 of 27 August, and Article 32 of the IST Research Grant Regulations, that I am not covered by any social protection scheme and that I wish to join the voluntary social security scheme.",
+            "pt-PT" : "Declaro, nos termos do art.º 10º da Lei n.º 40/2004, de 18 de agosto, alterada e republicada pelo Decreto-Lei n.º 202/2012 de 27 de agosto, e do art.º 32.º do Regulamento de Bolsas de Investigação do IST, que não me encontro abrangido por qualquer regime de proteção social e que pretendo aderir ao regime do seguro social voluntário."
+          }
+        } ]
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Institutional_Data",
+      "key" : "section_Institutional_Data",
+      "label" : "Institutional_Data",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "text",
+        "id" : "Field_sapNumber",
+        "key" : "sapNumber",
+        "label" : "SAP Identification number",
+        "text" : "SAP Identification number",
+        "required" : true,
+        "readOnly" : false
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Personal_Data",
+      "key" : "section_Personal_Data",
+      "label" : "Personal_Data",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "text",
+        "id" : "Field_tin",
+        "key" : "tin",
+        "label" : "Tax Identification Number",
+        "text" : "Tax Identification Number",
+        "required" : true,
+        "readOnly" : false
+      }, {
+        "type" : "text",
+        "id" : "Field_address",
+        "key" : "address",
+        "label" : "Address",
+        "text" : "Address",
+        "required" : true,
+        "readOnly" : false
+      } ]
+    } ]
+  } ]
+}

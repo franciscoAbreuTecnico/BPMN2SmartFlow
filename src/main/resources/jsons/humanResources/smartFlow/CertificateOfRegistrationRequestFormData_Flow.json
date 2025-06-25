@@ -1,0 +1,329 @@
+{
+  "flowTemplate" : {
+    "name" : "certificate-of-degree-registration-flow",
+    "title" : {
+      "pt-PT" : "Processo de Pedido de Certidão de Registo",
+      "en-GB" : "Certificate of Registration Request Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Certidão de Registo",
+      "en-GB" : "Certificate of Registration Request Process"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onCreate" : {
+          "flowProcessor" : "Confirmation of Degree Conclusion"
+        },
+        "onSuccess" : {
+          "flowProcessor" : "Return Flow Approved To Request"
+        },
+        "onFailure" : [ {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        } ],
+        "onActionTransition" : [ ],
+        "onCancel" : [ {
+          "flowProcessor" : "Cancel Connected Requests"
+        } ]
+      },
+      "flowProcessors" : [ {
+        "handle" : "get-outcome-document",
+        "flowProcessor" : "Get Outcome Document",
+        "outcome-form-field" : "0.1.CERTIFICATE_OF_REGISTRATION"
+      }, {
+        "handle" : "confirm-degree-conclusion-and-redirect-if-necessary",
+        "flowProcessor" : "Confirm Degree Conclusion And Redirect If Necessary"
+      }, {
+        "handle" : "revert-to-step",
+        "flowProcessor" : "Revert to Step",
+        "step" : "degree-conclusion-confirmation"
+      } ],
+      "actionNodes" : [ {
+        "id" : "degree-conclusion-confirmation",
+        "type" : "withButtons",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Apuramento do Grau Académico",
+          "en-GB" : "Confirmation of Degree Conclusion"
+        },
+        "description" : {
+          "pt-PT" : "Apuramento do Grau Académico pelos Serviços Académicos",
+          "en-GB" : "Confirmation by the Academic Services of the Degree Conclusion"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Apuramento do Grau Académico pelos Serviços Académicos",
+          "en-GB" : "Confirmation by the Academic Services of the Degree Conclusion"
+        },
+        "buttons" : [ {
+          "label" : {
+            "pt-PT" : "Rejeitar",
+            "en-GB" : "Reject"
+          },
+          "handler" : "action:REJECT"
+        }, {
+          "primary" : true,
+          "label" : {
+            "pt-PT" : "Confirmar Apuramento",
+            "en-GB" : "Confirm Degree Conclusion"
+          },
+          "handler" : "process:confirm-degree-conclusion-and-redirect-if-necessary"
+        } ],
+        "actions" : {
+          "CONFIRM" : {
+            "primary" : true,
+            "to" : "registry-code-and-diploma-supplement-request-creation",
+            "label" : {
+              "pt-PT" : "Confirmar Apuramento",
+              "en-GB" : "Confirm Degree Conclusion"
+            }
+          },
+          "REJECT" : {
+            "primary" : false,
+            "to" : "FAILURE",
+            "label" : {
+              "pt-PT" : "Rejeitar",
+              "en-GB" : "Reject"
+            }
+          }
+        },
+        "queue" : "{{academic-office-queue}} - Apuramentos",
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "CONFIRM",
+            "flowProcessor" : "Send e-mail",
+            "template" : "academic.programme-conclusion-ready",
+            "parameters" : {
+              "REGISTRATION" : "REGISTRATION",
+              "PROGRAMME_CONCLUSION_TYPE" : "PROGRAMME_CONCLUSION_TYPE"
+            }
+          }, {
+            "applyOn" : "CONFIRM",
+            "flowProcessor" : "Do Flow Action",
+            "flowAction" : "CREATE_REGISTRY_CODE_AND_DIPLOMA_SUPPLEMENT_REQUEST"
+          } ]
+        }
+      }, {
+        "id" : "registry-code-and-diploma-supplement-request-creation",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Criação de Código de Registo e do Pedido de Suplemento ao Diploma",
+          "en-GB" : "Registry Code Creation and of the Diploma Supplement Request"
+        },
+        "description" : {
+          "pt-PT" : "Criação do código de registo e do pedido de Suplemento ao Diploma",
+          "en-GB" : "Registry code creation and of the Diploma Supplement request"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Criação do código de registo e do pedido de Suplemento ao Diploma",
+          "en-GB" : "Registry code creation and of the Diploma Supplement request"
+        },
+        "actions" : {
+          "CREATE_REGISTRY_CODE_AND_DIPLOMA_SUPPLEMENT_REQUEST" : {
+            "primary" : true,
+            "to" : "document-generation",
+            "label" : {
+              "pt-PT" : "Criar Código de Registo e Pedido de Suplemento ao Diploma",
+              "en-GB" : "Create Registry Code and Diploma Supplement Request"
+            }
+          }
+        },
+        "queue" : "Sistema FenixEdu",
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "CREATE_REGISTRY_CODE_AND_DIPLOMA_SUPPLEMENT_REQUEST",
+            "flowProcessor" : "Get or Generate Registry Code"
+          }, {
+            "applyOn" : "CREATE_REGISTRY_CODE_AND_DIPLOMA_SUPPLEMENT_REQUEST",
+            "flowProcessor" : "Create Diploma Supplement Request",
+            "RequestType" : "Diploma Supplement",
+            "handle" : "create-diploma-supplement-request",
+            "mapper" : {
+              "REGISTRATION" : "REGISTRATION",
+              "PROGRAMME_CONCLUSION_TYPE" : "PROGRAMME_CONCLUSION_TYPE",
+              "INCLUDE_COMPLEMENTARY_INFORMATION" : "INCLUDE_COMPLEMENTARY_INFORMATION",
+              "IS_DIGITAL" : "IS_DIPLOMA_SUPPLEMENT_DIGITAL",
+              "REGISTRY_CODE" : "REGISTRY_CODE"
+            }
+          }, {
+            "applyOn" : "CREATE_REGISTRY_CODE_AND_DIPLOMA_SUPPLEMENT_REQUEST",
+            "flowProcessor" : "Do Flow Action",
+            "flowAction" : "GENERATE_DOCUMENT"
+          } ]
+        },
+        "blockUndo" : true
+      }, {
+        "id" : "document-generation",
+        "type" : "withButtons",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Produção do Documento",
+          "en-GB" : "Document Generation"
+        },
+        "description" : {
+          "pt-PT" : "Produção do documento académico",
+          "en-GB" : "Academic document generation"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Produção do documento académico",
+          "en-GB" : "Academic document generation"
+        },
+        "buttons" : [ {
+          "label" : {
+            "pt-PT" : "Reverter para Confirmação de Apuramento",
+            "en-GB" : "Revert to Programme Conclusion Confirmation"
+          },
+          "handler" : "process:revert-to-step"
+        }, {
+          "primary" : true,
+          "label" : {
+            "pt-PT" : "Produzir Documento",
+            "en-GB" : "Generate Document"
+          },
+          "handler" : "action:GENERATE_DOCUMENT"
+        } ],
+        "actions" : {
+          "GENERATE_DOCUMENT" : {
+            "primary" : true,
+            "to" : "send-to-rector-office",
+            "label" : {
+              "pt-PT" : "Produzir Documento",
+              "en-GB" : "Generate Document"
+            }
+          }
+        },
+        "queue" : "{{academic-office-queue}} - Produção de Documentos",
+        "actionProcessor" : {
+          "onActionTransition" : [ {
+            "applyOn" : "GENERATE_DOCUMENT",
+            "flowProcessor" : "Generate Document",
+            "team" : "a474a698-6af4-4510-9745-4b2183af6dd7",
+            "template" : "1d3e01ce-89a4-46fb-a2a7-12e15ff8258c",
+            "locale" : "{{locale-languageTag}}",
+            "outcome-form-field" : "0.1.CERTIFICATE_OF_REGISTRATION",
+            "filenameProvider" : "Get Academic Document Filename",
+            "contentType" : "application/pdf",
+            "payloadProviders" : "Certificate of Registration Papyrus Payload"
+          } ]
+        }
+      }, {
+        "id" : "send-to-rector-office",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Envio para a Reitoria",
+          "en-GB" : "Send to Rector's Office"
+        },
+        "description" : {
+          "pt-PT" : "Envio do documento à Reitoria",
+          "en-GB" : "Send document to Rector's Office"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Envio do documento à Reitoria",
+          "en-GB" : "Send document to Rector's Office"
+        },
+        "actions" : {
+          "SEND_TO_RECTOR_OFFICE" : {
+            "primary" : true,
+            "to" : "document-processing",
+            "label" : {
+              "pt-PT" : "Enviar para a Reitoria",
+              "en-GB" : "Send to Rector's Office"
+            }
+          }
+        },
+        "queue" : "{{academic-office-queue}} - Expedição Saída"
+      }, {
+        "id" : "document-processing",
+        "type" : "withButtons",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Processamento do Documento",
+          "en-GB" : "Document Processing"
+        },
+        "description" : {
+          "pt-PT" : "Processamento do documento",
+          "en-GB" : "Document processing"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Processamento do documento",
+          "en-GB" : "Document processing"
+        },
+        "buttons" : [ {
+          "label" : {
+            "pt-PT" : "Descarregar Documento",
+            "en-GB" : "Download Document"
+          },
+          "handler" : "process:get-outcome-document"
+        }, {
+          "primary" : true,
+          "label" : {
+            "pt-PT" : "Marcar como Processado",
+            "en-GB" : "Mark as Processed"
+          },
+          "handler" : "action:PROCESS"
+        } ],
+        "actions" : {
+          "PROCESS" : {
+            "primary" : true,
+            "to" : "document-reception",
+            "label" : {
+              "pt-PT" : "Marcar como Processado",
+              "en-GB" : "Mark as Processed"
+            }
+          }
+        },
+        "queue" : "{{rectorate-academic-services}}"
+      }, {
+        "id" : "document-reception",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Receção do Documento",
+          "en-GB" : "Document Reception"
+        },
+        "description" : {
+          "pt-PT" : "Receção do documento",
+          "en-GB" : "Document reception"
+        },
+        "commentLabel" : {
+          "pt-PT" : "Receção do documento",
+          "en-GB" : "Document reception"
+        },
+        "actions" : {
+          "RECEIVE" : {
+            "primary" : true,
+            "to" : "presidential-signature",
+            "label" : {
+              "pt-PT" : "Confirmar receção",
+              "en-GB" : "Confirm receipt"
+            }
+          }
+        },
+        "queue" : "{{academic-office-queue}} - Expedição Entrada"
+      }, {
+        "id" : "presidential-signature",
+        "type" : "generic",
+        "comment" : false,
+        "title" : {
+          "pt-PT" : "Assinatura da Presidência",
+          "en-GB" : "Presidential Signature"
+        },
+        "description" : {
+          "pt-PT" : "Assinatura da Presidência",
+          "en-GB" : "Presidential Signature"
+        },
+        "actions" : {
+          "SIGN" : {
+            "primary" : true,
+            "to" : "SUCCESS",
+            "label" : {
+              "pt-PT" : "Confirmar Assinatura",
+              "en-GB" : "Confirm Signature"
+            }
+          }
+        },
+        "queue" : "{{academic-office-queue}} - Assinatura da Presidência"
+      } ]
+    }
+  }
+}

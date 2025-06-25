@@ -1,0 +1,104 @@
+{
+    "name": {
+        "pt-PT": "Substituição de Unidade Curricular",
+        "en-GB": "Curricular Course Substituition"
+    },
+    "description": {
+        "pt-PT": "Este formulário permite-lhe solicitar a anulação a uma unidade curriculare e substituição por outra unidade curriculare.",
+        "en-GB": "This form allows you to request annulment of a curricular course and substitution with another curricular course."
+    },
+    "context": {},
+    "inputForm": {
+        "checks": {
+            "requireIdentity": true,
+            "requirePersonalInformation": true,
+            "requireUser": true
+        },
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Substituição de Unidade Curricular",
+                    "en-GB": "Curricular Course Substituition"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Unidade Curricular a anular",
+                            "en-GB": "Curricular Course to anull"
+                        },
+                        "properties": [
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "REGISTRATION",
+                                "label": {
+                                    "pt-PT": "Curso",
+                                    "en-GB": "Degree"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/registrations"
+                            },
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "CURRICULAR_COURSE",
+                                "label": {
+                                    "pt-PT": "Unidade Curricular",
+                                    "en-GB": "Curricular Course"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/enrolments",
+                                "optionsLimitedBy": {
+                                    "field": "REGISTRATION"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Unidade Curricular a inscrever",
+                            "en-GB": "Curricular Course to enroll"
+                        },
+                        "properties": [
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "CURRICULAR_COURSE",
+                                "label": {
+                                    "pt-PT": "Unidade Curricular",
+                                    "en-GB": "Curricular Course"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/courses"
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Justificação",
+                            "en-GB": "Justification"
+                        },
+                        "properties": [
+                            {
+                                "type": "Text",
+                                "required": true,
+                                "maxLength": 250,
+                                "field": "JUSTIFICATION",
+                                "label": {
+                                    "pt-PT": "Justificação",
+                                    "en-GB": "Justification"
+                                },
+                                "multiline": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "outcomeForm": {},
+    "cost": {}
+}

@@ -1,0 +1,1395 @@
+{
+  "flowTemplate" : {
+    "name" : "specially-hired-faculty-contract",
+    "title" : {
+      "pt-PT" : "Processo de Proposta de Contrato de Pessoal Docente Especialmente Contratado",
+      "en-GB" : "Contract Proposal Process for Specially Hired Faculty"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Proposta de Contrato de Pessoal Docente Especialmente Contratado",
+      "en-GB" : "Contract Proposal Process for Specially Hired Faculty"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onSuccess" : [ ],
+        "onFailure" : [
+          {
+            "flowProcessor" : "Return Flow Rejected To Request"
+          }
+        ],
+        "onActionTransition" : [ ],
+        "onCancel" : [
+          {
+            "flowProcessor" : "Cancel Connected Requests"
+          }
+        ]
+      },
+      "flowProcessors" : [
+        {
+          "handle" : "move-queue-plenary",
+          "flowProcessor" : "Move Queue",
+          "flowQueue" : "Plenário do Conselho Científico",
+          "url" : "https://fenix.tecnico.ulisboa.pt/fenixedu-smart-flow/flows/{{flowId}}/form-data"
+        },
+        {
+          "handle" : "revert-move-queue-plenary",
+          "flowProcessor" : "Move Queue",
+          "flowQueue" : "Conselho Científico",
+          "url" : "https://fenix.tecnico.ulisboa.pt/fenixedu-smart-flow/flows/{{flowId}}/form-data"
+        }
+      ],
+      "forms" : [
+        {
+          "id" : "cost-allocation",
+          "title" : {
+            "pt-PT" : "Imputação de custos",
+            "en-GB" : "Cost allocation"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Informação_de_Encargos",
+                  "en-GB" : "Charges_Information"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Encargos_Definitivos",
+                      "en-GB" : "Definitive_Costs"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Quantity",
+                        "field" : "salaryMonthlyBase",
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Remuneração Base Mensal (€)",
+                          "en-GB" : "Monthly Base Salary (€)"
+                        },
+                        "min" : 0,
+                        "step" : 0.01
+                      },
+                      {
+                        "type" : "Array",
+                        "field" : "costsByYear",
+                        "description" : {
+                          "pt-PT" : "Indique os encargos suportados pelo(s) elemento(s) PEP(s) e a respective percentagem.",
+                          "en-GB" : "Indicate the costs suported by the PEP element(s) and the respective percentage."
+                        },
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Ano Económico e Intervalo",
+                          "en-GB" : "Economic Year and Interval"
+                        },
+                        "labelAddElement" : {
+                          "pt-PT" : "Adicionar Ano Económico",
+                          "en-GB" : "Add Economic Year"
+                        },
+                        "properties" : [
+                          {
+                            "type" : "Quantity",
+                            "field" : "economicYear",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Ano Económico para os Encargos",
+                              "en-GB" : "Economic Year for the Costs"
+                            },
+                            "inputType" : "plain",
+                            "step" : 1,
+                            "min" : 2023,
+                            "max" : 2046
+                          },
+                          {
+                            "type" : "Composite",
+                            "field" : "costInterval",
+                            "required" : true,
+                            "description" : {
+                              "pt-PT" : "Indique a data de início e fim dos encargos.",
+                              "en-GB" : "Indicate the start and end date of costs."
+                            },
+                            "properties" : [
+                              {
+                                "type" : "DateTime",
+                                "field" : "costIntervalStartDate",
+                                "required" : true,
+                                "date" : true,
+                                "time" : false,
+                                "label" : {
+                                  "pt-PT" : "Data de Início dos Encargos",
+                                  "en-GB" : "Begin Date of the Costs"
+                                }
+                              },
+                              {
+                                "type" : "DateTime",
+                                "field" : "costIntervalEndDate",
+                                "required" : true,
+                                "date" : true,
+                                "time" : false,
+                                "label" : {
+                                  "pt-PT" : "Data de Fim dos Encargos",
+                                  "en-GB" : "End Date of the Costs"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type" : "Quantity",
+                            "field" : "salaryBase",
+                            "description" : {
+                              "pt-PT" : "Indique o total da remuneração base no periodo.",
+                              "en-GB" : "Indicate the total base remuneration in the period."
+                            },
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "a. Remuneração Base para o Período (€)",
+                              "en-GB" : "a. Base Salary for the Period (€)"
+                            },
+                            "min" : 0,
+                            "step" : 0.01
+                          },
+                          {
+                            "type" : "Quantity",
+                            "field" : "salaryFoodSubsidy",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "b. Subsídio de Alimentação (€)",
+                              "en-GB" : "b. Food Subsidy (€)"
+                            },
+                            "min" : 0,
+                            "step" : 0.01
+                          },
+                          {
+                            "type" : "Quantity",
+                            "field" : "salaryVacationSubsidy",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "c. Subsídio de Férias (€)",
+                              "en-GB" : "c. Vacation Subsidy (€)"
+                            },
+                            "min" : 0,
+                            "step" : 0.01
+                          },
+                          {
+                            "type" : "Quantity",
+                            "field" : "salaryChristmasSubsidy",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "d. Subsídio de Natal (€)",
+                              "en-GB" : "d. Christmas Subsidy (€)"
+                            },
+                            "min" : 0,
+                            "step" : 0.01
+                          },
+                          {
+                            "type" : "Composite",
+                            "field" : "tsu",
+                            "description" : {
+                              "pt-PT" : "Indique a percentagem da taxa da TSU a aplicar no ano económico e o valor calculado sobre esta.",
+                              "en-GB" : "Indicate the TSU rate to be applied in the financial year and the value calculated on the rate."
+                            },
+                            "properties" : [
+                              {
+                                "type" : "Quantity",
+                                "field" : "tsuPercentage",
+                                "label" : {
+                                  "pt-PT" : "TSU (%)",
+                                  "en-GB" : "TSU (%)"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              },
+                              {
+                                "type" : "Quantity",
+                                "field" : "tsuValue",
+                                "required" : true,
+                                "label" : {
+                                  "pt-PT" : "e. Valor da TSU (€)",
+                                  "en-GB" : "e. TSU Value (€)"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              }
+                            ]
+                          },
+                          {
+                            "type" : "Quantity",
+                            "field" : "salarySubTotal",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Sub-Total de encargos para o período (€)",
+                              "en-GB" : "Sub-Total of expenses for the period (€)"
+                            },
+                            "description" : {
+                              "pt-PT" : "Calculado sumando os campos a, b, c, d e e para o ano económico.",
+                              "en-GB" : "Calculated adding values a, b, c, d and e for the economic year."
+                            },
+                            "min" : 0,
+                            "step" : 0.01
+                          },
+                          {
+                            "type" : "Composite",
+                            "field" : "caducidade",
+                            "properties" : [
+                              {
+                                "type" : "Quantity",
+                                "field" : "caducidadeDay",
+                                "required" : true,
+                                "label" : {
+                                  "pt-PT" : "Compensação por Caducidade em dias",
+                                  "en-GB" : "Compensation for termination in days"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              },
+                              {
+                                "type" : "Quantity",
+                                "field" : "caducidadeValue",
+                                "required" : true,
+                                "label" : {
+                                  "pt-PT" : "Valor de Caducidade (€)",
+                                  "en-GB" : "Termination Value (€)"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              }
+                            ]
+                          },
+                          {
+                            "type" : "Composite",
+                            "field" : "unusedVacation",
+                            "properties" : [
+                              {
+                                "type" : "Quantity",
+                                "field" : "unusedVacationDay",
+                                "required" : true,
+                                "label" : {
+                                  "pt-PT" : "Férias não gozadas em dias",
+                                  "en-GB" : "Unused Vacation in days"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              },
+                              {
+                                "type" : "Quantity",
+                                "field" : "unusedVacationValue",
+                                "required" : true,
+                                "label" : {
+                                  "pt-PT" : "Valor Férias Não Gozadas (€)",
+                                  "en-GB" : "Value of Unused Vacation (€)"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              }
+                            ]
+                          },
+                          {
+                            "type" : "Quantity",
+                            "field" : "otherVacationSubsidy",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Subsídio de férias vincendas (€)",
+                              "en-GB" : "Unused Vacation Subsidy (€)"
+                            },
+                            "min" : 0,
+                            "step" : 0.01
+                          },
+                          {
+                            "type" : "Composite",
+                            "field" : "expiredVacation",
+                            "properties" : [
+                              {
+                                "type" : "Quantity",
+                                "field" : "expiredVacationDay",
+                                "required" : true,
+                                "label" : {
+                                  "pt-PT" : "Férias Vincendas em dias",
+                                  "en-GB" : "Expired Vacation in days"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              },
+                              {
+                                "type" : "Quantity",
+                                "field" : "expiredVacationValue",
+                                "required" : true,
+                                "label" : {
+                                  "pt-PT" : "Valor Férias Vincendas (€)",
+                                  "en-GB" : "Expired Vacation Value (€)"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              }
+                            ]
+                          },
+                          {
+                            "type" : "Composite",
+                            "field" : "otherTsu",
+                            "description" : {
+                              "pt-PT" : "Indique a percentagem da taxa da TSU a aplicar no ano económico e o valor calculado sobre esta.",
+                              "en-GB" : "Indicate the TSU rate to be applied in the financial year and the value calculated on the rate."
+                            },
+                            "properties" : [
+                              {
+                                "type" : "Quantity",
+                                "field" : "otherTsuPercentage",
+                                "label" : {
+                                  "pt-PT" : "Outro TSU (%)",
+                                  "en-GB" : "Other TSU (%)"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              },
+                              {
+                                "type" : "Quantity",
+                                "field" : "otherTsuValue",
+                                "required" : true,
+                                "label" : {
+                                  "pt-PT" : "Valor Outro TSU (€)",
+                                  "en-GB" : "Other TSU Value (€)"
+                                },
+                                "min" : 0,
+                                "step" : 0.01
+                              }
+                            ]
+                          },
+                          {
+                            "type" : "Quantity",
+                            "field" : "totalCosts",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Total do Encargo para o Período (€)",
+                              "en-GB" : "Total Expenses for the Period (€)"
+                            },
+                            "min" : 0,
+                            "step" : 0.01
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id" : "fund-reservation",
+          "title" : {
+            "pt-PT" : "Reserva de Fundos",
+            "en-GB" : "Reserve Funds"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Direção_de_Projetos_e_Execução_Orçamental",
+                  "en-GB" : "Projects_and_Budget_Execution_Department"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Reserva/Cabimento",
+                      "en-GB" : "Reserve/Fund_Allocation"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Array",
+                        "field" : "reserveFundAllocationCommitments",
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Encargos Financeiros",
+                          "en-GB" : "Financial Costs"
+                        },
+                        "labelAddElement" : {
+                          "pt-PT" : "Adicionar encargo financeiro",
+                          "en-GB" : "Add financial cost"
+                        },
+                        "properties" : [
+                          {
+                            "type" : "AsyncSelect",
+                            "field" : "financerConfig",
+                            "label" : {
+                              "pt-PT" : "Elemento Financiador",
+                              "en-GB" : "Funding Element"
+                            },
+                            "required" : true,
+                            "allowOther" : false,
+                            "optionsProvider" : "/paper-pusher-ist/financeUnitFlowConfig/{{flowId}}/financers"
+                          },
+                          {
+                            "type" : "Text",
+                            "field" : "fundReservationNumber",
+                            "required" : false,
+                            "label" : {
+                              "pt-PT" : "Número de Reserva",
+                              "en-GB" : "Fund Reservation Number"
+                            },
+                            "multiline" : false,
+                            "inputType" : "plain"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id" : "fund-information",
+          "title" : {
+            "pt-PT" : "Informação Financeira Lida do SAP",
+            "en-GB" : "Financial Information from SAP"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Reservas_e_Cabimentos",
+                  "en-GB" : "Reservations_and_Fund_Allocation"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Detalhes",
+                      "en-GB" : "Details"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "Array",
+                        "field" : "financialInformation",
+                        "required" : false,
+                        "readonly" : true,
+                        "label" : {
+                          "pt-PT" : "Informação do SAP",
+                          "en-GB" : "Information from SAP"
+                        },
+                        "properties" : [
+                          {
+                            "type" : "Text",
+                            "field" : "documentType",
+                            "required" : false,
+                            "readonly" : true,
+                            "label" : {
+                              "pt-PT" : "Tipo de Documento",
+                              "en-GB" : "Document Type"
+                            }
+                          },
+                          {
+                            "type" : "Text",
+                            "field" : "documentId",
+                            "required" : false,
+                            "readonly" : true,
+                            "label" : {
+                              "pt-PT" : "Número do Documento",
+                              "en-GB" : "Document Number"
+                            }
+                          },
+                          {
+                            "type" : "Text",
+                            "field" : "operator",
+                            "required" : false,
+                            "readonly" : true,
+                            "label" : {
+                              "pt-PT" : "Operador",
+                              "en-GB" : "Operator"
+                            }
+                          },
+                          {
+                            "type" : "Text",
+                            "field" : "entryDate",
+                            "required" : false,
+                            "readonly" : true,
+                            "label" : {
+                              "pt-PT" : "Data de Entrada",
+                              "en-GB" : "Entry Date"
+                            }
+                          },
+                          {
+                            "type" : "Text",
+                            "field" : "documentDate",
+                            "required" : false,
+                            "readonly" : true,
+                            "label" : {
+                              "pt-PT" : "Data no Documento",
+                              "en-GB" : "Date in Document"
+                            }
+                          },
+                          {
+                            "type" : "Text",
+                            "field" : "documentReleaseDate",
+                            "required" : false,
+                            "readonly" : true,
+                            "label" : {
+                              "pt-PT" : "Data de Lançamento no Documento",
+                              "en-GB" : "Release Date in Document"
+                            }
+                          },
+                          {
+                            "type" : "Array",
+                            "field" : "documents",
+                            "required" : false,
+                            "readonly" : true,
+                            "label" : {
+                              "pt-PT" : "Documentos do SAP",
+                              "en-GB" : "Documentos do SAP"
+                            },
+                            "properties" : [
+                              {
+                                "type" : "Text",
+                                "field" : "documentType",
+                                "required" : false,
+                                "readonly" : true,
+                                "label" : {
+                                  "pt-PT" : "Tipo de Documento",
+                                  "en-GB" : "Document Type"
+                                }
+                              },
+                              {
+                                "type" : "Text",
+                                "field" : "documentId",
+                                "required" : false,
+                                "readonly" : true,
+                                "label" : {
+                                  "pt-PT" : "Número do Documento",
+                                  "en-GB" : "Document Number"
+                                }
+                              },
+                              {
+                                "type" : "Text",
+                                "field" : "operator",
+                                "required" : false,
+                                "readonly" : true,
+                                "label" : {
+                                  "pt-PT" : "Operador",
+                                  "en-GB" : "Operator"
+                                }
+                              },
+                              {
+                                "type" : "Text",
+                                "field" : "entryDate",
+                                "required" : false,
+                                "readonly" : true,
+                                "label" : {
+                                  "pt-PT" : "Data de Entrada",
+                                  "en-GB" : "Entry Date"
+                                }
+                              },
+                              {
+                                "type" : "Text",
+                                "field" : "documentDate",
+                                "required" : false,
+                                "readonly" : true,
+                                "label" : {
+                                  "pt-PT" : "Data no Documento",
+                                  "en-GB" : "Date in Document"
+                                }
+                              },
+                              {
+                                "type" : "Text",
+                                "field" : "documentReleaseDate",
+                                "required" : false,
+                                "readonly" : true,
+                                "label" : {
+                                  "pt-PT" : "Data de Lançamento no Documento",
+                                  "en-GB" : "Release Date in Document"
+                                }
+                              },
+                              {
+                                "type" : "Array",
+                                "field" : "items",
+                                "required" : false,
+                                "readonly" : true,
+                                "label" : {
+                                  "pt-PT" : "Itens do Documento",
+                                  "en-GB" : "Document Items"
+                                },
+                                "properties" : [
+                                  {
+                                    "type" : "Text",
+                                    "field" : "value",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Valor",
+                                      "en-GB" : "Value"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "description",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Descrição",
+                                      "en-GB" : "Description"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "financialCentre",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Centro Financeiro",
+                                      "en-GB" : "Financial Centre"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "funds",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Fundos",
+                                      "en-GB" : "Funds"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "functionalArea",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Área Funcional",
+                                      "en-GB" : "Functional Area"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "pepElement",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Elemento PEP",
+                                      "en-GB" : "PEP Element"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "supplierName",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Nome do Fornecedor",
+                                      "en-GB" : "Supplier Name"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "supplierTin",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "NIF do Fornecedor",
+                                      "en-GB" : "Supplier TIN"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "expiryDate",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Data de Validade",
+                                      "en-GB" : "Expiry Date"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "type" : "Array",
+                                "field" : "documents",
+                                "required" : false,
+                                "readonly" : true,
+                                "label" : {
+                                  "pt-PT" : "Documentos do SAP",
+                                  "en-GB" : "Documentos do SAP"
+                                },
+                                "properties" : [
+                                  {
+                                    "type" : "Text",
+                                    "field" : "documentType",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Tipo de Documento",
+                                      "en-GB" : "Document Type"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "documentId",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Número do Documento",
+                                      "en-GB" : "Document Number"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "operator",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Operador",
+                                      "en-GB" : "Operator"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "entryDate",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Data de Entrada",
+                                      "en-GB" : "Entry Date"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "documentDate",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Data no Documento",
+                                      "en-GB" : "Date in Document"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Text",
+                                    "field" : "documentReleaseDate",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Data de Lançamento no Documento",
+                                      "en-GB" : "Release Date in Document"
+                                    }
+                                  },
+                                  {
+                                    "type" : "Array",
+                                    "field" : "items",
+                                    "required" : false,
+                                    "readonly" : true,
+                                    "label" : {
+                                      "pt-PT" : "Itens do Documento",
+                                      "en-GB" : "Document Items"
+                                    },
+                                    "properties" : [
+                                      {
+                                        "type" : "Text",
+                                        "field" : "value",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "Valor",
+                                          "en-GB" : "Value"
+                                        }
+                                      },
+                                      {
+                                        "type" : "Text",
+                                        "field" : "description",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "Descrição",
+                                          "en-GB" : "Description"
+                                        }
+                                      },
+                                      {
+                                        "type" : "Text",
+                                        "field" : "financialCentre",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "Centro Financeiro",
+                                          "en-GB" : "Financial Centre"
+                                        }
+                                      },
+                                      {
+                                        "type" : "Text",
+                                        "field" : "funds",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "Fundos",
+                                          "en-GB" : "Funds"
+                                        }
+                                      },
+                                      {
+                                        "type" : "Text",
+                                        "field" : "functionalArea",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "Área Funcional",
+                                          "en-GB" : "Functional Area"
+                                        }
+                                      },
+                                      {
+                                        "type" : "Text",
+                                        "field" : "pepElement",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "Elemento PEP",
+                                          "en-GB" : "PEP Element"
+                                        }
+                                      },
+                                      {
+                                        "type" : "Text",
+                                        "field" : "supplierName",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "Nome do Fornecedor",
+                                          "en-GB" : "Supplier Name"
+                                        }
+                                      },
+                                      {
+                                        "type" : "Text",
+                                        "field" : "supplierTin",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "NIF do Fornecedor",
+                                          "en-GB" : "Supplier TIN"
+                                        }
+                                      },
+                                      {
+                                        "type" : "Text",
+                                        "field" : "expiryDate",
+                                        "required" : false,
+                                        "readonly" : true,
+                                        "label" : {
+                                          "pt-PT" : "Data de Validade",
+                                          "en-GB" : "Expiry Date"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "actionNodes" : [
+        {
+          "id" : "step-1",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "O/A Presidente do Departamento",
+            "en-GB" : "The Department President"
+          },
+          "description" : {
+            "pt-PT" : "Parecer do/a presidente do departamento.",
+            "en-GB" : "Deliberation of the presidente of the department."
+          },
+          "commentLabel" : {
+            "pt-PT" : "Parecer do/a presidente do departamento.",
+            "en-GB" : "Deliberation of the presidente of the department."
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-2",
+              "label" : {
+                "pt-PT" : "Autorizar",
+                "en-GB" : "Authorise"
+              },
+              "id" : "SIGN-step-1",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-1",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "step1-queue"
+        },
+        {
+          "id" : "step-2",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Imputação de custos",
+            "en-GB" : "Cost allocation"
+          },
+          "description" : {
+            "pt-PT" : "Processamento pela Direção de Recursos Humanos",
+            "en-GB" : "Processing by the Human Resources Department"
+          },
+          "buttons" : [
+            {
+              "id" : "submit-form-step-2",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Imputação de custos",
+                "en-GB" : "Cost allocation"
+              },
+              "handlers" : {
+                "form" : "cost-allocation",
+                "action" : "RESERVE_FUNDS-step-2"
+              }
+            },
+            {
+              "id" : "reject-step-2",
+              "primary" : false,
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Rejeitar"
+              },
+              "handlers" : {
+                "action" : "REJECT-step-2"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-3.1-fund-reservation",
+              "label" : {
+                "pt-PT" : "Reservar Fundos",
+                "en-GB" : "Reserve Funds"
+              },
+              "id" : "RESERVE_FUNDS-step-2",
+              "name" : "RESERVE_FUNDS"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-2",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Nucleo-de-Remuneracoes-e-Protecao-Social-Geral",
+          "blockUndo" : true
+        },
+        {
+          "id" : "step-3.1-fund-reservation",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Reservar Fundos",
+            "en-GB" : "Allocate Funds"
+          },
+          "description" : {
+            "pt-PT" : "Alocação de Verbas para Garantir a Possibilidade de Pagamento",
+            "en-GB" : "Budget Allocation to Ensure the Possibility of Payment"
+          },
+          "buttons" : [
+            {
+              "id" : "fund-reservation-form-step-3.1-fund-reservation",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Confirmar Reserva de Fundos",
+                "en-GB" : "Confirm Fund Reservation"
+              },
+              "handlers" : {
+                "form" : "fund-reservation",
+                "action" : "RESERVE_FUNDS-step-3.1-fund-reservation"
+              }
+            },
+            {
+              "id" : "reject-step-3.1-fund-reservation",
+              "primary" : false,
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "handlers" : {
+                "action" : "REJECT-step-3.1-fund-reservation"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-4-fund-allocation",
+              "label" : {
+                "pt-PT" : "Confirmar Reserva de Fundos",
+                "en-GB" : "Confirm Fund Reservation"
+              },
+              "id" : "RESERVE_FUNDS-step-3.1-fund-reservation",
+              "name" : "RESERVE_FUNDS"
+            },
+            {
+              "primary" : false,
+              "to" : "step-3.1-fund-undo-reservation",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-3.1-fund-reservation",
+              "name" : "REJECT"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "RESERVE_FUNDS-step-3.1-fund-reservation",
+              "flowProcessor" : "Sync Funds Allocation Info",
+              "id" : "onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queue" : "step3-queue"
+        },
+        {
+          "id" : "step-4-fund-allocation",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Cabimento de Fundos",
+            "en-GB" : "Fund Allocation"
+          },
+          "description" : {
+            "pt-PT" : "Alocação de Verbas para Garantir a Possibilidade de Pagamento",
+            "en-GB" : "Budget Allocation to Ensure the Possibility of Payment"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-5-scientificCouncil",
+              "label" : {
+                "pt-PT" : "Confirmar Alocação de Fundos",
+                "en-GB" : "Confirm Fund Allocation"
+              },
+              "id" : "ALLOCATE_FUNDS-step-4-fund-allocation",
+              "name" : "ALLOCATE_FUNDS"
+            },
+            {
+              "primary" : false,
+              "to" : "step-3.1-fund-undo-reservation",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-4-fund-allocation",
+              "name" : "REJECT"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "ALLOCATE_FUNDS-step-4-fund-allocation",
+              "flowProcessor" : "Sync Funds Allocation Info",
+              "id" : "onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queuesAllowedToChangeTo" : [
+            "Área de Contabilidade - Geral",
+            "Núcleo de Execução Orçamental - Geral",
+            "Núcleo de Contabilidade - Geral"
+          ],
+          "queue" : "Nucleo-de-Execucao-Orcamental-Geral",
+          "blockUndo" : false
+        },
+        {
+          "id" : "step-5-scientificCouncil",
+          "type" : "withButtons",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "Conselho Científico",
+            "en-GB" : "Scientific Council"
+          },
+          "description" : {
+            "pt-PT" : "Deliberação do Conselho Científico.",
+            "en-GB" : "Deliberation of the Scientific Council."
+          },
+          "commentLabel" : {
+            "pt-PT" : "Deliberação do Conselho Científico.",
+            "en-GB" : "Deliberation of the Scientific Council."
+          },
+          "buttons" : [
+            {
+              "label" : {
+                "pt-PT" : "Enviar para Plenário",
+                "en-GB" : "Send to Plenary"
+              },
+              "handler" : "process:move-queue-plenary"
+            },
+            {
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Autorizar",
+                "en-GB" : "Authorise"
+              },
+              "handler" : "action:SIGN"
+            },
+            {
+              "label" : {
+                "pt-PT" : "Requerer Revisão de Documentos",
+                "en-GB" : "Request Changes do Documents"
+              },
+              "handler" : "action:REQUEST_REVIEW_DOCUMENTS"
+            },
+            {
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "handler" : "action:REJECT"
+            },
+            {
+              "label" : {
+                "pt-PT" : "Reverter envio para Plenário",
+                "en-GB" : "Revert Send to Plenary"
+              },
+              "handler" : "process:revert-move-queue-plenary"
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-6-administrator",
+              "label" : {
+                "pt-PT" : "Autorizar",
+                "en-GB" : "Authorise"
+              },
+              "id" : "SIGN-step-5-scientificCouncil",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "step-5-request-document-changes",
+              "label" : {
+                "pt-PT" : "Requerer Revisão de Documentos",
+                "en-GB" : "Request Changes do Documents"
+              },
+              "id" : "REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil",
+              "name" : "REQUEST_REVIEW_DOCUMENTS"
+            },
+            {
+              "primary" : false,
+              "to" : "step-4-fund-undo-allocation",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-5-scientificCouncil",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Contratacao"
+        },
+        {
+          "id" : "step-5-request-document-changes",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Rever Documentação",
+            "en-GB" : "Review Documents"
+          },
+          "description" : {
+            "pt-PT" : "Completar e retificar documentação",
+            "en-GB" : "Complete e correct documentation"
+          },
+          "buttons" : [
+            {
+              "id" : "review-documents-form-step-5-request-document-changes",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Rever Documentação",
+                "en-GB" : "Review Documents"
+              },
+              "handlers" : {
+                "form" : "review-documents-form",
+                "action" : "RESERVE_FUNDS-step-5-request-document-changes"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-5-scientificCouncil",
+              "label" : {
+                "pt-PT" : "Rever Documentação",
+                "en-GB" : "Review Documents"
+              },
+              "id" : "SUBMIT-step-5-request-document-changes",
+              "name" : "SUBMIT"
+            },
+            {
+              "primary" : false,
+              "to" : "step-5-scientificCouncil",
+              "label" : {
+                "pt-PT" : "Nenhuma Informação Adicional Prestada",
+                "en-GB" : "No Additional Information was Provided"
+              },
+              "id" : "FINISH_WAITING-step-5-request-document-changes",
+              "name" : "FINISH_WAITING"
+            }
+          ],
+          "queue" : "requester-workplace-unit",
+          "blockUndo" : true,
+          "actionProcessor" : [
+            {
+              "flowProcessor" : "Send e-mail",
+              "template" : "email-request-pdec-document-revision",
+              "notifyFlowMembers" : true,
+              "sender" : "1696378937945233",
+              "parameters" : { },
+              "id" : "onEnterNode-step-5-request-document-changes-Send_e-mail",
+              "name" : "onEnterNode"
+            },
+            {
+              "flowProcessor" : "Do Flow Action After Time Passes",
+              "flowAction" : "FINISH_WAITING",
+              "user" : "fenix",
+              "when" : {
+                "plusWorkingDays" : "5"
+              },
+              "id" : "onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes",
+              "name" : "onEnterNode"
+            }
+          ]
+        },
+        {
+          "id" : "step-6-administrator",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "O/A Presidente do Instituto Superior Técnico",
+            "en-GB" : "The President of Instituto Superior Técnico"
+          },
+          "description" : {
+            "pt-PT" : "Despacho do/a Presidente do Instituto Superior Técnico.",
+            "en-GB" : "Dispatch by the President of Instituto Superior Técnico."
+          },
+          "commentLabel" : {
+            "pt-PT" : "Despacho do/a Presidente do Instituto Superior Técnico.",
+            "en-GB" : "Dispatch by the President of Instituto Superior Técnico."
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Autorizar",
+                "en-GB" : "Authorise"
+              },
+              "id" : "SIGN-step-6-administrator",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "step-4-fund-undo-allocation",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-step-6-administrator",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Presidencia-do-Instituto-Superior-Tecnico",
+          "actionProcessor" : [
+            {
+              "applyOn" : "SIGN-step-6-administrator",
+              "flowProcessor" : "Return Flow Approved To Request",
+              "id" : "onSuccess-step-6-administrator-Return_Flow_Approved_To_Request",
+              "name" : "onSuccess"
+            }
+          ]
+        },
+        {
+          "id" : "step-4-fund-undo-allocation",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Libertar Cabimento de Fundos",
+            "en-GB" : "Undo Fund Allocation"
+          },
+          "description" : {
+            "pt-PT" : "Cancelar Alocação de Verbas",
+            "en-GB" : "Undo Budget Allocation"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-3.1-fund-undo-reservation",
+              "label" : {
+                "pt-PT" : "Confirmar Cancelamento de Alocação de Fundos",
+                "en-GB" : "Confirm Undo Fund Allocation"
+              },
+              "id" : "UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation",
+              "name" : "UNDO_ALLOCATE_FUNDS"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation",
+              "flowProcessor" : "Sync Funds Allocation Info",
+              "id" : "onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queuesAllowedToChangeTo" : [
+            "Área de Contabilidade - Geral",
+            "Núcleo de Execução Orçamental - Geral",
+            "Núcleo de Contabilidade - Geral"
+          ],
+          "queue" : "Nucleo-de-Execucao-Orcamental-Geral",
+          "blockUndo" : false
+        },
+        {
+          "id" : "step-3.1-fund-undo-reservation",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Libertar Reserva de Fundos",
+            "en-GB" : "Undo Fund Allocation"
+          },
+          "description" : {
+            "pt-PT" : "Cancelar Alocação de Verbas",
+            "en-GB" : "Undo Budget Allocation"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-4-fund-undo-allocation",
+              "label" : {
+                "pt-PT" : "Confirmar Cancelamento da Reserva de Fundos",
+                "en-GB" : "Confirm Undo Fund Reservation"
+              },
+              "id" : "UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation",
+              "name" : "UNDO_RESERVE_FUNDS"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation",
+              "flowProcessor" : "Sync Funds Allocation Info",
+              "id" : "onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queue" : "step3-queue-undo"
+        }
+      ]
+    }
+  }
+}

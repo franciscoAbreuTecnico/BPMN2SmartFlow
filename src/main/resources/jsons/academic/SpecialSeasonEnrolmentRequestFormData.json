@@ -1,0 +1,115 @@
+{
+    "name": {
+        "pt-PT": "Inscrição em Época Especial",
+        "en-GB": "Enrolment in Special Season"
+    },
+    "description": {
+        "pt-PT": "Este formulário permite-lhe solicitar a autorização à inscrição no Exame de Época espcial a uma unidade curricular.",
+        "en-GB": "This form allows you to request to enrol in the Special Period Exam for a curricular unit."
+    },
+    "context": {},
+    "inputForm": {
+        "checks": {
+            "requireIdentity": true,
+            "requirePersonalInformation": true,
+            "requireUser": true
+        },
+        "pages": [
+            {
+                "title": {
+                    "pt-PT": "Inscrição em Época Especial",
+                    "en-GB": "Enrolment in Special Season"
+                },
+                "sections": [
+                    {
+                        "title": {
+                            "pt-PT": "Unidade Curricular",
+                            "en-GB": "Curricular Course"
+                        },
+                        "properties": [
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "REGISTRATION",
+                                "label": {
+                                    "pt-PT": "Curso",
+                                    "en-GB": "Degree"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/registrations"
+                            },
+                            {
+                                "type": "AsyncSelect",
+                                "readonly": false,
+                                "required": true,
+                                "allowOther": false,
+                                "field": "CURRICULAR_COURSE",
+                                "label": {
+                                    "pt-PT": "Unidade Curricular",
+                                    "en-GB": "Curricular Course"
+                                },
+                                "optionsProvider": "https://fenix.tecnico.ulisboa.pt/paper-pusher-ist/enrolments",
+                                "optionsLimitedBy": {
+                                    "field": "REGISTRATION"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "title": {
+                            "pt-PT": "Justificação",
+                            "en-GB": "Justification"
+                        },
+                        "properties": [
+                            {
+                                "type": "Text",
+                                "required": true,
+                                "maxLength": 250,
+                                "field": "JUSTIFICATION",
+                                "label": {
+                                    "pt-PT": "Justificação",
+                                    "en-GB": "Justification"
+                                },
+                                "multiline": true
+                            },
+                            {
+                                "type": "Array",
+                                "readonly": false,
+                                "required": false,
+                                "field": "ATTACHMENTS",
+                                "label": {
+                                    "pt-PT": "Anexos",
+                                    "en-GB": "Attachments"
+                                },
+                                "labelAddElement": {
+                                    "pt-PT": "Adicionar anexo",
+                                    "en-GB": "Add attachment"
+                                },
+                                "properties": [
+                                    {
+                                        "type": "File",
+                                        "field": "ATTACHMENT",
+                                        "required": true,
+                                        "label": {
+                                            "pt-PT": "Anexo",
+                                            "en-GB": "Attachment"
+                                        },
+                                        "allowedFileTypes": [
+                                            ".pdf",
+                                            ".png",
+                                            ".jpg"
+                                        ],
+                                        "maxSizeMB": 10
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "outcomeForm": {},
+    "cost": {}
+}

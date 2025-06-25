@@ -1,0 +1,34 @@
+{
+  "id" : "Form_cost-allocation",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Charges_Information",
+    "key" : "page_Charges_Information",
+    "label" : "Charges_Information",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Definitive_Costs",
+      "key" : "section_Definitive_Costs",
+      "label" : "Definitive_Costs",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "number",
+        "id" : "Field_salaryMonthlyBase",
+        "key" : "salaryMonthlyBase",
+        "label" : "salaryMonthlyBase",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      } ]
+    } ]
+  } ]
+}

@@ -1,0 +1,120 @@
+{
+  "id" : "Form_assign-enee-statute-form-flow",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Status_Period",
+    "key" : "page_Status_Period",
+    "label" : "Status_Period",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Terms_and_Dates",
+      "key" : "section_Terms_and_Dates",
+      "label" : "Terms_and_Dates",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "radio",
+        "id" : "Field_wantToAssignDates",
+        "key" : "wantToAssignDates",
+        "label" : "Do you want to assign dates to the status?",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes",
+          "value" : 1
+        }, {
+          "label" : "No",
+          "value" : 0
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_startTerm",
+        "key" : "startTerm",
+        "label" : "Start Term",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "value" : "paper-pusher-ist/semestersForStatutes",
+          "label" : {
+            "en-GB" : "paper-pusher-ist/semestersForStatutes",
+            "pt-PT" : "paper-pusher-ist/semestersForStatutes"
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_endTerm",
+        "key" : "endTerm",
+        "label" : "End Term",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "value" : "paper-pusher-ist/semestersForStatutes",
+          "label" : {
+            "en-GB" : "paper-pusher-ist/semestersForStatutes",
+            "pt-PT" : "paper-pusher-ist/semestersForStatutes"
+          }
+        } ]
+      }, {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_startDate",
+        "key" : "startDate",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_startDate",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : true
+        }
+      }, {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_endDate",
+        "key" : "endDate",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_endDate",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : true
+        }
+      }, {
+        "type" : "radio",
+        "id" : "Field_isTemporary",
+        "key" : "isTemporary",
+        "label" : "Are you assigning a temporary status?",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes",
+          "value" : 1
+        }, {
+          "label" : "No",
+          "value" : 0
+        } ]
+      } ]
+    } ]
+  } ]
+}

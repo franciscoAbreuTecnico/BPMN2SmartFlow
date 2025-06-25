@@ -1,0 +1,143 @@
+{
+    "name": {
+      "pt-PT": "Cessação de Estatuto de Necessidades Educativas Específicas",
+      "en-GB": "Termination of Specific Educational Needs Status"
+    },
+    "description": {
+      "pt-PT": "Este formulário permite-lhe cessar de um estatuto de necessidades educativas específicas",
+      "en-GB": "This form allows you termiante a specific educational needs status"
+    },
+    "context": {
+      "onLock": [
+        {
+          "requestProcessor": "Change Requestor to Student"
+        },
+        {
+          "requestProcessor": "Auto Validate"
+        }
+      ],
+      "onValidate": [
+        {
+          "requestProcessor": "Auto Conclude"
+        },
+        {
+          "requestProcessor": "Copy Input to Outcome",
+          "mapper": {
+            "user": "user",
+            "request": "request"
+          }
+        }
+      ],
+      "onConclude": {
+        "requestProcessor": "Change End Date of Student Statute"
+      }
+    },
+    "inputForm": {
+      "checks": {
+        "requireIdentity": true,
+        "requirePersonalInformation": true,
+        "requireValidIdDocument": true,
+        "requireUser": true
+      },
+      "pages": [
+        {
+          "title": {
+            "pt-PT": "Requerimento de Cessação de Estatuto de Necessidades Educativas Específicas",
+            "en-GB": "Request of Termination of Specific Educational Needs Status"
+          },
+          "sections": [
+            {
+              "title": {
+                "pt-PT": "Pedido a Cessar",
+                "en-GB": "Request to Terminate"
+              },
+              "properties": [
+              {
+                "type": "AsyncSelect",
+                "field": "user",
+                "label": {
+                  "pt-PT": "Nome/TécnicoID",
+                  "en-GB": "Name/TécnicoID"
+                },
+                "optionsProvider": "/paper-pusher-ist/studentsWithEneeStatutes",
+                "allowOther": false,
+                "collapse": true,
+                "required": true
+              },
+              {
+                "type": "AsyncSelect",
+                "field": "request",
+                "label": {
+                  "pt-PT": "Pedido a Cessar",
+                  "en-GB": "Request to Terminate"
+                },
+                "optionsProvider": "/paper-pusher-ist/ENEERequests",
+                "optionsLimitedBy": {
+                  "field": "user"
+                },
+                "allowOther": false,
+                "collapse": false,
+                "required": true
+              }
+            ]
+            }   
+          ]
+        }
+      ]
+    },
+    "outcomeForm": {
+      "canEditResponseAfterConclude": false,
+      "pages": [
+        {
+          "title": {
+            "pt-PT": "Resposta",
+            "en-GB": "Response"
+          },
+          "sections": [
+            {
+              "title": {
+                "pt-PT": "Informação sobre Pedido",
+                "en-GB": "Information about Request"
+              },
+              "description": {
+                "pt-PT": "Esta informação representa o aluno e o pedido a cessar.",
+                "en-GB": "This information represents the student and the request to terminate."
+              },
+              "properties": [
+                {
+                  "type": "AsyncSelect",
+                  "readonly": true,
+                  "field": "user",
+                  "label": {
+                    "pt-PT": "Nome/TécnicoID",
+                    "en-GB": "Name/TécnicoID"
+                  },
+                  "optionsProvider": "/paper-pusher-ist/studentsWithEneeStatutes",
+                  "allowOther": false,
+                  "collapse": true,
+                  "required": true
+                },
+                {
+                  "type": "AsyncSelect",
+                  "readonly": true,
+                  "field": "request",
+                  "label": {
+                    "pt-PT": "Pedido a Cessar",
+                    "en-GB": "Request to Terminate"
+                  },
+                  "optionsProvider": "/paper-pusher-ist/ENEERequests",
+                  "optionsLimitedBy": {
+                    "field": "user"
+                  },
+                  "allowOther": false,
+                  "collapse": false,
+                  "required": true
+                }
+              ]
+            }
+          ]
+        }
+      ]    
+    },
+    "cost": {}
+  }

@@ -1,0 +1,173 @@
+{
+  "name" : {
+    "pt-PT" : "Requerimento Livre",
+    "en-GB" : "General Purpose Request"
+  },
+  "description" : {
+    "pt-PT" : "Este formulário permite-lhe solicitar algo não abrangido pelos outros formulários, escrevendo o seu pedido livremente.",
+    "en-GB" : "This form allows you to request something not covered by the other forms, by writing your request freely."
+  },
+  "context" : {
+    "onLock" : {
+      "requestProcessor" : "Change Academic Request Queue",
+      "queueMapper" : {
+        "Área de Graduação" : "Núcleo de Registo Académico"
+      }
+    },
+    "onValidate" : {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "academic-general-purpose-request",
+      "actionNodesProvider" : "Academic Office Flow"
+    },
+    "onConclude" : [ {
+      "requestProcessor" : "Check Has Connected Successful Flow"
+    } ]
+  },
+  "inputForm" : {
+    "checks" : {
+      "requireIdentity" : true,
+      "requirePersonalInformation" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Requerimento Livre",
+        "en-GB" : "General Purpose Request"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Curso",
+          "en-GB" : "Degree"
+        },
+        "properties" : [ {
+          "type" : "AsyncSelect",
+          "readonly" : false,
+          "required" : true,
+          "allowOther" : false,
+          "field" : "REGISTRATION",
+          "label" : {
+            "pt-PT" : "Matrícula",
+            "en-GB" : "Registration"
+          },
+          "optionsProvider" : "/paper-pusher-ist/registrations"
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Requerimento",
+          "en-GB" : "Request"
+        },
+        "properties" : [ {
+          "type" : "Text",
+          "readonly" : false,
+          "multiline" : false,
+          "required" : true,
+          "maxLength" : 100,
+          "field" : "SUBJECT",
+          "label" : {
+            "pt-PT" : "Assunto",
+            "en-GB" : "Subject"
+          }
+        }, {
+          "type" : "Text",
+          "readonly" : false,
+          "multiline" : true,
+          "required" : true,
+          "maxLength" : 1000,
+          "field" : "REQUEST",
+          "label" : {
+            "pt-PT" : "Requerimento",
+            "en-GB" : "Request"
+          },
+          "description" : {
+            "pt-PT" : "Exmo. Senhor Presidente do Instituto Superior Técnico, solicito que",
+            "en-GB" : "Hon. President of Instituto Superior Técnico, I request that"
+          }
+        }, {
+          "type" : "File",
+          "field" : "ATTACHMENT",
+          "required" : false,
+          "sensitive" : true,
+          "label" : {
+            "pt-PT" : "Anexo",
+            "en-GB" : "Attachment"
+          },
+          "allowedFileTypes" : [ ".pdf", ".png", ".jpg" ],
+          "maxSizeMB" : 10
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resposta",
+        "en-GB" : "Response"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Parecer e Fundamentação",
+          "en-GB" : "Opinion and Justification"
+        },
+        "properties" : [ {
+          "type" : "Boolean",
+          "field" : "opinion",
+          "label" : {
+            "pt-PT" : "Parecer",
+            "en-GB" : "Opinion"
+          },
+          "required" : true,
+          "readonly" : true,
+          "labelYes" : {
+            "pt-PT" : "Deferir",
+            "en-GB" : "Approve"
+          },
+          "labelNo" : {
+            "pt-PT" : "Indeferir",
+            "en-GB" : "Reject"
+          }
+        }, {
+          "type" : "Text",
+          "field" : "justification",
+          "label" : {
+            "pt-PT" : "Fundamentação",
+            "en-GB" : "Justification"
+          },
+          "multiple" : true,
+          "readonly" : true,
+          "required" : false
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Documentos",
+          "en-GB" : "Documents"
+        },
+        "properties" : [ {
+          "type" : "Array",
+          "field" : "documents",
+          "label" : {
+            "pt-PT" : "Documentos",
+            "en-GB" : "Documents"
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar documento",
+            "en-GB" : "Add document"
+          },
+          "required" : false,
+          "readonly" : true,
+          "properties" : [ {
+            "type" : "File",
+            "field" : "document",
+            "label" : {
+              "pt-PT" : "Documento",
+              "en-GB" : "Document"
+            },
+            "allowedFileTypes" : [ ".pdf" ],
+            "readonly" : true,
+            "required" : true,
+            "maxSizeMB" : 25
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { }
+}

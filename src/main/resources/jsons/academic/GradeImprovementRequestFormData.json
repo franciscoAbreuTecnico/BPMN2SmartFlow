@@ -1,0 +1,234 @@
+{
+  "name": {
+    "pt-PT": "Melhoria de Nota",
+    "en-GB": "Grade Improvement"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar a inscrição a uma unidade curricular previamente aprovada para melhoria de nota.",
+    "en-GB": "This form allows you to request the enrolment in a previously approved curricular unit for grade improvement."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "REGISTRATION",
+        "SEMESTER",
+        "CURRICULAR_UNIT"
+      ],
+      "displayName": true,
+      "username": true
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Change Academic Request Queue",
+        "queueMapper": {
+          "Área de Graduação": "Núcleo de Registo Académico"
+        }
+      },
+      {
+        "requestProcessor": "Auto Validate If Enrolment Period Open"
+      }
+    ],
+    "onPayOrExempt": {
+      "requestProcessor": "Auto Conclude"
+    },
+    "onConclude": {
+      "requestProcessor": "Enrol In Curricular Unit"
+    }
+  },
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requireTaxInformation": true,
+      "requirePersonalInformation": true,
+      "requireValidIdDocument": true,
+      "requireUser": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Pedido de Melhoria de Nota",
+          "en-GB": "Grade Improvement Request"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Curso",
+              "en-GB": "Degree"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "allowOther": false,
+                "field": "REGISTRATION",
+                "label": {
+                  "pt-PT": "Matrícula",
+                  "en-GB": "Registration"
+                },
+                "optionsProvider": "/paper-pusher-ist/registrations"
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Inscrição",
+              "en-GB": "Enrolment"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "allowOther": false,
+                "onlyIf": {
+                  "field": "REGISTRATION",
+                  "negation": true,
+                  "value": null
+                },
+                "field": "SEMESTER",
+                "label": {
+                  "pt-PT": "Semestre da Inscrição",
+                  "en-GB": "Enrolment Semester"
+                },
+                "description": {
+                  "pt-PT": "Só estão disponíveis unidades curriculares às quais é possível fazer inscrição em melhoria para o semestre escolhido.",
+                  "en-GB": "Only curricular units for which enrolment for improvement is possible in the chosen semester are available."
+                },
+                "optionsProvider": "/paper-pusher-ist/semestersForImprovement"
+              },
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "allowOther": false,
+                "onlyIf": {
+                  "field": "SEMESTER",
+                  "negation": true,
+                  "value": null
+                },
+                "field": "CURRICULAR_UNIT",
+                "label": {
+                  "pt-PT": "Unidade Curricular",
+                  "en-GB": "Curricular Unit"
+                },
+                "optionsProvider": "/paper-pusher-ist/enrolmentsForImprovement",
+                "optionsLimitedBy": {
+                  "field": "REGISTRATION"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "canEditResponseAfterConclude": true,
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta ao Pedido de Melhoria de Nota",
+          "en-GB": "Grade Improvement Request Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Inscrição em Melhoria de Nota",
+              "en-GB": "Grade Improvement Enrolment"
+            },
+            "properties": [
+              {
+                "type": "DateTime",
+                "readonly": true,
+                "required": false,
+                "date": true,
+                "time": false,
+                "field": "ENROLMENT_DATE",
+                "label": {
+                  "pt-PT": "Inscrição em melhoria efetuada a",
+                  "en-GB": "Grade improvement enrolment concluded on"
+                },
+                "multiline": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {
+    "description": {
+      "pt-PT": "Pedido de Melhoria de Nota",
+      "en-GB": "Grade Improvement Request"
+    },
+    "value": 20.00,
+    "penalty": 10.00,
+    "accountId": "287762860391",
+    "productCode": "0033",
+    "productDescription": "TAXAS DE MELHORIAS DE NOTAS",
+    "eventCreationMoment": "onValidate",
+    "onValidate": [
+      {
+        "costProcessor": "Add Request Keywords to Cost Description"
+      },
+      {
+        "costProcessor": "Add Grade Improvement Penalty Map"
+      }
+    ],
+    "afterEventCreation": {
+      "costProcessor": "Check Grade Improvement Fee Exemption"
+    }
+  },
+  "views": [
+    {
+      "id": "Default",
+      "columns": [
+        {
+          "title": { "pt-PT": "Submetido", "en-GB": "Submitted" },
+          "type": "Request Info",
+          "info": "lockInstant"
+        },
+        {
+          "title": { "pt-PT": "Aluno", "en-GB": "Student" },
+          "type": "Request Info",
+          "info": "requester"
+        },
+        {
+          "title": { "pt-PT": "Estado do Pedido", "en-GB": "Request State" },
+          "type": "Request State"
+        },
+        {
+          "title": { "pt-PT": "Revisão", "en-GB": "Revision" },
+          "type": "Request Info",
+          "info": "revisionDeadline"
+        },
+        {
+          "title": { "pt-PT": "Pagamento", "en-GB": "Payment" },
+          "type": "Payment State"
+        },
+        {
+          "title": { "pt-PT": "Estado do Processo", "en-GB": "Process State" },
+          "type": "Flow State From Request"
+        },
+        {
+          "title": { "pt-PT": "Curso", "en-GB": "Degree" },
+          "type": "Function",
+          "getter": "Get Degree From Request Registration"
+        },
+        {
+          "title": { "pt-PT": "Semestre", "en-GB": "Semester" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "SEMESTER"
+        },
+        {
+          "title": { "pt-PT": "Unidade", "en-GB": "Unit" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "CURRICULAR_UNIT"
+        }
+      ]
+    }
+  ]
+}

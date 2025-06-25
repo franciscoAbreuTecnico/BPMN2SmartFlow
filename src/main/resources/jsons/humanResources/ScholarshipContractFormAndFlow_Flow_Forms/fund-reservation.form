@@ -1,0 +1,146 @@
+{
+  "id" : "Form_fund-reservation",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Projects_and_Budget_Execution_Department",
+    "key" : "page_Projects_and_Budget_Execution_Department",
+    "label" : "Projects_and_Budget_Execution_Department",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Financial_Costs",
+      "key" : "section_Financial_Costs",
+      "label" : "Financial_Costs",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "number",
+        "id" : "Field_insurancePerMonth",
+        "key" : "insurancePerMonth",
+        "label" : "insurancePerMonth",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "number",
+        "id" : "Field_socialSecurityPerMonth",
+        "key" : "socialSecurityPerMonth",
+        "label" : "socialSecurityPerMonth",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "number",
+        "id" : "Field_totalSocialSecurity",
+        "key" : "totalSocialSecurity",
+        "label" : "totalSocialSecurity",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "number",
+        "id" : "Field_totalFunds",
+        "key" : "totalFunds",
+        "label" : "totalFunds",
+        "required" : false,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "number",
+        "id" : "Field_researchGrantAmountTotal",
+        "key" : "researchGrantAmountTotal",
+        "label" : "researchGrantAmountTotal",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "number",
+        "id" : "Field_totalInsurance",
+        "key" : "totalInsurance",
+        "label" : "totalInsurance",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_FFund_Allocation",
+      "key" : "section_FFund_Allocation",
+      "label" : "Reserve/Fund_Allocation",
+      "showOutline" : true,
+      "components" : [ ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Cost_Allocation",
+      "key" : "section_Cost_Allocation",
+      "label" : "Cost_Allocation",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_fundingEntity",
+        "key" : "fundingEntity",
+        "label" : "Funding Entity",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "fct",
+          "label" : {
+            "en-GB" : "Fundação para a Ciência e a Tecnologia (FCT)",
+            "pt-PT" : "Fundação para a Ciência e a Tecnologia (FCT)"
+          }
+        }, {
+          "value" : "ist",
+          "label" : {
+            "en-GB" : "Instituto Superior Técnico (IST)",
+            "pt-PT" : "Instituto Superior Técnico (IST)"
+          }
+        }, {
+          "value" : "ani",
+          "label" : {
+            "en-GB" : "Agência Nacional de Inovação (ANI)",
+            "pt-PT" : "Agência Nacional de Inovação (ANI)"
+          }
+        }, {
+          "value" : "eu",
+          "label" : {
+            "en-GB" : "European Union (EU)",
+            "pt-PT" : "União Europeia (UE)"
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_operationalProgramme",
+        "key" : "operationalProgramme",
+        "label" : "Operational Programme",
+        "required" : false,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "prr",
+          "label" : {
+            "en-GB" : "Recovery and Resilience Plan (RRP)",
+            "pt-PT" : "Plano de Recuperação e Resiliência (PRR)"
+          }
+        }, {
+          "value" : "erasmus+",
+          "label" : {
+            "en-GB" : "Erasmus+",
+            "pt-PT" : "Erasmus+"
+          }
+        } ]
+      } ]
+    } ]
+  } ]
+}

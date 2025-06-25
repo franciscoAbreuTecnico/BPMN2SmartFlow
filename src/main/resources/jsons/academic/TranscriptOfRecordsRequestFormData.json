@@ -1,0 +1,308 @@
+{
+  "name": {
+    "pt-PT": "Certificado de Aproveitamento",
+    "en-GB": "Transcript of Records"
+  },
+  "description": {
+    "pt-PT": "Este formulário permite-lhe solicitar a emissão do certificado de aproveitamento, um documento que serve para atestar o percurso académico, prestando informação sobre as unidades curriculares aprovadas. Este documento não atesta a conclusão do grau nem do curso.",
+    "en-GB": "This form allows you to request the issuance of the transcript of records, a document that describes a student's learning path, providing information on the completed courses. This document does not prove the conclusion of the degree or of the study cycle."
+  },
+  "context": {
+    "requestKeywords": {
+      "fields": [
+        "LOCALE"
+      ],
+      "displayName": false,
+      "username": false
+    },
+    "onLock": [
+      {
+        "requestProcessor": "Check Has Approved Curricular Units For Selected Academic Years"
+      },
+      {
+        "requestProcessor": "Change Academic Request Queue",
+        "queueMapper": {
+          "Área de Graduação": "Núcleo de Certificação Académica"
+        }
+      }
+    ],
+    "onPayOrExempt": {
+      "requestProcessor": "Auto Validate"
+    },
+    "onValidate": [
+      {
+        "requestProcessor": "Change Academic Request Queue",
+        "queueMapper": {
+          "Área de Graduação": "Núcleo de Certificação Académica"
+        }
+      },
+      {
+        "requestProcessor": "Generate Document",
+        "team": "a474a698-6af4-4510-9745-4b2183af6dd7",
+        "template": "01ffc366-0235-480c-b3a0-c43e982e58d2",
+        "locale": "{{locale-languageTag}}",
+        "outcome-form-field": "0.0.TRANSCRIPT_OF_RECORDS",
+        "filenameProvider" : "Get Academic Document Filename",
+        "contentType": "application/pdf",
+        "payloadProviders": "Transcript of Records Papyrus Payload"
+      },
+      {
+        "requestProcessor": "Send Document to Signer if Applicable",
+        "fileField": "TRANSCRIPT_OF_RECORDS",
+        "titleProvider": "Get Academic Document Title",
+        "description": "Certificado de Aproveitamento  - {{request}}",
+        "filenameProvider" : "Get Academic Document Filename",
+        "locale": "{{locale-languageTag}}",
+        "requestQueues": [
+          "Área de Graduação - Assinatura Eletrónica",
+          "Área de Pós-Graduação - Assinatura Eletrónica",
+          "Área de Gestão de Recursos Humanos e Académicos do Taguspark - Assinatura Eletrónica"
+        ],
+        "queue": {
+          "Área de Graduação - Assinatura Eletrónica": "FE90iguA",
+          "Área de Pós-Graduação - Assinatura Eletrónica": "t9acHdLA",
+          "Área de Gestão de Recursos Humanos e Académicos do Taguspark - Assinatura Eletrónica": "0exbMF0b"
+        },
+        "signatureField": "signatureField"
+      }
+    ],
+    "onConclude": {
+      "requestProcessor": "Change Academic Request Queue",
+      "queueMapper": {
+        "Área de Graduação": "Núcleo de Registo Académico"
+      }
+    },
+    "queuesAllowedToChangeTo": [
+      "Núcleo de Certificação Académica",
+      "Núcleo de Registo Académico",
+      "Área de Pós-Graduação",
+      "Área de Gestão de Recursos Humanos e Académicos do Taguspark"
+    ]
+  },
+  "inputForm": {
+    "checks": {
+      "requireIdentity": true,
+      "requirePersonalInformation": true,
+      "requireValidIdDocument": true
+    },
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Pedido do Certificado de Aproveitamento",
+          "en-GB": "Transcript of Records Request"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Ano Letivo",
+              "en-GB": "Academic Year"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": false,
+                "allowOther": false,
+                "field": "ACADEMIC_YEAR",
+                "label": {
+                  "pt-PT": "Ano Letivo",
+                  "en-GB": "Academic Year"
+                },
+                "description": {
+                  "pt-PT": "O ano letivo é opcional, caso queira apenas as unidades curriculares concluídas num ano letivo específico.",
+                  "en-GB": "The academic year is optional, in case you want only the curricular units concluded in a specific academic year."
+                },
+                "optionsProvider": "/ist-admissions/executionYears"
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Classificação ECTS",
+              "en-GB": "ECTS Grades"
+            },
+            "description": {
+              "pt-PT": "Esta opção apenas é aplicável para cursos de Bolonha.",
+              "en-GB": "This option is only applicable for Bologna degrees."
+            },
+            "properties": [
+              {
+                "type": "Boolean",
+                "field": "SHOW_ECTS_GRADE",
+                "required": true,
+                "label": {
+                  "pt-PT": "Pretende que a classificação ECTS conste no documento?",
+                  "en-GB": "Would you like the ECTS grade to appear in the document?"
+                },
+                "labelYes": {
+                  "pt-PT": "Sim, pretendo que a classificação ECTS conste no documento.",
+                  "en-GB": "Yes, I want the ECTS grade to appear in the document."
+                },
+                "labelNo": {
+                  "pt-PT": "Não, pretendo que a classificação ECTS não conste no documento.",
+                  "en-GB": "No, I don't want the ECTS grade to appear in the document."
+                }
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Língua do Documento",
+              "en-GB": "Document Language"
+            },
+            "properties": [
+              {
+                "type": "AsyncSelect",
+                "readonly": false,
+                "required": true,
+                "field": "LOCALE",
+                "label": {
+                  "pt-PT": "Língua",
+                  "en-GB": "Language"
+                },
+                "optionsProvider": "/paper-pusher-ist/locales"
+              }
+            ]
+          },
+          {
+            "title": {
+              "pt-PT": "Termo de Responsabilidade",
+              "en-GB": "Disclaimer"
+            },
+            "properties": [
+              {
+                "type": "Select",
+                "field": "DISCLAIMER",
+                "required": true,
+                "collapse": false,
+                "allowOther": false,
+                "multiple": false,
+                "label": {
+                  "pt-PT": "Aviso",
+                  "en-GB": "Warning"
+                },
+                "description": {
+                  "pt-PT": "Neste Certificado serão listadas todas as unidades curriculares realizadas no Instituto Superior Técnico com aproveitamento, e todas as unidades curriculares registadas e creditadas que foram realizadas em entidades externas, no ano letivo escolhido, e as suas respetivas classificações. Este certificado não confere grau. Caso tenha os créditos necessários para a conclusão do ciclo/matrícula, deve pedir a Certidão de Registo. Confirme se todas as notas estão corretamente lançadas, incluindo Melhorias de Nota e Época Especial. Apenas as unidades curriculares com nota lançada constarão no documento.",
+                  "en-GB": "In this Transcript all the approved curricular units completed at Instituto Superior Técnico, and all the registered and credited curricular units that have been completed in external entities, in the selected academic year, and their respective grades, will appear. This certificate does not confer a degree. If you have the necessary credits to complete the cycle/registration, you should request the Certificate of Registration. Please confirm that all grades have been correctly submitted, including Grade Improvement and Special Season grades. Only the curricular units with submitted grades will appear in the document."
+                },
+                "options": [
+                  {
+                    "value": "acknowledge",
+                    "label": {
+                      "pt-PT": "Tomei conhecimento e aceito.",
+                      "en-GB": "I acknowledge and accept."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outcomeForm": {
+    "pages": [
+      {
+        "title": {
+          "pt-PT": "Resposta ao Pedido do Certificado de Aproveitamento",
+          "en-GB": "Transcript of Records Request Response"
+        },
+        "sections": [
+          {
+            "title": {
+              "pt-PT": "Documento",
+              "en-GB": "Document"
+            },
+            "properties": [
+              {
+                "type": "File",
+                "field": "TRANSCRIPT_OF_RECORDS",
+                "required": true,
+                "readonly": true,
+                "hidden": false,
+                "label": {
+                  "pt-PT": "Certificado de Aproveitamento",
+                  "en-GB": "Transcript of Records"
+                },
+                "allowedFileTypes": [
+                  ".pdf"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cost": {
+    "description": {
+      "pt-PT": "Pedido de Certificado de Aproveitamento",
+      "en-GB": "Transcript of Records Request"
+    },
+    "value": 40.00,
+    "accountId": "287762860391",
+    "productCode": "0037",
+    "productDescription": "EMOLUMENTOS",
+    "onLock": {
+      "costProcessor": "Add Request Keywords to Cost Description"
+    }
+  },
+  "views": [
+    {
+      "id": "Default",
+      "columns": [
+        {
+          "title": { "pt-PT": "Submetido", "en-GB": "Submitted" },
+          "type": "Request Info",
+          "info": "lockInstant"
+        },
+        {
+          "title": { "pt-PT": "Aluno", "en-GB": "Student" },
+          "type": "Request Info",
+          "info": "requester"
+        },
+        {
+          "title": { "pt-PT": "Estado do Pedido", "en-GB": "Request State" },
+          "type": "Request State"
+        },
+        {
+          "title": { "pt-PT": "Revisão", "en-GB": "Revision" },
+          "type": "Request Info",
+          "info": "revisionDeadline"
+        },
+        {
+          "title": { "pt-PT": "Pagamento", "en-GB": "Payment" },
+          "type": "Payment State"
+        },
+        {
+          "title": { "pt-PT": "Estado do Processo", "en-GB": "Process State" },
+          "type": "Flow State From Request"
+        },
+        {
+          "title": { "pt-PT": "Ano", "en-GB": "Year" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "ACADEMIC_YEAR"
+        },
+        {
+          "title": { "pt-PT": "Curso", "en-GB": "Degree" },
+          "type": "Function",
+          "getter": "Get Degree From Request Registration"
+        },
+        {
+          "title": { "pt-PT": "ECTS", "en-GB": "ECTS" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "SHOW_ECTS_GRADE"
+        },
+        {
+          "title": { "pt-PT": "Língua", "en-GB": "Language" },
+          "type": "Form Field",
+          "form": "inputForm",
+          "field": "LOCALE"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "flowTemplate" : {
+    "name" : "programmes-and-workloads-certificate-flow",
+    "title" : {
+      "pt-PT" : "Processo de Pedido de Certidão de Programas e Cargas Horárias",
+      "en-GB" : "Programmes and Workloads Certificate Request Process"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Pedido de Certidão de Programas e Cargas Horárias",
+      "en-GB" : "Programmes and Workloads Certificate Request Process"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onCreate" : {
+          "flowProcessor" : "Skip Complete Curricular Information"
+        },
+        "onSuccess" : { },
+        "onFailure" : {
+          "flowProcessor" : "Return Flow Rejected To Request"
+        },
+        "onActionTransition" : { },
+        "onCancel" : {
+          "flowProcessor" : "Cancel Connected Requests"
+        }
+      },
+      "flowProcessors" : [
+        {
+          "handle" : "complete-curricular-information",
+          "flowProcessor" : "Create Complete Curricular Information Request From Flow",
+          "RequestType" : "Completar Informação Curricular",
+          "RequestQueue" : "Núcleo de Registo Académico",
+          "mapper" : {
+            "REGISTRATION" : "REGISTRATION",
+            "INCLUDE_ALL_UNITS" : "INCLUDE_ALL_UNITS",
+            "CURRICULAR_UNITS_INFO" : "CURRICULAR_UNITS"
+          }
+        }
+      ],
+      "actionNodes" : [
+        {
+          "id" : "curricular-information-completion",
+          "type" : "withButtons",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Preenchimento da Informação Curricular",
+            "en-GB" : "Completion of the Curricular Information"
+          },
+          "description" : {
+            "pt-PT" : "Preenchimento da Informação Curricular pelos Serviços Académicos",
+            "en-GB" : "Completion of the Curricular Information by the Academic Services"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Preenchimento da Informação Curricular pelos Serviços Académicos",
+            "en-GB" : "Completion of the Curricular Information by the Academic Services"
+          },
+          "buttons" : [
+            {
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "handler" : "action:REJECT"
+            },
+            {
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Preencher Informação Curricular",
+                "en-GB" : "Complete Curricular Information"
+              },
+              "handler" : "process:complete-curricular-information"
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "document-generation-and-signer-dispatch",
+              "label" : {
+                "pt-PT" : "Completar Informação Curricular",
+                "en-GB" : "Complete Curricular Information"
+              },
+              "id" : "COMPLETE_INFORMATION-curricular-information-completion",
+              "name" : "COMPLETE_INFORMATION"
+            },
+            {
+              "primary" : false,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Rejeitar",
+                "en-GB" : "Reject"
+              },
+              "id" : "REJECT-curricular-information-completion",
+              "name" : "REJECT"
+            }
+          ],
+          "blockUndo" : true,
+          "queue" : "academic-office-queue-Preenchimento-de-Informacao-Curricular",
+          "actionProcessor" : [
+            {
+              "applyOn" : "COMPLETE_INFORMATION-curricular-information-completion",
+              "flowProcessor" : "Generate Programmes and Workloads Documents and Send to Signer",
+              "team" : "a474a698-6af4-4510-9745-4b2183af6dd7",
+              "template" : "b0b3274c-e6c6-4141-9293-3cef6945ec80",
+              "files" : {
+                "pt-PT" : {
+                  "outcome-form-field" : "0.0.PROGRAMMES_AND_WORKLOADS_CERTIFICATE_PORTUGUESE",
+                  "filenameProvider" : "Get Academic Document Filename",
+                  "fileField" : "PROGRAMMES_AND_WORKLOADS_CERTIFICATE_PORTUGUESE",
+                  "titleProvider" : "Get Academic Document Title",
+                  "description" : "Certidão de Programas e Cargas Horárias - {{request}}"
+                },
+                "en-GB" : {
+                  "outcome-form-field" : "0.0.PROGRAMMES_AND_WORKLOADS_CERTIFICATE_ENGLISH",
+                  "filenameProvider" : "Get Academic Document Filename",
+                  "fileField" : "PROGRAMMES_AND_WORKLOADS_CERTIFICATE_ENGLISH",
+                  "titleProvider" : "Get Academic Document Title",
+                  "description" : "Programmes and Workloads Certificate - {{request}}"
+                }
+              },
+              "contentType" : "application/pdf",
+              "payloadProviders" : "Programmes and Workloads Papyrus Payload",
+              "requestQueues" : [
+                "Área de Graduação - Assinatura Eletrónica",
+                "Área de Pós-Graduação - Assinatura Eletrónica",
+                "Área de Gestão de Recursos Humanos e Académicos do Taguspark - Assinatura Eletrónica"
+              ],
+              "queue" : {
+                "Área de Graduação - Assinatura Eletrónica" : "FE90iguA",
+                "Área de Pós-Graduação - Assinatura Eletrónica" : "t9acHdLA",
+                "Área de Gestão de Recursos Humanos e Académicos do Taguspark - Assinatura Eletrónica" : "0exbMF0b"
+              },
+              "signatureField" : "signatureField",
+              "flowAction" : "GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER",
+              "id" : "onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer",
+              "name" : "onActionTransition"
+            }
+          ]
+        },
+        {
+          "id" : "document-generation-and-signer-dispatch",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Produção de Documentos e Envio para o Signer",
+            "en-GB" : "Document Generation and Dispatch to Signer"
+          },
+          "description" : {
+            "pt-PT" : "Produção dos documentos académicos e envio para o Signer",
+            "en-GB" : "Academic documents generation and dispatch to Signer"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Produção dos documentos académicos e envio para o Signer",
+            "en-GB" : "Academic documents generation and dispatch to Signer"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Produzir Documentos e Enviar para o Signer",
+                "en-GB" : "Generate Documents and Send to Signer"
+              },
+              "id" : "GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch",
+              "name" : "GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER"
+            }
+          ],
+          "queue" : "academic-office-queue-Assinatura-Eletronica"
+        }
+      ]
+    }
+  }
+}

@@ -41,13 +41,13 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Informação Adicional",
-                  "en-GB" : "Additional Information"
+                  "pt-PT" : "Informação_Adicional",
+                  "en-GB" : "Additional_Information"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Informação da categoria",
+                      "pt-PT" : "Informação_da_categoria",
                       "en-GB" : "Category"
                     },
                     "properties" : [
@@ -101,8 +101,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Informação da Licença Sabática Anterior",
-                      "en-GB" : "Information on the Previous Sabbatical Leave"
+                      "pt-PT" : "Informação_da_Licença_Sabática_Anterior",
+                      "en-GB" : "Information_on_the_Previous_Sabbatical_Leave"
                     },
                     "properties" : [
                       {
@@ -261,8 +261,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Processamento pela Direção de Recursos Humanos",
-                      "en-GB" : "Processing by the Human Resources Department"
+                      "pt-PT" : "Processamento_pela_Direção_de_Recursos_Humanos",
+                      "en-GB" : "Processing_by_the_Human_Resources_Department"
                     },
                     "properties" : [
                       {
@@ -309,14 +309,14 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Relatório Final da Licença Sabática",
-                  "en-GB" : "Sabbatical Leave Final Report"
+                  "pt-PT" : "Relatório_Final_da_Licença_Sabática",
+                  "en-GB" : "Sabbatical_Leave_Final_Report"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Anexar Documentos",
-                      "en-GB" : "Attach Documents"
+                      "pt-PT" : "Anexar_Documentos",
+                      "en-GB" : "Attach_Documents"
                     },
                     "properties" : [
                       {

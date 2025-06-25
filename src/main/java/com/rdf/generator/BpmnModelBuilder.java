@@ -262,40 +262,358 @@ public class BpmnModelBuilder {
         });
     }
 
-    public void generateFormDefinitions(Path formsDir) throws IOException {
-        // make sure the directory exists
-        Files.createDirectories(formsDir);
+public void generateFormDefinitions(Path formsDir) throws IOException {
+    Files.createDirectories(formsDir);
 
-        // get every Form individual
-        ontService.getInstances("Form", false).forEach(formInd -> {
-            try {
-                String formId = formInd.getIRI().getFragment();
+    for (OWLNamedIndividual formInd : ontService.getInstances("Form", false)) {
+        String formId = formInd.getIRI().getFragment();
+        System.out.println("Generating form definition for: " + formId);
 
-                // build a minimal Camunda form JSON:
-                ObjectNode formJson = JSON.createObjectNode();
-                formJson.put("key", formId);
+        ObjectNode formJson = JSON.createObjectNode();
+        formJson.put("id", "Form_" + formId);
+        formJson.put("type", "default");
+        formJson.put("schemaVersion", 18);
 
-                // fields array
-                ArrayNode fields = formJson.putArray("fields");
-                // assume your OntologyService has something like `getFieldsForForm(...)`
-                ontService.getFieldsForForm(formInd).forEach(fieldInd -> {
-                    ObjectNode f = fields.addObject();
-                    f.put("id",      fieldInd.getIRI().getFragment());
-                    f.put("label",   ontService.getDataPropertyValue(fieldInd, "sfName"));
-                    // ... any other metadata you need (type, validations, etc)
-                });
+        // Exporter/platform info
+        ObjectNode exporter = formJson.putObject("exporter");
+        exporter.put("name", "Camunda Modeler");
+        exporter.put("version", "5.36.1");
+        formJson.put("executionPlatform", "Camunda Platform");
+        formJson.put("executionPlatformVersion", "7.23.0");
 
-                // write to disk
-                Path out = formsDir.resolve(formId + ".form");
-                JSON.writerWithDefaultPrettyPrinter()
-                    .writeValue(out.toFile(), formJson);
+        ArrayNode components = formJson.putArray("components");
+
+        // Pages as Groups (top-level)
+        for (OWLNamedIndividual pageInd : ontService.getPagesForForm(formInd)) {
+            ObjectNode pageGroup = components.addObject();
+            pageGroup.put("type", "group");
+            pageGroup.put("id", "Page_" + pageInd.getIRI().getFragment());
+            pageGroup.put("key", "page_" + pageInd.getIRI().getFragment());
+
+            // Group label: Prefer titleEN, fallback to titlePT, then sfName, then sfId
+            String groupLabel =
+                ontService.getAnnotationValue(pageInd, "titleEN");
+            if (groupLabel == null || groupLabel.isBlank())
+                groupLabel = ontService.getAnnotationValue(pageInd, "titlePT");
+            if (groupLabel == null || groupLabel.isBlank())
+                groupLabel = ontService.getDataPropertyValue(pageInd, "sfName");
+            if (groupLabel == null || groupLabel.isBlank())
+                groupLabel = pageInd.getIRI().getFragment();
+            pageGroup.put("label", groupLabel);
+            pageGroup.put("showOutline", true);
+
+            // Optional description for the group
+            String desc = ontService.getAnnotationValue(pageInd, "descriptionEN");
+            if (desc != null && !desc.isBlank())
+                pageGroup.put("description", desc);
+
+            ArrayNode sectionComponents = pageGroup.putArray("components");
+
+            // Sections as groups inside Page
+            for (OWLNamedIndividual sectionInd : ontService.getSectionsForPage(pageInd)) {
+                ObjectNode sectionGroup = sectionComponents.addObject();
+                sectionGroup.put("type", "group");
+                sectionGroup.put("id", "Section_" + sectionInd.getIRI().getFragment());
+                sectionGroup.put("key", "section_" + sectionInd.getIRI().getFragment());
+
+                // Section label: Prefer titleEN, fallback to titlePT, then sfName, then sfId
+                String sectionLabel =
+                    ontService.getAnnotationValue(sectionInd, "titleEN");
+                if (sectionLabel == null || sectionLabel.isBlank())
+                    sectionLabel = ontService.getAnnotationValue(sectionInd, "titlePT");
+                if (sectionLabel == null || sectionLabel.isBlank())
+                    sectionLabel = ontService.getDataPropertyValue(sectionInd, "sfName");
+                if (sectionLabel == null || sectionLabel.isBlank())
+                    sectionLabel = sectionInd.getIRI().getFragment();
+                sectionGroup.put("label", sectionLabel);
+                sectionGroup.put("showOutline", true);
+
+                // Optional section description
+                String secDesc = ontService.getAnnotationValue(sectionInd, "descriptionEN");
+                if (secDesc != null && !secDesc.isBlank())
+                    sectionGroup.put("description", secDesc);
+
+                ArrayNode propertyComponents = sectionGroup.putArray("components");
+
+                // Properties as fields inside Section group
+                for (OWLNamedIndividual propInd : ontService.getPropertiesForSection(sectionInd)) {
+                    String propertyType = ontService.getDataPropertyValue(propInd, "propertyType");
+                    String fieldId = "Field_" + propInd.getIRI().getFragment();
+                    String fieldKey = propInd.getIRI().getFragment();
+
+                    // Field label: Prefer sfName, fallback to titleEN, titlePT, sfId
+                    String fieldLabel = ontService.getAnnotationValue(propInd, "labelEN");
+                    if (fieldLabel == null || fieldLabel.isBlank())
+                        fieldLabel = ontService.getAnnotationValue(propInd, "titleEN");
+                    if (fieldLabel == null || fieldLabel.isBlank())
+                        fieldLabel = ontService.getDataPropertyValue(propInd, "sfName");
+                    if (fieldLabel == null || fieldLabel.isBlank())
+                        fieldLabel = fieldKey;
+
+                    // Description
+                    String fieldDesc = ontService.getAnnotationValue(propInd, "descriptionEN");
+                    if (fieldDesc == null || fieldDesc.isBlank())
+                        fieldDesc = ontService.getAnnotationValue(propInd, "descriptionPT");
+
+                    // Required/readOnly
+                    boolean isRequired = Boolean.parseBoolean(ontService.getDataPropertyValue(propInd, "isRequired"));
+                    boolean isReadOnly = Boolean.parseBoolean(ontService.getDataPropertyValue(propInd, "readOnly"));
+
+                    switch (propertyType) {
+                        case "Boolean" -> {
+                            ObjectNode radioField = propertyComponents.addObject();
+                            radioField.put("type", "radio");
+                            radioField.put("id", fieldId);
+                            radioField.put("key", fieldKey);
+                            radioField.put("label", fieldLabel);
+                            if (fieldDesc != null && !fieldDesc.isBlank())
+                                radioField.put("description", fieldDesc);
+                            radioField.put("required", isRequired);
+                            radioField.put("readOnly", isReadOnly);
+
+                            // Boolean radio group: 1 = true, 0 = false
+                            ArrayNode values = radioField.putArray("values");
+                            ObjectNode yesValue = values.addObject();
+                            String yesLabel = ontService.getDataPropertyValue(propInd, "labelYesEN");
+                            if (yesLabel == null || yesLabel.isBlank())
+                                yesLabel = ontService.getDataPropertyValue(propInd, "labelYesPT");
+                            yesValue.put("label", yesLabel != null ? yesLabel : "Yes");
+                            yesValue.put("value", 1);
+
+                            ObjectNode noValue = values.addObject();
+                            String noLabel = ontService.getDataPropertyValue(propInd, "labelNoEN");
+                            if (noLabel == null || noLabel.isBlank())
+                                noLabel = ontService.getDataPropertyValue(propInd, "labelNoPT");
+                            noValue.put("label", noLabel != null ? noLabel : "No");
+                            noValue.put("value", 0);
+                        }
+                        case "File" -> {
+                            ObjectNode fileField = propertyComponents.addObject();
+                            fileField.put("type", "filepicker");
+                            fileField.put("id", fieldId);
+                            fileField.put("key", fieldKey);
+                            fileField.put("label", fieldLabel);
+                            if (fieldDesc != null && !fieldDesc.isBlank())
+                                fileField.put("description", fieldDesc);
+                            fileField.put("required", isRequired);
+                            fileField.put("readOnly", isReadOnly);
+
+                            String allowedTypes = ontService.getDataPropertyValue(propInd, "allowedFileType");
+                            if (allowedTypes != null && !allowedTypes.isBlank())
+                                fileField.put("accept", allowedTypes);
+                            String maxSize = ontService.getDataPropertyValue(propInd, "maxSizeMB");
+                            if (maxSize != null && !maxSize.isBlank())
+                                fileField.put("maxFileSize", maxSize + "MB");
+                        }
+                        case "Text" -> {
+                            ObjectNode textField = propertyComponents.addObject();
+                            textField.put("type", "text");
+                            textField.put("id", fieldId);
+                            textField.put("key", fieldKey);
+                            textField.put("label", fieldLabel);
+                            textField.put("text", fieldLabel);
+                            if (fieldDesc != null && !fieldDesc.isBlank()) textField.put("description", fieldDesc);
+                            textField.put("required", isRequired);
+                            textField.put("readOnly", isReadOnly);
+                        }
+                        case "LocalizedText" -> {
+                            List<String> locales = ontService.getDataPropertyValues(propInd, "locales");
+                            // Fallback to en-GB if no locales
+                            if (locales == null || locales.isEmpty()) locales = List.of("en-GB");
+                            boolean multiline = Boolean.parseBoolean(ontService.getDataPropertyValue(propInd, "multiline"));
+
+                            for (String locale : locales) {
+                                ObjectNode localeField = propertyComponents.addObject();
+                                localeField.put("type", multiline ? "textarea" : "text");
+                                localeField.put("id", fieldId + "_" + locale);
+                                localeField.put("key", fieldKey + "_" + locale);
+
+                                // Choose appropriate label per locale
+                                String localizedLabel = fieldLabel;
+                                if (locale.equals("pt-PT")) {
+                                    String labelPT = ontService.getAnnotationValue(propInd, "labelPT");
+                                    if (labelPT != null && !labelPT.isBlank()) localizedLabel = labelPT;
+                                }
+                                if (locale.equals("en-GB")) {
+                                    String labelEN = ontService.getAnnotationValue(propInd, "labelEN");
+                                    if (labelEN != null && !labelEN.isBlank()) localizedLabel = labelEN;
+                                }
+                                localeField.put("label", localizedLabel + " (" + locale + ")");
+                                if (fieldDesc != null && !fieldDesc.isBlank())
+                                    localeField.put("description", fieldDesc + " [" + locale + "]");
+                                localeField.put("required", isRequired);
+                                localeField.put("readOnly", isReadOnly);
+                            }
+                        }
+                        case "Quantity" -> {
+                            ObjectNode numberField = propertyComponents.addObject();
+                            numberField.put("type", "number");
+                            numberField.put("id", fieldId);
+                            numberField.put("key", fieldKey);
+
+                            // If labelEN/PT present, pick one as primary, or handle i18n at a higher level.
+                            String labelEN = ontService.getAnnotationValue(propInd, "labelEN");
+                            String labelPT = ontService.getAnnotationValue(propInd, "labelPT");
+                            // Choose label: for now, just use EN, fallback PT, fallback fieldKey
+                            numberField.put("label", labelEN != null ? labelEN : (labelPT != null ? labelPT : fieldKey));
+
+                            numberField.put("required", isRequired);
+                            numberField.put("readOnly", isReadOnly);
+
+                            // Min/Max/Step (as strings, under validate and increment)
+                            String minVal = ontService.getDataPropertyValue(propInd, "minValue");
+                            String maxVal = ontService.getDataPropertyValue(propInd, "maxValue");
+                            String stepVal = ontService.getDataPropertyValue(propInd, "stepValue");
+                            ObjectNode validate = numberField.putObject("validate");
+                            if (minVal != null && !minVal.isBlank()) validate.put("min", minVal);
+                            if (maxVal != null && !maxVal.isBlank()) validate.put("max", maxVal);
+
+                            if (stepVal != null && !stepVal.isBlank()) numberField.put("increment", stepVal);
+
+                            // decimalDigits is optional, but you can support it
+                            String decimalDigits = ontService.getDataPropertyValue(propInd, "decimalDigits");
+                            if (decimalDigits != null && !decimalDigits.isBlank()) {
+                                numberField.put("decimalDigits", Integer.parseInt(decimalDigits));
+                            }
+
+                            // Default value (optional)
+                            String defaultValue = ontService.getDataPropertyValue(propInd, "defaultValue");
+                            if (defaultValue != null && !defaultValue.isBlank()) numberField.put("defaultValue", defaultValue);
+                        }
+                        case "Numeric" -> {
+                            // TODO - only appears in input/outcome Forms
+                        }
+                        case "Select" -> {
+                            ObjectNode selectField = propertyComponents.addObject();
+                            selectField.put("type", "select");
+                            selectField.put("id", fieldId);
+                            selectField.put("key", fieldKey);
+                            selectField.put("label", fieldLabel);
+
+                            if (fieldDesc != null && !fieldDesc.isBlank())
+                                selectField.put("description", fieldDesc);
+
+                            selectField.put("required", isRequired);
+                            selectField.put("readOnly", isReadOnly);
+
+                            boolean multiple = Boolean.parseBoolean(ontService.getDataPropertyValue(propInd, "multiple"));
+                            boolean collapse = Boolean.parseBoolean(ontService.getDataPropertyValue(propInd, "collapse"));
+                            boolean allowOther = Boolean.parseBoolean(ontService.getDataPropertyValue(propInd, "allowOther"));
+
+                            selectField.put("multiple", multiple);
+                            selectField.put("collapse", collapse);
+                            selectField.put("allowOther", allowOther);
+
+                            ArrayNode valuesArr = selectField.putArray("values");
+                            for (OWLNamedIndividual optionInd : ontService.getOptionsForProperty(propInd)) {
+                                ObjectNode valueObj = valuesArr.addObject();
+                                String value = ontService.getDataPropertyValue(optionInd, "value");
+                                valueObj.put("value", value);
+
+                                // Option label (can be multilingual or simple string)
+                                ObjectNode labelObj = valueObj.putObject("label");
+                                String labelEN = ontService.getAnnotationValue(optionInd, "labelEN");
+                                String labelPT = ontService.getAnnotationValue(optionInd, "labelPT");
+                                if (labelEN != null) labelObj.put("en-GB", labelEN);
+                                if (labelPT != null) labelObj.put("pt-PT", labelPT);
+                            }
+                        }
+                        case "AsyncSelect" -> {
+                            ObjectNode asyncSelectField = propertyComponents.addObject();
+                            asyncSelectField.put("type", "select");
+                            asyncSelectField.put("id", fieldId);
+                            asyncSelectField.put("key", fieldKey);
+                            asyncSelectField.put("label", fieldLabel);
+                            if (fieldDesc != null && !fieldDesc.isBlank())
+                                asyncSelectField.put("description", fieldDesc);
+                            asyncSelectField.put("required", isRequired);
+                            asyncSelectField.put("readOnly", isReadOnly);
+
+                            // Simulate a static option showing the optionsProvider value
+                            String optionsProvider = ontService.getDataPropertyValue(propInd, "optionsProvider");
+                            ArrayNode valuesArr = asyncSelectField.putArray("values");
+                            if (optionsProvider != null && !optionsProvider.isBlank()) {
+                                ObjectNode valueObj = valuesArr.addObject();
+                                valueObj.put("value", optionsProvider);
+                                ObjectNode labelObj = valueObj.putObject("label");
+                                labelObj.put("en-GB", optionsProvider);
+                                labelObj.put("pt-PT", optionsProvider);
+                            } else {
+                                ObjectNode valueObj = valuesArr.addObject();
+                                valueObj.put("value", "REMOTE_VALUES");
+                                ObjectNode labelObj = valueObj.putObject("label");
+                                labelObj.put("en-GB", "Remote values");
+                                labelObj.put("pt-PT", "Valores remotos");
+                            }
+                        }
+                        case "DateTime" -> {
+                            ObjectNode dtField = propertyComponents.addObject();
+                            dtField.put("type", "datetime");
+                            dtField.put("subtype", "datetime");
+                            dtField.put("id", fieldId);
+                            dtField.put("key", fieldKey);
+
+                            String dateLabel = ontService.getDataPropertyValue(propInd, "dateLabelEN");
+                            if (dateLabel == null || dateLabel.isBlank()) dateLabel = "Date";
+                            dtField.put("dateLabel", dateLabel);
+
+                            String timeLabel = ontService.getDataPropertyValue(propInd, "timeLabelEN");
+                            if (timeLabel == null || timeLabel.isBlank()) timeLabel = "Time";
+                            dtField.put("timeLabel", timeLabel);
+
+                            if (fieldDesc != null && !fieldDesc.isBlank()) {
+                                dtField.put("description", fieldDesc);
+                            }
+
+                            String timeSerializingFormat = ontService.getDataPropertyValue(propInd, "timeSerializingFormat");
+                            dtField.put("timeSerializingFormat", (timeSerializingFormat != null && !timeSerializingFormat.isBlank()) ? timeSerializingFormat : "utc_offset");
+
+                            String timeInterval = ontService.getDataPropertyValue(propInd, "timeInterval");
+                            dtField.put("timeInterval", (timeInterval != null && !timeInterval.isBlank()) ? Integer.valueOf(timeInterval) : 15);
+
+                            String use24h = "true";
+                            dtField.put("use24h", Boolean.valueOf(use24h));
+
+                            boolean showDate = Boolean.parseBoolean(ontService.getDataPropertyValue(propInd, "date"));
+                            boolean showTime = Boolean.parseBoolean(ontService.getDataPropertyValue(propInd, "time"));
+                            dtField.put("date", showDate);
+                            dtField.put("time", showTime);
+
+                            ObjectNode layout = dtField.putObject("layout");
+                            layout.put("row", "Row_" + fieldId);
+                            layout.putNull("columns");
+
+                            ObjectNode validate = dtField.putObject("validate");
+                            validate.put("required", isRequired);
+                        }
+                        case "Array" -> {
+                            // TODO
+                        }
+                        case "Composite" -> {
+                            // TODO
+                        }
+                        default -> {
+                            ObjectNode stringField = propertyComponents.addObject();
+                            stringField.put("type", "text");
+                            stringField.put("id", fieldId);
+                            stringField.put("key", fieldKey);
+                            stringField.put("label", fieldLabel);
+                            if (fieldDesc != null && !fieldDesc.isBlank())
+                                stringField.put("description", fieldDesc);
+                            stringField.put("required", isRequired);
+                            stringField.put("readOnly", isReadOnly);
+                        }
+                    }
+                }
             }
-            catch (IOException e) {
-                throw new RuntimeException("Error writing form JSON for " 
-                                           + formInd.getIRI().getFragment(), e);
-            }
-        });
+        }
+
+        Path out = formsDir.resolve(formId + ".form");
+        System.out.println("Writing form definition to: " + out);
+        JSON.writerWithDefaultPrettyPrinter().writeValue(out.toFile(), formJson);
     }
+}
+
 
     /**
      * Create all ScriptTask nodes, then add a camunda:property link
@@ -455,31 +773,6 @@ public class BpmnModelBuilder {
         return element;
     }
 
-    private void createDataObjectForTask(Process process, UserTask userTask, OWLNamedIndividual fieldInd) {
-        // base fragment from ontology individual
-        String baseId      = fieldInd.getIRI().getFragment();
-
-        // 1) generate a globally unique ID for the DataObject
-        String dataObjId   = ensureUniqueId(process.getModelInstance(), baseId);
-        DataObject dataObj = createElement(process, dataObjId, DataObject.class);
-        String name        = ontService.getDataPropertyValue(fieldInd, "sfName");
-        dataObj.setName(name != null ? name : dataObjId);
-
-        // 2) generate a globally unique ID for the DataObjectReference
-        String refBase     = dataObjId + "_Ref";
-        String refId       = ensureUniqueId(process.getModelInstance(), refBase);
-        DataObjectReference ref = createElement(process, refId, DataObjectReference.class);
-        ref.setDataObject(dataObj);
-        ref.setName(dataObj.getName());
-
-        // 3) add both to the process
-        process.addChildElement(dataObj);
-        process.addChildElement(ref);
-
-        // 4) associate back to the UserTask
-        createDataAssociation(process, userTask, ref);
-    }
-
     private void createDataAssociation(Process process, UserTask userTask, DataObjectReference dataObjectRef) {
         process.addChildElement(dataObjectRef);
     
@@ -545,11 +838,9 @@ public class BpmnModelBuilder {
     private String ensureUniqueId(ModelInstance model, String prefix) {
         String id     = prefix;
         int    index  = 1;
-        // model.getModelElementById(id) returns null if no element has that ID
         while (model.getModelElementById(id) != null) {
             id = prefix + "_" + (index++);
         }
         return id;
     }
-}   
-
+}

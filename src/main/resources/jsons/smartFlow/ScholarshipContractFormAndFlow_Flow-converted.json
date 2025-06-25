@@ -47,14 +47,14 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Verificação das Condições",
-                  "en-GB" : "Review of Conditions"
+                  "pt-PT" : "Verificação_das_Condições",
+                  "en-GB" : "Review_of_Conditions"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Validação dos Requisitos e Plano de Trabalho",
-                      "en-GB" : "Requirements and Work Plan Validation"
+                      "pt-PT" : "Validação_dos_Requisitos_e_Plano_de_Trabalho",
+                      "en-GB" : "Requirements_and_Work_Plan_Validation"
                     },
                     "properties" : [
                       {
@@ -116,14 +116,14 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Direção de Projetos e Execução Orçamental",
-                  "en-GB" : "Projects and Budget Execution Department"
+                  "pt-PT" : "Direção_de_Projetos_e_Execução_Orçamental",
+                  "en-GB" : "Projects_and_Budget_Execution_Department"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Imputação de Custos",
-                      "en-GB" : "Cost Allocation"
+                      "pt-PT" : "Imputação_de_Custos",
+                      "en-GB" : "Cost_Allocation"
                     },
                     "properties" : [
                       {
@@ -251,8 +251,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Custos Financeiros",
-                      "en-GB" : "Financial Costs"
+                      "pt-PT" : "Custos_Financeiros",
+                      "en-GB" : "Financial_Costs"
                     },
                     "properties" : [
                       {
@@ -350,7 +350,7 @@
                   {
                     "title" : {
                       "pt-PT" : "Reserva/Cabimento",
-                      "en-GB" : "Reserve/Fund Allocation"
+                      "en-GB" : "Reserve/Fund_Allocation"
                     },
                     "properties" : [
                       {
@@ -407,8 +407,8 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Reservas e Cabimentos",
-                  "en-GB" : "Reservations and Fund Allocation"
+                  "pt-PT" : "Reservas_e_Cabimentos",
+                  "en-GB" : "Reservations_and_Fund_Allocation"
                 },
                 "sections" : [
                   {

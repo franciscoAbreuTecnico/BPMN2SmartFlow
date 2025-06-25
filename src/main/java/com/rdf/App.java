@@ -159,10 +159,13 @@ public class App {
         System.out.println("Appended counts to matrix-report.csv under column: " + baseName);
 
         // 5) generate BPMN model
-        String bpmnOutputPath = "src/main/resources/output/bpmn/" + baseName + ".bpmn";
-        new BpmnModelBuilder(ontologyService, METHOD_DATA)
-            .generateBpmnModel(bpmnOutputPath);
-        System.out.println("BPMN model written to: " + bpmnOutputPath);
+        BpmnModelBuilder builder = new BpmnModelBuilder(ontologyService, METHOD_DATA);
+        String bpmnOut = "src/main/resources/output/bpmn/" + baseName + ".bpmn";
+        Path formsOut = Paths.get("src/main/resources/output/forms");
+        // Files.createDirectories(formsOut);
+        // builder.generateFormDefinitions(formsOut);
+        // builder.generateBpmnModel(bpmnOut);
+        System.out.println("BPMN model written to: " + bpmnOut);
 
         // 6) save the merged ontology
         Path mergedOutput = Paths.get("src/main/resources/output/merged/" + baseName + ".ttl");

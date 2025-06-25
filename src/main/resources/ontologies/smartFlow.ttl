@@ -24,14 +24,6 @@ sf:Element a owl:Class ;
     rdfs:label "Flow Template Element" ;
     rdfs:comment "An element in the flow, which can be an action node or a terminal node." .
 
-sf:Form a owl:Class ;
-    rdfs:label "Form" ;
-    rdfs:comment "A form used to collect input at certain steps in the flow." .
-
-sf:Field a owl:Class ;
-    rdfs:label "Field" ;
-    rdfs:comment "A field in a form, representing a piece of data to be collected." .
-
 sf:AuthorizationChainNode a owl:Class ;
     rdfs:label "Authorization Chain Node" ;
     rdfs:comment "Nodes used to notify and require authorization from a chain of responsible parties." .
@@ -45,6 +37,70 @@ sf:ActionNode a owl:Class ;
     rdfs:subClassOf sf:Element ;
     rdfs:label "ActionNode" ;
     rdfs:comment "A node (step) within the workflow." .
+    
+sf:Form a owl:Class ;
+    rdfs:label "Form" ;
+    rdfs:comment "A form used to collect input at certain steps in the flow." .
+
+sf:Page a owl:Class ;
+    rdfs:label "Form Page" .
+
+sf:Section a owl:Class ;
+    rdfs:label "Form Section" .
+
+sf:Property a owl:Class ;
+    rdfs:label "Form Property" .
+
+sf:BooleanProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Boolean Property" .
+
+sf:FileProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "File Property" .
+
+sf:SelectProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Select Property" .
+
+sf:TextProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Text Property" .
+
+sf:LocalizedTextProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Localized Text Property" ;
+    rdfs:comment "A property that can have localized text values." .
+
+sf:QuantityProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Quantity Property" ;
+    rdfs:comment "A property that represents a quantity with a unit." .
+
+sf:NumericProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Numeric Property" ;
+    rdfs:comment "A property that represents a numeric value." .
+
+sf:AsyncSelectProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Async Select Property" ;
+    rdfs:comment "A property that allows asynchronous selection of options, typically used for large datasets." .
+
+sf:DateTimeProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "DateTime Property" ;
+    rdfs:comment "A property that represents a date and time value." .
+
+sf:ArrayProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Array Property" ;
+    rdfs:comment "A property that represents an array of values." .
+
+sf:CompositeProperty a owl:Class ;
+    rdfs:subClassOf sf:Property ;
+    rdfs:label "Composite Property" ;
+    rdfs:comment "A property that is composed of multiple other properties." .
 
 # sf:GenericActionNode a owl:Class ;
 #     rdfs:subClassOf sf:ActionNode ;
@@ -87,6 +143,18 @@ sf:ActionProcessor a owl:Class ;
     rdfs:subClassOf sf:Element ;
     rdfs:label "ActionProcessor" ;
     rdfs:comment "Specify what should be done when a pre-determined action is performed." .
+
+### Forms
+sf:Option a owl:Class ;
+    rdfs:label "Option" ;
+    rdfs:comment "An option for a Select property in a form." .
+
+sf:has_option a owl:ObjectProperty ;
+    rdfs:domain sf:Property ;
+    rdfs:range sf:Option ;
+    rdfs:label "has option" ;
+    rdfs:comment "Links a Select property to its possible options." .
+
 
 ################################################################
 # Subclasses
@@ -155,21 +223,40 @@ sf:has_associatedForm a owl:ObjectProperty ;
     rdfs:range sf:Form ;
     rdfs:label "has_associatedForm" ;
     rdfs:comment "Links a form button to the form that it launches." .
+sf:has_page a owl:ObjectProperty ;
+    rdfs:domain sf:Form ;
+    rdfs:range sf:Page ;
+    rdfs:label "has_page" ;
+    rdfs:comment "Associates a form with its page." .
+sf:has_section a owl:ObjectProperty ;
+    rdfs:domain sf:Page ;
+    rdfs:range sf:Section ;
+    rdfs:label "has_section" ;
+    rdfs:comment "Associates a form page with its section." .
+sf:has_property a owl:ObjectProperty ;
+    rdfs:domain sf:Section ;
+    rdfs:range sf:Property ;
+    rdfs:label "has_property" ;
+    rdfs:comment "Associates a form section with its property." .
+
 sf:has_handlersAction a owl:ObjectProperty ;
     rdfs:domain sf:Handler ;
     rdfs:range sf:Action ;
     rdfs:label "has_handlersAction" ;
     rdfs:comment "If type=withForms, the action this button invokes." .
-sf:has_fields a owl:ObjectProperty ;
-    rdfs:domain sf:Form ;
-    rdfs:range sf:Field ;
-    rdfs:label "has_fields" ;
-    rdfs:comment "The fields in the form, represented as a list of field names." .
+    
 sf:has_applyOn  a owl:ObjectProperty ;
     rdfs:domain sf:ActionProcessor ;
     rdfs:range  sf:Action ;
     rdfs:label "has_applyOn" ;
     rdfs:comment "When clicked, this button fires the given Action." .
+
+### Forms
+sf:has_property a owl:ObjectProperty ;
+    rdfs:domain sf:CompositeProperty, sf:ArrayProperty ;
+    rdfs:range sf:Property ;
+    rdfs:label "has property" ;
+    rdfs:comment "Associates an array or composite property with its child properties." .
 
 ################################################################
 # Datatype Properties
@@ -202,6 +289,105 @@ sf:isPrimaryButton a owl:DatatypeProperty ;
     rdfs:domain sf:Button ;
     rdfs:range xsd:boolean ;
     rdfs:comment "True if button is primary." .
+
+sf:isRequired a owl:DatatypeProperty ;
+    rdfs:domain sf:Property ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "If this property is required for the form." .
+sf:readOnly a owl:DatatypeProperty ;
+    rdfs:domain sf:Property ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "If this property is read-only (not editable by the user)." .
+sf:multiline a owl:DatatypeProperty ;
+    rdfs:domain sf:Property ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "If this property is multiline (e.g., for text areas)." .
+sf:inputType a owl:DatatypeProperty ;
+    rdfs:domain sf:Property ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Type of input for the property (text, number, email, etc.)." .
+    
+sf:propertyType a owl:DatatypeProperty ;
+    rdfs:domain sf:Property ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Type of the property (Boolean, File, Select, DateTime, etc.)." .
+sf:labelYesPT a owl:DatatypeProperty ;
+    rdfs:domain sf:BooleanProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Label for the 'Yes' option in Portuguese (pt-PT)." .
+sf:labelNoPT a owl:DatatypeProperty ;
+    rdfs:domain sf:BooleanProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Label for the 'No' option in Portuguese (pt-PT)." .
+sf:labelYesEN a owl:DatatypeProperty ;
+    rdfs:domain sf:BooleanProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Label for the 'Yes' option in English (en-GB)." .
+sf:labelNoEN a owl:DatatypeProperty ;
+    rdfs:domain sf:BooleanProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Label for the 'No' option in English (en-GB)." .
+sf:value a owl:DatatypeProperty ;
+    rdfs:domain sf:Option ;
+    rdfs:range xsd:string ;
+    rdfs:label "Option value" .
+
+sf:allowedFileType a owl:DatatypeProperty ;
+    rdfs:domain sf:FileProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "File types allowed for upload (e.g. .pdf)." .
+sf:maxSizeMB a owl:DatatypeProperty ;
+    rdfs:domain sf:FileProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Maximum file size in MB." .
+
+sf:multiple a owl:DatatypeProperty ;
+    rdfs:domain sf:SelectProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Whether multiple options may be selected (if so, a list of checkboxes will be displayed)" .
+sf:collapse a owl:DatatypeProperty ;
+    rdfs:domain sf:Section ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Whether all options should be clearly displayed to the user (list of radio buttons) or collapsed (into a dropdown selection) — collapse: true should be used when it is not relevant to compare between all options to make a choice.If collapse: true and there are more than 5 options, a searchable selection will be used in place of a dropdown selection. If multiple: true, the options will never be collapsed, regardless of the value of this attribute." .
+sf:allowOther a owl:DatatypeProperty ;
+    rdfs:domain sf:SelectProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Whether a free text other option may be inserted, instead of limiting the value to the specified list of options." .
+
+sf:locales a owl:DatatypeProperty ;
+    rdfs:domain sf:LocalizedTextProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Locales supported by this localized text property." .
+
+sf:min a owl:DatatypeProperty ;
+    rdfs:domain sf:QuantityProperty ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "Minimum value for Quantity property." .
+sf:max a owl:DatatypeProperty ;
+    rdfs:domain sf:QuantityProperty ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "Maximum value for Quantity property." .
+sf:step a owl:DatatypeProperty ;
+    rdfs:domain sf:QuantityProperty ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "Step/increment for Quantity property." .
+
+sf:optionsProvider a owl:DatatypeProperty ;
+    rdfs:domain sf:AsyncSelectProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "URL of the options provider for Async Select Property." .
+
+sf:date a owl:DatatypeProperty ;
+    rdfs:domain sf:DateTimeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Show Date" ;
+    rdfs:comment "Whether the field shows date component." .
+sf:time a owl:DatatypeProperty ;
+    rdfs:domain sf:DateTimeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Show Time" ;
+    rdfs:comment "Whether the field shows time component." .
+
 
 ################################################################
 # Annotations Properties

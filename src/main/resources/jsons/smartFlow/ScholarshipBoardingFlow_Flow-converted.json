@@ -28,14 +28,14 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Plano de Trabalhos Detalhado",
-                  "en-GB" : "Detailed Work Plan"
+                  "pt-PT" : "Plano_de_Trabalhos_Detalhado",
+                  "en-GB" : "Detailed_Work_Plan"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Plano de Trabalhos Detalhado",
-                      "en-GB" : "Detailed Work Plan"
+                      "pt-PT" : "Plano_de_Trabalhos_Detalhado",
+                      "en-GB" : "Detailed_Work_Plan"
                     },
                     "properties" : [
                       {
@@ -69,14 +69,14 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Informação do Candidato a Bolsa",
-                  "en-GB" : "Scholarship Applicant Information"
+                  "pt-PT" : "Informação_do_Candidato_a_Bolsa",
+                  "en-GB" : "Scholarship_Applicant_Information"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Dados Pessoais",
-                      "en-GB" : "Personal Data"
+                      "pt-PT" : "Dados_Pessoais",
+                      "en-GB" : "Personal_Data"
                     },
                     "properties" : [
                       {
@@ -103,8 +103,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Dados Bancários",
-                      "en-GB" : "Bank Data"
+                      "pt-PT" : "Dados_Bancários",
+                      "en-GB" : "Bank_Data"
                     },
                     "properties" : [
                       {
@@ -131,8 +131,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Seguro Social Voluntário",
-                      "en-GB" : "Voluntary Social Security"
+                      "pt-PT" : "Seguro_Social_Voluntário",
+                      "en-GB" : "Voluntary_Social_Security"
                     },
                     "description" : {
                       "pt-PT" : "Aplicável a bolsas com duração igual ou superior a 6 meses.",
@@ -171,8 +171,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Dados Institucionais",
-                      "en-GB" : "Institutional Data"
+                      "pt-PT" : "Dados_Institucionais",
+                      "en-GB" : "Institutional_Data"
                     },
                     "properties" : [
                       {
@@ -191,14 +191,14 @@
               },
               {
                 "title" : {
-                  "pt-PT" : "Informação da Bolsa de Investigação",
-                  "en-GB" : "Research Scholarship Information"
+                  "pt-PT" : "Informação_da_Bolsa_de_Investigação",
+                  "en-GB" : "Research_Scholarship_Information"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Tipologia e Âmbito",
-                      "en-GB" : "Type and Context"
+                      "pt-PT" : "Tipologia_e_Âmbito",
+                      "en-GB" : "Type_and_Context"
                     },
                     "properties" : [
                       {
@@ -341,8 +341,8 @@
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Imputação de Custos",
-                      "en-GB" : "Cost Allocation"
+                      "pt-PT" : "Imputação_de_Custos",
+                      "en-GB" : "Cost_Allocation"
                     },
                     "properties" : [
                       {
@@ -468,14 +468,14 @@
               },
               {
                 "title" : {
-                  "pt-PT" : "Informação da Bolsa de Investigação",
-                  "en-GB" : "Research Scholarship Information"
+                  "pt-PT" : "Informação_da_Bolsa_de_Investigação",
+                  "en-GB" : "Research_Scholarship_Information"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Vigência da Bolsa",
-                      "en-GB" : "Scholarship Term"
+                      "pt-PT" : "Vigência_da_Bolsa",
+                      "en-GB" : "Scholarship_Term"
                     },
                     "properties" : [
                       {
@@ -514,14 +514,14 @@
               },
               {
                 "title" : {
-                  "pt-PT" : "Informação de Encargos",
-                  "en-GB" : "Costs Information"
+                  "pt-PT" : "Informação_de_Encargos",
+                  "en-GB" : "Costs_Information"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Remuneração da Bolsa",
-                      "en-GB" : "Scholarship Remuneration"
+                      "pt-PT" : "Remuneração_da_Bolsa",
+                      "en-GB" : "Scholarship_Remuneration"
                     },
                     "description" : {
                       "pt-PT" : "A bolsa de valor inferior não pode, com majoração, ultrapassar o valor de bolsa imediatamente superior.",
@@ -543,8 +543,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Encargos Definitivos",
-                      "en-GB" : "Definitive Costs"
+                      "pt-PT" : "Encargos_Definitivos",
+                      "en-GB" : "Definitive_Costs"
                     },
                     "properties" : [
                       {
@@ -706,14 +706,14 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Direção de Projetos e Execução Orçamental",
-                  "en-GB" : "Projects and Budget Execution Department"
+                  "pt-PT" : "Direção_de_Projetos_e_Execução_Orçamental",
+                  "en-GB" : "Projects_and_Budget_Execution_Department"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Informação Financeira",
-                      "en-GB" : "Financial Information"
+                      "pt-PT" : "Informação_Financeira",
+                      "en-GB" : "Financial_Information"
                     },
                     "properties" : [
                       {
@@ -770,8 +770,8 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Reservas e Cabimentos",
-                  "en-GB" : "Reservations and Fund Allocation"
+                  "pt-PT" : "Reservas_e_Cabimentos",
+                  "en-GB" : "Reservations_and_Fund_Allocation"
                 },
                 "sections" : [
                   {

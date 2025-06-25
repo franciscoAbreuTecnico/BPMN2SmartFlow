@@ -105,8 +105,8 @@
             "pages" : [
               {
                 "title" : {
-                  "pt-PT" : "Informação das Tarefas Realizadas",
-                  "en-GB" : "Information on the Completed Tasks"
+                  "pt-PT" : "Informação_das_Tarefas_Realizadas",
+                  "en-GB" : "Information_on_the_Completed_Tasks"
                 },
                 "sections" : [
                   {
@@ -152,8 +152,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Descrição das Tarefas Indicadas no Plano de Trabalhos",
-                      "en-GB" : "Description of the Tasks Listed in the Work Plan"
+                      "pt-PT" : "Descrição_das_Tarefas_Indicadas_no_Plano_de_Trabalhos",
+                      "en-GB" : "Description_of_the_Tasks_Listed_in_the_Work_Plan"
                     },
                     "properties" : [
                       {
@@ -193,8 +193,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Meios Utilizados",
-                      "en-GB" : "Methods Used"
+                      "pt-PT" : "Meios_Utilizados",
+                      "en-GB" : "Methods_Used"
                     },
                     "description" : {
                       "pt-PT" : "Indicação dos meios de comunicação utilizados em teletrabalho (em % aproximada de tempo).",
@@ -268,8 +268,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Plataformas e Aplicações Utilizadas",
-                      "en-GB" : "Platforms and Applications Used"
+                      "pt-PT" : "Plataformas_e_Aplicações_Utilizadas",
+                      "en-GB" : "Platforms_and_Applications_Used"
                     },
                     "description" : {
                       "pt-PT" : "Indicação dos meios tecnológicos, plataformas e outras aplicações utilizadas na execução das tarefas.",
@@ -293,14 +293,14 @@
               },
               {
                 "title" : {
-                  "pt-PT" : "Avaliação do Teletrabalho",
-                  "en-GB" : "Remote Work Evaluation"
+                  "pt-PT" : "Avaliação_do_Teletrabalho",
+                  "en-GB" : "Remote_Work_Evaluation"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Avaliação do Grau de Interação",
-                      "en-GB" : "Evaluation of the Degree of Interaction"
+                      "pt-PT" : "Avaliação_do_Grau_de_Interação",
+                      "en-GB" : "Evaluation_of_the_Degree_of_Interaction"
                     },
                     "properties" : [
                       {
@@ -612,8 +612,8 @@
                   },
                   {
                     "title" : {
-                      "pt-PT" : "Apreciação Global",
-                      "en-GB" : "Global Evaluation"
+                      "pt-PT" : "Apreciação_Global",
+                      "en-GB" : "Global_Evaluation"
                     },
                     "description" : {
                       "pt-PT" : "Apreciação Global do Teletrabalho no Período de Referência",
@@ -687,13 +687,13 @@
               {
                 "title" : {
                   "pt-PT" : "Teletrabalho",
-                  "en-GB" : "Remote Work"
+                  "en-GB" : "Remote_Work"
                 },
                 "sections" : [
                   {
                     "title" : {
-                      "pt-PT" : "Renovação de Teletrabalho",
-                      "en-GB" : "Remote Work Renewal"
+                      "pt-PT" : "Renovação_de_Teletrabalho",
+                      "en-GB" : "Remote_Work_Renewal"
                     },
                     "properties" : [
                       {

@@ -30,8 +30,10 @@ public class PartialApp {
     private static final Map<PatternType, HashMap<String, JavaMethodExtractor.Location>> METHOD_DATA =
         EXTRACTOR.getResultsMap();
 
-    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/ScholarshipContractFormAndFlow.json");
-    private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/MarriageLeave.json");
+    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/MarriageLeave.json");
+    private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/ScholarshipContractFormAndFlow.json");
+    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/ScholarshipBoardingFlow.json");
+    // private static final Path INPUT_JSON = Paths.get("src/main/resources/jsons/SabbaticalLeave.json");
 
     /**
      * Processes the hard-coded JSON file: splits into Flow and Request variants,

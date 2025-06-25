@@ -630,42 +630,546 @@
   ] ;
 
   rr:predicateObjectMap [
-    rr:predicate sf:has_fields ;
+    rr:predicate sf:has_page ;
     rr:objectMap [
       rr:termType rr:IRI ;
-      rr:template  "http://example.org/ontologies/SmartFlow/Field/{form.pages[*].sections[*].properties[*].field}" ;
+      rr:template  "http://example.org/ontologies/SmartFlow/Page/{form.pages[*].title.en-GB}" ;
     ] ;
   ] ;
 .
 
 #################################################################
-# Map each Field associated with a Form
+# Map each Form Page
 #################################################################
-<#FieldMapping>
+<#PageMapping>
   a rr:TriplesMap ;
   rml:logicalSource [
-    rml:source           "{{JSON_SOURCE}}" ;
+    rml:source "{{JSON_SOURCE}}" ;
     rml:referenceFormulation ql:JSONPath ;
-    rml:iterator         "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[*]" ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*]" ;
   ] ;
 
   rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/Page/{title.en-GB}" ;
     rr:termType  rr:IRI ;
-    rr:template  "http://example.org/ontologies/SmartFlow/Field/{field}" ;
-  ] ;
-
-  # assert each as a Field
-  rr:predicateObjectMap [
-    rr:predicate  rdf:type ;
-    rr:objectMap  [ rr:constant sf:Field ] ;
+    rr:class     sf:Page ;
   ] ;
 
   rr:predicateObjectMap [
-    rr:predicate  rdfs:sfName ;
-    rr:objectMap  [
-      rml:reference "field" ;
+    rr:predicate sf:titlePT ;
+    rr:objectMap [
+      rml:reference "title.pt-PT" ;
     ] ;
-] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titleEN ;
+    rr:objectMap [
+      rml:reference "title.en-GB" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_section ;
+    rr:objectMap [
+      rr:template  "http://example.org/ontologies/SmartFlow/Section/{sections[*].title.en-GB}" ;
+    ];
+  ] ;
+.
+
+#################################################################
+# Map each Section associated with a Form Page
+#################################################################
+<#SectionMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source         "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator    "$.flowTemplate.config.forms[*].form.pages[*].sections[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template  "http://example.org/ontologies/SmartFlow/Section/{title.en-GB}" ;
+    rr:termType  rr:IRI ;
+    rr:class     sf:Section ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titlePT ;
+    rr:objectMap [
+      rml:reference "title.pt-PT" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titleEN ;
+    rr:objectMap [
+      rml:reference "title.en-GB" ;
+    ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_property ;
+    rr:objectMap [
+      rr:termType   rr:IRI ;
+      rr:template   "http://example.org/ontologies/SmartFlow/Property/{properties[*].field}" ;
+    ] ;
+  ] ; 
+.
+
+#################################################################
+# Map each Property
+#################################################################
+<#BooleanPropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='Boolean')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:BooleanProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfId ; rr:objectMap [ rml:reference "field" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:sfName ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:titlePT ; rr:objectMap [ rml:reference "label.pt-PT" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:titleEN ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:isRequired ; rr:objectMap [ rml:reference "required" ; rr:datatype   xsd:boolean ; ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:labelYesPT ; rr:objectMap [ rml:reference "labelYes.pt-PT" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:labelYesEN ; rr:objectMap [ rml:reference "labelYes.en-GB" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:labelNoPT ; rr:objectMap [ rml:reference "labelNo.pt-PT" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:labelNoEN ; rr:objectMap [ rml:reference "labelNo.en-GB" ] ;
+  ] ;
+.
+
+<#FilePropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='File')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:FileProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfId ; rr:objectMap [ rml:reference "field" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:sfName ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+  
+  rr:predicateObjectMap [
+    rr:predicate sf:titlePT ; rr:objectMap [ rml:reference "label.pt-PT" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:titleEN ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:isRequired ; rr:objectMap [ rml:reference "required"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:allowedFileType ; rr:objectMap [ rml:reference "allowedFileTypes[*]" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:maxSizeMB ; rr:objectMap [ rml:reference "maxSizeMB" ] ;
+  ] ;
+.
+
+<#SelectPropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='Select')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:SelectProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfId ; rr:objectMap [ rml:reference "field" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfName ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titlePT ; rr:objectMap [ rml:reference "label.pt-PT" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:titleEN ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:isRequired ; rr:objectMap [ rml:reference "required"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:multiple ; rr:objectMap [ rml:reference "multiple"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+    rr:predicateObjectMap [
+    rr:predicate sf:allowOther ; rr:objectMap [ rml:reference "allowOther"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+    rr:predicateObjectMap [
+    rr:predicate sf:collapseOther ; rr:objectMap [ rml:reference "collapseOther"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_option ;
+    rr:objectMap [
+      rr:template "http://example.org/ontologies/SmartFlow/Option/{options[*].value}" ;
+      rr:termType rr:IRI ;
+    ] ;
+  ] ;
+.
+
+<#TextPropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='Text')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:TextProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfId ; rr:objectMap [ rml:reference "field" ] ;
+  ] ;
+
+  sf:predicateObjectMap [
+    rr:predicate sf:sfName ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelPT ; rr:objectMap [ rml:reference "label.pt-PT" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelEN ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:isRequired ; rr:objectMap [ rml:reference "required"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:multiline ; rr:objectMap [ rml:reference "multiline"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:inputType ; rr:objectMap [ rml:reference "inputType" ] ;
+  ] ;
+.
+
+<#LocalizedTextPropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='LocalizedText')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:LocalizedTextProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:sfId ; rr:objectMap [ rml:reference "field" ] ;
+  ] ;
+  sf:predicateObjectMap [
+    rr:predicate sf:sfName ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:labelPT ; rr:objectMap [ rml:reference "label.pt-PT" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:labelEN ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:isRequired ; rr:objectMap [ rml:reference "required" ; rr:datatype xsd:boolean ; ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:multiline ; rr:objectMap [ rml:reference "multiline"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:inputType ; rr:objectMap [ rml:reference "inputType" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:locales ; rr:objectMap [ rml:reference "locales[*]" ] ;
+  ] ;
+.
+
+<#QuantityPropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='Quantity')]" ;
+  ] ;
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:QuantityProperty ;
+  ] ;
+  rr:predicateObjectMap [ rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ; ] ;
+  rr:predicateObjectMap [ rr:predicate sf:sfId ; rr:objectMap [ rml:reference "field" ] ; ] ;
+  rr:predicateObjectMap [ rr:predicate sf:sfName ; rr:objectMap [ rml:reference "label.en-GB" ] ; ] ;
+  rr:predicateObjectMap [ rr:predicate sf:titlePT ; rr:objectMap [ rml:reference "label.pt-PT" ] ; ] ;
+  rr:predicateObjectMap [ rr:predicate sf:titleEN ; rr:objectMap [ rml:reference "label.en-GB" ] ; ] ;
+  rr:predicateObjectMap [ rr:predicate sf:isRequired ; rr:objectMap [ rml:reference "required" ; rr:datatype xsd:boolean ; ] ; ] ;
+  rr:predicateObjectMap [ rr:predicate sf:minValue ; rr:objectMap [ rml:reference "min" ; rr:datatype xsd:decimal ; ] ; ] ;
+  rr:predicateObjectMap [ rr:predicate sf:maxValue ; rr:objectMap [ rml:reference "max" ; rr:datatype xsd:decimal ; ] ; ] ;
+  rr:predicateObjectMap [ rr:predicate sf:stepValue ; rr:objectMap [ rml:reference "step" ; rr:datatype xsd:decimal ; ] ; ] ;
+.
+
+<#NumericPropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='Numeric')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:NumericProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+.
+
+<#AsyncSelectPropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='AsyncSelect')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:AsyncSelectProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfId ; rr:objectMap [ rml:reference "field" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfName ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelEN ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelPT ; rr:objectMap [ rml:reference "label.pt-PT" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:isRequired ; rr:objectMap [ rml:reference "required"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:allowOther ; rr:objectMap [ rml:reference "allowOther"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:optionsProvider ; rr:objectMap [ rml:reference "optionsProvider"] ;
+  ] ;
+.
+
+<#DateTimePropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='DateTime')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:DateTimeProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfId ; rr:objectMap [ rml:reference "field" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:sfName ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelPT ; rr:objectMap [ rml:reference "label.pt-PT" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelEN ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:isRequired ; rr:objectMap [ rml:reference "required"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:date ; rr:objectMap [ rml:reference "dateFormat"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:time ; rr:objectMap [ rml:reference "timeFormat"; rr:datatype xsd:boolean ; ] ;
+  ] ;
+.
+
+<#ArrayPropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='Array')]" ;
+  ] ;
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:ArrayProperty ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ;
+    rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+  rr:predicateObjectMap [
+    rr:predicate sf:has_property ;
+    rr:objectMap [
+      rr:template "http://example.org/ontologies/SmartFlow/Property/{properties[*].field}" ;
+      rr:termType rr:IRI ;
+    ] ;
+  ] ;
+.
+
+<#CompositePropertyMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[?(@.type=='Composite')]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Property/{field}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:CompositeProperty ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:propertyType ; rr:objectMap [ rml:reference "type" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:has_property ;
+    rr:objectMap [
+      rr:template "http://example.org/ontologies/SmartFlow/Property/{properties[*].field}" ;
+      rr:termType rr:IRI ;
+    ] ;
+  ] ;
+.
+
+<#PropertyOptionMapping>
+  a rr:TriplesMap ;
+  rml:logicalSource [
+    rml:source "{{JSON_SOURCE}}" ;
+    rml:referenceFormulation ql:JSONPath ;
+    rml:iterator "$.flowTemplate.config.forms[*].form.pages[*].sections[*].properties[*].options[*]" ;
+  ] ;
+
+  rr:subjectMap [
+    rr:template "http://example.org/ontologies/SmartFlow/Option/{value}" ;
+    rr:termType rr:IRI ;
+    rr:class sf:Option ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:value ; rr:objectMap [ rml:reference "value" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelPT ; rr:objectMap [ rml:reference "label.pt-PT" ] ;
+  ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:labelEN ; rr:objectMap [ rml:reference "label.en-GB" ] ;
+  ] ; 
 .
 
 #################################################################

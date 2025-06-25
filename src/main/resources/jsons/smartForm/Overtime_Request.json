@@ -222,11 +222,12 @@
             "field" : "expectedHoursSupplementaryRestDaysAndHolidays",
             "required" : true,
             "step" : 0.01,
+            "min" : 0,
+            "max" : 24,
             "label" : {
               "pt-PT" : "Número de Horas Previstas em Dias de Descanso Complementar (sábado) e Feriados",
               "en-GB" : "Number of Hours Expected on Supplementary Rest Days (Saturday) and Public Holidays"
-            },
-            "min" : 0
+            }
           }, {
             "type" : "Quantity",
             "field" : "expectedHoursStatutoryRestDays",

@@ -18,6 +18,58 @@ public class JsonFlattener {
         .enable(SerializationFeature.INDENT_OUTPUT);
 
     /**
+     * Main entry: read JSON, transform each actionNode, write "-converted.json".
+     */
+    public static String convert(String inputPath) throws IOException {
+        // mapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS, true);
+        JsonNode root = mapper.readTree(new File(inputPath));
+
+        JsonNode flowTemplate = root.path("flowTemplate").path("config");
+        if (flowTemplate.has("forms")) {
+            for (JsonNode formObj : flowTemplate.get("forms")) {
+                JsonNode formDef = formObj.path("form");
+                transformTitlesInForm(formDef);
+            }
+        }
+
+        ArrayNode actionNodes = (ArrayNode) root
+            .path("flowTemplate")
+            .path("config")
+            .path("actionNodes");
+
+        for (JsonNode n : actionNodes) {
+            ObjectNode node = (ObjectNode) n;
+
+            // 1) actions → array
+            if (node.has("actions")) {
+                node.set("actions", flattenActions(node));
+            }
+
+            // 2) actionProcessor → array
+            if (node.has("actionProcessor")) {
+                node.set("actionProcessor", flattenProcessors(node));
+            }
+
+            // 3) rewrite any button handlers
+            rewriteButtonHandlers(node);
+
+            // 4) sanitize queue
+            if (node.has("queue")) {
+                node.put("queue", sanitizeQueue(node.get("queue").asText()));
+            }
+        }
+
+        DefaultPrettyPrinter pp = new DefaultPrettyPrinter();
+        DefaultIndenter ind = new DefaultIndenter("  ", "\n");
+        pp.indentObjectsWith(ind);
+        pp.indentArraysWith(ind);
+
+        String outPath = inputPath.replace(".json", "-converted.json");
+        mapper.writer(pp).writeValue(new File(outPath), root);
+        return outPath;
+    }
+
+    /**
      * Strip braces {{…}}, remove accents, turn any run of non-alphanumeric into single hyphens.
      */
     private static String sanitizeQueue(String raw) {
@@ -110,9 +162,6 @@ public class JsonFlattener {
         return out;
     }
 
-    /**
-     * Updates any buttons[*].handlers.action to use the new "<NAME>-<PARENT_ID>" IDs.
-     */
     private static void rewriteButtonHandlers(ObjectNode node) {
         if (!node.has("buttons") || !node.get("buttons").isArray()) return;
         String parentId = node.path("id").asText();
@@ -135,47 +184,38 @@ public class JsonFlattener {
         }
     }
 
+    private static void transformTitlesInForm(JsonNode node) {
+        if (node == null) return;
 
-    /**
-     * Main entry: read JSON, transform each actionNode, write "-converted.json".
-     */
-    public static String convert(String inputPath) throws IOException {
-        // mapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS, true);
-        JsonNode root = mapper.readTree(new File(inputPath));
-        ArrayNode actionNodes = (ArrayNode) root
-            .path("flowTemplate")
-            .path("config")
-            .path("actionNodes");
+        if (node.isObject()) {
+            ObjectNode obj = (ObjectNode) node;
+            for (java.util.Iterator<String> it = obj.fieldNames(); it.hasNext();) {
+                String key = it.next();
+                JsonNode value = obj.get(key);
 
-        for (JsonNode n : actionNodes) {
-            ObjectNode node = (ObjectNode) n;
-
-            // 1) actions → array
-            if (node.has("actions")) {
-                node.set("actions", flattenActions(node));
+                if ("title".equals(key) && value != null) {
+                    if (value.isObject()) {
+                        ObjectNode locObj = (ObjectNode) value;
+                        for (java.util.Iterator<String> langIt = locObj.fieldNames(); langIt.hasNext();) {
+                            String lang = langIt.next();
+                            JsonNode langVal = locObj.get(lang);
+                            if (langVal != null && langVal.isTextual()) {
+                                String orig = langVal.asText();
+                                String transformed = orig.replace(" ", "_");
+                                locObj.put(lang, transformed);
+                            }
+                        }
+                    } else if (value.isTextual()) {
+                        obj.put(key, value.asText().replace(" ", "_"));
+                    }
+                } else {
+                    transformTitlesInForm(value);
+                }
             }
-
-            // 2) actionProcessor → array
-            if (node.has("actionProcessor")) {
-                node.set("actionProcessor", flattenProcessors(node));
-            }
-
-            // 3) rewrite any button handlers
-            rewriteButtonHandlers(node);
-
-            // 4) sanitize queue
-            if (node.has("queue")) {
-                node.put("queue", sanitizeQueue(node.get("queue").asText()));
+        } else if (node.isArray()) {
+            for (JsonNode child : node) {
+                transformTitlesInForm(child);
             }
         }
-
-        DefaultPrettyPrinter pp = new DefaultPrettyPrinter();
-        DefaultIndenter ind = new DefaultIndenter("  ", "\n");
-        pp.indentObjectsWith(ind);
-        pp.indentArraysWith(ind);
-
-        String outPath = inputPath.replace(".json", "-converted.json");
-        mapper.writer(pp).writeValue(new File(outPath), root);
-        return outPath;
     }
 }

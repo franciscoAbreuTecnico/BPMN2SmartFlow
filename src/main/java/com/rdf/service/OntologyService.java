@@ -20,10 +20,14 @@ import org.semanticweb.HermiT.ReasonerFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
@@ -756,29 +760,6 @@ public class OntologyService {
     //  Public getters
     // --------------------------------------------------------
 
-    public List<OWLNamedIndividual> getFieldsForForm(OWLNamedIndividual formInd) {
-        return mergedOntology
-        .getObjectPropertyAssertionAxioms(formInd).stream()
-        .filter(ax -> ax.getProperty().asOWLObjectProperty().getIRI().getFragment().equals("has_fields"))
-        .map(OWLObjectPropertyAssertionAxiom::getObject)
-        .map(obj -> (OWLNamedIndividual) obj)
-        .collect(Collectors.toList());
-    }
-
-    public List<String> getFieldsForForm(String formFragment) {
-        OWLNamedIndividual formInd = mergedOntology
-        .getIndividualsInSignature().stream()
-        .filter(i -> i.getIRI().getFragment().equals(formFragment))
-        .findFirst()
-        .orElseThrow(() -> 
-            new IllegalArgumentException("Unknown form: " + formFragment)
-        );
-
-        return getFieldsForForm(formInd).stream()
-        .map(ind -> ind.getIRI().getFragment())
-        .collect(Collectors.toList());
-    }
-
     public OWLNamedIndividual getFormForTask(OWLNamedIndividual taskInd) {
         // 1) find all buttons on the task
         for (OWLNamedIndividual button : reasoner
@@ -799,25 +780,83 @@ public class OntologyService {
         return null;
     }
 
-    public String getFormKeyForButton(OWLNamedIndividual buttonInd) {
-        // 1) find its handler(s)
-        for (OWLNamedIndividual handler : reasoner
-                .getObjectPropertyValues(buttonInd, hasHandlerProp)
-                .entities().collect(Collectors.toSet())) {
+    public List<OWLNamedIndividual> getPagesForForm(OWLNamedIndividual formInd) {
+        return mergedOntology.getObjectPropertyAssertionAxioms(formInd).stream()
+            .filter(ax -> ax.getProperty().asOWLObjectProperty().getIRI().getFragment().equals("has_page"))
+            .map(OWLObjectPropertyAssertionAxiom::getObject)
+            .map(obj -> (OWLNamedIndividual) obj)
+            .collect(Collectors.toList());
+    }
 
-            // 2) find any associated Form(s)
-            for (OWLNamedIndividual form : reasoner
-                    .getObjectPropertyValues(handler, hasAssociatedFormProp)
-                    .entities().collect(Collectors.toSet())) {
+    public List<OWLNamedIndividual> getSectionsForPage(OWLNamedIndividual pageInd) {
+        return mergedOntology.getObjectPropertyAssertionAxioms(pageInd).stream()
+            .filter(ax -> ax.getProperty().asOWLObjectProperty().getIRI().getFragment().equals("has_section"))
+            .map(OWLObjectPropertyAssertionAxiom::getObject)
+            .map(obj -> (OWLNamedIndividual) obj)
+            .collect(Collectors.toList());
+    }
 
-                // 3) grab the sfId literal
-                return mergedOntology.getDataPropertyAssertionAxioms(form).stream()
-                    .filter(ax -> ax.getProperty().equals(sfIdProp))
-                    .map(ax -> ax.getObject().getLiteral())
-                    .findFirst().orElse(null);
+    public List<OWLNamedIndividual> getPropertiesForSection(OWLNamedIndividual sectionInd) {
+        return mergedOntology.getObjectPropertyAssertionAxioms(sectionInd).stream()
+            .filter(ax -> ax.getProperty().asOWLObjectProperty().getIRI().getFragment().equals("has_property"))
+            .map(OWLObjectPropertyAssertionAxiom::getObject)
+            .map(obj -> (OWLNamedIndividual) obj)
+            .collect(Collectors.toList());
+    }
+
+    public List<OWLNamedIndividual> getAllPropertiesForForm(OWLNamedIndividual formInd) {
+        List<OWLNamedIndividual> result = new ArrayList<>();
+        for (OWLNamedIndividual page : getPagesForForm(formInd)) {
+            for (OWLNamedIndividual section : getSectionsForPage(page)) {
+                result.addAll(getPropertiesForSection(section));
+            }
+        }
+        return result;
+    }
+
+    public List<OWLNamedIndividual> getFieldsForForm(OWLNamedIndividual formInd) {
+        List<OWLNamedIndividual> result = new ArrayList<>();
+        for (OWLNamedIndividual page : getPagesForForm(formInd)) {
+            for (OWLNamedIndividual section : getSectionsForPage(page)) {
+                result.addAll(getPropertiesForSection(section));
+            }
+        }
+        return result;
+    }
+
+    public List<OWLNamedIndividual> getOptionsForProperty(OWLNamedIndividual propInd) {
+        return mergedOntology.getObjectPropertyAssertionAxioms(propInd).stream()
+            .filter(ax -> ax.getProperty().asOWLObjectProperty().getIRI().getFragment().equals("has_option"))
+            .map(OWLObjectPropertyAssertionAxiom::getObject)
+            .map(obj -> (OWLNamedIndividual) obj)
+            .collect(Collectors.toList());
+    }
+
+    public String getAnnotationValue(OWLNamedIndividual ind, String annotationPropertyName) {
+        for (OWLAnnotationAssertionAxiom ax : mergedOntology.getAnnotationAssertionAxioms(ind.getIRI())) {
+            String frag = ax.getProperty().getIRI().getFragment();
+            if (frag.equals(annotationPropertyName)) {
+                OWLAnnotationValue val = ax.getValue();
+                if (val instanceof OWLLiteral) {
+                    return ((OWLLiteral) val).getLiteral();
+                }
             }
         }
         return null;
+    }
+
+    public List<String> getDataPropertyValues(OWLNamedIndividual ind, String dataPropertyName) {
+        List<String> result = new ArrayList<>();
+        for (OWLDataPropertyAssertionAxiom ax : mergedOntology.getDataPropertyAssertionAxioms(ind)) {
+            String frag = ax.getProperty().asOWLDataProperty().getIRI().getFragment();
+            if (frag.equals(dataPropertyName)) {
+                OWLLiteral literal = ax.getObject();
+                if (literal != null) {
+                    result.add(literal.getLiteral());
+                }
+            }
+        }
+        return result;
     }
 
     /** Return the merged OWLOntology (with newly created SequenceFlows and ExclusiveGateways). */
@@ -843,13 +882,16 @@ public class OntologyService {
      *
      * Example: getDataPropertyValue(seqInd, "name") will return the bbo:name literal.
      */
-    public String getDataPropertyValue(OWLNamedIndividual ind, String propertyLocalName) {
-        return mergedOntology.getDataPropertyAssertionAxioms(ind).stream()
-            .filter(ax -> ax.getProperty().asOWLDataProperty()
-                            .getIRI().getFragment().equals(propertyLocalName))
-            .map(ax -> ax.getObject().getLiteral())
-            .findFirst().orElse(null);
+    public String getDataPropertyValue(OWLNamedIndividual ind, String propertyName) {
+        for (OWLDataPropertyAssertionAxiom ax : mergedOntology.getDataPropertyAssertionAxioms(ind)) {
+            String frag = ax.getProperty().asOWLDataProperty().getIRI().getFragment();
+            if (frag.equals(propertyName)) {
+                return ax.getObject().getLiteral();
+            }
+        }
+        return null;
     }
+
 
     // --------------------------------------------------------
     //  Save to Turtle

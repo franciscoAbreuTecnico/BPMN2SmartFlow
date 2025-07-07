@@ -78,7 +78,8 @@
               "name" : "PROCESS"
             }
           ],
-          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros"
+          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros",
+          "queueOrder" : 0
         }
       ]
     }

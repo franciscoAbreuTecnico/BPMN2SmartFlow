@@ -123,7 +123,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <mainClass>com.rdf.App</mainClass>
+          <mainClass>com.rdf.AppValidate</mainClass>
         </configuration>
       </plugin>
 
@@ -155,7 +155,7 @@
 
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.rdf.App</mainClass>
+                  <mainClass>com.rdf.AppValidate</mainClass>
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>

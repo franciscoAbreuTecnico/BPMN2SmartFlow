@@ -1,0 +1,46 @@
+# imagem com java e node
+# nao usar artifacts, se possivel
+# output fica guardado no diretorio
+# image: xxx
+
+# variables:
+#   SOURCE_PATHS: "src/main/java"
+#   INPUT_FOLDERS: "data/jsons/humanResources,data/jsons/academic,data/jsons/scientificCouncil"
+
+#   RML_TEMPLATE: "src/main/resources/rml/flowTemplate.rml.ttl"
+#   SMARTFLOW_TTL: "src/main/resources/ontologies/smartFlow.ttl"
+#   BPMN_TTL: "src/main/resources/ontologies/bpmn/bpmn.ttl"
+#   MAPPING_OWL: "src/main/resources/ontologies/mapping.ttl"
+
+# # stages:
+# #   - prepare
+# #   - build
+# #   - run
+
+# prepare_data:
+#   stage: prepare??
+#   script:
+#     - git clone https://repo.dsi.tecnico.ulisboa.pt/fenixedu/data.git data
+#   artifacts:
+#     paths:
+#       - data/
+
+# build_app:
+#   stage: build
+#   script:
+#     - mvn clean package -DskipTests
+#   artifacts:
+#     paths:
+#       - target/BPMN2SmartFlow-*.jar
+
+# run_app:
+#   stage: ???
+
+#   script:
+#     - java -jar target/BPMN2SmartFlow-1.0-SNAPSHOT.jar \
+#         "$SOURCE_PATHS" \
+#         "$INPUT_FOLDERS" \
+#         "$RML_TEMPLATE" \
+#         "$SMARTFLOW_TTL" \
+#         "$BPMN_TTL" \
+#         "$MAPPING_OWL"

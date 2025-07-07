@@ -16,207 +16,174 @@
     "showOutline" : true,
     "components" : [ {
       "type" : "group",
-      "id" : "Section_Observations",
-      "key" : "section_Observations",
-      "label" : "Observations",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "text",
-        "id" : "Field_OBSERVATIONS",
-        "key" : "OBSERVATIONS",
-        "label" : "Observations",
-        "text" : "Observations",
-        "required" : false,
-        "readOnly" : false
-      } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_s_Situation_and_Objectives_to_Achieve",
-      "key" : "section_s_Situation_and_Objectives_to_Achieve",
-      "label" : "Student's_Situation_and_Objectives_to_Achieve",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "text",
-        "id" : "Field_objectives",
-        "key" : "objectives",
-        "label" : "Objectives to Achieve",
-        "text" : "Objectives to Achieve",
-        "required" : true,
-        "readOnly" : false
-      }, {
-        "type" : "text",
-        "id" : "Field_situation",
-        "key" : "situation",
-        "label" : "Brief description of the student's situation",
-        "text" : "Brief description of the student's situation",
-        "required" : true,
-        "readOnly" : false
-      } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_Support_Measures_to_be_Approved",
-      "key" : "section_Support_Measures_to_be_Approved",
-      "label" : "Support_Measures_to_be_Approved",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "select",
-        "id" : "Field_SUPPORT_MEASURES_APPROVAL_CP_CG",
-        "key" : "SUPPORT_MEASURES_APPROVAL_CP_CG",
-        "label" : "Measures that require approval from the Pedagogical Council and the Management Council",
-        "required" : false,
-        "readOnly" : false,
-        "multiple" : true,
-        "collapse" : false,
-        "allowOther" : false,
-        "values" : [ {
-          "value" : "EXAM_OTHER_DATES_JUSTIFIED",
-          "label" : {
-            "en-GB" : "Conduct assessments on alternative dates in duly justified cases",
-            "pt-PT" : "Realização de momentos de avaliação noutras datas, em casos devidamente justificados"
-          }
-        }, {
-          "value" : "BRING_FORMS_AND_TABLES",
-          "label" : {
-            "en-GB" : "Bring forms and tables to the exam, pre-approved by the teaching staff",
-            "pt-PT" : "Levar formulário e tabelas para o exame, pré-aprovadas pelo corpo docente"
-          }
-        }, {
-          "value" : "REMOTE_EXAM_WITH_SUPERVISION",
-          "label" : {
-            "en-GB" : "Allow assessments to be carried out remotely with supervision from a teacher",
-            "pt-PT" : "Possibilitar a realização de avaliações remotamente com supervisão de um/a docente"
-          }
-        }, {
-          "value" : "EXAM_ON_COMPUTER",
-          "label" : {
-            "en-GB" : "Perform assessment on a computer with specific software to be defined and authorized individually",
-            "pt-PT" : "Realizar avaliação num computador com software específico a definir e autorizar individualmente"
-          }
-        } ]
-      } ]
-    }, {
-      "type" : "group",
       "id" : "Section_Pre-Approved_Support_Measures",
       "key" : "section_Pre-Approved_Support_Measures",
       "label" : "Pre-Approved_Support_Measures",
       "showOutline" : true,
       "components" : [ {
         "type" : "select",
-        "id" : "Field_SUPPORT_MEASURES_ACESSIBILITY_AND_ACCESS_LOCATIONS",
-        "key" : "SUPPORT_MEASURES_ACESSIBILITY_AND_ACCESS_LOCATIONS",
-        "label" : "Measures of Accessibility and Access to locations",
+        "id" : "Field_SUPPORT_MEASURES_CLASS_ATTENDANCE",
+        "key" : "SUPPORT_MEASURES_CLASS_ATTENDANCE",
+        "label" : "Class attendance",
         "required" : false,
         "readOnly" : false,
         "multiple" : true,
         "collapse" : false,
         "allowOther" : false,
         "values" : [ {
-          "value" : "ADAPTIVE_LIGHTING",
+          "value" : "STREAMING_CLASSES",
           "label" : {
-            "en-GB" : "Provision of lighting adapted to the student’s needs",
-            "pt-PT" : "Disponibilização de iluminação adequada às necessidades do/a estudante"
+            "en-GB" : "Attend synchronous classes via streaming when necessary",
+            "pt-PT" : "Frequência de aulas síncronas através de streaming, quando for necessário"
           }
         }, {
-          "value" : "INTERNAL_SUPPORT_ACCESS",
+          "value" : "PHOTO_BOARD_INFO",
           "label" : {
-            "en-GB" : "Support from internal Técnico staff in accessing certain campus locations, according to the student’s needs",
-            "pt-PT" : "Apoio de pessoas internas ao Técnico no acesso a determinados locais dos campi, em função das necessidades do/a estudante"
+            "en-GB" : "Authorize taking photographs of information written on the board or projected",
+            "pt-PT" : "Autorizar a recolha de fotografias da informação escrita no quadro, ou projetada"
           }
         }, {
-          "value" : "GUIDE_DOG_SUPPORT",
+          "value" : "RESERVED_SEAT",
           "label" : {
-            "en-GB" : "Guide dog support",
-            "pt-PT" : "Apoio de cão guia"
+            "en-GB" : "Reservation of a seat, in a location designated by the student, to ensure necessary conditions for attending class",
+            "pt-PT" : "Reserva de um lugar, num local da sala a designar pelo/a estudante, de forma a garantir as condições necessárias para a frequência da aula"
           }
         }, {
-          "value" : "FREIGHT_ELEVATOR_INSURANCE",
+          "value" : "LAB_SUPPORT",
           "label" : {
-            "en-GB" : "Creation of an insurance policy for students who need to use a freight elevator",
-            "pt-PT" : "Criação de uma apólice de seguro para estudantes que necessitem de utilizar um monta-cargas"
+            "en-GB" : "Support in laboratory classes, especialy for handling equipment",
+            "pt-PT" : "Apoio nas aulas de laboratório, nomeadamente no manuseamento dos equipamentos"
           }
         }, {
-          "value" : "EXTERNAL_SUPPORT_ACCESS",
+          "value" : "EARPLUGS_OR_EARBUDS",
           "label" : {
-            "en-GB" : "Support from external people in accessing certain campus locations, according to the student’s needs",
-            "pt-PT" : "Apoio de pessoas externas ao Técnico no acesso a determinados locais dos campi, em função das necessidades do/a estudante"
+            "en-GB" : "Allow the use of earplugs or earbuds",
+            "pt-PT" : "Permitir o uso de tampões ou auriculares"
           }
         }, {
-          "value" : "ACCESSIBLE_EXAM_REVISIONS",
+          "value" : "PRIORITY_SHIFT_BOOKING",
           "label" : {
-            "en-GB" : "Conducting exam revisions in accessible locations and/or remotely",
-            "pt-PT" : "Realização de revisões de provas em locais acessíveis e/ou remotamente"
+            "en-GB" : "Priority booking of shifts",
+            "pt-PT" : "Marcação prioritária de turnos"
           }
         }, {
-          "value" : "RESERVED_PARKING_NEAR_WORK",
+          "value" : "MICROPHONE_USAGE",
           "label" : {
-            "en-GB" : "Reservation of a parking spot near the student’s classes or workplace",
-            "pt-PT" : "Reserva de lugar de estacionamento em local próximo ao do trabalho/aulas do/a estudante"
+            "en-GB" : "Use of a microphone",
+            "pt-PT" : "Utilização de microfone"
           }
         }, {
-          "value" : "PRIORITY_UNLIMITED_PARKING",
+          "value" : "ALLOW_EATING_DRINKING",
           "label" : {
-            "en-GB" : "Priority access to unlimited parking",
-            "pt-PT" : "Acesso prioritário ao estacionamento ilimitado"
+            "en-GB" : "Authorize the student to eat and/or drink if necessary",
+            "pt-PT" : "Autorizar que o/a estudante coma e/ou beba se tiver necessidade"
           }
         }, {
-          "value" : "CHANGE_CLASSROOMS_INFORMATION",
+          "value" : "LAPEL_MICROPHONE",
           "label" : {
-            "en-GB" : "Change of classrooms of the shifts in which the student is enrolled, in order to guarantee conditions of information accessibility",
-            "pt-PT" : "Alteração de salas de aulas dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade à informação"
+            "en-GB" : "If using a microphone, preferably use a lapel microphone to allow lipreading",
+            "pt-PT" : "Caso utilize microfone, preferencialmente de lapela para possibilitar leitura labial"
           }
         }, {
-          "value" : "CHANGE_CLASSROOMS_PHYSICAL",
+          "value" : "STAND_OR_SIT",
           "label" : {
-            "en-GB" : "Change of classrooms of the shifts in which the student is enrolled, in order to guarantee conditions of physical accessibility",
-            "pt-PT" : "Alteração de salas de aulas dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade física"
+            "en-GB" : "Possibility of standing or sitting during classes and assessments when necessary",
+            "pt-PT" : "Possibilidade de permanecer de pé ou sentado/a, nas aulas e avaliações, quando necessário"
           }
         }, {
-          "value" : "EXCLUSIVE_ENEE_ROOM",
+          "value" : "DIRECT_AND_CLEAR_LANGUAGE",
           "label" : {
-            "en-GB" : "Access to an exclusive room for ENEE-status students on campus",
-            "pt-PT" : "Acesso a uma sala exclusiva para estudantes com estatuto ENEE nos campi"
+            "en-GB" : "Use direct and clear language, avoiding implicit messages and double negatives both orally and in writing",
+            "pt-PT" : "Utilização de linguagem direta e linear, evitar mensagens implícitas e duplas negativas tanto oralmente como escrita"
           }
         }, {
-          "value" : "FREIGHT_ELEVATOR_ACCESS",
+          "value" : "SIGN_LANGUAGE_INTERPRETER",
           "label" : {
-            "en-GB" : "Possibility of using the freight elevator to access classes and laboratories",
-            "pt-PT" : "Possibilidade de utilização do monta-cargas para aceder a aulas e laboratórios"
+            "en-GB" : "Presence of a Portuguese Sign Language interpreter in classes and assessments",
+            "pt-PT" : "Presença de intérprete de Língua Gestual Portuguesa nas aulas e nas avaliações"
           }
         }, {
-          "value" : "PRIORITY_GROUP_ROOM_BOOKING",
+          "value" : "CLEAR_SPEECH_FOR_LIPREADING",
           "label" : {
-            "en-GB" : "Priority access to booking group study rooms",
-            "pt-PT" : "Acesso prioritário na marcação da sala de trabalhos de grupo"
+            "en-GB" : "Speak clearly in front of the group/student, allowing lipreading during classes",
+            "pt-PT" : "Falar na frente do grupo/estudante de forma clara, permitindo leitura labial durante as aulas"
           }
         }, {
-          "value" : "WHEELCHAIR_PROVISION",
+          "value" : "VOICE_RECORDING",
           "label" : {
-            "en-GB" : "Provision of a wheelchair",
-            "pt-PT" : "Disponibilização de cadeira de rodas"
+            "en-GB" : "Authorize voice recording",
+            "pt-PT" : "Autorizar gravação de voz"
           }
         }, {
-          "value" : "CHANGE_LABORATORIES_PHYSICAL",
+          "value" : "VOICE_TRANSCRIPTION_SOFTWARE",
           "label" : {
-            "en-GB" : "Change of laboratories of the shifts in which the student is enrolled, in order to guarantee conditions of physical accessibility",
-            "pt-PT" : "Alteração de laboratórios dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade física"
+            "en-GB" : "Use of voice transcription software",
+            "pt-PT" : "Utilização de software para transcrição de voz"
           }
         }, {
-          "value" : "PRIORITY_ATTENDANCE",
+          "value" : "VIDEO_RECORDING",
           "label" : {
-            "en-GB" : "Priority in service attendance",
-            "pt-PT" : "Prioridade no atendimento"
+            "en-GB" : "Authorize video recording",
+            "pt-PT" : "Autorizar a gravação de vídeo"
           }
         }, {
-          "value" : "ADAPTIVE_FURNITURE",
+          "value" : "HIGHLIGHTERS_USAGE",
           "label" : {
-            "en-GB" : "Provision of furniture adapted to the student’s needs",
-            "pt-PT" : "Disponibilização de mobiliário adequado às necessidades do/a estudante"
+            "en-GB" : "Allow the use of highlighters",
+            "pt-PT" : "Permitir utilização de marcadores de texto"
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_SUPPORT_MEASURES_SUPPORT_RESOURCES",
+        "key" : "SUPPORT_MEASURES_SUPPORT_RESOURCES",
+        "label" : "Support Resources",
+        "required" : false,
+        "readOnly" : false,
+        "multiple" : true,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "MEDICATION_STORAGE",
+          "label" : {
+            "en-GB" : "Possibility to store medication in an appropriate space (e.g., refrigerator)",
+            "pt-PT" : "Possibilidade de guardar a medicação num espaço adequado (ex: frigorífico)"
           }
         }, {
-          "value" : "PRIORITY_TOWER_ELEVATORS",
+          "value" : "REMOTE_OFFICE_HOURS",
           "label" : {
-            "en-GB" : "Priority access to the tower elevators",
-            "pt-PT" : "Acesso prioritário aos elevadores das torres"
+            "en-GB" : "Provide office hours in a remote format",
+            "pt-PT" : "Facultar horários de dúvidas em formato remoto"
+          }
+        }, {
+          "value" : "RECORDED_LECTURES",
+          "label" : {
+            "en-GB" : "Provision of recorded lectures, subject to faculty authorization",
+            "pt-PT" : "Disponibilização de aulas gravadas, mediante autorização do corpo docente da UC"
+          }
+        }, {
+          "value" : "PREVIOUS_EXAMS",
+          "label" : {
+            "en-GB" : "Provision of past exams, when not provided to the class in general",
+            "pt-PT" : "Disponibilização de exames de anos anteriores, quando não efetuado para a turma no geral"
+          }
+        }, {
+          "value" : "LOCKER_ACCESS",
+          "label" : {
+            "en-GB" : "Ensure access to a locker for storing personal belongings",
+            "pt-PT" : "Garantir o acesso a um cacifo para guardar os seus pertences"
+          }
+        }, {
+          "value" : "SLIDES_AND_RESOURCES",
+          "label" : {
+            "en-GB" : "Provision of class slides and/or other resources used, when not provided to the class in general",
+            "pt-PT" : "Disponibilização dos slides das aulas e/ou de outros recursos utilizados, quando não efetuado para a turma no geral"
+          }
+        }, {
+          "value" : "EXTRA_INDIVIDUAL_OFFICE_HOURS",
+          "label" : {
+            "en-GB" : "Provide extra individual office hours, if requested by the student",
+            "pt-PT" : "Facultar horários de dúvidas extra individuais, caso solicitado pelo/a estudante"
           }
         } ]
       }, {
@@ -242,6 +209,30 @@
             "pt-PT" : "Providenciar 25% de tempo adicional, em todos os momentos de avaliação síncronos, independentemente do seu formato e objetivo"
           }
         }, {
+          "value" : "ASSESSMENT_SUPPORT",
+          "label" : {
+            "en-GB" : "Provide support for assessments",
+            "pt-PT" : "Providenciar apoio para a realização das avaliações"
+          }
+        }, {
+          "value" : "SEAT_SELECTION",
+          "label" : {
+            "en-GB" : "Choice of seat in the room for the assessment",
+            "pt-PT" : "Escolha do lugar, na sala, para realizar a avaliação"
+          }
+        }, {
+          "value" : "PAPER_OR_DIGITAL_SUPPORT",
+          "label" : {
+            "en-GB" : "Use of paper or digital support in oral presentations",
+            "pt-PT" : "Utilização de um suporte em papel ou digital nas apresentações orais"
+          }
+        }, {
+          "value" : "NO_SPELLING_PENALTY",
+          "label" : {
+            "en-GB" : "No penalty for spelling and written expression errors",
+            "pt-PT" : "Não penalização de erros ortográficos e expressão escrita"
+          }
+        }, {
           "value" : "CALCULATOR_USAGE",
           "label" : {
             "en-GB" : "Allow the use of certain types of calculators with faculty approval",
@@ -260,10 +251,34 @@
             "pt-PT" : "Acesso à época especial de avaliação gratuitamente"
           }
         }, {
-          "value" : "HEALTH_SUPPORT_DEVICES",
+          "value" : "KEEP_PREVIOUS_APPROVALS",
           "label" : {
-            "en-GB" : "Ensure the student can use all devices necessary to maintain balance and health stability",
-            "pt-PT" : "Garantir que o/a estudante possa utilizar todos os dispositivos necessários para manter o equilíbrio e a estabilidade da sua condição de saúde"
+            "en-GB" : "Maintain the grades of evaluation components approved in previous academic years",
+            "pt-PT" : "Manter a classificação das componentes de avaliação, em que o/a estudante tenha tido aprovação em anos letivos anteriores"
+          }
+        }, {
+          "value" : "DISTRIBUTED_CONTINUOUS_EVALUATION",
+          "label" : {
+            "en-GB" : "Promote distributed continuous evaluation components throughout the term/semester, avoiding extensive tests with large amounts of content",
+            "pt-PT" : "Promover componentes de avaliação contínua de forma distribuída, ao longo do período/semestre, evitando a realização de provas extensas, com um grande volume de matéria"
+          }
+        }, {
+          "value" : "SEPARATE_ROOM_ASSESSMENT",
+          "label" : {
+            "en-GB" : "Conducting assessments in a separate room",
+            "pt-PT" : "Realização dos momentos de avaliação numa sala à parte"
+          }
+        }, {
+          "value" : "INDIVIDUAL_WORKS",
+          "label" : {
+            "en-GB" : "Performing assignments/projects individually when requested by the student",
+            "pt-PT" : "Realização de trabalhos/projetos, individualmente, quando solicitado pelo/a estudante"
+          }
+        }, {
+          "value" : "ADAPTED_WRITTEN_EXAMS",
+          "label" : {
+            "en-GB" : "Provision of written exams with specific features to improve readability",
+            "pt-PT" : "Disponibilização de provas escritas com características específicas para melhorar a legibilidade da prova"
           }
         }, {
           "value" : "TECH_DEVICE_USAGE",
@@ -278,64 +293,10 @@
             "pt-PT" : "Verificar a legibilidade das respostas do/a estudante. Se necessário, esclarecer com o/a estudante após a entrega ou aquando da correção da prova"
           }
         }, {
-          "value" : "ASSESSMENT_OTHER_DATES_CRISIS",
+          "value" : "HEALTH_SUPPORT_DEVICES",
           "label" : {
-            "en-GB" : "Conducting assessments on alternative dates in case of crisis situations",
-            "pt-PT" : "Realização de momentos de avaliação noutras datas, em caso de situação de crise"
-          }
-        }, {
-          "value" : "KEEP_PREVIOUS_APPROVALS",
-          "label" : {
-            "en-GB" : "Maintain the grades of evaluation components approved in previous academic years",
-            "pt-PT" : "Manter a classificação das componentes de avaliação, em que o/a estudante tenha tido aprovação em anos letivos anteriores"
-          }
-        }, {
-          "value" : "SEAT_SELECTION",
-          "label" : {
-            "en-GB" : "Choice of seat in the room for the assessment",
-            "pt-PT" : "Escolha do lugar, na sala, para realizar a avaliação"
-          }
-        }, {
-          "value" : "ADAPTED_WRITTEN_EXAMS",
-          "label" : {
-            "en-GB" : "Provision of written exams with specific features to improve readability",
-            "pt-PT" : "Disponibilização de provas escritas com características específicas para melhorar a legibilidade da prova"
-          }
-        }, {
-          "value" : "SEPARATE_ROOM_ASSESSMENT",
-          "label" : {
-            "en-GB" : "Conducting assessments in a separate room",
-            "pt-PT" : "Realização dos momentos de avaliação numa sala à parte"
-          }
-        }, {
-          "value" : "LOW_OCCUPANCY_ROOM",
-          "label" : {
-            "en-GB" : "Conducting assessments in rooms with lower occupancy",
-            "pt-PT" : "Realização dos momentos de avaliação na sala com menor lotação"
-          }
-        }, {
-          "value" : "DISTRIBUTED_CONTINUOUS_EVALUATION",
-          "label" : {
-            "en-GB" : "Promote distributed continuous evaluation components throughout the term/semester, avoiding extensive tests with large amounts of content",
-            "pt-PT" : "Promover componentes de avaliação contínua de forma distribuída, ao longo do período/semestre, evitando a realização de provas extensas, com um grande volume de matéria"
-          }
-        }, {
-          "value" : "NO_SPELLING_PENALTY",
-          "label" : {
-            "en-GB" : "No penalty for spelling and written expression errors",
-            "pt-PT" : "Não penalização de erros ortográficos e expressão escrita"
-          }
-        }, {
-          "value" : "PAPER_OR_DIGITAL_SUPPORT",
-          "label" : {
-            "en-GB" : "Use of paper or digital support in oral presentations",
-            "pt-PT" : "Utilização de um suporte em papel ou digital nas apresentações orais"
-          }
-        }, {
-          "value" : "ASSESSMENT_OTHER_DATES_CLINICAL",
-          "label" : {
-            "en-GB" : "Conducting assessments on alternative dates in case of clinical treatment conflicts",
-            "pt-PT" : "Realização de momentos de avaliação noutras datas, em caso de incompatibilidade com tratamento clínico"
+            "en-GB" : "Ensure the student can use all devices necessary to maintain balance and health stability",
+            "pt-PT" : "Garantir que o/a estudante possa utilizar todos os dispositivos necessários para manter o equilíbrio e a estabilidade da sua condição de saúde"
           }
         }, {
           "value" : "FOOD_AND_DRINKS_DURING_ASSESSMENTS",
@@ -344,16 +305,10 @@
             "pt-PT" : "Permitir que o/a estudante consuma alimentos ou bebidas durante as avaliações"
           }
         }, {
-          "value" : "INDIVIDUAL_WORKS",
+          "value" : "LOW_OCCUPANCY_ROOM",
           "label" : {
-            "en-GB" : "Performing assignments/projects individually when requested by the student",
-            "pt-PT" : "Realização de trabalhos/projetos, individualmente, quando solicitado pelo/a estudante"
-          }
-        }, {
-          "value" : "ASSESSMENT_SUPPORT",
-          "label" : {
-            "en-GB" : "Provide support for assessments",
-            "pt-PT" : "Providenciar apoio para a realização das avaliações"
+            "en-GB" : "Conducting assessments in rooms with lower occupancy",
+            "pt-PT" : "Realização dos momentos de avaliação na sala com menor lotação"
           }
         }, {
           "value" : "EXIT_DURING_CLASSES",
@@ -361,173 +316,218 @@
             "en-GB" : "Possibility to leave the room during classes or assessments",
             "pt-PT" : "Possibilidade de sair da sala durante aulas ou avaliações"
           }
+        }, {
+          "value" : "ASSESSMENT_OTHER_DATES_CRISIS",
+          "label" : {
+            "en-GB" : "Conducting assessments on alternative dates in case of crisis situations",
+            "pt-PT" : "Realização de momentos de avaliação noutras datas, em caso de situação de crise"
+          }
+        }, {
+          "value" : "ASSESSMENT_OTHER_DATES_CLINICAL",
+          "label" : {
+            "en-GB" : "Conducting assessments on alternative dates in case of clinical treatment conflicts",
+            "pt-PT" : "Realização de momentos de avaliação noutras datas, em caso de incompatibilidade com tratamento clínico"
+          }
         } ]
       }, {
         "type" : "select",
-        "id" : "Field_SUPPORT_MEASURES_CLASS_ATTENDANCE",
-        "key" : "SUPPORT_MEASURES_CLASS_ATTENDANCE",
-        "label" : "Class attendance",
+        "id" : "Field_SUPPORT_MEASURES_ACESSIBILITY_AND_ACCESS_LOCATIONS",
+        "key" : "SUPPORT_MEASURES_ACESSIBILITY_AND_ACCESS_LOCATIONS",
+        "label" : "Measures of Accessibility and Access to locations",
         "required" : false,
         "readOnly" : false,
         "multiple" : true,
         "collapse" : false,
         "allowOther" : false,
         "values" : [ {
-          "value" : "PHOTO_BOARD_INFO",
+          "value" : "INTERNAL_SUPPORT_ACCESS",
           "label" : {
-            "en-GB" : "Authorize taking photographs of information written on the board or projected",
-            "pt-PT" : "Autorizar a recolha de fotografias da informação escrita no quadro, ou projetada"
+            "en-GB" : "Support from internal Técnico staff in accessing certain campus locations, according to the student’s needs",
+            "pt-PT" : "Apoio de pessoas internas ao Técnico no acesso a determinados locais dos campi, em função das necessidades do/a estudante"
           }
         }, {
-          "value" : "DIRECT_AND_CLEAR_LANGUAGE",
+          "value" : "EXCLUSIVE_ENEE_ROOM",
           "label" : {
-            "en-GB" : "Use direct and clear language, avoiding implicit messages and double negatives both orally and in writing",
-            "pt-PT" : "Utilização de linguagem direta e linear, evitar mensagens implícitas e duplas negativas tanto oralmente como escrita"
+            "en-GB" : "Access to an exclusive room for ENEE-status students on campus",
+            "pt-PT" : "Acesso a uma sala exclusiva para estudantes com estatuto ENEE nos campi"
           }
         }, {
-          "value" : "STREAMING_CLASSES",
+          "value" : "WHEELCHAIR_PROVISION",
           "label" : {
-            "en-GB" : "Attend synchronous classes via streaming when necessary",
-            "pt-PT" : "Frequência de aulas síncronas através de streaming, quando for necessário"
+            "en-GB" : "Provision of a wheelchair",
+            "pt-PT" : "Disponibilização de cadeira de rodas"
           }
         }, {
-          "value" : "VOICE_TRANSCRIPTION_SOFTWARE",
+          "value" : "FREIGHT_ELEVATOR_ACCESS",
           "label" : {
-            "en-GB" : "Use of voice transcription software",
-            "pt-PT" : "Utilização de software para transcrição de voz"
+            "en-GB" : "Possibility of using the freight elevator to access classes and laboratories",
+            "pt-PT" : "Possibilidade de utilização do monta-cargas para aceder a aulas e laboratórios"
           }
         }, {
-          "value" : "PRIORITY_SHIFT_BOOKING",
+          "value" : "CHANGE_CLASSROOMS_INFORMATION",
           "label" : {
-            "en-GB" : "Priority booking of shifts",
-            "pt-PT" : "Marcação prioritária de turnos"
+            "en-GB" : "Change of classrooms of the shifts in which the student is enrolled, in order to guarantee conditions of information accessibility",
+            "pt-PT" : "Alteração de salas de aulas dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade à informação"
           }
         }, {
-          "value" : "VIDEO_RECORDING",
+          "value" : "PRIORITY_UNLIMITED_PARKING",
           "label" : {
-            "en-GB" : "Authorize video recording",
-            "pt-PT" : "Autorizar a gravação de vídeo"
+            "en-GB" : "Priority access to unlimited parking",
+            "pt-PT" : "Acesso prioritário ao estacionamento ilimitado"
           }
         }, {
-          "value" : "VOICE_RECORDING",
+          "value" : "CHANGE_CLASSROOMS_PHYSICAL",
           "label" : {
-            "en-GB" : "Authorize voice recording",
-            "pt-PT" : "Autorizar gravação de voz"
+            "en-GB" : "Change of classrooms of the shifts in which the student is enrolled, in order to guarantee conditions of physical accessibility",
+            "pt-PT" : "Alteração de salas de aulas dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade física"
           }
         }, {
-          "value" : "HIGHLIGHTERS_USAGE",
+          "value" : "CHANGE_LABORATORIES_PHYSICAL",
           "label" : {
-            "en-GB" : "Allow the use of highlighters",
-            "pt-PT" : "Permitir utilização de marcadores de texto"
+            "en-GB" : "Change of laboratories of the shifts in which the student is enrolled, in order to guarantee conditions of physical accessibility",
+            "pt-PT" : "Alteração de laboratórios dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade física"
           }
         }, {
-          "value" : "LAPEL_MICROPHONE",
+          "value" : "FREIGHT_ELEVATOR_INSURANCE",
           "label" : {
-            "en-GB" : "If using a microphone, preferably use a lapel microphone to allow lipreading",
-            "pt-PT" : "Caso utilize microfone, preferencialmente de lapela para possibilitar leitura labial"
+            "en-GB" : "Creation of an insurance policy for students who need to use a freight elevator",
+            "pt-PT" : "Criação de uma apólice de seguro para estudantes que necessitem de utilizar um monta-cargas"
           }
         }, {
-          "value" : "RESERVED_SEAT",
+          "value" : "PRIORITY_TOWER_ELEVATORS",
           "label" : {
-            "en-GB" : "Reservation of a seat, in a location designated by the student, to ensure necessary conditions for attending class",
-            "pt-PT" : "Reserva de um lugar, num local da sala a designar pelo/a estudante, de forma a garantir as condições necessárias para a frequência da aula"
+            "en-GB" : "Priority access to the tower elevators",
+            "pt-PT" : "Acesso prioritário aos elevadores das torres"
           }
         }, {
-          "value" : "EARPLUGS_OR_EARBUDS",
+          "value" : "PRIORITY_ATTENDANCE",
           "label" : {
-            "en-GB" : "Allow the use of earplugs or earbuds",
-            "pt-PT" : "Permitir o uso de tampões ou auriculares"
+            "en-GB" : "Priority in service attendance",
+            "pt-PT" : "Prioridade no atendimento"
           }
         }, {
-          "value" : "ALLOW_EATING_DRINKING",
+          "value" : "ADAPTIVE_LIGHTING",
           "label" : {
-            "en-GB" : "Authorize the student to eat and/or drink if necessary",
-            "pt-PT" : "Autorizar que o/a estudante coma e/ou beba se tiver necessidade"
+            "en-GB" : "Provision of lighting adapted to the student’s needs",
+            "pt-PT" : "Disponibilização de iluminação adequada às necessidades do/a estudante"
           }
         }, {
-          "value" : "SIGN_LANGUAGE_INTERPRETER",
+          "value" : "ACCESSIBLE_EXAM_REVISIONS",
           "label" : {
-            "en-GB" : "Presence of a Portuguese Sign Language interpreter in classes and assessments",
-            "pt-PT" : "Presença de intérprete de Língua Gestual Portuguesa nas aulas e nas avaliações"
+            "en-GB" : "Conducting exam revisions in accessible locations and/or remotely",
+            "pt-PT" : "Realização de revisões de provas em locais acessíveis e/ou remotamente"
           }
         }, {
-          "value" : "STAND_OR_SIT",
+          "value" : "PRIORITY_GROUP_ROOM_BOOKING",
           "label" : {
-            "en-GB" : "Possibility of standing or sitting during classes and assessments when necessary",
-            "pt-PT" : "Possibilidade de permanecer de pé ou sentado/a, nas aulas e avaliações, quando necessário"
+            "en-GB" : "Priority access to booking group study rooms",
+            "pt-PT" : "Acesso prioritário na marcação da sala de trabalhos de grupo"
           }
         }, {
-          "value" : "MICROPHONE_USAGE",
+          "value" : "EXTERNAL_SUPPORT_ACCESS",
           "label" : {
-            "en-GB" : "Use of a microphone",
-            "pt-PT" : "Utilização de microfone"
+            "en-GB" : "Support from external people in accessing certain campus locations, according to the student’s needs",
+            "pt-PT" : "Apoio de pessoas externas ao Técnico no acesso a determinados locais dos campi, em função das necessidades do/a estudante"
           }
         }, {
-          "value" : "CLEAR_SPEECH_FOR_LIPREADING",
+          "value" : "GUIDE_DOG_SUPPORT",
           "label" : {
-            "en-GB" : "Speak clearly in front of the group/student, allowing lipreading during classes",
-            "pt-PT" : "Falar na frente do grupo/estudante de forma clara, permitindo leitura labial durante as aulas"
+            "en-GB" : "Guide dog support",
+            "pt-PT" : "Apoio de cão guia"
           }
         }, {
-          "value" : "LAB_SUPPORT",
+          "value" : "RESERVED_PARKING_NEAR_WORK",
           "label" : {
-            "en-GB" : "Support in laboratory classes, especialy for handling equipment",
-            "pt-PT" : "Apoio nas aulas de laboratório, nomeadamente no manuseamento dos equipamentos"
+            "en-GB" : "Reservation of a parking spot near the student’s classes or workplace",
+            "pt-PT" : "Reserva de lugar de estacionamento em local próximo ao do trabalho/aulas do/a estudante"
+          }
+        }, {
+          "value" : "ADAPTIVE_FURNITURE",
+          "label" : {
+            "en-GB" : "Provision of furniture adapted to the student’s needs",
+            "pt-PT" : "Disponibilização de mobiliário adequado às necessidades do/a estudante"
           }
         } ]
-      }, {
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Support_Measures_to_be_Approved",
+      "key" : "section_Support_Measures_to_be_Approved",
+      "label" : "Support_Measures_to_be_Approved",
+      "showOutline" : true,
+      "components" : [ {
         "type" : "select",
-        "id" : "Field_SUPPORT_MEASURES_SUPPORT_RESOURCES",
-        "key" : "SUPPORT_MEASURES_SUPPORT_RESOURCES",
-        "label" : "Support Resources",
+        "id" : "Field_SUPPORT_MEASURES_APPROVAL_CP_CG",
+        "key" : "SUPPORT_MEASURES_APPROVAL_CP_CG",
+        "label" : "Measures that require approval from the Pedagogical Council and the Management Council",
         "required" : false,
         "readOnly" : false,
         "multiple" : true,
         "collapse" : false,
         "allowOther" : false,
         "values" : [ {
-          "value" : "REMOTE_OFFICE_HOURS",
+          "value" : "EXAM_OTHER_DATES_JUSTIFIED",
           "label" : {
-            "en-GB" : "Provide office hours in a remote format",
-            "pt-PT" : "Facultar horários de dúvidas em formato remoto"
+            "en-GB" : "Conduct assessments on alternative dates in duly justified cases",
+            "pt-PT" : "Realização de momentos de avaliação noutras datas, em casos devidamente justificados"
           }
         }, {
-          "value" : "SLIDES_AND_RESOURCES",
+          "value" : "EXAM_ON_COMPUTER",
           "label" : {
-            "en-GB" : "Provision of class slides and/or other resources used, when not provided to the class in general",
-            "pt-PT" : "Disponibilização dos slides das aulas e/ou de outros recursos utilizados, quando não efetuado para a turma no geral"
+            "en-GB" : "Perform assessment on a computer with specific software to be defined and authorized individually",
+            "pt-PT" : "Realizar avaliação num computador com software específico a definir e autorizar individualmente"
           }
         }, {
-          "value" : "PREVIOUS_EXAMS",
+          "value" : "REMOTE_EXAM_WITH_SUPERVISION",
           "label" : {
-            "en-GB" : "Provision of past exams, when not provided to the class in general",
-            "pt-PT" : "Disponibilização de exames de anos anteriores, quando não efetuado para a turma no geral"
+            "en-GB" : "Allow assessments to be carried out remotely with supervision from a teacher",
+            "pt-PT" : "Possibilitar a realização de avaliações remotamente com supervisão de um/a docente"
           }
         }, {
-          "value" : "EXTRA_INDIVIDUAL_OFFICE_HOURS",
+          "value" : "BRING_FORMS_AND_TABLES",
           "label" : {
-            "en-GB" : "Provide extra individual office hours, if requested by the student",
-            "pt-PT" : "Facultar horários de dúvidas extra individuais, caso solicitado pelo/a estudante"
-          }
-        }, {
-          "value" : "RECORDED_LECTURES",
-          "label" : {
-            "en-GB" : "Provision of recorded lectures, subject to faculty authorization",
-            "pt-PT" : "Disponibilização de aulas gravadas, mediante autorização do corpo docente da UC"
-          }
-        }, {
-          "value" : "LOCKER_ACCESS",
-          "label" : {
-            "en-GB" : "Ensure access to a locker for storing personal belongings",
-            "pt-PT" : "Garantir o acesso a um cacifo para guardar os seus pertences"
-          }
-        }, {
-          "value" : "MEDICATION_STORAGE",
-          "label" : {
-            "en-GB" : "Possibility to store medication in an appropriate space (e.g., refrigerator)",
-            "pt-PT" : "Possibilidade de guardar a medicação num espaço adequado (ex: frigorífico)"
+            "en-GB" : "Bring forms and tables to the exam, pre-approved by the teaching staff",
+            "pt-PT" : "Levar formulário e tabelas para o exame, pré-aprovadas pelo corpo docente"
           }
         } ]
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_s_Situation_and_Objectives_to_Achieve",
+      "key" : "section_s_Situation_and_Objectives_to_Achieve",
+      "label" : "Student's_Situation_and_Objectives_to_Achieve",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "text",
+        "id" : "Field_situation",
+        "key" : "situation",
+        "label" : "Brief description of the student's situation",
+        "text" : "Brief description of the student's situation",
+        "required" : true,
+        "readOnly" : false
+      }, {
+        "type" : "text",
+        "id" : "Field_objectives",
+        "key" : "objectives",
+        "label" : "Objectives to Achieve",
+        "text" : "Objectives to Achieve",
+        "required" : true,
+        "readOnly" : false
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Observations",
+      "key" : "section_Observations",
+      "label" : "Observations",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "text",
+        "id" : "Field_OBSERVATIONS",
+        "key" : "OBSERVATIONS",
+        "label" : "Observations",
+        "text" : "Observations",
+        "required" : false,
+        "readOnly" : false
       } ]
     } ]
   } ]

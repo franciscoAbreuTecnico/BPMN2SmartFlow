@@ -924,7 +924,8 @@
               "name" : "REJECT"
             }
           ],
-          "queue" : "step1-queue"
+          "queue" : "step1-queue",
+          "queueOrder" : 0
         },
         {
           "id" : "step-2",
@@ -986,7 +987,8 @@
             }
           ],
           "queue" : "Nucleo-de-Remuneracoes-e-Protecao-Social-Geral",
-          "blockUndo" : true
+          "blockUndo" : true,
+          "queueOrder" : 1
         },
         {
           "id" : "step-3.1-fund-reservation",
@@ -1055,7 +1057,8 @@
               "name" : "onActionTransition"
             }
           ],
-          "queue" : "step3-queue"
+          "queue" : "step3-queue",
+          "queueOrder" : 2
         },
         {
           "id" : "step-4-fund-allocation",
@@ -1105,7 +1108,8 @@
             "Núcleo de Contabilidade - Geral"
           ],
           "queue" : "Nucleo-de-Execucao-Orcamental-Geral",
-          "blockUndo" : false
+          "blockUndo" : false,
+          "queueOrder" : 3
         },
         {
           "id" : "step-5-scientificCouncil",
@@ -1193,7 +1197,8 @@
               "name" : "REJECT"
             }
           ],
-          "queue" : "Conselho-Cientifico-Comissao-Contratacao"
+          "queue" : "Conselho-Cientifico-Comissao-Contratacao",
+          "queueOrder" : 4
         },
         {
           "id" : "step-5-request-document-changes",
@@ -1265,7 +1270,8 @@
               "id" : "onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes",
               "name" : "onEnterNode"
             }
-          ]
+          ],
+          "queueOrder" : 5
         },
         {
           "id" : "step-6-administrator",
@@ -1313,7 +1319,8 @@
               "id" : "onSuccess-step-6-administrator-Return_Flow_Approved_To_Request",
               "name" : "onSuccess"
             }
-          ]
+          ],
+          "queueOrder" : 6
         },
         {
           "id" : "step-4-fund-undo-allocation",
@@ -1353,7 +1360,8 @@
             "Núcleo de Contabilidade - Geral"
           ],
           "queue" : "Nucleo-de-Execucao-Orcamental-Geral",
-          "blockUndo" : false
+          "blockUndo" : false,
+          "queueOrder" : 3
         },
         {
           "id" : "step-3.1-fund-undo-reservation",
@@ -1387,7 +1395,8 @@
               "name" : "onActionTransition"
             }
           ],
-          "queue" : "step3-queue-undo"
+          "queue" : "step3-queue-undo",
+          "queueOrder" : 7
         }
       ]
     }

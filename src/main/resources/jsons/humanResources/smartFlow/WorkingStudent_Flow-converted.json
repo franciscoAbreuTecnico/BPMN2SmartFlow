@@ -151,7 +151,8 @@
               "name" : "SIGN"
             }
           ],
-          "queue" : "requester-username"
+          "queue" : "requester-username",
+          "queueOrder" : 0
         },
         {
           "id" : "step-hr-processing",
@@ -181,7 +182,8 @@
               "name" : "SIGN"
             }
           ],
-          "queue" : "Nucleo-de-Prestacao-de-Trabalho-Geral"
+          "queue" : "Nucleo-de-Prestacao-de-Trabalho-Geral",
+          "queueOrder" : 1
         }
       ]
     }

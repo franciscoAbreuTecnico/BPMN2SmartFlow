@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_e6e5186f-ad9e-492f-a4d3-0fb9073e9205"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Direcao-Academica" name="Direcao-Academica">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-Academic-Direction</flowNodeRef>
+            <flowNodeRef>SIGN-step-Academic-Direction</flowNodeRef>
+            <flowNodeRef>REJECT-step-Academic-Direction</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-Academic-Direction</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="Nucleo-de-Desenvolvimento-Academico"
+               name="Nucleo-de-Desenvolvimento-Academico">
+            <flowNodeRef>submit-form-individual-plan-creation</flowNodeRef>
+            <flowNodeRef>submit-form-statute-assignation</flowNodeRef>
+            <flowNodeRef>individual-plan-creation</flowNodeRef>
+            <flowNodeRef>reject-statute-assignation</flowNodeRef>
+            <flowNodeRef>statute-assignation</flowNodeRef>
+            <flowNodeRef>reject-individual-plan-creation</flowNodeRef>
+            <flowNodeRef>CONFIRM-individual-plan-creation</flowNodeRef>
+            <flowNodeRef>REJECT-statute-assignation</flowNodeRef>
+            <flowNodeRef>CONFIRM-statute-assignation</flowNodeRef>
+            <flowNodeRef>REJECT-individual-plan-creation</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_statute-assignation</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_individual-plan-creation</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="requester-username" name="requester-username">
+            <flowNodeRef>student-authorize-step-Student</flowNodeRef>
+            <flowNodeRef>revert-step-Student</flowNodeRef>
+            <flowNodeRef>step-Student</flowNodeRef>
+            <flowNodeRef>APPROVE-step-Student</flowNodeRef>
+         </lane>
+         <lane id="Conselho-Pedagogico-supervisor"
+               name="Conselho-Pedagogico-supervisor">
+            <flowNodeRef>step-pedagogic-council-Approval</flowNodeRef>
+            <flowNodeRef>revert-step-pedagogic-council-Approval</flowNodeRef>
+            <flowNodeRef>cp-authorize-step-pedagogic-council-Approval</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</flowNodeRef>
+            <flowNodeRef>SIGN-step-pedagogic-council-Approval</flowNodeRef>
+            <flowNodeRef>PRE-AUTHORIZE-step-pedagogic-council-Approval</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_revert-step-pedagogic-council-Approval</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-pedagogic-council-Approval</flowNodeRef>
+         </lane>
+         <lane id="Assuntos-Academicos" name="Assuntos-Academicos">
+            <flowNodeRef>academic-affairs</flowNodeRef>
+            <flowNodeRef>cg-authorize-academic-affairs</flowNodeRef>
+            <flowNodeRef>revert-academic-affairs</flowNodeRef>
+            <flowNodeRef>onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</flowNodeRef>
+            <flowNodeRef>SIGN-academic-affairs</flowNodeRef>
+            <flowNodeRef>PRE-AUTHORIZE-academic-affairs</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_cg-authorize-academic-affairs</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_academic-affairs</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_revert-academic-affairs</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-pedagogic-council-Approval" name="The Pedigogical Council">
+         <documentation id="documentation_96b3f8b7-05bb-4132-a79e-117434512b10">Deliberation of the Pedigogical Council.</documentation>
+         <incoming>APPROVE-step-Student_to_step-pedagogic-council-Approval</incoming>
+         <outgoing>step-pedagogic-council-Approval_to_ExclusiveGateway_step-pedagogic-council-Approval</outgoing>
+      </userTask>
+      <userTask id="revert-step-pedagogic-council-Approval" name="Revert">
+         <incoming>ExclusiveGateway_step-pedagogic-council-Approval_to_revert-step-pedagogic-council-Approval</incoming>
+         <outgoing>revert-step-pedagogic-council-Approval_to_ExclusiveGateway_revert-step-pedagogic-council-Approval</outgoing>
+      </userTask>
+      <userTask id="student-authorize-step-Student" name="Authorise">
+         <incoming>step-Student_to_student-authorize-step-Student</incoming>
+         <outgoing>student-authorize-step-Student_to_APPROVE-step-Student</outgoing>
+      </userTask>
+      <userTask id="submit-form-individual-plan-creation" name="Submit Form">
+         <incoming>ExclusiveGateway_individual-plan-creation_to_submit-form-individual-plan-creation</incoming>
+         <outgoing>submit-form-individual-plan-creation_to_CONFIRM-individual-plan-creation</outgoing>
+      </userTask>
+      <userTask id="submit-form-statute-assignation" name="Submit Form">
+         <incoming>ExclusiveGateway_statute-assignation_to_submit-form-statute-assignation</incoming>
+         <outgoing>submit-form-statute-assignation_to_CONFIRM-statute-assignation</outgoing>
+      </userTask>
+      <userTask camunda:formRef="individual-plan-form-flow"
+                camunda:formRefBinding="latest"
+                id="individual-plan-creation"
+                name="Individual Plan Creation">
+         <documentation id="documentation_aac20c68-c33b-45fb-901b-9bcff7ecc671">Creation of the Student's Individual Plan of Specific Educational Needs</documentation>
+         <incoming>CONFIRM-statute-assignation_to_individual-plan-creation</incoming>
+         <outgoing>individual-plan-creation_to_ExclusiveGateway_individual-plan-creation</outgoing>
+      </userTask>
+      <userTask id="reject-statute-assignation" name="Reject">
+         <incoming>ExclusiveGateway_statute-assignation_to_reject-statute-assignation</incoming>
+         <outgoing>reject-statute-assignation_to_REJECT-statute-assignation</outgoing>
+      </userTask>
+      <userTask id="cp-authorize-step-pedagogic-council-Approval" name="Authorise">
+         <incoming>ExclusiveGateway_step-pedagogic-council-Approval_to_cp-authorize-step-pedagogic-council-Approval</incoming>
+         <outgoing>cp-authorize-step-pedagogic-council-Approval_to_ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval</outgoing>
+      </userTask>
+      <userTask id="revert-step-Student" name="Revert">
+         <incoming>step-Student_to_revert-step-Student</incoming>
+         <outgoing>revert-step-Student_to_APPROVE-step-Student</outgoing>
+      </userTask>
+      <userTask id="academic-affairs" name="academic-affairs">
+         <documentation id="documentation_61c91cf0-5755-4768-9828-d03fc587e87a">Deliberation of the Management Council</documentation>
+         <incoming>onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_academic-affairs</incoming>
+         <outgoing>academic-affairs_to_ExclusiveGateway_academic-affairs</outgoing>
+      </userTask>
+      <userTask id="cg-authorize-academic-affairs" name="Authorise">
+         <incoming>ExclusiveGateway_academic-affairs_to_cg-authorize-academic-affairs</incoming>
+         <outgoing>cg-authorize-academic-affairs_to_ExclusiveGateway_cg-authorize-academic-affairs</outgoing>
+      </userTask>
+      <userTask id="revert-academic-affairs" name="Revert">
+         <incoming>ExclusiveGateway_academic-affairs_to_revert-academic-affairs</incoming>
+         <outgoing>revert-academic-affairs_to_ExclusiveGateway_revert-academic-affairs</outgoing>
+      </userTask>
+      <userTask id="step-Student" name="The Student">
+         <documentation id="documentation_401272a8-d4bb-40d7-9987-88caa06c1e2e">Student's Authorisation</documentation>
+         <incoming>CONFIRM-individual-plan-creation_to_step-Student</incoming>
+         <outgoing>step-Student_to_revert-step-Student</outgoing>
+         <outgoing>step-Student_to_student-authorize-step-Student</outgoing>
+      </userTask>
+      <userTask id="step-Academic-Direction" name="Academic Direction's Approval">
+         <documentation id="documentation_3cca1ac0-a255-410f-887d-29a087ef5ce3">Decision of the Academic Direction</documentation>
+         <incoming>START-start-event_to_step-Academic-Direction</incoming>
+         <outgoing>step-Academic-Direction_to_ExclusiveGateway_step-Academic-Direction</outgoing>
+      </userTask>
+      <userTask camunda:formRef="assign-enee-statute-form-flow"
+                camunda:formRefBinding="latest"
+                id="statute-assignation"
+                name="Dates and Terms Assignation">
+         <documentation id="documentation_0544bb96-8516-4a78-9148-ecf6ecfb389e">Assignment of dates and terms to reflect the status of Specific Educational Needs in Fénix</documentation>
+         <incoming>SIGN-step-Academic-Direction_to_statute-assignation</incoming>
+         <outgoing>statute-assignation_to_ExclusiveGateway_statute-assignation</outgoing>
+      </userTask>
+      <userTask id="reject-individual-plan-creation" name="Reject">
+         <incoming>ExclusiveGateway_individual-plan-creation_to_reject-individual-plan-creation</incoming>
+         <outgoing>reject-individual-plan-creation_to_REJECT-individual-plan-creation</outgoing>
+      </userTask>
+      <scriptTask id="onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                  name="Do Flow Action if Support measures are Pre-Authorized">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_3846"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L3846"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>PRE-AUTHORIZE-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</incoming>
+         <incoming>SIGN-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</incoming>
+         <outgoing>onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_academic-affairs</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                  name="Do Flow Action if Support measures are Pre-Authorized">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_3846"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L3846"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>PRE-AUTHORIZE-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</incoming>
+         <incoming>SIGN-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</incoming>
+         <outgoing>onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_SUCCESS</outgoing>
+      </scriptTask>
+      <serviceTask id="SIGN-step-pedagogic-council-Approval" name="Favorable Opinion">
+         <incoming>ExclusiveGateway_revert-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval</incoming>
+         <incoming>ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval</incoming>
+         <outgoing>SIGN-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-Academic-Direction" name="Authorise">
+         <incoming>ExclusiveGateway_step-Academic-Direction_to_SIGN-step-Academic-Direction</incoming>
+         <outgoing>SIGN-step-Academic-Direction_to_statute-assignation</outgoing>
+      </serviceTask>
+      <serviceTask id="CONFIRM-individual-plan-creation" name="Submit Form">
+         <incoming>submit-form-individual-plan-creation_to_CONFIRM-individual-plan-creation</incoming>
+         <outgoing>CONFIRM-individual-plan-creation_to_step-Student</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-academic-affairs" name="Approve">
+         <incoming>ExclusiveGateway_cg-authorize-academic-affairs_to_SIGN-academic-affairs</incoming>
+         <incoming>ExclusiveGateway_revert-academic-affairs_to_SIGN-academic-affairs</incoming>
+         <outgoing>SIGN-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</outgoing>
+      </serviceTask>
+      <serviceTask id="PRE-AUTHORIZE-academic-affairs"
+                   name="Automatically authorized due to pre-approved measures">
+         <incoming>ExclusiveGateway_revert-academic-affairs_to_PRE-AUTHORIZE-academic-affairs</incoming>
+         <incoming>ExclusiveGateway_cg-authorize-academic-affairs_to_PRE-AUTHORIZE-academic-affairs</incoming>
+         <outgoing>PRE-AUTHORIZE-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-statute-assignation" name="Reject">
+         <incoming>reject-statute-assignation_to_REJECT-statute-assignation</incoming>
+         <outgoing>REJECT-statute-assignation_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-Academic-Direction" name="Reject">
+         <incoming>ExclusiveGateway_step-Academic-Direction_to_REJECT-step-Academic-Direction</incoming>
+         <outgoing>REJECT-step-Academic-Direction_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="APPROVE-step-Student" name="Authorise">
+         <incoming>revert-step-Student_to_APPROVE-step-Student</incoming>
+         <incoming>student-authorize-step-Student_to_APPROVE-step-Student</incoming>
+         <outgoing>APPROVE-step-Student_to_step-pedagogic-council-Approval</outgoing>
+      </serviceTask>
+      <serviceTask id="PRE-AUTHORIZE-step-pedagogic-council-Approval"
+                   name="Automatically authorized due to pre-approved measures">
+         <incoming>ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval</incoming>
+         <incoming>ExclusiveGateway_revert-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval</incoming>
+         <outgoing>PRE-AUTHORIZE-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized</outgoing>
+      </serviceTask>
+      <serviceTask id="CONFIRM-statute-assignation" name="Submit Form">
+         <incoming>submit-form-statute-assignation_to_CONFIRM-statute-assignation</incoming>
+         <outgoing>CONFIRM-statute-assignation_to_individual-plan-creation</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-individual-plan-creation" name="Reject">
+         <incoming>reject-individual-plan-creation_to_REJECT-individual-plan-creation</incoming>
+         <outgoing>REJECT-individual-plan-creation_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Start Process">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-Academic-Direction</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_statute-assignation"
+                        name="ExclusiveGateway_statute-assignation">
+         <incoming>statute-assignation_to_ExclusiveGateway_statute-assignation</incoming>
+         <outgoing>ExclusiveGateway_statute-assignation_to_submit-form-statute-assignation</outgoing>
+         <outgoing>ExclusiveGateway_statute-assignation_to_reject-statute-assignation</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_cg-authorize-academic-affairs"
+                        name="ExclusiveGateway_cg-authorize-academic-affairs">
+         <incoming>cg-authorize-academic-affairs_to_ExclusiveGateway_cg-authorize-academic-affairs</incoming>
+         <outgoing>ExclusiveGateway_cg-authorize-academic-affairs_to_PRE-AUTHORIZE-academic-affairs</outgoing>
+         <outgoing>ExclusiveGateway_cg-authorize-academic-affairs_to_SIGN-academic-affairs</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-Academic-Direction"
+                        name="ExclusiveGateway_step-Academic-Direction">
+         <incoming>step-Academic-Direction_to_ExclusiveGateway_step-Academic-Direction</incoming>
+         <outgoing>ExclusiveGateway_step-Academic-Direction_to_REJECT-step-Academic-Direction</outgoing>
+         <outgoing>ExclusiveGateway_step-Academic-Direction_to_SIGN-step-Academic-Direction</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_individual-plan-creation"
+                        name="ExclusiveGateway_individual-plan-creation">
+         <incoming>individual-plan-creation_to_ExclusiveGateway_individual-plan-creation</incoming>
+         <outgoing>ExclusiveGateway_individual-plan-creation_to_submit-form-individual-plan-creation</outgoing>
+         <outgoing>ExclusiveGateway_individual-plan-creation_to_reject-individual-plan-creation</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_academic-affairs"
+                        name="ExclusiveGateway_academic-affairs">
+         <incoming>academic-affairs_to_ExclusiveGateway_academic-affairs</incoming>
+         <outgoing>ExclusiveGateway_academic-affairs_to_revert-academic-affairs</outgoing>
+         <outgoing>ExclusiveGateway_academic-affairs_to_cg-authorize-academic-affairs</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_revert-step-pedagogic-council-Approval"
+                        name="ExclusiveGateway_revert-step-pedagogic-council-Approval">
+         <incoming>revert-step-pedagogic-council-Approval_to_ExclusiveGateway_revert-step-pedagogic-council-Approval</incoming>
+         <outgoing>ExclusiveGateway_revert-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval</outgoing>
+         <outgoing>ExclusiveGateway_revert-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval"
+                        name="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval">
+         <incoming>cp-authorize-step-pedagogic-council-Approval_to_ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval</incoming>
+         <outgoing>ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval</outgoing>
+         <outgoing>ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_revert-academic-affairs"
+                        name="ExclusiveGateway_revert-academic-affairs">
+         <incoming>revert-academic-affairs_to_ExclusiveGateway_revert-academic-affairs</incoming>
+         <outgoing>ExclusiveGateway_revert-academic-affairs_to_PRE-AUTHORIZE-academic-affairs</outgoing>
+         <outgoing>ExclusiveGateway_revert-academic-affairs_to_SIGN-academic-affairs</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-pedagogic-council-Approval"
+                        name="ExclusiveGateway_step-pedagogic-council-Approval">
+         <incoming>step-pedagogic-council-Approval_to_ExclusiveGateway_step-pedagogic-council-Approval</incoming>
+         <outgoing>ExclusiveGateway_step-pedagogic-council-Approval_to_cp-authorize-step-pedagogic-council-Approval</outgoing>
+         <outgoing>ExclusiveGateway_step-pedagogic-council-Approval_to_revert-step-pedagogic-council-Approval</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-statute-assignation_to_FAILURE</incoming>
+         <incoming>REJECT-step-Academic-Direction_to_FAILURE</incoming>
+         <incoming>REJECT-individual-plan-creation_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="step-Student_to_revert-step-Student"
+                    name=""
+                    sourceRef="step-Student"
+                    targetRef="revert-step-Student"/>
+      <sequenceFlow id="statute-assignation_to_ExclusiveGateway_statute-assignation"
+                    name=""
+                    sourceRef="statute-assignation"
+                    targetRef="ExclusiveGateway_statute-assignation"/>
+      <sequenceFlow id="onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_SUCCESS"
+                    name=""
+                    sourceRef="onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="submit-form-statute-assignation_to_CONFIRM-statute-assignation"
+                    name=""
+                    sourceRef="submit-form-statute-assignation"
+                    targetRef="CONFIRM-statute-assignation"/>
+      <sequenceFlow id="ExclusiveGateway_step-Academic-Direction_to_REJECT-step-Academic-Direction"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-Academic-Direction"
+                    targetRef="REJECT-step-Academic-Direction"/>
+      <sequenceFlow id="CONFIRM-statute-assignation_to_individual-plan-creation"
+                    name=""
+                    sourceRef="CONFIRM-statute-assignation"
+                    targetRef="individual-plan-creation"/>
+      <sequenceFlow id="ExclusiveGateway_individual-plan-creation_to_submit-form-individual-plan-creation"
+                    name=""
+                    sourceRef="ExclusiveGateway_individual-plan-creation"
+                    targetRef="submit-form-individual-plan-creation"/>
+      <sequenceFlow id="step-Student_to_student-authorize-step-Student"
+                    name=""
+                    sourceRef="step-Student"
+                    targetRef="student-authorize-step-Student"/>
+      <sequenceFlow id="ExclusiveGateway_academic-affairs_to_revert-academic-affairs"
+                    name=""
+                    sourceRef="ExclusiveGateway_academic-affairs"
+                    targetRef="revert-academic-affairs"/>
+      <sequenceFlow id="revert-step-pedagogic-council-Approval_to_ExclusiveGateway_revert-step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="revert-step-pedagogic-council-Approval"
+                    targetRef="ExclusiveGateway_revert-step-pedagogic-council-Approval"/>
+      <sequenceFlow id="step-pedagogic-council-Approval_to_ExclusiveGateway_step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="step-pedagogic-council-Approval"
+                    targetRef="ExclusiveGateway_step-pedagogic-council-Approval"/>
+      <sequenceFlow id="ExclusiveGateway_revert-academic-affairs_to_PRE-AUTHORIZE-academic-affairs"
+                    name=""
+                    sourceRef="ExclusiveGateway_revert-academic-affairs"
+                    targetRef="PRE-AUTHORIZE-academic-affairs"/>
+      <sequenceFlow id="ExclusiveGateway_individual-plan-creation_to_reject-individual-plan-creation"
+                    name=""
+                    sourceRef="ExclusiveGateway_individual-plan-creation"
+                    targetRef="reject-individual-plan-creation"/>
+      <sequenceFlow id="START-start-event_to_step-Academic-Direction"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-Academic-Direction"/>
+      <sequenceFlow id="revert-academic-affairs_to_ExclusiveGateway_revert-academic-affairs"
+                    name=""
+                    sourceRef="revert-academic-affairs"
+                    targetRef="ExclusiveGateway_revert-academic-affairs"/>
+      <sequenceFlow id="reject-individual-plan-creation_to_REJECT-individual-plan-creation"
+                    name=""
+                    sourceRef="reject-individual-plan-creation"
+                    targetRef="REJECT-individual-plan-creation"/>
+      <sequenceFlow id="ExclusiveGateway_step-Academic-Direction_to_SIGN-step-Academic-Direction"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-Academic-Direction"
+                    targetRef="SIGN-step-Academic-Direction"/>
+      <sequenceFlow id="ExclusiveGateway_revert-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="ExclusiveGateway_revert-step-pedagogic-council-Approval"
+                    targetRef="SIGN-step-pedagogic-council-Approval"/>
+      <sequenceFlow id="individual-plan-creation_to_ExclusiveGateway_individual-plan-creation"
+                    name=""
+                    sourceRef="individual-plan-creation"
+                    targetRef="ExclusiveGateway_individual-plan-creation"/>
+      <sequenceFlow id="ExclusiveGateway_cg-authorize-academic-affairs_to_PRE-AUTHORIZE-academic-affairs"
+                    name=""
+                    sourceRef="ExclusiveGateway_cg-authorize-academic-affairs"
+                    targetRef="PRE-AUTHORIZE-academic-affairs"/>
+      <sequenceFlow id="ExclusiveGateway_academic-affairs_to_cg-authorize-academic-affairs"
+                    name=""
+                    sourceRef="ExclusiveGateway_academic-affairs"
+                    targetRef="cg-authorize-academic-affairs"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+      <sequenceFlow id="ExclusiveGateway_step-pedagogic-council-Approval_to_cp-authorize-step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-pedagogic-council-Approval"
+                    targetRef="cp-authorize-step-pedagogic-council-Approval"/>
+      <sequenceFlow id="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval"
+                    targetRef="PRE-AUTHORIZE-step-pedagogic-council-Approval"/>
+      <sequenceFlow id="PRE-AUTHORIZE-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                    name=""
+                    sourceRef="PRE-AUTHORIZE-academic-affairs"
+                    targetRef="onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"/>
+      <sequenceFlow id="revert-step-Student_to_APPROVE-step-Student"
+                    name=""
+                    sourceRef="revert-step-Student"
+                    targetRef="APPROVE-step-Student"/>
+      <sequenceFlow id="CONFIRM-individual-plan-creation_to_step-Student"
+                    name=""
+                    sourceRef="CONFIRM-individual-plan-creation"
+                    targetRef="step-Student"/>
+      <sequenceFlow id="APPROVE-step-Student_to_step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="APPROVE-step-Student"
+                    targetRef="step-pedagogic-council-Approval"/>
+      <sequenceFlow id="PRE-AUTHORIZE-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                    name=""
+                    sourceRef="PRE-AUTHORIZE-step-pedagogic-council-Approval"
+                    targetRef="onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"/>
+      <sequenceFlow id="SIGN-step-Academic-Direction_to_statute-assignation"
+                    name=""
+                    sourceRef="SIGN-step-Academic-Direction"
+                    targetRef="statute-assignation"/>
+      <sequenceFlow id="ExclusiveGateway_statute-assignation_to_submit-form-statute-assignation"
+                    name=""
+                    sourceRef="ExclusiveGateway_statute-assignation"
+                    targetRef="submit-form-statute-assignation"/>
+      <sequenceFlow id="ExclusiveGateway_cg-authorize-academic-affairs_to_SIGN-academic-affairs"
+                    name=""
+                    sourceRef="ExclusiveGateway_cg-authorize-academic-affairs"
+                    targetRef="SIGN-academic-affairs"/>
+      <sequenceFlow id="cp-authorize-step-pedagogic-council-Approval_to_ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="cp-authorize-step-pedagogic-council-Approval"
+                    targetRef="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval"/>
+      <sequenceFlow id="ExclusiveGateway_revert-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="ExclusiveGateway_revert-step-pedagogic-council-Approval"
+                    targetRef="PRE-AUTHORIZE-step-pedagogic-council-Approval"/>
+      <sequenceFlow id="REJECT-statute-assignation_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-statute-assignation"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="cg-authorize-academic-affairs_to_ExclusiveGateway_cg-authorize-academic-affairs"
+                    name=""
+                    sourceRef="cg-authorize-academic-affairs"
+                    targetRef="ExclusiveGateway_cg-authorize-academic-affairs"/>
+      <sequenceFlow id="reject-statute-assignation_to_REJECT-statute-assignation"
+                    name=""
+                    sourceRef="reject-statute-assignation"
+                    targetRef="REJECT-statute-assignation"/>
+      <sequenceFlow id="student-authorize-step-Student_to_APPROVE-step-Student"
+                    name=""
+                    sourceRef="student-authorize-step-Student"
+                    targetRef="APPROVE-step-Student"/>
+      <sequenceFlow id="academic-affairs_to_ExclusiveGateway_academic-affairs"
+                    name=""
+                    sourceRef="academic-affairs"
+                    targetRef="ExclusiveGateway_academic-affairs"/>
+      <sequenceFlow id="ExclusiveGateway_step-pedagogic-council-Approval_to_revert-step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-pedagogic-council-Approval"
+                    targetRef="revert-step-pedagogic-council-Approval"/>
+      <sequenceFlow id="ExclusiveGateway_revert-academic-affairs_to_SIGN-academic-affairs"
+                    name=""
+                    sourceRef="ExclusiveGateway_revert-academic-affairs"
+                    targetRef="SIGN-academic-affairs"/>
+      <sequenceFlow id="step-Academic-Direction_to_ExclusiveGateway_step-Academic-Direction"
+                    name=""
+                    sourceRef="step-Academic-Direction"
+                    targetRef="ExclusiveGateway_step-Academic-Direction"/>
+      <sequenceFlow id="ExclusiveGateway_statute-assignation_to_reject-statute-assignation"
+                    name=""
+                    sourceRef="ExclusiveGateway_statute-assignation"
+                    targetRef="reject-statute-assignation"/>
+      <sequenceFlow id="REJECT-step-Academic-Direction_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-Academic-Direction"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="submit-form-individual-plan-creation_to_CONFIRM-individual-plan-creation"
+                    name=""
+                    sourceRef="submit-form-individual-plan-creation"
+                    targetRef="CONFIRM-individual-plan-creation"/>
+      <sequenceFlow id="SIGN-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                    name=""
+                    sourceRef="SIGN-academic-affairs"
+                    targetRef="onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"/>
+      <sequenceFlow id="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval"
+                    name=""
+                    sourceRef="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval"
+                    targetRef="SIGN-step-pedagogic-council-Approval"/>
+      <sequenceFlow id="SIGN-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                    name=""
+                    sourceRef="SIGN-step-pedagogic-council-Approval"
+                    targetRef="onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"/>
+      <sequenceFlow id="onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_academic-affairs"
+                    name=""
+                    sourceRef="onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                    targetRef="academic-affairs"/>
+      <sequenceFlow id="REJECT-individual-plan-creation_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-individual-plan-creation"
+                    targetRef="FAILURE"/>
+   </process>
+   <collaboration id="academic-specific-educational-needs-request"
+                  name="academic-specific-educational-needs-request">
+      <documentation id="documentation_16a86018-68a3-4a09-9cd9-c98fe70f78d0">{name=academic-specific-educational-needs-request, title={pt-PT=Criação do Plano Individual, en-GB=Creation of the Individual Plan}, description={pt-PT=Processo de Criação do Plano Individual de Necessidades Educativas Específicas, en-GB=Process of Creation the Individual Plan of Specific Educational Needs}, config={hideRevertProcess=true, hideTake=true, actionProcessor={onSuccess=[{flowProcessor=Copy Flow Form To Outcome, formId=assign-enee-statute-form-flow, mapper={startTerm=startTerm, endTerm=endTerm, startDate=startDate, endDate=endDate}}, {flowProcessor=Copy Flow Form To Outcome, formId=individual-plan-form-flow, mapper={situation=situation, objectives=objectives, SUPPORT_MEASURES_ACESSIBILITY_AND_ACCESS_LOCATIONS=SUPPORT_MEASURES_ACESSIBILITY_AND_ACCESS_LOCATIONS, SUPPORT_MEASURES_EVALUATIONS=SUPPORT_MEASURES_EVALUATIONS, SUPPORT_MEASURES_SUPPORT_RESOURCES=SUPPORT_MEASURES_SUPPORT_RESOURCES, SUPPORT_MEASURES_CLASS_ATTENDANCE=SUPPORT_MEASURES_CLASS_ATTENDANCE, SUPPORT_MEASURES_APPROVAL_CP_CG=SUPPORT_MEASURES_APPROVAL_CP_CG, otherSupportMeasures=otherSupportMeasures, OBSERVATIONS=OBSERVATIONS}}, {flowProcessor=Change Statute Comment to contain measures}, {flowProcessor=Add Semester as Request Keyword}, {flowProcessor=Return Flow Approved To Request}, {flowProcessor=Return Flow Approved To Additional ENEE Requests}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[{handle=action-from-assign-terms-and-dates, flowProcessor=Add Specific Needs Statute}, {handle=revert-to-step, flowProcessor=Revert to Step, step=individual-plan-creation}], forms=[{id=assign-enee-statute-form-flow, title={pt-PT=Formulário de atribuição de datas para o estatuto de Necesidades Educativas Específicas, en-GB=Form for assigning dates for the status of Specific Educational Needs}, form={pages=[{title={pt-PT=Período_do_Estatuto, en-GB=Status_Period}, sections=[{title={pt-PT=Períodos_e_Datas, en-GB=Terms_and_Dates}, description={pt-PT=Indique a data e período de início do estatuto de necessidades educativas Específicas e, opcionamente, a data e período de fim, en-GB=Indicate the date and start term of the Specific educational needs status and, optionally, the date and end term}, properties=[{type=AsyncSelect, field=startTerm, optionsProvider=paper-pusher-ist/semestersForStatutes, required=true, allowOther=false, label={pt-PT=Período de Início, en-GB=Start Term}}, {type=Boolean, field=isTemporary, required=true, label={pt-PT=Está a atribuir um estatuto temporário?, en-GB=Are you assigning a temporary status?}, labelYes={pt-PT=Sim, en-GB=Yes}, labelNo={pt-PT=Não, en-GB=No}}, {type=AsyncSelect, field=endTerm, optionsProvider=paper-pusher-ist/semestersForStatutes, required=true, allowOther=false, label={pt-PT=Período de Fim, en-GB=End Term}, onlyIf={field=isTemporary, value=true, negation=false}}, {type=Boolean, field=wantToAssignDates, required=true, label={pt-PT=Quer atribuir datas ao estatuto?, en-GB=Do you want to assign dates to the status?}, labelYes={pt-PT=Sim, en-GB=Yes}, labelNo={pt-PT=Não, en-GB=No}}, {type=DateTime, field=startDate, required=true, date=true, time=false, label={pt-PT=Data de Início, en-GB=Start Date}, onlyIf={field=wantToAssignDates, value=true, negation=false}}, {type=DateTime, field=endDate, required=true, date=true, time=false, label={pt-PT=Data de Fim, en-GB=End Date}, onlyIf={field=wantToAssignDates, value=true, negation=false}}]}]}]}}, {id=individual-plan-form-flow, title={pt-PT=Formulário de criação do Plano Individual de Necesidades Educativas Específicas, en-GB=Form for creating the Individual Plan of Specific Educational Needs}, form={pages=[{title={pt-PT=Plano_Individual, en-GB=Individual_Plan}, sections=[{title={pt-PT=Situação_do_Estudante_e_Objetivos_a_Alcançar, en-GB=Student's_Situation_and_Objectives_to_Achieve}, description={pt-PT=Indique a situação do estudante e os objetivos a alcançar com o plano individual de necessidades educativas Específicas., en-GB=Indicate the student's situation and the objectives to be achieved with the individual plan of Specific educational needs.}, properties=[{type=Text, readonly=false, multiline=true, required=true, maxLength=1000, field=situation, label={pt-PT=Breve descrição da situação da/o estudante, en-GB=Brief description of the student's situation}, description={pt-PT=Caracterização dos desafios e necessidades identificados no dia-a-dia académico do/a estudante, en-GB=Characterization of the challenges and needs identified in the student's academic daily life}}, {type=Text, readonly=false, multiline=true, required=true, maxLength=1000, field=objectives, label={pt-PT=Objetivos a Alcançar, en-GB=Objectives to Achieve}, description={pt-PT= Descrição do que se pretende alcançar através da implementação das medidas de apoio, en-GB=Description of what is intended to be achieved through the implementation of support measures}}]}, {title={pt-PT=Medidas_de_Apoio_Pré-Aprovadas, en-GB=Pre-Approved_Support_Measures}, description={pt-PT=Indique as medidas de apoio pré-aprovadas a implementar no plano individual de necessidades educativas específicas, en-GB=Indicate the pre-approved support measures to be implemented in the individual plan of specific educational needs}, properties=[{type=Select, field=SUPPORT_MEASURES_ACESSIBILITY_AND_ACCESS_LOCATIONS, required=false, allowOther=false, collapse=false, multiple=true, label={pt-PT=Medidas de Acessibilidade e Acesso a locais, en-GB=Measures of Accessibility and Access to locations}, options=[{value=CHANGE_CLASSROOMS_PHYSICAL, label={pt-PT=Alteração de salas de aulas dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade física, en-GB=Change of classrooms of the shifts in which the student is enrolled, in order to guarantee conditions of physical accessibility}}, {value=CHANGE_CLASSROOMS_INFORMATION, label={pt-PT=Alteração de salas de aulas dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade à informação, en-GB=Change of classrooms of the shifts in which the student is enrolled, in order to guarantee conditions of information accessibility}}, {value=CHANGE_LABORATORIES_PHYSICAL, label={pt-PT=Alteração de laboratórios dos turnos em que o/a estudante está inscrito/a, de forma a garantir as condições de acessibilidade física, en-GB=Change of laboratories of the shifts in which the student is enrolled, in order to guarantee conditions of physical accessibility}}, {value=INTERNAL_SUPPORT_ACCESS, label={pt-PT=Apoio de pessoas internas ao Técnico no acesso a determinados locais dos campi, em função das necessidades do/a estudante, en-GB=Support from internal Técnico staff in accessing certain campus locations, according to the student’s needs}}, {value=EXTERNAL_SUPPORT_ACCESS, label={pt-PT=Apoio de pessoas externas ao Técnico no acesso a determinados locais dos campi, em função das necessidades do/a estudante, en-GB=Support from external people in accessing certain campus locations, according to the student’s needs}}, {value=GUIDE_DOG_SUPPORT, label={pt-PT=Apoio de cão guia, en-GB=Guide dog support}}, {value=ADAPTIVE_FURNITURE, label={pt-PT=Disponibilização de mobiliário adequado às necessidades do/a estudante, en-GB=Provision of furniture adapted to the student’s needs}}, {value=ADAPTIVE_LIGHTING, label={pt-PT=Disponibilização de iluminação adequada às necessidades do/a estudante, en-GB=Provision of lighting adapted to the student’s needs}}, {value=PRIORITY_GROUP_ROOM_BOOKING, label={pt-PT=Acesso prioritário na marcação da sala de trabalhos de grupo, en-GB=Priority access to booking group study rooms}}, {value=PRIORITY_UNLIMITED_PARKING, label={pt-PT=Acesso prioritário ao estacionamento ilimitado, en-GB=Priority access to unlimited parking}}, {value=RESERVED_PARKING_NEAR_WORK, label={pt-PT=Reserva de lugar de estacionamento em local próximo ao do trabalho/aulas do/a estudante, en-GB=Reservation of a parking spot near the student’s classes or workplace}}, {value=ACCESSIBLE_EXAM_REVISIONS, label={pt-PT=Realização de revisões de provas em locais acessíveis e/ou remotamente, en-GB=Conducting exam revisions in accessible locations and/or remotely}}, {value=WHEELCHAIR_PROVISION, label={pt-PT=Disponibilização de cadeira de rodas, en-GB=Provision of a wheelchair}}, {value=EXCLUSIVE_ENEE_ROOM, label={pt-PT=Acesso a uma sala exclusiva para estudantes com estatuto ENEE nos campi, en-GB=Access to an exclusive room for ENEE-status students on campus}}, {value=FREIGHT_ELEVATOR_ACCESS, label={pt-PT=Possibilidade de utilização do monta-cargas para aceder a aulas e laboratórios, en-GB=Possibility of using the freight elevator to access classes and laboratories}}, {value=PRIORITY_ATTENDANCE, label={pt-PT=Prioridade no atendimento, en-GB=Priority in service attendance}}, {value=FREIGHT_ELEVATOR_INSURANCE, label={pt-PT=Criação de uma apólice de seguro para estudantes que necessitem de utilizar um monta-cargas, en-GB=Creation of an insurance policy for students who need to use a freight elevator}}, {value=PRIORITY_TOWER_ELEVATORS, label={pt-PT=Acesso prioritário aos elevadores das torres, en-GB=Priority access to the tower elevators}}]}, {type=Select, field=SUPPORT_MEASURES_EVALUATIONS, required=false, allowOther=false, collapse=false, multiple=true, label={pt-PT=Avaliações, en-GB=Evaluations}, options=[{value=Specific_ASSESSMENT_ACCESS, label={pt-PT=Acesso à época especial de avaliação gratuitamente, en-GB=Free access to special assessment period}}, {value=EXTRA_25_TIME, label={pt-PT=Providenciar 25% de tempo adicional, em todos os momentos de avaliação síncronos, independentemente do seu formato e objetivo, en-GB=Provide 25% extra time for all synchronous assessments, regardless of format and objective}}, {value=EXTRA_50_TIME, label={pt-PT=Providenciar 50% de tempo adicional, em todos os momentos de avaliação síncronos, independentemente do seu formato e objetivo, en-GB=Provide 50% extra time for all synchronous assessments, regardless of format and objective}}, {value=ADAPTED_WRITTEN_EXAMS, label={pt-PT=Disponibilização de provas escritas com características específicas para melhorar a legibilidade da prova, en-GB=Provision of written exams with specific features to improve readability}}, {value=LOW_OCCUPANCY_ROOM, label={pt-PT=Realização dos momentos de avaliação na sala com menor lotação, en-GB=Conducting assessments in rooms with lower occupancy}}, {value=SEPARATE_ROOM_ASSESSMENT, label={pt-PT=Realização dos momentos de avaliação numa sala à parte, en-GB=Conducting assessments in a separate room}}, {value=ASSESSMENT_OTHER_DATES_CLINICAL, label={pt-PT=Realização de momentos de avaliação noutras datas, em caso de incompatibilidade com tratamento clínico, en-GB=Conducting assessments on alternative dates in case of clinical treatment conflicts}}, {value=ASSESSMENT_OTHER_DATES_CRISIS, label={pt-PT=Realização de momentos de avaliação noutras datas, em caso de situação de crise, en-GB=Conducting assessments on alternative dates in case of crisis situations}}, {value=DISTRIBUTED_CONTINUOUS_EVALUATION, label={pt-PT=Promover componentes de avaliação contínua de forma distribuída, ao longo do período/semestre, evitando a realização de provas extensas, com um grande volume de matéria, en-GB=Promote distributed continuous evaluation components throughout the term/semester, avoiding extensive tests with large amounts of content}}, {value=HEALTH_SUPPORT_DEVICES, label={pt-PT=Garantir que o/a estudante possa utilizar todos os dispositivos necessários para manter o equilíbrio e a estabilidade da sua condição de saúde, en-GB=Ensure the student can use all devices necessary to maintain balance and health stability}}, {value=KEEP_PREVIOUS_APPROVALS, label={pt-PT=Manter a classificação das componentes de avaliação, em que o/a estudante tenha tido aprovação em anos letivos anteriores, en-GB=Maintain the grades of evaluation components approved in previous academic years}}, {value=ASSESSMENT_SUPPORT, label={pt-PT=Providenciar apoio para a realização das avaliações, en-GB=Provide support for assessments}}, {value=CALCULATOR_USAGE, label={pt-PT=Possibilitar o uso de determinado tipo de calculadora, com aprovação do corpo docente, en-GB=Allow the use of certain types of calculators with faculty approval}}, {value=ORAL_ASSESSMENT_SUPPORT, label={pt-PT=Em avaliações orais, certificar-se de que o/a estudante entendeu a questão, evitar pressionar, dar tempo para o/a estudante processar a questão e responder, aguardar a resposta pacientemente, en-GB=In oral exams, ensure the student understands the question, avoid pressure, allow time to process and respond, and wait patiently}}, {value=CHECK_READABILITY, label={pt-PT=Verificar a legibilidade das respostas do/a estudante. Se necessário, esclarecer com o/a estudante após a entrega ou aquando da correção da prova, en-GB=Check the readability of the student’s answers and, if needed, clarify after submission or during grading}}, {value=NO_SPELLING_PENALTY, label={pt-PT=Não penalização de erros ortográficos e expressão escrita, en-GB=No penalty for spelling and written expression errors}}, {value=TECH_DEVICE_USAGE, label={pt-PT=Permitir a utilização de PC / Leitor de exame / Tablet gráfico / Sintetizador / C-Pen ExamReader ou outros, en-GB=Allow the use of PC / Exam Reader / Graphic Tablet / Synthesizer / C-Pen ExamReader or others}}, {value=PAPER_OR_DIGITAL_SUPPORT, label={pt-PT=Utilização de um suporte em papel ou digital nas apresentações orais, en-GB=Use of paper or digital support in oral presentations}}, {value=SEAT_SELECTION, label={pt-PT=Escolha do lugar, na sala, para realizar a avaliação, en-GB=Choice of seat in the room for the assessment}}, {value=INDIVIDUAL_WORKS, label={pt-PT=Realização de trabalhos/projetos, individualmente, quando solicitado pelo/a estudante, en-GB=Performing assignments/projects individually when requested by the student}}, {value=EXIT_DURING_CLASSES, label={pt-PT=Possibilidade de sair da sala durante aulas ou avaliações, en-GB=Possibility to leave the room during classes or assessments}}, {value=FOOD_AND_DRINKS_DURING_ASSESSMENTS, label={pt-PT=Permitir que o/a estudante consuma alimentos ou bebidas durante as avaliações, en-GB=Allow students to consume food or drinks during assessments}}]}, {type=Select, field=SUPPORT_MEASURES_SUPPORT_RESOURCES, required=false, allowOther=false, collapse=false, multiple=true, label={pt-PT=Recursos de apoio, en-GB=Support Resources}, options=[{value=SLIDES_AND_RESOURCES, label={pt-PT=Disponibilização dos slides das aulas e/ou de outros recursos utilizados, quando não efetuado para a turma no geral, en-GB=Provision of class slides and/or other resources used, when not provided to the class in general}}, {value=PREVIOUS_EXAMS, label={pt-PT=Disponibilização de exames de anos anteriores, quando não efetuado para a turma no geral, en-GB=Provision of past exams, when not provided to the class in general}}, {value=RECORDED_LECTURES, label={pt-PT=Disponibilização de aulas gravadas, mediante autorização do corpo docente da UC, en-GB=Provision of recorded lectures, subject to faculty authorization}}, {value=EXTRA_INDIVIDUAL_OFFICE_HOURS, label={pt-PT=Facultar horários de dúvidas extra individuais, caso solicitado pelo/a estudante, en-GB=Provide extra individual office hours, if requested by the student}}, {value=REMOTE_OFFICE_HOURS, label={pt-PT=Facultar horários de dúvidas em formato remoto, en-GB=Provide office hours in a remote format}}, {value=MEDICATION_STORAGE, label={pt-PT=Possibilidade de guardar a medicação num espaço adequado (ex: frigorífico), en-GB=Possibility to store medication in an appropriate space (e.g., refrigerator)}}, {value=LOCKER_ACCESS, label={pt-PT=Garantir o acesso a um cacifo para guardar os seus pertences, en-GB=Ensure access to a locker for storing personal belongings}}]}, {type=Select, field=SUPPORT_MEASURES_CLASS_ATTENDANCE, required=false, allowOther=false, collapse=false, multiple=true, label={pt-PT=Frequência das aulas, en-GB=Class attendance}, options=[{value=RESERVED_SEAT, label={pt-PT=Reserva de um lugar, num local da sala a designar pelo/a estudante, de forma a garantir as condições necessárias para a frequência da aula, en-GB=Reservation of a seat, in a location designated by the student, to ensure necessary conditions for attending class}}, {value=STAND_OR_SIT, label={pt-PT=Possibilidade de permanecer de pé ou sentado/a, nas aulas e avaliações, quando necessário, en-GB=Possibility of standing or sitting during classes and assessments when necessary}}, {value=PRIORITY_SHIFT_BOOKING, label={pt-PT=Marcação prioritária de turnos, en-GB=Priority booking of shifts}}, {value=PHOTO_BOARD_INFO, label={pt-PT=Autorizar a recolha de fotografias da informação escrita no quadro, ou projetada, en-GB=Authorize taking photographs of information written on the board or projected}}, {value=VOICE_RECORDING, label={pt-PT=Autorizar gravação de voz, en-GB=Authorize voice recording}}, {value=VIDEO_RECORDING, label={pt-PT=Autorizar a gravação de vídeo, en-GB=Authorize video recording}}, {value=VOICE_TRANSCRIPTION_SOFTWARE, label={pt-PT=Utilização de software para transcrição de voz, en-GB=Use of voice transcription software}}, {value=STREAMING_CLASSES, label={pt-PT=Frequência de aulas síncronas através de streaming, quando for necessário, en-GB=Attend synchronous classes via streaming when necessary}}, {value=LAB_SUPPORT, label={pt-PT=Apoio nas aulas de laboratório, nomeadamente no manuseamento dos equipamentos, en-GB=Support in laboratory classes, especialy for handling equipment}}, {value=CLEAR_SPEECH_FOR_LIPREADING, label={pt-PT=Falar na frente do grupo/estudante de forma clara, permitindo leitura labial durante as aulas, en-GB=Speak clearly in front of the group/student, allowing lipreading during classes}}, {value=LAPEL_MICROPHONE, label={pt-PT=Caso utilize microfone, preferencialmente de lapela para possibilitar leitura labial, en-GB=If using a microphone, preferably use a lapel microphone to allow lipreading}}, {value=MICROPHONE_USAGE, label={pt-PT=Utilização de microfone, en-GB=Use of a microphone}}, {value=SIGN_LANGUAGE_INTERPRETER, label={pt-PT=Presença de intérprete de Língua Gestual Portuguesa nas aulas e nas avaliações, en-GB=Presence of a Portuguese Sign Language interpreter in classes and assessments}}, {value=ALLOW_EATING_DRINKING, label={pt-PT=Autorizar que o/a estudante coma e/ou beba se tiver necessidade, en-GB=Authorize the student to eat and/or drink if necessary}}, {value=DIRECT_AND_CLEAR_LANGUAGE, label={pt-PT=Utilização de linguagem direta e linear, evitar mensagens implícitas e duplas negativas tanto oralmente como escrita, en-GB=Use direct and clear language, avoiding implicit messages and double negatives both orally and in writing}}, {value=EARPLUGS_OR_EARBUDS, label={pt-PT=Permitir o uso de tampões ou auriculares, en-GB=Allow the use of earplugs or earbuds}}, {value=HIGHLIGHTERS_USAGE, label={pt-PT=Permitir utilização de marcadores de texto, en-GB=Allow the use of highlighters}}]}]}, {title={pt-PT=Medidas_de_Apoio_por_Aprovar, en-GB=Support_Measures_to_be_Approved}, description={pt-PT=Indique as medidas de apoio por aprovar a implementar no plano individual de necessidades educativas específicas, en-GB=Indicate the support measures to be approved to be implemented in the individual plan of specific educational needs}, properties=[{type=Select, field=SUPPORT_MEASURES_APPROVAL_CP_CG, required=false, allowOther=false, collapse=false, multiple=true, label={pt-PT=Medidas que carecem de aprovação do Conselho Pedagógico e do Conselho de Gestão, en-GB=Measures that require approval from the Pedagogical Council and the Management Council}, options=[{value=BRING_FORMS_AND_TABLES, label={pt-PT=Levar formulário e tabelas para o exame, pré-aprovadas pelo corpo docente, en-GB=Bring forms and tables to the exam, pre-approved by the teaching staff}}, {value=EXAM_ON_COMPUTER, label={pt-PT=Realizar avaliação num computador com software específico a definir e autorizar individualmente, en-GB=Perform assessment on a computer with specific software to be defined and authorized individually}}, {value=REMOTE_EXAM_WITH_SUPERVISION, label={pt-PT=Possibilitar a realização de avaliações remotamente com supervisão de um/a docente, en-GB=Allow assessments to be carried out remotely with supervision from a teacher}}, {value=EXAM_OTHER_DATES_JUSTIFIED, label={pt-PT=Realização de momentos de avaliação noutras datas, em casos devidamente justificados, en-GB=Conduct assessments on alternative dates in duly justified cases}}]}, {type=Array, readonly=false, required=false, field=otherSupportMeasures, label={pt-PT=Outras Medidas de Apoio, en-GB=Other Support Measures}, labelAddElement={pt-PT=Adicionar outra medida de apoio, en-GB=Add another support measure}, properties=[{type=Text, readonly=false, required=false, field=OTHER_SUPPORT_MEASURE, label={pt-PT=Medida de Apoio, en-GB=Support Measure}}]}]}, {title={pt-PT=Observações, en-GB=Observations}, description={pt-PT=Indique aqui qualquer informação adicional que considere relevante para complementar as medidas de apoio, en-GB=Enter any additional information you consider relevant to complement the support measures}, properties=[{type=Text, readonly=false, required=false, field=OBSERVATIONS, label={pt-PT=Observações, en-GB=Observations}}]}]}]}}], actionNodes=[{id=step-Academic-Direction, type=generic, comment=false, title={pt-PT=Aprovação da Direção Académica, en-GB=Academic Direction's Approval}, description={pt-PT=Deliberação da Direção Académica, en-GB=Decision of the Academic Direction}, commentLabel={pt-PT=Deliberação da Direção Académica, en-GB=Decision of the Academic Direction}, actions=[{primary=true, to=statute-assignation, label={pt-PT=Autorizar, en-GB=Authorise}, id=SIGN-step-Academic-Direction, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-Academic-Direction, name=REJECT}], queue=Direcao-Academica, queueOrder=0}, {id=statute-assignation, type=withForms, comment=false, title={pt-PT=Atribuição de Semestres e Datas, en-GB=Dates and Terms Assignation}, description={pt-PT=Atribuição de datas e semestres para refletir o estatuto de Necesidades Educativas Específicas no Fénix, en-GB=Assignment of dates and terms to reflect the status of Specific Educational Needs in Fénix}, buttons=[{id=reject-statute-assignation, label={pt-PT=Rejeitar, en-GB=Reject}, handlers={action=REJECT-statute-assignation}}, {id=submit-form-statute-assignation, primary=true, label={pt-PT=Submeter Formulário, en-GB=Submit Form}, handlers={form=assign-enee-statute-form-flow, afterForm=action-from-assign-terms-and-dates, action=CONFIRM-statute-assignation}}], actions=[{primary=true, to=individual-plan-creation, label={pt-PT=Submeter Formulário, en-GB=Submit Form}, id=CONFIRM-statute-assignation, name=CONFIRM}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-statute-assignation, name=REJECT}], queue=Nucleo-de-Desenvolvimento-Academico, queueOrder=1}, {id=individual-plan-creation, type=withForms, comment=false, title={pt-PT=Criação do Plano Individual, en-GB=Individual Plan Creation}, description={pt-PT=Criação do Plano Individual de Necesidades Educativas Específicas do Aluno, en-GB=Creation of the Student's Individual Plan of Specific Educational Needs}, buttons=[{id=reject-individual-plan-creation, label={pt-PT=Rejeitar, en-GB=Reject}, handlers={action=REJECT-individual-plan-creation}}, {id=submit-form-individual-plan-creation, primary=true, label={pt-PT=Submeter Formulário, en-GB=Submit Form}, handlers={form=individual-plan-form-flow, action=CONFIRM-individual-plan-creation}}], actions=[{primary=true, to=step-Student, label={pt-PT=Submeter Formulário, en-GB=Submit Form}, id=CONFIRM-individual-plan-creation, name=CONFIRM}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-individual-plan-creation, name=REJECT}], queue=Nucleo-de-Desenvolvimento-Academico, queueOrder=1}, {id=step-Student, type=withButtons, comment=true, title={pt-PT=O/A Estudante, en-GB=The Student}, description={pt-PT=Autorização do/a Estudante, en-GB=Student's Authorisation}, commentLabel={pt-PT=Autorização do/a Estudante, en-GB=Student's Authorisation}, buttons=[{id=revert-step-Student, label={pt-PT=Reverter, en-GB=Revert}, handler=process:revert-to-step}, {id=student-authorize-step-Student, primary=true, label={pt-PT=Autorizar, en-GB=Authorise}, handler=action:APPROVE}], actions=[{primary=true, to=step-pedagogic-council-Approval, label={pt-PT=Autorizar, en-GB=Authorise}, id=APPROVE-step-Student, name=APPROVE}], queue=requester-username, queueOrder=2}, {id=step-pedagogic-council-Approval, type=withButtons, comment=true, title={pt-PT=O Conselho Pedagógico, en-GB=The Pedigogical Council}, description={pt-PT=Parecer do Conselho Pedagógico., en-GB=Deliberation of the Pedigogical Council.}, commentLabel={pt-PT=Parecer do Conselho Pedagógico., en-GB=Deliberation of the Pedigogical Council.}, buttons=[{id=revert-step-pedagogic-council-Approval, label={pt-PT=Reverter, en-GB=Revert}, handler=process:revert-to-step}, {id=cp-authorize-step-pedagogic-council-Approval, primary=true, label={pt-PT=Autorizar, en-GB=Authorise}, handler=action:SIGN}], actions=[{primary=true, to=academic-affairs, label={pt-PT=Concordo, en-GB=Favorable Opinion}, id=SIGN-step-pedagogic-council-Approval, name=SIGN}, {primary=false, to=academic-affairs, label={pt-PT=Autorizado automaticamente devido a medidas pré-aprovadas, en-GB=Automatically authorized due to pre-approved measures}, id=PRE-AUTHORIZE-step-pedagogic-council-Approval, name=PRE-AUTHORIZE}], actionProcessor=[{flowProcessor=Do Flow Action if Support measures are Pre-Authorized, flowAction=PRE-AUTHORIZE, id=onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized, name=onEnterNode}], queue=Conselho-Pedagogico-supervisor, queueOrder=3}, {id=academic-affairs, type=withButtons, comment=true, title={pt=Vice-Presidência para os Assuntos Académicos, en=Vice-Presidency for Academic Affairs}, description={pt-PT=Parecer do Conselho de Gestão, en-GB=Deliberation of the Management Council}, commentLabel={pt-PT=Parecer do Conselho de Gestão, en-GB=Deliberation of the Management Council}, buttons=[{id=revert-academic-affairs, label={pt-PT=Reverter, en-GB=Revert}, handler=process:revert-to-step}, {id=cg-authorize-academic-affairs, primary=true, label={pt-PT=Autorizar, en-GB=Authorise}, handler=action:SIGN}], actions=[{primary=true, to=SUCCESS, label={pt-PT=Deferir, en-GB=Approve}, id=SIGN-academic-affairs, name=SIGN}, {primary=false, to=SUCCESS, label={pt-PT=Autorizado automaticamente devido a medidas pré-aprovadas, en-GB=Automatically authorized due to pre-approved measures}, id=PRE-AUTHORIZE-academic-affairs, name=PRE-AUTHORIZE}], actionProcessor=[{flowProcessor=Do Flow Action if Support measures are Pre-Authorized, flowAction=PRE-AUTHORIZE, id=onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized, name=onEnterNode}], queue=Assuntos-Academicos, queueOrder=4}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="academic-specific-educational-needs-request"
+                        id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="submit-form-statute-assignation"
+                           id="Shape_submit-form-statute-assignation">
+            <dc:Bounds height="60.0" width="80.0" x="1255.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_revert-step-pedagogic-council-Approval"
+                           id="Shape_ExclusiveGateway_revert-step-pedagogic-council-Approval">
+            <dc:Bounds height="40.0" width="40.0" x="3335.0" y="1100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                           id="Shape_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized">
+            <dc:Bounds height="60.0" width="80.0" x="4655.0" y="1850.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="reject-statute-assignation"
+                           id="Shape_reject-statute-assignation">
+            <dc:Bounds height="60.0" width="80.0" x="1255.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-academic-affairs" id="Shape_SIGN-academic-affairs">
+            <dc:Bounds height="60.0" width="80.0" x="4475.0" y="1690.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="PRE-AUTHORIZE-step-pedagogic-council-Approval"
+                           id="Shape_PRE-AUTHORIZE-step-pedagogic-council-Approval">
+            <dc:Bounds height="60.0" width="80.0" x="3475.0" y="1410.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="individual-plan-creation"
+                           id="Shape_individual-plan-creation">
+            <dc:Bounds height="60.0" width="80.0" x="1615.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-Student" id="Shape_step-Student">
+            <dc:Bounds height="60.0" width="80.0" x="2295.0" y="810.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-pedagogic-council-Approval"
+                           id="Shape_step-pedagogic-council-Approval">
+            <dc:Bounds height="60.0" width="80.0" x="2835.0" y="1090.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="statute-assignation" id="Shape_statute-assignation">
+            <dc:Bounds height="60.0" width="80.0" x="935.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONFIRM-individual-plan-creation"
+                           id="Shape_CONFIRM-individual-plan-creation">
+            <dc:Bounds height="60.0" width="80.0" x="2115.0" y="690.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                           id="Shape_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized">
+            <dc:Bounds height="60.0" width="80.0" x="3655.0" y="1410.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_statute-assignation"
+                           id="Shape_ExclusiveGateway_statute-assignation">
+            <dc:Bounds height="40.0" width="40.0" x="1115.0" y="380.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-individual-plan-creation"
+                           id="Shape_REJECT-individual-plan-creation">
+            <dc:Bounds height="60.0" width="80.0" x="2115.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_academic-affairs"
+                           id="Shape_ExclusiveGateway_academic-affairs">
+            <dc:Bounds height="40.0" width="40.0" x="4015.0" y="1540.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="255.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_individual-plan-creation"
+                           id="Shape_ExclusiveGateway_individual-plan-creation">
+            <dc:Bounds height="40.0" width="40.0" x="1795.0" y="540.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="PRE-AUTHORIZE-academic-affairs"
+                           id="Shape_PRE-AUTHORIZE-academic-affairs">
+            <dc:Bounds height="60.0" width="80.0" x="4475.0" y="1850.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="revert-step-Student" id="Shape_revert-step-Student">
+            <dc:Bounds height="60.0" width="80.0" x="2475.0" y="970.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="academic-affairs" id="Shape_academic-affairs">
+            <dc:Bounds height="60.0" width="80.0" x="3835.0" y="1530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="APPROVE-step-Student" id="Shape_APPROVE-step-Student">
+            <dc:Bounds height="60.0" width="80.0" x="2655.0" y="970.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="revert-academic-affairs"
+                           id="Shape_revert-academic-affairs">
+            <dc:Bounds height="60.0" width="80.0" x="4155.0" y="1690.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-Academic-Direction"
+                           id="Shape_REJECT-step-Academic-Direction">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="cp-authorize-step-pedagogic-council-Approval"
+                           id="Shape_cp-authorize-step-pedagogic-council-Approval">
+            <dc:Bounds height="60.0" width="80.0" x="3155.0" y="1250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_cg-authorize-academic-affairs"
+                           id="Shape_ExclusiveGateway_cg-authorize-academic-affairs">
+            <dc:Bounds height="40.0" width="40.0" x="4335.0" y="1540.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-pedagogic-council-Approval"
+                           id="Shape_SIGN-step-pedagogic-council-Approval">
+            <dc:Bounds height="60.0" width="80.0" x="3475.0" y="1250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="reject-individual-plan-creation"
+                           id="Shape_reject-individual-plan-creation">
+            <dc:Bounds height="60.0" width="80.0" x="1935.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="revert-step-pedagogic-council-Approval"
+                           id="Shape_revert-step-pedagogic-council-Approval">
+            <dc:Bounds height="60.0" width="80.0" x="3155.0" y="1090.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-Academic-Direction"
+                           id="Shape_step-Academic-Direction">
+            <dc:Bounds height="60.0" width="80.0" x="435.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="cg-authorize-academic-affairs"
+                           id="Shape_cg-authorize-academic-affairs">
+            <dc:Bounds height="60.0" width="80.0" x="4155.0" y="1530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="382.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval"
+                           id="Shape_ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval">
+            <dc:Bounds height="40.0" width="40.0" x="3335.0" y="1260.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONFIRM-statute-assignation"
+                           id="Shape_CONFIRM-statute-assignation">
+            <dc:Bounds height="60.0" width="80.0" x="1435.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="4835.0" y="1862.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_revert-academic-affairs"
+                           id="Shape_ExclusiveGateway_revert-academic-affairs">
+            <dc:Bounds height="40.0" width="40.0" x="4335.0" y="1700.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-Academic-Direction"
+                           id="Shape_SIGN-step-Academic-Direction">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="student-authorize-step-Student"
+                           id="Shape_student-authorize-step-Student">
+            <dc:Bounds height="60.0" width="80.0" x="2475.0" y="810.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-individual-plan-creation"
+                           id="Shape_submit-form-individual-plan-creation">
+            <dc:Bounds height="60.0" width="80.0" x="1935.0" y="690.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-Academic-Direction"
+                           id="Shape_ExclusiveGateway_step-Academic-Direction">
+            <dc:Bounds height="40.0" width="40.0" x="615.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-statute-assignation"
+                           id="Shape_REJECT-statute-assignation">
+            <dc:Bounds height="60.0" width="80.0" x="1435.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-pedagogic-council-Approval"
+                           id="Shape_ExclusiveGateway_step-pedagogic-council-Approval">
+            <dc:Bounds height="40.0" width="40.0" x="3015.0" y="1100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Direcao-Academica" id="Shape_Direcao-Academica">
+            <dc:Bounds height="280.0" width="4810.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Desenvolvimento-Academico"
+                           id="Shape_Nucleo-de-Desenvolvimento-Academico">
+            <dc:Bounds height="440.0" width="4810.0" x="90.0" y="340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="requester-username" id="Shape_requester-username">
+            <dc:Bounds height="280.0" width="4810.0" x="90.0" y="780.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Conselho-Pedagogico-supervisor"
+                           id="Shape_Conselho-Pedagogico-supervisor">
+            <dc:Bounds height="440.0" width="4810.0" x="90.0" y="1060.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Assuntos-Academicos" id="Shape_Assuntos-Academicos">
+            <dc:Bounds height="440.0" width="4810.0" x="90.0" y="1500.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="1880.0" width="4840.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="step-Student_to_revert-step-Student"
+                          id="Edge_step-Student_to_revert-step-Student">
+            <di:waypoint x="2375.0" y="840.0"/>
+            <di:waypoint x="2408.0" y="840.0"/>
+            <di:waypoint x="2408.0" y="1000.0"/>
+            <di:waypoint x="2475.0" y="1000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="statute-assignation_to_ExclusiveGateway_statute-assignation"
+                          id="Edge_statute-assignation_to_ExclusiveGateway_statute-assignation">
+            <di:waypoint x="1015.0" y="400.0"/>
+            <di:waypoint x="1048.0" y="400.0"/>
+            <di:waypoint x="1048.0" y="400.0"/>
+            <di:waypoint x="1115.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_SUCCESS"
+                          id="Edge_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_SUCCESS">
+            <di:waypoint x="4735.0" y="1880.0"/>
+            <di:waypoint x="4768.0" y="1880.0"/>
+            <di:waypoint x="4768.0" y="1880.0"/>
+            <di:waypoint x="4835.0" y="1880.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-statute-assignation_to_CONFIRM-statute-assignation"
+                          id="Edge_submit-form-statute-assignation_to_CONFIRM-statute-assignation">
+            <di:waypoint x="1335.0" y="560.0"/>
+            <di:waypoint x="1435.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-Academic-Direction_to_REJECT-step-Academic-Direction"
+                          id="Edge_ExclusiveGateway_step-Academic-Direction_to_REJECT-step-Academic-Direction">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="688.0" y="120.0"/>
+            <di:waypoint x="688.0" y="280.0"/>
+            <di:waypoint x="755.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONFIRM-statute-assignation_to_individual-plan-creation"
+                          id="Edge_CONFIRM-statute-assignation_to_individual-plan-creation">
+            <di:waypoint x="1515.0" y="560.0"/>
+            <di:waypoint x="1615.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_individual-plan-creation_to_submit-form-individual-plan-creation"
+                          id="Edge_ExclusiveGateway_individual-plan-creation_to_submit-form-individual-plan-creation">
+            <di:waypoint x="1835.0" y="560.0"/>
+            <di:waypoint x="1868.0" y="560.0"/>
+            <di:waypoint x="1868.0" y="720.0"/>
+            <di:waypoint x="1935.0" y="720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-Student_to_student-authorize-step-Student"
+                          id="Edge_step-Student_to_student-authorize-step-Student">
+            <di:waypoint x="2375.0" y="840.0"/>
+            <di:waypoint x="2475.0" y="840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_academic-affairs_to_revert-academic-affairs"
+                          id="Edge_ExclusiveGateway_academic-affairs_to_revert-academic-affairs">
+            <di:waypoint x="4055.0" y="1560.0"/>
+            <di:waypoint x="4088.0" y="1560.0"/>
+            <di:waypoint x="4088.0" y="1720.0"/>
+            <di:waypoint x="4155.0" y="1720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="revert-step-pedagogic-council-Approval_to_ExclusiveGateway_revert-step-pedagogic-council-Approval"
+                          id="Edge_revert-step-pedagogic-council-Approval_to_ExclusiveGateway_revert-step-pedagogic-council-Approval">
+            <di:waypoint x="3235.0" y="1120.0"/>
+            <di:waypoint x="3268.0" y="1120.0"/>
+            <di:waypoint x="3268.0" y="1120.0"/>
+            <di:waypoint x="3335.0" y="1120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-pedagogic-council-Approval_to_ExclusiveGateway_step-pedagogic-council-Approval"
+                          id="Edge_step-pedagogic-council-Approval_to_ExclusiveGateway_step-pedagogic-council-Approval">
+            <di:waypoint x="2915.0" y="1120.0"/>
+            <di:waypoint x="2948.0" y="1120.0"/>
+            <di:waypoint x="2948.0" y="1120.0"/>
+            <di:waypoint x="3015.0" y="1120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_revert-academic-affairs_to_PRE-AUTHORIZE-academic-affairs"
+                          id="Edge_ExclusiveGateway_revert-academic-affairs_to_PRE-AUTHORIZE-academic-affairs">
+            <di:waypoint x="4375.0" y="1720.0"/>
+            <di:waypoint x="4408.0" y="1720.0"/>
+            <di:waypoint x="4408.0" y="1880.0"/>
+            <di:waypoint x="4475.0" y="1880.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_individual-plan-creation_to_reject-individual-plan-creation"
+                          id="Edge_ExclusiveGateway_individual-plan-creation_to_reject-individual-plan-creation">
+            <di:waypoint x="1835.0" y="560.0"/>
+            <di:waypoint x="1935.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-Academic-Direction"
+                          id="Edge_START-start-event_to_step-Academic-Direction">
+            <di:waypoint x="335.0" y="120.0"/>
+            <di:waypoint x="435.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="revert-academic-affairs_to_ExclusiveGateway_revert-academic-affairs"
+                          id="Edge_revert-academic-affairs_to_ExclusiveGateway_revert-academic-affairs">
+            <di:waypoint x="4235.0" y="1720.0"/>
+            <di:waypoint x="4268.0" y="1720.0"/>
+            <di:waypoint x="4268.0" y="1720.0"/>
+            <di:waypoint x="4335.0" y="1720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="reject-individual-plan-creation_to_REJECT-individual-plan-creation"
+                          id="Edge_reject-individual-plan-creation_to_REJECT-individual-plan-creation">
+            <di:waypoint x="2015.0" y="560.0"/>
+            <di:waypoint x="2115.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-Academic-Direction_to_SIGN-step-Academic-Direction"
+                          id="Edge_ExclusiveGateway_step-Academic-Direction_to_SIGN-step-Academic-Direction">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="755.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_revert-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval"
+                          id="Edge_ExclusiveGateway_revert-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval">
+            <di:waypoint x="3375.0" y="1120.0"/>
+            <di:waypoint x="3408.0" y="1120.0"/>
+            <di:waypoint x="3408.0" y="1280.0"/>
+            <di:waypoint x="3475.0" y="1280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="individual-plan-creation_to_ExclusiveGateway_individual-plan-creation"
+                          id="Edge_individual-plan-creation_to_ExclusiveGateway_individual-plan-creation">
+            <di:waypoint x="1695.0" y="560.0"/>
+            <di:waypoint x="1728.0" y="560.0"/>
+            <di:waypoint x="1728.0" y="560.0"/>
+            <di:waypoint x="1795.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_cg-authorize-academic-affairs_to_PRE-AUTHORIZE-academic-affairs"
+                          id="Edge_ExclusiveGateway_cg-authorize-academic-affairs_to_PRE-AUTHORIZE-academic-affairs">
+            <di:waypoint x="4375.0" y="1560.0"/>
+            <di:waypoint x="4408.0" y="1560.0"/>
+            <di:waypoint x="4408.0" y="1880.0"/>
+            <di:waypoint x="4475.0" y="1880.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_academic-affairs_to_cg-authorize-academic-affairs"
+                          id="Edge_ExclusiveGateway_academic-affairs_to_cg-authorize-academic-affairs">
+            <di:waypoint x="4055.0" y="1560.0"/>
+            <di:waypoint x="4155.0" y="1560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="155.0" y="120.0"/>
+            <di:waypoint x="255.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-pedagogic-council-Approval_to_cp-authorize-step-pedagogic-council-Approval"
+                          id="Edge_ExclusiveGateway_step-pedagogic-council-Approval_to_cp-authorize-step-pedagogic-council-Approval">
+            <di:waypoint x="3055.0" y="1120.0"/>
+            <di:waypoint x="3088.0" y="1120.0"/>
+            <di:waypoint x="3088.0" y="1280.0"/>
+            <di:waypoint x="3155.0" y="1280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval"
+                          id="Edge_ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval">
+            <di:waypoint x="3375.0" y="1280.0"/>
+            <di:waypoint x="3408.0" y="1280.0"/>
+            <di:waypoint x="3408.0" y="1440.0"/>
+            <di:waypoint x="3475.0" y="1440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="PRE-AUTHORIZE-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                          id="Edge_PRE-AUTHORIZE-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized">
+            <di:waypoint x="4555.0" y="1880.0"/>
+            <di:waypoint x="4655.0" y="1880.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="revert-step-Student_to_APPROVE-step-Student"
+                          id="Edge_revert-step-Student_to_APPROVE-step-Student">
+            <di:waypoint x="2555.0" y="1000.0"/>
+            <di:waypoint x="2655.0" y="1000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONFIRM-individual-plan-creation_to_step-Student"
+                          id="Edge_CONFIRM-individual-plan-creation_to_step-Student">
+            <di:waypoint x="2195.0" y="720.0"/>
+            <di:waypoint x="2228.0" y="720.0"/>
+            <di:waypoint x="2228.0" y="840.0"/>
+            <di:waypoint x="2295.0" y="840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="APPROVE-step-Student_to_step-pedagogic-council-Approval"
+                          id="Edge_APPROVE-step-Student_to_step-pedagogic-council-Approval">
+            <di:waypoint x="2735.0" y="1000.0"/>
+            <di:waypoint x="2768.0" y="1000.0"/>
+            <di:waypoint x="2768.0" y="1120.0"/>
+            <di:waypoint x="2835.0" y="1120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="PRE-AUTHORIZE-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                          id="Edge_PRE-AUTHORIZE-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized">
+            <di:waypoint x="3555.0" y="1440.0"/>
+            <di:waypoint x="3655.0" y="1440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-Academic-Direction_to_statute-assignation"
+                          id="Edge_SIGN-step-Academic-Direction_to_statute-assignation">
+            <di:waypoint x="835.0" y="120.0"/>
+            <di:waypoint x="868.0" y="120.0"/>
+            <di:waypoint x="868.0" y="400.0"/>
+            <di:waypoint x="935.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_statute-assignation_to_submit-form-statute-assignation"
+                          id="Edge_ExclusiveGateway_statute-assignation_to_submit-form-statute-assignation">
+            <di:waypoint x="1155.0" y="400.0"/>
+            <di:waypoint x="1188.0" y="400.0"/>
+            <di:waypoint x="1188.0" y="560.0"/>
+            <di:waypoint x="1255.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_cg-authorize-academic-affairs_to_SIGN-academic-affairs"
+                          id="Edge_ExclusiveGateway_cg-authorize-academic-affairs_to_SIGN-academic-affairs">
+            <di:waypoint x="4375.0" y="1560.0"/>
+            <di:waypoint x="4408.0" y="1560.0"/>
+            <di:waypoint x="4408.0" y="1720.0"/>
+            <di:waypoint x="4475.0" y="1720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="cp-authorize-step-pedagogic-council-Approval_to_ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval"
+                          id="Edge_cp-authorize-step-pedagogic-council-Approval_to_ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval">
+            <di:waypoint x="3235.0" y="1280.0"/>
+            <di:waypoint x="3268.0" y="1280.0"/>
+            <di:waypoint x="3268.0" y="1280.0"/>
+            <di:waypoint x="3335.0" y="1280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_revert-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval"
+                          id="Edge_ExclusiveGateway_revert-step-pedagogic-council-Approval_to_PRE-AUTHORIZE-step-pedagogic-council-Approval">
+            <di:waypoint x="3375.0" y="1120.0"/>
+            <di:waypoint x="3408.0" y="1120.0"/>
+            <di:waypoint x="3408.0" y="1440.0"/>
+            <di:waypoint x="3475.0" y="1440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-statute-assignation_to_FAILURE"
+                          id="Edge_REJECT-statute-assignation_to_FAILURE">
+            <di:waypoint x="1515.0" y="400.0"/>
+            <di:waypoint x="4905.0" y="400.0"/>
+            <di:waypoint x="4905.0" y="437.5"/>
+            <di:waypoint x="137.5" y="437.5"/>
+            <di:waypoint x="137.5" y="417.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="cg-authorize-academic-affairs_to_ExclusiveGateway_cg-authorize-academic-affairs"
+                          id="Edge_cg-authorize-academic-affairs_to_ExclusiveGateway_cg-authorize-academic-affairs">
+            <di:waypoint x="4235.0" y="1560.0"/>
+            <di:waypoint x="4268.0" y="1560.0"/>
+            <di:waypoint x="4268.0" y="1560.0"/>
+            <di:waypoint x="4335.0" y="1560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="reject-statute-assignation_to_REJECT-statute-assignation"
+                          id="Edge_reject-statute-assignation_to_REJECT-statute-assignation">
+            <di:waypoint x="1335.0" y="400.0"/>
+            <di:waypoint x="1435.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="student-authorize-step-Student_to_APPROVE-step-Student"
+                          id="Edge_student-authorize-step-Student_to_APPROVE-step-Student">
+            <di:waypoint x="2555.0" y="840.0"/>
+            <di:waypoint x="2588.0" y="840.0"/>
+            <di:waypoint x="2588.0" y="1000.0"/>
+            <di:waypoint x="2655.0" y="1000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="academic-affairs_to_ExclusiveGateway_academic-affairs"
+                          id="Edge_academic-affairs_to_ExclusiveGateway_academic-affairs">
+            <di:waypoint x="3915.0" y="1560.0"/>
+            <di:waypoint x="3948.0" y="1560.0"/>
+            <di:waypoint x="3948.0" y="1560.0"/>
+            <di:waypoint x="4015.0" y="1560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-pedagogic-council-Approval_to_revert-step-pedagogic-council-Approval"
+                          id="Edge_ExclusiveGateway_step-pedagogic-council-Approval_to_revert-step-pedagogic-council-Approval">
+            <di:waypoint x="3055.0" y="1120.0"/>
+            <di:waypoint x="3155.0" y="1120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_revert-academic-affairs_to_SIGN-academic-affairs"
+                          id="Edge_ExclusiveGateway_revert-academic-affairs_to_SIGN-academic-affairs">
+            <di:waypoint x="4375.0" y="1720.0"/>
+            <di:waypoint x="4475.0" y="1720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-Academic-Direction_to_ExclusiveGateway_step-Academic-Direction"
+                          id="Edge_step-Academic-Direction_to_ExclusiveGateway_step-Academic-Direction">
+            <di:waypoint x="515.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="615.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_statute-assignation_to_reject-statute-assignation"
+                          id="Edge_ExclusiveGateway_statute-assignation_to_reject-statute-assignation">
+            <di:waypoint x="1155.0" y="400.0"/>
+            <di:waypoint x="1255.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-Academic-Direction_to_FAILURE"
+                          id="Edge_REJECT-step-Academic-Direction_to_FAILURE">
+            <di:waypoint x="835.0" y="280.0"/>
+            <di:waypoint x="4905.0" y="280.0"/>
+            <di:waypoint x="4905.0" y="437.5"/>
+            <di:waypoint x="137.5" y="437.5"/>
+            <di:waypoint x="137.5" y="417.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-individual-plan-creation_to_CONFIRM-individual-plan-creation"
+                          id="Edge_submit-form-individual-plan-creation_to_CONFIRM-individual-plan-creation">
+            <di:waypoint x="2015.0" y="720.0"/>
+            <di:waypoint x="2115.0" y="720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                          id="Edge_SIGN-academic-affairs_to_onEnterNode-academic-affairs-Do_Flow_Action_if_Support_measures_are_Pre-Authorized">
+            <di:waypoint x="4555.0" y="1720.0"/>
+            <di:waypoint x="4588.0" y="1720.0"/>
+            <di:waypoint x="4588.0" y="1880.0"/>
+            <di:waypoint x="4655.0" y="1880.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval"
+                          id="Edge_ExclusiveGateway_cp-authorize-step-pedagogic-council-Approval_to_SIGN-step-pedagogic-council-Approval">
+            <di:waypoint x="3375.0" y="1280.0"/>
+            <di:waypoint x="3475.0" y="1280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized"
+                          id="Edge_SIGN-step-pedagogic-council-Approval_to_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized">
+            <di:waypoint x="3555.0" y="1280.0"/>
+            <di:waypoint x="3588.0" y="1280.0"/>
+            <di:waypoint x="3588.0" y="1440.0"/>
+            <di:waypoint x="3655.0" y="1440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_academic-affairs"
+                          id="Edge_onEnterNode-step-pedagogic-council-Approval-Do_Flow_Action_if_Support_measures_are_Pre-Authorized_to_academic-affairs">
+            <di:waypoint x="3735.0" y="1440.0"/>
+            <di:waypoint x="3768.0" y="1440.0"/>
+            <di:waypoint x="3768.0" y="1560.0"/>
+            <di:waypoint x="3835.0" y="1560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-individual-plan-creation_to_FAILURE"
+                          id="Edge_REJECT-individual-plan-creation_to_FAILURE">
+            <di:waypoint x="2195.0" y="560.0"/>
+            <di:waypoint x="4905.0" y="560.0"/>
+            <di:waypoint x="4905.0" y="437.5"/>
+            <di:waypoint x="137.5" y="437.5"/>
+            <di:waypoint x="137.5" y="417.5"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

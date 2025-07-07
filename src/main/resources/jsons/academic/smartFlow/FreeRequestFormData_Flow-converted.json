@@ -225,7 +225,8 @@
           ],
           "queue" : "academic-office-queue-Requerimentos-Entrada",
           "canEditUpcomingActionNodes" : true,
-          "actionNodesProvider" : "ACADEMIC_REQUESTS"
+          "actionNodesProvider" : "ACADEMIC_REQUESTS",
+          "queueOrder" : 0
         }
       ]
     }

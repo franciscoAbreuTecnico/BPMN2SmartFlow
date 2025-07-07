@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_d7159351-ed14-4c5f-8cbe-2f0846b3e7b8"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="academic-office-queue-Requerimentos-Entrada"
+               name="academic-office-queue-Requerimentos-Entrada">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>select-flow-steps</flowNodeRef>
+            <flowNodeRef>REJECT-select-flow-steps</flowNodeRef>
+            <flowNodeRef>START-select-flow-steps</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_select-flow-steps</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="select-flow-steps" name="Start">
+         <documentation id="documentation_21f62ace-1f8d-467c-a245-748167460077">Start flow</documentation>
+         <incoming>START-start-event_to_select-flow-steps</incoming>
+         <outgoing>select-flow-steps_to_ExclusiveGateway_select-flow-steps</outgoing>
+      </userTask>
+      <serviceTask id="REJECT-select-flow-steps" name="Reject">
+         <incoming>ExclusiveGateway_select-flow-steps_to_REJECT-select-flow-steps</incoming>
+         <outgoing>REJECT-select-flow-steps_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="START-select-flow-steps" name="Start">
+         <incoming>ExclusiveGateway_select-flow-steps_to_START-select-flow-steps</incoming>
+         <outgoing>START-select-flow-steps_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Start Process">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_select-flow-steps</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_select-flow-steps"
+                        name="ExclusiveGateway_select-flow-steps">
+         <incoming>select-flow-steps_to_ExclusiveGateway_select-flow-steps</incoming>
+         <outgoing>ExclusiveGateway_select-flow-steps_to_REJECT-select-flow-steps</outgoing>
+         <outgoing>ExclusiveGateway_select-flow-steps_to_START-select-flow-steps</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-select-flow-steps_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>START-select-flow-steps_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="ExclusiveGateway_select-flow-steps_to_REJECT-select-flow-steps"
+                    name=""
+                    sourceRef="ExclusiveGateway_select-flow-steps"
+                    targetRef="REJECT-select-flow-steps"/>
+      <sequenceFlow id="select-flow-steps_to_ExclusiveGateway_select-flow-steps"
+                    name=""
+                    sourceRef="select-flow-steps"
+                    targetRef="ExclusiveGateway_select-flow-steps"/>
+      <sequenceFlow id="START-select-flow-steps_to_SUCCESS"
+                    name=""
+                    sourceRef="START-select-flow-steps"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="START-start-event_to_select-flow-steps"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="select-flow-steps"/>
+      <sequenceFlow id="ExclusiveGateway_select-flow-steps_to_START-select-flow-steps"
+                    name=""
+                    sourceRef="ExclusiveGateway_select-flow-steps"
+                    targetRef="START-select-flow-steps"/>
+      <sequenceFlow id="REJECT-select-flow-steps_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-select-flow-steps"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="academic-general-purpose-request"
+                  name="academic-general-purpose-request">
+      <documentation id="documentation_b84dcbf6-5285-41b2-be96-3ab4b7951af3">{name=academic-general-purpose-request, title={pt-PT=Requerimento Livre, en-GB=General Purpose Request}, description={pt-PT=Processo de Tramitação de Requerimento Livre, en-GB=General Purpose Request Process}, config={actionProcessor={onSuccess=[{flowProcessor=Copy Flow Form To Outcome, formId=opinion-form, mapper={opinion=opinion, justification=justification}}, {flowProcessor=Send Free Request Outcome Documents to Signer Or Conclude}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[], forms=[{id=opinion-form, title={pt-PT=Resposta, en-GB=Response}, form={pages=[{title={pt-PT=Resposta, en-GB=Response}, sections=[{title={pt-PT=Parecer_e_Fundamentação, en-GB=Opinion_and_Justification}, properties=[{type=Boolean, field=opinion, label={pt-PT=Parecer, en-GB=Opinion}, required=true, labelYes={pt-PT=Deferir, en-GB=Approve}, labelNo={pt-PT=Indeferir, en-GB=Reject}}, {type=Text, field=justification, label={pt-PT=Fundamentação, en-GB=Justification}, multiple=true, required=false}]}, {title={pt-PT=Documentos, en-GB=Documents}, properties=[{type=Array, field=documents, label={pt-PT=Documentos, en-GB=Documents}, labelAddElement={pt-PT=Adicionar documento, en-GB=Add document}, required=false, properties=[{type=Boolean, field=isGoingToOutcomeForm, label={pt-PT=Este documento tem que ir para o formulário de resposta?, en-GB=Does this document have to be in the outcome form?}, required=true, labelYes={pt-PT=Sim, en-GB=Yes}, labelNo={pt-PT=Não, en-GB=No}}, {type=Boolean, field=isGoingToSigner, label={pt-PT=Este documento tem que ser assinado digitalmente (Signer)?, en-GB=Does this document have to be electronically signed (Signer)?}, required=true, labelYes={pt-PT=Sim, en-GB=Yes}, labelNo={pt-PT=Não, en-GB=No}, onlyIf=[{field=isGoingToOutcomeForm, negation=false, value=true}]}, {type=AsyncSelect, required=true, allowOther=false, field=signerQueue, label={pt-PT=Fila do Signer, en-GB=Signer Queue}, optionsProvider=/paper-pusher-ist/academic-request/{{flowId}}/signer-queues, onlyIf=[{field=isGoingToSigner, negation=false, value=true}]}, {type=File, field=document, label={pt-PT=Documento, en-GB=Document}, allowedFileTypes=[.pdf], required=true, maxSizeMB=25}]}]}]}]}}], actionNodes=[{id=select-flow-steps, type=generic, comment=false, title={pt-PT=Início, en-GB=Start}, description={pt-PT=Dar início ao seguimento, en-GB=Start flow}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Iniciar, en-GB=Start}, id=START-select-flow-steps, name=START}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-select-flow-steps, name=REJECT}], queue=academic-office-queue-Requerimentos-Entrada, canEditUpcomingActionNodes=true, actionNodesProvider=ACADEMIC_REQUESTS, queueOrder=0}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="academic-general-purpose-request" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="select-flow-steps" id="Shape_select-flow-steps">
+            <dc:Bounds height="60.0" width="80.0" x="435.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-select-flow-steps"
+                           id="Shape_REJECT-select-flow-steps">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="935.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_select-flow-steps"
+                           id="Shape_ExclusiveGateway_select-flow-steps">
+            <dc:Bounds height="40.0" width="40.0" x="615.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-select-flow-steps"
+                           id="Shape_START-select-flow-steps">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="935.0" y="262.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="255.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="academic-office-queue-Requerimentos-Entrada"
+                           id="Shape_academic-office-queue-Requerimentos-Entrada">
+            <dc:Bounds height="280.0" width="910.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="280.0" width="940.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_select-flow-steps_to_REJECT-select-flow-steps"
+                          id="Edge_ExclusiveGateway_select-flow-steps_to_REJECT-select-flow-steps">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="688.0" y="120.0"/>
+            <di:waypoint x="688.0" y="280.0"/>
+            <di:waypoint x="755.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="select-flow-steps_to_ExclusiveGateway_select-flow-steps"
+                          id="Edge_select-flow-steps_to_ExclusiveGateway_select-flow-steps">
+            <di:waypoint x="515.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="615.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-select-flow-steps_to_SUCCESS"
+                          id="Edge_START-select-flow-steps_to_SUCCESS">
+            <di:waypoint x="835.0" y="120.0"/>
+            <di:waypoint x="868.0" y="120.0"/>
+            <di:waypoint x="868.0" y="120.0"/>
+            <di:waypoint x="935.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_select-flow-steps"
+                          id="Edge_START-start-event_to_select-flow-steps">
+            <di:waypoint x="335.0" y="120.0"/>
+            <di:waypoint x="435.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_select-flow-steps_to_START-select-flow-steps"
+                          id="Edge_ExclusiveGateway_select-flow-steps_to_START-select-flow-steps">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="755.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-select-flow-steps_to_FAILURE"
+                          id="Edge_REJECT-select-flow-steps_to_FAILURE">
+            <di:waypoint x="835.0" y="280.0"/>
+            <di:waypoint x="868.0" y="280.0"/>
+            <di:waypoint x="868.0" y="280.0"/>
+            <di:waypoint x="935.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="155.0" y="120.0"/>
+            <di:waypoint x="255.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

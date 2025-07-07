@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -487,6 +488,24 @@ public class OntologyService {
         NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(laneClass, false);
         // Convert NodeSet to a List<OWLNamedIndividual>
         return instances.entities().collect(Collectors.toList());
+    }
+
+    public List<OWLNamedIndividual> getAllLaneIndividualsOrdered() {
+        List<OWLNamedIndividual> lanes = getAllLaneIndividuals();
+        lanes.sort(Comparator.comparingInt(lane -> 
+            Integer.parseInt(getDataPropertyValue(lane, "queueOrder"))));
+        return lanes;
+    }
+
+    public int getQueueOrder(OWLNamedIndividual laneInd) {
+        String value = getDataPropertyValue(laneInd, "queueOrder");
+        if (value != null) {
+            try {
+                return Integer.parseInt(value.trim());
+            } catch (NumberFormatException e) {
+            }
+        }
+        return Integer.MAX_VALUE;
     }
 
     /**

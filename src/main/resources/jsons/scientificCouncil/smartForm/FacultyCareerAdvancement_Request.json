@@ -1,0 +1,472 @@
+{
+  "name" : {
+    "pt-PT" : "Manifestação de Interesse no Âmbito do Processo de Valorização",
+    "en-GB" : "Expression of Interest in the Context of Faculty Career Advancement"
+  },
+  "description" : {
+    "pt-PT" : "Formulário de submissão de manifestação de interesse no âmbito do processo de valorização.",
+    "en-GB" : "Form to submit an expression of interest in career advancement by faculty members."
+  },
+  "context" : {
+    "requestKeywords" : {
+      "fields" : [ "department", "currentCategory", "ingressionYear", "year" ],
+      "displayName" : false,
+      "username" : false
+    },
+    "onLock" : [ {
+      "requestProcessor" : "Set Next Year",
+      "formField" : "year",
+      "prefix" : {
+        "pt-PT" : "Âmbito ",
+        "en-GB" : "Context "
+      }
+    } ],
+    "onValidate" : [ {
+      "requestProcessor" : "Create Flow From Request",
+      "template" : "faculty-career-advancement",
+      "actionNodesProvider" : "Faculty Career Advancement Flow",
+      "setSupervisorFromRequester" : false,
+      "setSectionWithRequesterInfo" : true
+    } ],
+    "onResetValidate" : [ {
+      "requestProcessor" : "Cancel Flow"
+    } ],
+    "onConclude" : [ {
+      "requestProcessor" : "Check Has Connected Successful of Failed Flow or Nodes",
+      "allowedNodes" : [ "step-7-communicate-result", "step-8-archive" ]
+    } ],
+    "hideFlowFromRequester" : true
+  },
+  "inputForm" : {
+    "title" : {
+      "pt-PT" : "Proposta de Valorização",
+      "en-GB" : "Proposal for Career Advancement"
+    },
+    "checks" : {
+      "requirePersonalInformation" : true,
+      "requirePhotograph" : true,
+      "requireIdentity" : true
+    },
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Informações Necessárias",
+        "en-GB" : "Required Information"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Âmbito",
+          "en-GB" : "Context"
+        },
+        "properties" : [ {
+          "type" : "Array",
+          "field" : "departments",
+          "label" : {
+            "pt-PT" : "Departamento(s)",
+            "en-GB" : "Department(s)"
+          },
+          "description" : {
+            "pt-PT" : "Indicação do(s) departamento(s) e áreas científicas ao(s) quais está vinculado. Se possui dupla afiliação (departamentos diferentes) deve adicionar os dois departamentos e as áreas científicas correspondentes. Se a dupla afiliação é no mesmo departamento, deve adicionar o departamento duas vezes, indicando as duas áreas científicas.",
+            "en-GB" : "Select the department(s) and scientific areas to which you are associated. If you have double affiliation (different departments), you must add both departments and the respective scientific areas. If the double affiliation is within the same department, you must add the department twice, specifying both scientific areas."
+          },
+          "labelAddElement" : {
+            "pt-PT" : "Adicionar um departamento",
+            "en-GB" : "Add a department"
+          },
+          "required" : true,
+          "min" : 1,
+          "properties" : [ {
+            "type" : "AsyncSelect",
+            "field" : "department",
+            "optionsProvider" : "/paper-pusher-ist/departments",
+            "required" : true,
+            "allowOther" : false,
+            "label" : {
+              "pt-PT" : "Departamento",
+              "en-GB" : "Department"
+            }
+          }, {
+            "type" : "AsyncSelect",
+            "field" : "scientificArea",
+            "optionsProvider" : "/paper-pusher-ist/scientificAreas",
+            "optionsLimitedBy" : {
+              "field" : "department"
+            },
+            "required" : true,
+            "allowOther" : false,
+            "label" : {
+              "pt-PT" : "Área Científica",
+              "en-GB" : "Scientific Area"
+            }
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Dados Profissionais",
+          "en-GB" : "Professional Information"
+        },
+        "properties" : [ {
+          "field" : "currentCategory",
+          "type" : "Select",
+          "label" : {
+            "pt-PT" : "Categoria Atual",
+            "en-GB" : "Current Category"
+          },
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "options" : [ {
+            "value" : "assistantProfessor",
+            "label" : {
+              "pt-PT" : "Professor Auxiliar",
+              "en-GB" : "Assistant Professor"
+            }
+          }, {
+            "value" : "associateProfessor",
+            "label" : {
+              "pt-PT" : "Professor Associado",
+              "en-GB" : "Associate Professor"
+            }
+          }, {
+            "value" : "assistantResearcher",
+            "label" : {
+              "pt-PT" : "Investigador Auxiliar",
+              "en-GB" : "Assistant Researcher"
+            }
+          }, {
+            "value" : "associateResearcher",
+            "label" : {
+              "pt-PT" : "Investigador Principal",
+              "en-GB" : "Principal Researcher"
+            }
+          } ]
+        }, {
+          "field" : "ingressionYear",
+          "type" : "Quantity",
+          "min" : 1980,
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Ano de Ingresso na Categoria Indicada",
+            "en-GB" : "Year of Entry in the Selected Category"
+          },
+          "description" : {
+            "pt-PT" : "Introduza o ano em que ingressou na categoria atual.",
+            "en-GB" : "Insert a year of entry into the current category."
+          }
+        }, {
+          "field" : "curriculumVitae",
+          "type" : "File",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Curriculum Vitae",
+            "en-GB" : "Curriculum Vitae"
+          },
+          "maxSizeMB" : 25,
+          "allowedFileTypes" : [ ".pdf" ]
+        }, {
+          "field" : "scientificPlan",
+          "type" : "File",
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Plano Científico Pedagógico",
+            "en-GB" : "Pedagogical Scientific Plan"
+          },
+          "maxSizeMB" : 25,
+          "allowedFileTypes" : [ ".pdf" ]
+        }, {
+          "field" : "destinationCategory",
+          "type" : "Select",
+          "label" : {
+            "pt-PT" : "Categoria de Destino",
+            "en-GB" : "Destination Category"
+          },
+          "required" : true,
+          "multiple" : false,
+          "collapse" : false,
+          "allowOther" : false,
+          "options" : [ {
+            "value" : "associateProfessor",
+            "label" : {
+              "pt-PT" : "Professor Associado",
+              "en-GB" : "Associate Professor"
+            }
+          }, {
+            "value" : "fullProfessor",
+            "label" : {
+              "pt-PT" : "Professor Catedrático",
+              "en-GB" : "Full Professor"
+            }
+          }, {
+            "value" : "associateResearcher",
+            "label" : {
+              "pt-PT" : "Investigador Principal",
+              "en-GB" : "Principal Researcher"
+            }
+          }, {
+            "value" : "researchCoordinator",
+            "label" : {
+              "pt-PT" : "Investigador Coordenador",
+              "en-GB" : "Research Coordinator"
+            }
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Referências",
+          "en-GB" : "References"
+        },
+        "properties" : [ {
+          "field" : "referenceContacts",
+          "label" : {
+            "pt-PT" : "Sugestões para Escrever Pareceres",
+            "en-GB" : "Reference Contact Suggestions"
+          },
+          "description" : {
+            "pt-PT" : "Insira 3 sugestões de individualidades para escrever pareceres.",
+            "en-GB" : "Insert 3 suggestions of contacts for writing reference letters."
+          },
+          "type" : "Array",
+          "required" : true,
+          "min" : 3,
+          "max" : 3,
+          "properties" : [ {
+            "field" : "referenceName",
+            "type" : "Text",
+            "required" : true,
+            "label" : {
+              "pt-PT" : "Nome",
+              "en-GB" : "Name"
+            }
+          }, {
+            "field" : "referenceEmail",
+            "type" : "Text",
+            "inputType" : "email",
+            "required" : true,
+            "label" : {
+              "pt-PT" : "Endereço de E-mail",
+              "en-GB" : "E-mail Address"
+            }
+          }, {
+            "field" : "referenceAffiliation",
+            "type" : "Text",
+            "required" : true,
+            "label" : {
+              "pt-PT" : "Título/Instituição",
+              "en-GB" : "Title/Institution"
+            }
+          }, {
+            "field" : "referenceLocale",
+            "type" : "Select",
+            "required" : true,
+            "label" : {
+              "pt-PT" : "Idioma",
+              "en-GB" : "Language"
+            },
+            "description" : {
+              "en-GB" : "Language of the e-mail to be sent.",
+              "pt-PT" : "Idioma do e-mail a ser enviado."
+            },
+            "options" : [ {
+              "value" : "pt-PT",
+              "label" : {
+                "pt-PT" : "Português",
+                "en-GB" : "Portuguese"
+              }
+            }, {
+              "value" : "en-GB",
+              "label" : {
+                "pt-PT" : "Inglês",
+                "en-GB" : "English"
+              }
+            } ]
+          } ]
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Anexos",
+          "en-GB" : "Attachments"
+        },
+        "properties" : [ {
+          "field" : "RADIST_PERFORMANCE_SHEET",
+          "type" : "File",
+          "required" : false,
+          "label" : {
+            "pt-PT" : "Autoavaliação RADIST",
+            "en-GB" : "RADIST Self-evaluation"
+          },
+          "description" : {
+            "pt-PT" : "Folha de cálculo de autoavaliação RADIST do triénio mais recente. O docente/investigador deverá consultar o Presidente do seu Departamento para verificar se este elemento é indispensável.",
+            "en-GB" : "RADIST self-evaluation spreadsheet of the latest three years. The faculty member/researcher should consult the President of their Department to determine whether this element is necessary."
+          },
+          "allowedFileTypes" : [ ".xlsx" ],
+          "maxSizeMB" : 25
+        } ]
+      }, {
+        "title" : {
+          "pt-PT" : "Termos de Responsabilidade",
+          "en-GB" : "Disclaimers"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "disclaimer1",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Propósito do Procedimento",
+            "en-GB" : "Purpose of this Process"
+          },
+          "description" : {
+            "pt-PT" : "O processo de valorização de docentes e investigadores é um processo interno ao Conselho Científico do IST, de índole confidencial e sigilosa. Visa exclusivamente recolher meras manifestações de interesse de docentes e investigadores de carreira, com o único objetivo de identificar áreas disciplinares que carecem da abertura de um concurso internacional para o provimento de Professor(es) Catedrático(s)/Investigador(es) Coordenador(es) ou de Professor(es) Associado(s)/Investigador(es) Principal(is). Essas manifestações de interesse permitem informar o processo da existência de pelo menos um docente ou investigador de carreira com condições curriculares para ser oponente a esse concurso em condições competitivas. O enquadramento do processo de valorização não tipifica nem se equipara ao de um processo de concurso, não antecipa o resultado do concurso que venha a ser eventualmente aberto, não garante ou dá preferência nesse acesso, e não beneficia ou privilegia os interessados.",
+            "en-GB" : "The faculty career advancement process is an internal process to the IST Scientific Council of a confidential nature. It exclusively constitutes a collection of expressions of interest from faculty and researchers, with the sole objective of identifying disciplinary areas that require the opening of an international competition for the filling of a post as Full Professor/Coordinating Researcher or Associate Professor/Principal Investigator. These expressions of interest inform the process of the existence of at least one career professor or researcher with the curricular qualifications to be an applicant to said competition under competitive conditions. The framework of the faculty career advancement process does not typify or equate itself to that of a competition, does not anticipate the result of the competition that may eventually be opened, does not guarantee, or give preferential access to that competition, and does not benefit or provide privileges to the interested parties."
+          },
+          "options" : [ {
+            "value" : "acknowledge",
+            "label" : {
+              "pt-PT" : "Tomei conhecimento e aceito.",
+              "en-GB" : "I acknowledge and accept."
+            }
+          } ]
+        }, {
+          "type" : "Select",
+          "field" : "disclaimer2",
+          "required" : true,
+          "collapse" : false,
+          "allowOther" : false,
+          "multiple" : false,
+          "label" : {
+            "pt-PT" : "Confidencialidade e Tratamento de Dados",
+            "en-GB" : "Confidentiality and Handling of Data"
+          },
+          "description" : {
+            "pt-PT" : "Todos os documentos que integram este dossier são confidenciais e têm como objetivo único apoiar a decisão do Conselho Científico. Não estão por isso disponíveis, nem será autorizado o acesso aos mesmos, quer aos interessados, quer a terceiros, com exceção dos membros do Conselho Científico, comissões de vagas, Presidentes dos Departamentos e especialistas internos e externos, intervenientes neste processo de valorização.",
+            "en-GB" : "All documents included in this dossier are confidential and serve the sole purpose of supporting the decision-making process of the Scientific Council. Therefore, access to these documents will not be granted to the parties involved or third parties, except for members of the Scientific Council, department heads and members of the respective vacancy committees or equivalent, and internal and external experts involved in this career advancement process."
+          },
+          "options" : [ {
+            "value" : "acknowledge",
+            "label" : {
+              "pt-PT" : "Tomei conhecimento e aceito.",
+              "en-GB" : "I acknowledge and accept."
+            }
+          } ]
+        } ]
+      } ]
+    } ]
+  },
+  "outcomeForm" : {
+    "canEditResponseAfterConclude" : false,
+    "pages" : [ {
+      "title" : {
+        "pt-PT" : "Resultado",
+        "en-GB" : "Result"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Resultado",
+          "en-GB" : "Result"
+        },
+        "properties" : [ {
+          "type" : "Select",
+          "field" : "decision",
+          "required" : true,
+          "collapse" : true,
+          "readonly" : true,
+          "label" : {
+            "pt-PT" : "Informação",
+            "en-GB" : "Information"
+          },
+          "options" : [ {
+            "value" : "a",
+            "label" : {
+              "pt-PT" : "A comissão de vagas do CC considera que estão reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar.",
+              "en-GB" : "The Scientific Council of IST considers that the conditions are met to propose the opening of a potential international competition in your disciplinary area."
+            }
+          }, {
+            "value" : "b",
+            "label" : {
+              "pt-PT" : "A comissão de vagas do CC considera que não estão ainda reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar.",
+              "en-GB" : "The Scientific Council of IST considers that the conditions for proposing the opening of a potential international competition in your disciplinary area are not yet met."
+            }
+          }, {
+            "value" : "0",
+            "label" : {
+              "pt-PT" : "Sem Early Go.",
+              "en-GB" : "Without Early Go."
+            }
+          } ]
+        } ]
+      } ]
+    }, {
+      "title" : {
+        "pt-PT" : "Contexto",
+        "en-GB" : "Context"
+      },
+      "sections" : [ {
+        "title" : {
+          "pt-PT" : "Contexto",
+          "en-GB" : "Context"
+        },
+        "properties" : [ {
+          "field" : "year",
+          "type" : "Quantity",
+          "min" : 2023,
+          "required" : true,
+          "label" : {
+            "pt-PT" : "Ano",
+            "en-GB" : "Year"
+          },
+          "description" : {
+            "pt-PT" : "Ano",
+            "en-GB" : "Year"
+          }
+        } ]
+      } ]
+    } ]
+  },
+  "cost" : { },
+  "views" : [ {
+    "id" : "Default",
+    "columns" : [ {
+      "title" : {
+        "pt-PT" : "Submetido",
+        "en-GB" : "Submitted"
+      },
+      "type" : "Request Info",
+      "info" : "lockInstant"
+    }, {
+      "title" : {
+        "pt-PT" : "Aluno",
+        "en-GB" : "Student"
+      },
+      "type" : "Request Info",
+      "info" : "requester"
+    }, {
+      "title" : {
+        "pt-PT" : "Estado do Pedido",
+        "en-GB" : "Request State"
+      },
+      "type" : "Request State"
+    }, {
+      "title" : {
+        "pt-PT" : "Revisão",
+        "en-GB" : "Revision"
+      },
+      "type" : "Request Info",
+      "info" : "revisionDeadline"
+    }, {
+      "title" : {
+        "pt-PT" : "Estado do Processo",
+        "en-GB" : "Process State"
+      },
+      "type" : "Flow State From Request"
+    }, {
+      "title" : {
+        "pt-PT" : "Info.",
+        "en-GB" : "Info."
+      },
+      "type" : "Request Info",
+      "info" : "keywords"
+    } ]
+  } ]
+}

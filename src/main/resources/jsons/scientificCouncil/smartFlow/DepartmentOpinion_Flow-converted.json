@@ -65,7 +65,8 @@
               "name" : "REJECT"
             }
           ],
-          "queue" : "department-queue-Comissao-de-Vagas"
+          "queue" : "department-queue-Comissao-de-Vagas",
+          "queueOrder" : 0
         }
       ]
     }

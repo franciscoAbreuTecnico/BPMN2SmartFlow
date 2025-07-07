@@ -1,0 +1,931 @@
+{
+  "flowTemplate" : {
+    "name" : "faculty-career-advancement",
+    "title" : {
+      "pt-PT" : "Processo de Manifestação de Interesse no Âmbito do Processo de Valorização",
+      "en-GB" : "Process of Expression of Interest in the Context of Faculty Career Advancement"
+    },
+    "description" : {
+      "pt-PT" : "Processo de Avaliação de Manifestação de Interesse no Âmbito do Processo de Valorização",
+      "en-GB" : "Process of Evaluation of Expression of Interest in the Context of Faculty Career Advancement"
+    },
+    "config" : {
+      "actionProcessor" : {
+        "onSuccess" : [ ],
+        "onFailure" : [ ],
+        "onActionTransition" : [ ],
+        "onCancel" : {
+          "flowProcessor" : "Cancel Connected Requests"
+        }
+      },
+      "flowProcessors" : [
+        {
+          "handle" : "manage-reference-letter-requests",
+          "flowProcessor" : "Manage Reference Letters"
+        },
+        {
+          "handle" : "send-all-reference-letter-requests",
+          "flowProcessor" : "Send All Reference Letter Requests"
+        }
+      ],
+      "forms" : [
+        {
+          "id" : "department-recommendation-letters",
+          "title" : {
+            "pt-PT" : "Sugestões do Departamento para Cartas de Recomendação",
+            "en-GB" : "Department Suggestions for Letters of Recommendation"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Sugestão_de_especialistas",
+                  "en-GB" : "Suggestion_of_specialists"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Referências",
+                      "en-GB" : "References"
+                    },
+                    "properties" : [
+                      {
+                        "field" : "departmentReferenceContacts",
+                        "label" : {
+                          "pt-PT" : "Sugestões para Escrever Pareceres",
+                          "en-GB" : "Reference Contact Suggestions"
+                        },
+                        "description" : {
+                          "pt-PT" : "Sugerir um especialista externo e dois professores catedráticos/investigadores coordenadores do IST, que poderão ser de outras áreas disciplinares.",
+                          "en-GB" : "Suggest one external expert and two IST professors/coordinating researchers, who may be from other disciplinary areas."
+                        },
+                        "type" : "Array",
+                        "required" : true,
+                        "min" : 3,
+                        "max" : 3,
+                        "properties" : [
+                          {
+                            "field" : "referenceName",
+                            "type" : "Text",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Nome",
+                              "en-GB" : "Name"
+                            }
+                          },
+                          {
+                            "field" : "referenceEmail",
+                            "type" : "Text",
+                            "inputType" : "email",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Endereço de E-mail",
+                              "en-GB" : "E-mail address"
+                            }
+                          },
+                          {
+                            "field" : "referenceAffiliation",
+                            "type" : "Text",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Título/Instituição",
+                              "en-GB" : "Title/Institution"
+                            }
+                          },
+                          {
+                            "field" : "referenceLocale",
+                            "type" : "Select",
+                            "required" : true,
+                            "label" : {
+                              "pt-PT" : "Idioma",
+                              "en-GB" : "Language"
+                            },
+                            "description" : {
+                              "en-GB" : "Language of the e-mail to be sent.",
+                              "pt-PT" : "Idioma do e-mail a ser enviado."
+                            },
+                            "options" : [
+                              {
+                                "value" : "pt-PT",
+                                "label" : {
+                                  "pt-PT" : "Português",
+                                  "en-GB" : "Portuguese"
+                                }
+                              },
+                              {
+                                "value" : "en-GB",
+                                "label" : {
+                                  "pt-PT" : "Inglês",
+                                  "en-GB" : "English"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id" : "department-decision",
+          "title" : {
+            "pt-PT" : "Parecer do Departamento",
+            "en-GB" : "Decision of the Department"
+          },
+          "form" : {
+            "pages" : [
+              {
+                "title" : {
+                  "pt-PT" : "Carregar_Parecer",
+                  "en-GB" : "Upload_Recommendation"
+                },
+                "sections" : [
+                  {
+                    "title" : {
+                      "pt-PT" : "Parecer",
+                      "en-GB" : "Recommendation"
+                    },
+                    "properties" : [
+                      {
+                        "type" : "File",
+                        "field" : "departmentDecision",
+                        "required" : true,
+                        "label" : {
+                          "pt-PT" : "Parecer do Departamento",
+                          "en-GB" : "Department  Recommendation"
+                        },
+                        "allowedFileTypes" : [
+                          ".pdf"
+                        ],
+                        "maxSizeMB" : 10
+                      },
+                      {
+                        "type" : "File",
+                        "field" : "additionalDocument",
+                        "required" : false,
+                        "label" : {
+                          "pt-PT" : "Documento Adicional",
+                          "en-GB" : "Additional Document"
+                        },
+                        "allowedFileTypes" : [
+                          ".pdf"
+                        ],
+                        "maxSizeMB" : 10
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "actionNodes" : [
+        {
+          "id" : "step-1-multiple",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "Apreciação de Early Go",
+            "en-GB" : "Early Go Analysis"
+          },
+          "description" : {
+            "pt-PT" : "Apreciação de Early Go pelas Comissões de Vagas dos Departamentos",
+            "en-GB" : "Early Go Analysis by the Vacancy Committee of the Departments"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Informação da Comissão de Vagas/Presidente dos Departamentos",
+            "en-GB" : "Information from the Vacancy Committee/President of the Departments"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "go-step-2",
+              "label" : {
+                "pt-PT" : "Early Go",
+                "en-GB" : "Early Go"
+              },
+              "id" : "SIGN-step-1-multiple",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "no-go-step-2",
+              "label" : {
+                "pt-PT" : "Sem Early Go",
+                "en-GB" : "Without Early Go"
+              },
+              "id" : "REJECT-step-1-multiple",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Sistema-FenixEdu",
+          "actionProcessor" : [
+            {
+              "flowProcessor" : "Create Parallel Subflows From Node",
+              "template" : "faculty-career-advancement-department-opinion",
+              "actionNodesProvider" : "Faculty Career Advancement Flow - Department Opinion Subflow",
+              "field" : "departments",
+              "id" : "onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node",
+              "name" : "onEnterNode"
+            }
+          ],
+          "queueOrder" : 0
+        },
+        {
+          "id" : "step-1-single",
+          "type" : "generic",
+          "comment" : true,
+          "title" : {
+            "pt-PT" : "Apreciação de Early Go",
+            "en-GB" : "Early Go Analysis"
+          },
+          "description" : {
+            "pt-PT" : "Apreciação de Early Go pelas Comissões de Vagas do Departamento",
+            "en-GB" : "Early Go Analysis by the Vacancy Committee of the Department"
+          },
+          "commentLabel" : {
+            "pt-PT" : "Informação da Comissão de Vagas/Presidente do Departamento",
+            "en-GB" : "Information from the Vacancy Committee/President of the Department"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "go-step-2",
+              "label" : {
+                "pt-PT" : "Early Go",
+                "en-GB" : "Early Go"
+              },
+              "id" : "SIGN-step-1-single",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "no-go-step-2",
+              "label" : {
+                "pt-PT" : "Sem Early Go",
+                "en-GB" : "Without Early Go"
+              },
+              "id" : "REJECT-step-1-single",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "department-queue-Comissao-de-Vagas",
+          "queueOrder" : 1
+        },
+        {
+          "id" : "no-go-step-2",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Não tem Early Go",
+            "en-GB" : "There is no Early Go"
+          },
+          "description" : {
+            "pt-PT" : "Não tem Early Go",
+            "en-GB" : "There is no Early Go"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-7-communicate-result",
+              "label" : {
+                "pt-PT" : "Confirmar e Fechar Processo",
+                "en-GB" : "Confirm and Close Process"
+              },
+              "id" : "CONFIRM-no-go-step-2",
+              "name" : "CONFIRM"
+            },
+            {
+              "primary" : false,
+              "to" : "go-step-2",
+              "label" : {
+                "pt-PT" : "Remeter ao Departamento para Indicação de Especialistas",
+                "en-GB" : "Send to Department for Specialists Proposal"
+              },
+              "id" : "SEND_TO_DEPARTMENT-no-go-step-2",
+              "name" : "SEND_TO_DEPARTMENT"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "CONFIRM-no-go-step-2",
+              "flowProcessor" : "Set Request Outcome Form",
+              "outcomeFormValues" : {
+                "decision" : {
+                  "value" : "0",
+                  "label" : {
+                    "pt-PT" : "Sem Early Go.",
+                    "en-GB" : "Without Early Go."
+                  }
+                }
+              },
+              "id" : "onActionTransition-no-go-step-2-Set_Request_Outcome_Form",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Valorizacao",
+          "queueOrder" : 2
+        },
+        {
+          "id" : "go-step-2",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Indicação de Especialistas",
+            "en-GB" : "Indication of Specialists"
+          },
+          "description" : {
+            "pt-PT" : "Especialistas a propor para cartas de referência adicionais, para além dos indicados pelo proponente.",
+            "en-GB" : "Experts to be proposed for additional reference letters in addition to those nominated by the requester."
+          },
+          "buttons" : [
+            {
+              "id" : "submit-form-go-step-2",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Submeter formulário",
+                "en-GB" : "Submit form"
+              },
+              "handlers" : {
+                "form" : "department-recommendation-letters",
+                "action" : "SIGN-go-step-2"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "go-step-3-a",
+              "label" : {
+                "pt-PT" : "Terminar submissão de referências",
+                "en-GB" : "Conclude submission of references"
+              },
+              "id" : "SIGN-go-step-2",
+              "name" : "SIGN"
+            }
+          ],
+          "queue" : "department-queue-Comissao-de-Vagas",
+          "queueOrder" : 1
+        },
+        {
+          "id" : "go-step-3-a",
+          "type" : "withButtons",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Solicitar Parecer a Especialistas",
+            "en-GB" : "Request Specialists’ Opinion"
+          },
+          "description" : {
+            "pt-PT" : "Requerer parecer aos especialistas",
+            "en-GB" : "Request specialists opinion"
+          },
+          "buttons" : [
+            {
+              "primary" : false,
+              "label" : {
+                "pt-PT" : "Gerir Pedidos",
+                "en-GB" : "Manage Requests"
+              },
+              "handler" : "process:manage-reference-letter-requests"
+            },
+            {
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Enviar Todos os Pedidos de Cartas de Referência",
+                "en-GB" : "Send all Reference Letter Requests"
+              },
+              "handler" : "process:send-all-reference-letter-requests"
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "go-step-3-b",
+              "label" : {
+                "pt-PT" : "Aguardar Receção de Cartas",
+                "en-GB" : "Await Reception of Letters"
+              },
+              "id" : "SIGN-go-step-3-a",
+              "name" : "SIGN"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Valorizacao",
+          "actionProcessor" : [
+            {
+              "applyOn" : "SIGN-go-step-3-a",
+              "flowProcessor" : "Init Recommendation Letters For Faculty Career Advancement",
+              "id" : "onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement",
+              "name" : "onEnterNode"
+            }
+          ],
+          "queueOrder" : 2
+        },
+        {
+          "id" : "go-step-3-b",
+          "type" : "withButtons",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Aguardar Receção de Cartas",
+            "en-GB" : "Await Reception of Letters"
+          },
+          "description" : {
+            "pt-PT" : "Aguardar Receção de Cartas",
+            "en-GB" : "Await Reception of Letters"
+          },
+          "buttons" : [
+            {
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Gerir Pedidos",
+                "en-GB" : "Manage Requests"
+              },
+              "handler" : "process:manage-reference-letter-requests"
+            },
+            {
+              "primary" : false,
+              "label" : {
+                "pt-PT" : "Terminar Receção de Cartas",
+                "en-GB" : "Conclude Reception of Letters"
+              },
+              "handler" : "action:CONCLUDE"
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : false,
+              "to" : "go-step-4",
+              "label" : {
+                "pt-PT" : "Terminar Receção de Cartas",
+                "en-GB" : "Conclude Reception of Letters"
+              },
+              "id" : "CONCLUDE-go-step-3-b",
+              "name" : "CONCLUDE"
+            },
+            {
+              "primary" : true,
+              "to" : "go-step-3-c",
+              "label" : {
+                "pt-PT" : "Cartas Recebidas",
+                "en-GB" : "Letters Received"
+              },
+              "id" : "ALL_RECEIVED-go-step-3-b",
+              "name" : "ALL_RECEIVED"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Valorizacao",
+          "queueOrder" : 2
+        },
+        {
+          "id" : "go-step-3-c",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Cartas Recebidas",
+            "en-GB" : "Letters Received"
+          },
+          "description" : {
+            "pt-PT" : "Cartas Recebidas",
+            "en-GB" : "Letters Received"
+          },
+          "actions" : [
+            {
+              "primary" : false,
+              "to" : "go-step-3-b",
+              "label" : {
+                "pt-PT" : "Reverter para Gerir Pedidos de Cartas",
+                "en-GB" : "Revert to Manage Letter Requests"
+              },
+              "id" : "REVERT-go-step-3-c",
+              "name" : "REVERT"
+            },
+            {
+              "primary" : true,
+              "to" : "go-step-4",
+              "label" : {
+                "pt-PT" : "Terminar Receção de Cartas",
+                "en-GB" : "Conclude Reception of Letters"
+              },
+              "id" : "CONCLUDE-go-step-3-c",
+              "name" : "CONCLUDE"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Valorizacao",
+          "queueOrder" : 2
+        },
+        {
+          "id" : "go-step-4",
+          "type" : "withForms",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Emitir Parecer",
+            "en-GB" : "Issue Recommendation"
+          },
+          "description" : {
+            "pt-PT" : "O Departamento emite o seu parecer",
+            "en-GB" : "The department issues its recommendation"
+          },
+          "buttons" : [
+            {
+              "id" : "department-decision-go-step-4",
+              "primary" : true,
+              "label" : {
+                "pt-PT" : "Carregar Parecer",
+                "en-GB" : "Upload Recommendation"
+              },
+              "handlers" : {
+                "form" : "department-decision",
+                "action" : "SIGN-go-step-4"
+              }
+            }
+          ],
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : [
+                "go-step-5-single",
+                "go-step-5-multiple"
+              ],
+              "label" : {
+                "pt-PT" : "Carregar Parecer",
+                "en-GB" : "Upload Recommendation"
+              },
+              "id" : "SIGN-go-step-4",
+              "name" : "SIGN"
+            }
+          ],
+          "queue" : "department-queue-Comissao-de-Vagas",
+          "queueOrder" : 1
+        },
+        {
+          "id" : "go-step-5-single",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Confirmar Parecer",
+            "en-GB" : "Confirm Recommendation"
+          },
+          "description" : {
+            "pt-PT" : "O Departamento confirma o seu parecer",
+            "en-GB" : "The department confirms its recommendation"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "go-step-6",
+              "label" : {
+                "pt-PT" : "Favorável",
+                "en-GB" : "Favorable"
+              },
+              "id" : "SIGN-go-step-5-single",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "no-go-step-6",
+              "label" : {
+                "pt-PT" : "Desfavorável",
+                "en-GB" : "Unfavorable"
+              },
+              "id" : "REJECT-go-step-5-single",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "department-queue-Comissao-de-Vagas",
+          "queueOrder" : 1
+        },
+        {
+          "id" : "go-step-5-multiple",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Confirmar Parecer",
+            "en-GB" : "Confirm Recommendation"
+          },
+          "description" : {
+            "pt-PT" : "O Departamento confirma o seu parecer",
+            "en-GB" : "The department confirms its recommendation"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "go-step-6",
+              "label" : {
+                "pt-PT" : "Favorável",
+                "en-GB" : "Favorable"
+              },
+              "id" : "SIGN-go-step-5-multiple",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "no-go-step-6",
+              "label" : {
+                "pt-PT" : "Desfavorável",
+                "en-GB" : "Unfavorable"
+              },
+              "id" : "REJECT-go-step-5-multiple",
+              "name" : "REJECT"
+            }
+          ],
+          "queue" : "Sistema-FenixEdu",
+          "actionProcessor" : [
+            {
+              "flowProcessor" : "Create Parallel Subflows From Node",
+              "template" : "faculty-career-advancement-department-confirmation",
+              "actionNodesProvider" : "Faculty Career Advancement Flow - Department Opinion Subflow",
+              "field" : "departments",
+              "id" : "onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node",
+              "name" : "onEnterNode"
+            }
+          ],
+          "queueOrder" : 0
+        },
+        {
+          "id" : "no-go-step-6",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Resultado Final",
+            "en-GB" : "Final Result"
+          },
+          "description" : {
+            "pt-PT" : "O Conselho Científico toma a sua decisão",
+            "en-GB" : "The Scientific Council makes it decision"
+          },
+          "actions" : [
+            {
+              "primary" : false,
+              "to" : "remove-expression-of-interest",
+              "label" : {
+                "pt-PT" : "Retirar Manifestação de Interesse",
+                "en-GB" : "Remove Expression of Interest"
+              },
+              "id" : "REMOVE-no-go-step-6",
+              "name" : "REMOVE"
+            },
+            {
+              "primary" : false,
+              "to" : "step-7-communicate-result",
+              "label" : {
+                "pt-PT" : "Favorável",
+                "en-GB" : "Favorable"
+              },
+              "id" : "SIGN-no-go-step-6",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : true,
+              "to" : "step-7-communicate-result",
+              "label" : {
+                "pt-PT" : "Desfavorável",
+                "en-GB" : "Unfavorable"
+              },
+              "id" : "REJECT-no-go-step-6",
+              "name" : "REJECT"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "SIGN-no-go-step-6",
+              "flowProcessor" : "Set Request Outcome Form",
+              "outcomeFormValues" : {
+                "decision" : {
+                  "value" : "a",
+                  "label" : {
+                    "pt-PT" : "A comissão de vagas do CC considera que estão reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar.",
+                    "en-GB" : "The Scientific Council of IST considers that the conditions are met to propose the opening of a potential international competition in your disciplinary area."
+                  }
+                }
+              },
+              "id" : "onActionTransition-no-go-step-6-Set_Request_Outcome_Form",
+              "name" : "onActionTransition"
+            },
+            {
+              "applyOn" : "REJECT-no-go-step-6",
+              "flowProcessor" : "Set Request Outcome Form",
+              "outcomeFormValues" : {
+                "decision" : {
+                  "value" : "b",
+                  "label" : {
+                    "pt-PT" : "A comissão de vagas do CC considera que não estão ainda reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar.",
+                    "en-GB" : "The Scientific Council of IST considers that the conditions for proposing the opening of a potential international competition in your disciplinary area are not yet met."
+                  }
+                }
+              },
+              "id" : "onActionTransition-no-go-step-6-Set_Request_Outcome_Form",
+              "name" : "onActionTransition"
+            },
+            {
+              "applyOn" : "REMOVE-no-go-step-6",
+              "flowProcessor" : "Do Flow Action",
+              "flowAction" : "REMOVE",
+              "id" : "onActionTransition-no-go-step-6-Do_Flow_Action",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Valorizacao-Permanente",
+          "queueOrder" : 3
+        },
+        {
+          "id" : "go-step-6",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Resultado Final",
+            "en-GB" : "Final Result"
+          },
+          "description" : {
+            "pt-PT" : "O Conselho Científico toma a sua decisão",
+            "en-GB" : "The Scientific Council makes it decision"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-7-communicate-result",
+              "label" : {
+                "pt-PT" : "Favorável",
+                "en-GB" : "Favorable"
+              },
+              "id" : "SIGN-go-step-6",
+              "name" : "SIGN"
+            },
+            {
+              "primary" : false,
+              "to" : "step-7-communicate-result",
+              "label" : {
+                "pt-PT" : "Desfavorável",
+                "en-GB" : "Unfavorable"
+              },
+              "id" : "REJECT-go-step-6",
+              "name" : "REJECT"
+            },
+            {
+              "primary" : false,
+              "to" : "remove-expression-of-interest",
+              "label" : {
+                "pt-PT" : "Retirar Manifestação de Interesse",
+                "en-GB" : "Remove Expression of Interest"
+              },
+              "id" : "REMOVE-go-step-6",
+              "name" : "REMOVE"
+            }
+          ],
+          "actionProcessor" : [
+            {
+              "applyOn" : "SIGN-go-step-6",
+              "flowProcessor" : "Set Request Outcome Form",
+              "outcomeFormValues" : {
+                "decision" : {
+                  "value" : "a",
+                  "label" : {
+                    "pt-PT" : "A comissão de vagas do CC considera que estão reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar.",
+                    "en-GB" : "The Scientific Council of IST considers that the conditions are met to propose the opening of a potential international competition in your disciplinary area."
+                  }
+                }
+              },
+              "id" : "onActionTransition-go-step-6-Set_Request_Outcome_Form",
+              "name" : "onActionTransition"
+            },
+            {
+              "applyOn" : "REJECT-go-step-6",
+              "flowProcessor" : "Set Request Outcome Form",
+              "outcomeFormValues" : {
+                "decision" : {
+                  "value" : "b",
+                  "label" : {
+                    "pt-PT" : "A comissão de vagas do CC considera que não estão ainda reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar.",
+                    "en-GB" : "The Scientific Council of IST considers that the conditions for proposing the opening of a potential international competition in your disciplinary area are not yet met."
+                  }
+                }
+              },
+              "id" : "onActionTransition-go-step-6-Set_Request_Outcome_Form",
+              "name" : "onActionTransition"
+            },
+            {
+              "applyOn" : "REMOVE-go-step-6",
+              "flowProcessor" : "Do Flow Action",
+              "flowAction" : "REMOVE",
+              "id" : "onActionTransition-go-step-6-Do_Flow_Action",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Valorizacao-Permanente",
+          "queueOrder" : 3
+        },
+        {
+          "id" : "step-7-communicate-result",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Comunicar Resultado Final",
+            "en-GB" : "Inform of Final Result"
+          },
+          "description" : {
+            "pt-PT" : "O Conselho Científico comunica o resultado",
+            "en-GB" : "The Scientific Council informs of the result"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "step-8-archive",
+              "label" : {
+                "pt-PT" : "Comunicar Resultado Final",
+                "en-GB" : "Inform of Final Result"
+              },
+              "id" : "NOTIFY-step-7-communicate-result",
+              "name" : "NOTIFY"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Valorizacao-Permanente",
+          "actionProcessor" : [
+            {
+              "applyOn" : "NOTIFY-step-7-communicate-result",
+              "flowProcessor" : "Return Flow Approved To Request",
+              "id" : "onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queueOrder" : 3
+        },
+        {
+          "id" : "step-8-archive",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Arquivar",
+            "en-GB" : "Archive"
+          },
+          "description" : {
+            "pt-PT" : "Arquivar com o Administrador",
+            "en-GB" : "Archive with the Administrator"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "SUCCESS",
+              "label" : {
+                "pt-PT" : "Arquivar",
+                "en-GB" : "Archive"
+              },
+              "id" : "ARCHIVE-step-8-archive",
+              "name" : "ARCHIVE"
+            }
+          ],
+          "queue" : "Conselho-Cientifico-Comissao-Valorizacao",
+          "actionProcessor" : [
+            {
+              "flowProcessor" : "Remove Past Queues",
+              "id" : "onActionTransition-step-8-archive-Remove_Past_Queues",
+              "name" : "onActionTransition"
+            },
+            {
+              "flowProcessor" : "Set Supervisor",
+              "username" : "fenix",
+              "id" : "onActionTransition-step-8-archive-Set_Supervisor",
+              "name" : "onActionTransition"
+            },
+            {
+              "flowProcessor" : "Move Queue",
+              "flowQueue" : "Gestão Administrativa",
+              "id" : "onActionTransition-step-8-archive-Move_Queue",
+              "name" : "onActionTransition"
+            }
+          ],
+          "queueOrder" : 2
+        },
+        {
+          "id" : "remove-expression-of-interest",
+          "type" : "generic",
+          "comment" : false,
+          "title" : {
+            "pt-PT" : "Retirar Manifestação de Interesse",
+            "en-GB" : "Remove Expression of Interest"
+          },
+          "description" : {
+            "pt-PT" : "Retirar Manifestação de Interesse",
+            "en-GB" : "Remove Expression of Interest"
+          },
+          "actions" : [
+            {
+              "primary" : true,
+              "to" : "FAILURE",
+              "label" : {
+                "pt-PT" : "Retirar Manifestação de Interesse",
+                "en-GB" : "Remove Expression of Interest"
+              },
+              "id" : "REMOVE-remove-expression-of-interest",
+              "name" : "REMOVE"
+            }
+          ],
+          "queue" : "Sistema-FenixEdu",
+          "queueOrder" : 0
+        }
+      ]
+    }
+  }
+}

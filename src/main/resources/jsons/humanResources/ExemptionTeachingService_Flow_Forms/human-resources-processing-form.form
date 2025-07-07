@@ -16,35 +16,6 @@
     "showOutline" : true,
     "components" : [ {
       "type" : "group",
-      "id" : "Section_Processing_by_the_Human_Resources_Department",
-      "key" : "section_Processing_by_the_Human_Resources_Department",
-      "label" : "Processing_by_the_Human_Resources_Department",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "text",
-        "id" : "Field_justification",
-        "key" : "justification",
-        "label" : "Justification",
-        "text" : "Justification",
-        "required" : true,
-        "readOnly" : false
-      }, {
-        "type" : "radio",
-        "id" : "Field_inCondition",
-        "key" : "inCondition",
-        "label" : "Does the person meet the conditions to be granted sabbatical leave?",
-        "required" : true,
-        "readOnly" : false,
-        "values" : [ {
-          "label" : "Yes",
-          "value" : 1
-        }, {
-          "label" : "No",
-          "value" : 0
-        } ]
-      } ]
-    }, {
-      "type" : "group",
       "id" : "Section_Category",
       "key" : "section_Category",
       "label" : "Category",
@@ -79,6 +50,12 @@
         "collapse" : false,
         "allowOther" : false,
         "values" : [ {
+          "value" : "assistantProfessor",
+          "label" : {
+            "en-GB" : "Assistant Professor",
+            "pt-PT" : "Professor(a) Auxiliar"
+          }
+        }, {
           "value" : "associateProfessor",
           "label" : {
             "en-GB" : "Associate Professor",
@@ -90,13 +67,36 @@
             "en-GB" : "Full Professor",
             "pt-PT" : "Professor(a) Catedrático/a"
           }
-        }, {
-          "value" : "assistantProfessor",
-          "label" : {
-            "en-GB" : "Assistant Professor",
-            "pt-PT" : "Professor(a) Auxiliar"
-          }
         } ]
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Processing_by_the_Human_Resources_Department",
+      "key" : "section_Processing_by_the_Human_Resources_Department",
+      "label" : "Processing_by_the_Human_Resources_Department",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "radio",
+        "id" : "Field_inCondition",
+        "key" : "inCondition",
+        "label" : "Does the person meet the conditions to be granted sabbatical leave?",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes",
+          "value" : 1
+        }, {
+          "label" : "No",
+          "value" : 0
+        } ]
+      }, {
+        "type" : "text",
+        "id" : "Field_justification",
+        "key" : "justification",
+        "label" : "Justification",
+        "text" : "Justification",
+        "required" : true,
+        "readOnly" : false
       } ]
     }, {
       "type" : "group",
@@ -105,6 +105,20 @@
       "label" : "Information_on_the_Previous_Sabbatical_Leave",
       "showOutline" : true,
       "components" : [ {
+        "type" : "select",
+        "id" : "Field_previousExemptionServiceOnSystem",
+        "key" : "previousExemptionServiceOnSystem",
+        "label" : "Previous Sabbatical Leave",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "value" : "/paper-pusher-ist/previousExemptionService/{{flowId}}",
+          "label" : {
+            "en-GB" : "/paper-pusher-ist/previousExemptionService/{{flowId}}",
+            "pt-PT" : "/paper-pusher-ist/previousExemptionService/{{flowId}}"
+          }
+        } ]
+      }, {
         "type" : "datetime",
         "subtype" : "datetime",
         "id" : "Field_exemptionServiceStartDate",
@@ -173,30 +187,16 @@
             "pt-PT" : "Não, não foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem."
           }
         }, {
-          "value" : "previousExemptionServiceThroughSystem",
-          "label" : {
-            "en-GB" : "Yes, a sabbatical leave was previously granted through the system.",
-            "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem através do sistema."
-          }
-        }, {
           "value" : "yesPreviousExemptionService",
           "label" : {
             "en-GB" : "Yes, a sabbatical leave was granted previously.",
             "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem."
           }
-        } ]
-      }, {
-        "type" : "select",
-        "id" : "Field_previousExemptionServiceOnSystem",
-        "key" : "previousExemptionServiceOnSystem",
-        "label" : "Previous Sabbatical Leave",
-        "required" : true,
-        "readOnly" : false,
-        "values" : [ {
-          "value" : "/paper-pusher-ist/previousExemptionService/{{flowId}}",
+        }, {
+          "value" : "previousExemptionServiceThroughSystem",
           "label" : {
-            "en-GB" : "/paper-pusher-ist/previousExemptionService/{{flowId}}",
-            "pt-PT" : "/paper-pusher-ist/previousExemptionService/{{flowId}}"
+            "en-GB" : "Yes, a sabbatical leave was previously granted through the system.",
+            "pt-PT" : "Sim, foi concedida anteriormente uma dispensa de prestação de serviço na instituição de origem através do sistema."
           }
         } ]
       }, {

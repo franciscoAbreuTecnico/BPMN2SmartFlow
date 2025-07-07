@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_871830d0-e5f0-4ab5-b76c-5b9ad98c7935"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Gestao-Administrativa" name="Gestao-Administrativa">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-administrator</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-administrator-Skip_Next_Nodes</flowNodeRef>
+            <flowNodeRef>REJECT-step-administrator</flowNodeRef>
+            <flowNodeRef>SIGN-step-administrator</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-administrator</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="Presidencia-do-Instituto-Superior-Tecnico"
+               name="Presidencia-do-Instituto-Superior-Tecnico">
+            <flowNodeRef>step-president</flowNodeRef>
+            <flowNodeRef>REJECT-step-president</flowNodeRef>
+            <flowNodeRef>SIGN-step-president</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-president</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="Nucleo-de-Prestacao-de-Trabalho-Geral"
+               name="Nucleo-de-Prestacao-de-Trabalho-Geral">
+            <flowNodeRef>step-collaborators-notification</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-collaborators-notification-Send_e-mail</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-collaborators-notification-Do_Flow_Action</flowNodeRef>
+            <flowNodeRef>NOTIFY-step-collaborators-notification</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_NOTIFY-step-collaborators-notification</flowNodeRef>
+         </lane>
+         <lane id="Sistema-FenixEdu" name="Sistema-FenixEdu">
+            <flowNodeRef>step-overtime-work-record</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-overtime-work-record-Create_Overtime_Subflows</flowNodeRef>
+            <flowNodeRef>FINISH-step-overtime-work-record</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-president" name="O/A Presidente">
+         <documentation id="documentation_c562c1b0-9c56-480c-9af4-513830c64117">Parecer do/a Presidente</documentation>
+         <incoming>onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president</incoming>
+         <outgoing>step-president_to_ExclusiveGateway_step-president</outgoing>
+      </userTask>
+      <userTask id="step-collaborators-notification" name="Envio de Notificação">
+         <documentation id="documentation_856c952b-0f0a-44ef-b459-f4fcbd172ff0">Envio de notificação para o(s)/a(s) colaborador(es)</documentation>
+         <incoming>SIGN-step-president_to_step-collaborators-notification</incoming>
+         <outgoing>step-collaborators-notification_to_NOTIFY-step-collaborators-notification</outgoing>
+      </userTask>
+      <userTask id="step-overtime-work-record" name="Registo de Trabalho Suplementar">
+         <documentation id="documentation_9dd9204d-63de-4071-a4a5-66e1d8136d83">Registo de Trabalho Suplementar</documentation>
+         <incoming>onEnterNode-step-collaborators-notification-Send_e-mail_to_step-overtime-work-record</incoming>
+         <incoming>onEnterNode-step-collaborators-notification-Do_Flow_Action_to_step-overtime-work-record</incoming>
+         <outgoing>step-overtime-work-record_to_FINISH-step-overtime-work-record</outgoing>
+      </userTask>
+      <userTask id="step-administrator" name="O/A Administrador(a)">
+         <documentation id="documentation_b0346403-1fae-4071-903c-1211fc43500b">Parecer do/a Administrador(a)</documentation>
+         <incoming>START-start-event_to_step-administrator</incoming>
+         <outgoing>step-administrator_to_ExclusiveGateway_step-administrator</outgoing>
+      </userTask>
+      <scriptTask id="onEnterNode-step-collaborators-notification-Send_e-mail"
+                  name="Send e-mail">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_262"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L262"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Send_e-mail</incoming>
+         <outgoing>onEnterNode-step-collaborators-notification-Send_e-mail_to_step-overtime-work-record</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-collaborators-notification-Do_Flow_Action"
+                  name="Do Flow Action">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_607"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L607"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Do_Flow_Action</incoming>
+         <outgoing>onEnterNode-step-collaborators-notification-Do_Flow_Action_to_step-overtime-work-record</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-administrator-Skip_Next_Nodes"
+                  name="Skip Next Nodes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_892"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/servlet/PaperPusherISTServletContextListener.java#L892"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</incoming>
+         <outgoing>onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-overtime-work-record-Create_Overtime_Subflows"
+                  name="Create Overtime Subflows">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_3309"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L3309"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>FINISH-step-overtime-work-record_to_onEnterNode-step-overtime-work-record-Create_Overtime_Subflows</incoming>
+         <outgoing>onEnterNode-step-overtime-work-record-Create_Overtime_Subflows_to_SUCCESS</outgoing>
+      </scriptTask>
+      <serviceTask id="NOTIFY-step-collaborators-notification" name="Enviar Notificação">
+         <incoming>step-collaborators-notification_to_NOTIFY-step-collaborators-notification</incoming>
+         <outgoing>NOTIFY-step-collaborators-notification_to_ExclusiveGateway_NOTIFY-step-collaborators-notification</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-president" name="Rejeitar">
+         <incoming>ExclusiveGateway_step-president_to_REJECT-step-president</incoming>
+         <outgoing>REJECT-step-president_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-administrator" name="Rejeitar">
+         <incoming>ExclusiveGateway_step-administrator_to_REJECT-step-administrator</incoming>
+         <outgoing>REJECT-step-administrator_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-president" name="Concordar">
+         <incoming>ExclusiveGateway_step-president_to_SIGN-step-president</incoming>
+         <outgoing>SIGN-step-president_to_step-collaborators-notification</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-administrator" name="Concordar">
+         <incoming>ExclusiveGateway_step-administrator_to_SIGN-step-administrator</incoming>
+         <outgoing>SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes</outgoing>
+      </serviceTask>
+      <serviceTask id="FINISH-step-overtime-work-record"
+                   name="Terminar Trabalho Suplementar">
+         <incoming>step-overtime-work-record_to_FINISH-step-overtime-work-record</incoming>
+         <outgoing>FINISH-step-overtime-work-record_to_onEnterNode-step-overtime-work-record-Create_Overtime_Subflows</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Iniciar Processo">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-administrator</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_step-administrator"
+                        name="ExclusiveGateway_step-administrator">
+         <incoming>step-administrator_to_ExclusiveGateway_step-administrator</incoming>
+         <outgoing>ExclusiveGateway_step-administrator_to_REJECT-step-administrator</outgoing>
+         <outgoing>ExclusiveGateway_step-administrator_to_SIGN-step-administrator</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-president"
+                        name="ExclusiveGateway_step-president">
+         <incoming>step-president_to_ExclusiveGateway_step-president</incoming>
+         <outgoing>ExclusiveGateway_step-president_to_SIGN-step-president</outgoing>
+         <outgoing>ExclusiveGateway_step-president_to_REJECT-step-president</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_NOTIFY-step-collaborators-notification"
+                        name="ExclusiveGateway_NOTIFY-step-collaborators-notification">
+         <incoming>NOTIFY-step-collaborators-notification_to_ExclusiveGateway_NOTIFY-step-collaborators-notification</incoming>
+         <outgoing>ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Send_e-mail</outgoing>
+         <outgoing>ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Do_Flow_Action</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-step-administrator_to_FAILURE</incoming>
+         <incoming>REJECT-step-president_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>onEnterNode-step-overtime-work-record-Create_Overtime_Subflows_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="step-collaborators-notification_to_NOTIFY-step-collaborators-notification"
+                    name=""
+                    sourceRef="step-collaborators-notification"
+                    targetRef="NOTIFY-step-collaborators-notification"/>
+      <sequenceFlow id="ExclusiveGateway_step-administrator_to_REJECT-step-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-administrator"
+                    targetRef="REJECT-step-administrator"/>
+      <sequenceFlow id="ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Send_e-mail"
+                    name=""
+                    sourceRef="ExclusiveGateway_NOTIFY-step-collaborators-notification"
+                    targetRef="onEnterNode-step-collaborators-notification-Send_e-mail"/>
+      <sequenceFlow id="onEnterNode-step-collaborators-notification-Send_e-mail_to_step-overtime-work-record"
+                    name=""
+                    sourceRef="onEnterNode-step-collaborators-notification-Send_e-mail"
+                    targetRef="step-overtime-work-record"/>
+      <sequenceFlow id="REJECT-step-administrator_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-administrator"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="onEnterNode-step-overtime-work-record-Create_Overtime_Subflows_to_SUCCESS"
+                    name=""
+                    sourceRef="onEnterNode-step-overtime-work-record-Create_Overtime_Subflows"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="ExclusiveGateway_step-president_to_SIGN-step-president"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-president"
+                    targetRef="SIGN-step-president"/>
+      <sequenceFlow id="ExclusiveGateway_step-president_to_REJECT-step-president"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-president"
+                    targetRef="REJECT-step-president"/>
+      <sequenceFlow id="step-president_to_ExclusiveGateway_step-president"
+                    name=""
+                    sourceRef="step-president"
+                    targetRef="ExclusiveGateway_step-president"/>
+      <sequenceFlow id="ExclusiveGateway_step-administrator_to_SIGN-step-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-administrator"
+                    targetRef="SIGN-step-administrator"/>
+      <sequenceFlow id="step-overtime-work-record_to_FINISH-step-overtime-work-record"
+                    name=""
+                    sourceRef="step-overtime-work-record"
+                    targetRef="FINISH-step-overtime-work-record"/>
+      <sequenceFlow id="START-start-event_to_step-administrator"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-administrator"/>
+      <sequenceFlow id="step-administrator_to_ExclusiveGateway_step-administrator"
+                    name=""
+                    sourceRef="step-administrator"
+                    targetRef="ExclusiveGateway_step-administrator"/>
+      <sequenceFlow id="REJECT-step-president_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-president"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="onEnterNode-step-collaborators-notification-Do_Flow_Action_to_step-overtime-work-record"
+                    name=""
+                    sourceRef="onEnterNode-step-collaborators-notification-Do_Flow_Action"
+                    targetRef="step-overtime-work-record"/>
+      <sequenceFlow id="FINISH-step-overtime-work-record_to_onEnterNode-step-overtime-work-record-Create_Overtime_Subflows"
+                    name=""
+                    sourceRef="FINISH-step-overtime-work-record"
+                    targetRef="onEnterNode-step-overtime-work-record-Create_Overtime_Subflows"/>
+      <sequenceFlow id="SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                    name=""
+                    sourceRef="SIGN-step-administrator"
+                    targetRef="onActionTransition-step-administrator-Skip_Next_Nodes"/>
+      <sequenceFlow id="ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Do_Flow_Action"
+                    name=""
+                    sourceRef="ExclusiveGateway_NOTIFY-step-collaborators-notification"
+                    targetRef="onEnterNode-step-collaborators-notification-Do_Flow_Action"/>
+      <sequenceFlow id="onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president"
+                    name=""
+                    sourceRef="onActionTransition-step-administrator-Skip_Next_Nodes"
+                    targetRef="step-president"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+      <sequenceFlow id="NOTIFY-step-collaborators-notification_to_ExclusiveGateway_NOTIFY-step-collaborators-notification"
+                    name=""
+                    sourceRef="NOTIFY-step-collaborators-notification"
+                    targetRef="ExclusiveGateway_NOTIFY-step-collaborators-notification"/>
+      <sequenceFlow id="SIGN-step-president_to_step-collaborators-notification"
+                    name=""
+                    sourceRef="SIGN-step-president"
+                    targetRef="step-collaborators-notification"/>
+   </process>
+   <collaboration id="overtime-flow" name="overtime-flow">
+      <documentation id="documentation_c93f1d88-4ba2-4fa8-86e6-12de141bb19f">{name=overtime-flow, title={pt-PT=Processo de Pedido de Trabalho Suplementar, en-GB=Overtime Request Process}, description={pt-PT=Processo de Pedido de Trabalho Suplementar, en-GB=Overtime Request Process}, config={authorizationChainNodes={actionProcessor={onActionTransition=[{applyOn=SIGN, flowProcessor=Skip Next Queue, queue-field-key=hr-authorization-step}]}}, actionProcessor={onSuccess=[{flowProcessor=Return Flow Approved To Request}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[], actionNodes=[{id=step-administrator, type=generic, comment=true, title={pt-PT=O/A Administrador(a), en-GB=The Administrator}, description={pt-PT=Parecer do/a Administrador(a), en-GB=Opinion of the Administrator}, commentLabel={pt-PT=Parecer do/a Administrador(a), en-GB=Opinion of the Administrator}, actions=[{primary=true, to=step-president, label={pt-PT=Concordar, en-GB=Agree}, id=SIGN-step-administrator, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-administrator, name=REJECT}], queue=Gestao-Administrativa, replaceTitleWithRole=true, hr-final-authorization-step=true, actionProcessor=[{applyOn=SIGN-step-administrator, flowProcessor=Skip Next Nodes, node-field-key=hr-final-authorization-step, id=onActionTransition-step-administrator-Skip_Next_Nodes, name=onActionTransition}], queueOrder=0}, {id=step-president, type=generic, comment=true, title={pt-PT=O/A Presidente, en-GB=The President}, description={pt-PT=Parecer do/a Presidente, en-GB=Opinion of the President}, commentLabel={pt-PT=Parecer do/a Presidente, en-GB=Opinion of the President}, actions=[{primary=true, to=step-collaborators-notification, label={pt-PT=Concordar, en-GB=Agree}, id=SIGN-step-president, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-president, name=REJECT}], queue=Presidencia-do-Instituto-Superior-Tecnico, replaceTitleWithRole=true, hr-final-authorization-step=true, queueOrder=1}, {id=step-collaborators-notification, type=generic, comment=false, title={pt-PT=Envio de Notificação, en-GB=Send Notification}, description={pt-PT=Envio de notificação para o(s)/a(s) colaborador(es), en-GB=Send notification to collaborator(s)}, actions=[{primary=true, to=step-overtime-work-record, label={pt-PT=Enviar Notificação, en-GB=Send Notification}, id=NOTIFY-step-collaborators-notification, name=NOTIFY}], actionProcessor=[{flowProcessor=Do Flow Action, flowAction=NOTIFY, id=onEnterNode-step-collaborators-notification-Do_Flow_Action, name=onEnterNode}, {flowProcessor=Send e-mail, template=email-notification-overtime, sender=1977853914648083, notifyUsersFromRequest=true, registered=true, parameters={startDate=startDate, endDate=endDate, workPlace=workPlace, expectedHoursOfWork=expectedHoursOfWork, expectedHoursWorkingDays=expectedHoursWorkingDays, expectedHoursSupplementaryRestDaysAndHolidays=expectedHoursSupplementaryRestDaysAndHolidays, expectedHoursStatutoryRestDays=expectedHoursStatutoryRestDays}, id=onEnterNode-step-collaborators-notification-Send_e-mail, name=onEnterNode}], queue=Nucleo-de-Prestacao-de-Trabalho-Geral, queueOrder=2}, {id=step-overtime-work-record, type=generic, comment=false, title={pt-PT=Registo de Trabalho Suplementar, en-GB=Overtime Work Record}, description={pt-PT=Registo de Trabalho Suplementar, en-GB=Overtime Work Record}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Terminar Trabalho Suplementar, en-GB=Finish Overtime Work}, id=FINISH-step-overtime-work-record, name=FINISH}], queue=Sistema-FenixEdu, actionProcessor=[{flowProcessor=Create Overtime Subflows, id=onEnterNode-step-overtime-work-record-Create_Overtime_Subflows, name=onEnterNode}], queueOrder=3}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="overtime-flow" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-president" id="Shape_SIGN-step-president">
+            <dc:Bounds height="60.0" width="80.0" x="1435.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-president" id="Shape_step-president">
+            <dc:Bounds height="60.0" width="80.0" x="1115.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-overtime-work-record"
+                           id="Shape_step-overtime-work-record">
+            <dc:Bounds height="60.0" width="80.0" x="2295.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="NOTIFY-step-collaborators-notification"
+                           id="Shape_NOTIFY-step-collaborators-notification">
+            <dc:Bounds height="60.0" width="80.0" x="1795.0" y="650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-administrator"
+                           id="Shape_REJECT-step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-president"
+                           id="Shape_ExclusiveGateway_step-president">
+            <dc:Bounds height="40.0" width="40.0" x="1295.0" y="380.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-overtime-work-record-Create_Overtime_Subflows"
+                           id="Shape_onEnterNode-step-overtime-work-record-Create_Overtime_Subflows">
+            <dc:Bounds height="60.0" width="80.0" x="2655.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-collaborators-notification"
+                           id="Shape_step-collaborators-notification">
+            <dc:Bounds height="60.0" width="80.0" x="1615.0" y="650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-administrator"
+                           id="Shape_ExclusiveGateway_step-administrator">
+            <dc:Bounds height="40.0" width="40.0" x="615.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-administrator" id="Shape_step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="435.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-collaborators-notification-Send_e-mail"
+                           id="Shape_onEnterNode-step-collaborators-notification-Send_e-mail">
+            <dc:Bounds height="60.0" width="80.0" x="2115.0" y="810.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-president" id="Shape_REJECT-step-president">
+            <dc:Bounds height="60.0" width="80.0" x="1435.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-collaborators-notification-Do_Flow_Action"
+                           id="Shape_onEnterNode-step-collaborators-notification-Do_Flow_Action">
+            <dc:Bounds height="60.0" width="80.0" x="2115.0" y="650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="382.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-administrator-Skip_Next_Nodes"
+                           id="Shape_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <dc:Bounds height="60.0" width="80.0" x="935.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_NOTIFY-step-collaborators-notification"
+                           id="Shape_ExclusiveGateway_NOTIFY-step-collaborators-notification">
+            <dc:Bounds height="40.0" width="40.0" x="1975.0" y="660.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="2835.0" y="942.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-administrator"
+                           id="Shape_SIGN-step-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="255.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FINISH-step-overtime-work-record"
+                           id="Shape_FINISH-step-overtime-work-record">
+            <dc:Bounds height="60.0" width="80.0" x="2475.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Gestao-Administrativa" id="Shape_Gestao-Administrativa">
+            <dc:Bounds height="280.0" width="2810.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Presidencia-do-Instituto-Superior-Tecnico"
+                           id="Shape_Presidencia-do-Instituto-Superior-Tecnico">
+            <dc:Bounds height="280.0" width="2810.0" x="90.0" y="340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Prestacao-de-Trabalho-Geral"
+                           id="Shape_Nucleo-de-Prestacao-de-Trabalho-Geral">
+            <dc:Bounds height="280.0" width="2810.0" x="90.0" y="620.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Sistema-FenixEdu" id="Shape_Sistema-FenixEdu">
+            <dc:Bounds height="120.0" width="2810.0" x="90.0" y="900.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="960.0" width="2840.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="step-collaborators-notification_to_NOTIFY-step-collaborators-notification"
+                          id="Edge_step-collaborators-notification_to_NOTIFY-step-collaborators-notification">
+            <di:waypoint x="1695.0" y="680.0"/>
+            <di:waypoint x="1795.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-administrator_to_REJECT-step-administrator"
+                          id="Edge_ExclusiveGateway_step-administrator_to_REJECT-step-administrator">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="688.0" y="120.0"/>
+            <di:waypoint x="688.0" y="280.0"/>
+            <di:waypoint x="755.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Send_e-mail"
+                          id="Edge_ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Send_e-mail">
+            <di:waypoint x="2015.0" y="680.0"/>
+            <di:waypoint x="2048.0" y="680.0"/>
+            <di:waypoint x="2048.0" y="840.0"/>
+            <di:waypoint x="2115.0" y="840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-collaborators-notification-Send_e-mail_to_step-overtime-work-record"
+                          id="Edge_onEnterNode-step-collaborators-notification-Send_e-mail_to_step-overtime-work-record">
+            <di:waypoint x="2195.0" y="840.0"/>
+            <di:waypoint x="2228.0" y="840.0"/>
+            <di:waypoint x="2228.0" y="960.0"/>
+            <di:waypoint x="2295.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-administrator_to_FAILURE"
+                          id="Edge_REJECT-step-administrator_to_FAILURE">
+            <di:waypoint x="835.0" y="280.0"/>
+            <di:waypoint x="2905.0" y="280.0"/>
+            <di:waypoint x="2905.0" y="437.5"/>
+            <di:waypoint x="137.5" y="437.5"/>
+            <di:waypoint x="137.5" y="417.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-overtime-work-record-Create_Overtime_Subflows_to_SUCCESS"
+                          id="Edge_onEnterNode-step-overtime-work-record-Create_Overtime_Subflows_to_SUCCESS">
+            <di:waypoint x="2735.0" y="960.0"/>
+            <di:waypoint x="2768.0" y="960.0"/>
+            <di:waypoint x="2768.0" y="960.0"/>
+            <di:waypoint x="2835.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-president_to_SIGN-step-president"
+                          id="Edge_ExclusiveGateway_step-president_to_SIGN-step-president">
+            <di:waypoint x="1335.0" y="400.0"/>
+            <di:waypoint x="1368.0" y="400.0"/>
+            <di:waypoint x="1368.0" y="560.0"/>
+            <di:waypoint x="1435.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-president_to_REJECT-step-president"
+                          id="Edge_ExclusiveGateway_step-president_to_REJECT-step-president">
+            <di:waypoint x="1335.0" y="400.0"/>
+            <di:waypoint x="1435.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-president_to_ExclusiveGateway_step-president"
+                          id="Edge_step-president_to_ExclusiveGateway_step-president">
+            <di:waypoint x="1195.0" y="400.0"/>
+            <di:waypoint x="1228.0" y="400.0"/>
+            <di:waypoint x="1228.0" y="400.0"/>
+            <di:waypoint x="1295.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-administrator_to_SIGN-step-administrator"
+                          id="Edge_ExclusiveGateway_step-administrator_to_SIGN-step-administrator">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="755.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-overtime-work-record_to_FINISH-step-overtime-work-record"
+                          id="Edge_step-overtime-work-record_to_FINISH-step-overtime-work-record">
+            <di:waypoint x="2375.0" y="960.0"/>
+            <di:waypoint x="2475.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-administrator"
+                          id="Edge_START-start-event_to_step-administrator">
+            <di:waypoint x="335.0" y="120.0"/>
+            <di:waypoint x="435.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-administrator_to_ExclusiveGateway_step-administrator"
+                          id="Edge_step-administrator_to_ExclusiveGateway_step-administrator">
+            <di:waypoint x="515.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="615.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-president_to_FAILURE"
+                          id="Edge_REJECT-step-president_to_FAILURE">
+            <di:waypoint x="1515.0" y="400.0"/>
+            <di:waypoint x="2905.0" y="400.0"/>
+            <di:waypoint x="2905.0" y="437.5"/>
+            <di:waypoint x="137.5" y="437.5"/>
+            <di:waypoint x="137.5" y="417.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-collaborators-notification-Do_Flow_Action_to_step-overtime-work-record"
+                          id="Edge_onEnterNode-step-collaborators-notification-Do_Flow_Action_to_step-overtime-work-record">
+            <di:waypoint x="2195.0" y="680.0"/>
+            <di:waypoint x="2228.0" y="680.0"/>
+            <di:waypoint x="2228.0" y="960.0"/>
+            <di:waypoint x="2295.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="FINISH-step-overtime-work-record_to_onEnterNode-step-overtime-work-record-Create_Overtime_Subflows"
+                          id="Edge_FINISH-step-overtime-work-record_to_onEnterNode-step-overtime-work-record-Create_Overtime_Subflows">
+            <di:waypoint x="2555.0" y="960.0"/>
+            <di:waypoint x="2655.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes"
+                          id="Edge_SIGN-step-administrator_to_onActionTransition-step-administrator-Skip_Next_Nodes">
+            <di:waypoint x="835.0" y="120.0"/>
+            <di:waypoint x="935.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Do_Flow_Action"
+                          id="Edge_ExclusiveGateway_NOTIFY-step-collaborators-notification_to_onEnterNode-step-collaborators-notification-Do_Flow_Action">
+            <di:waypoint x="2015.0" y="680.0"/>
+            <di:waypoint x="2115.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president"
+                          id="Edge_onActionTransition-step-administrator-Skip_Next_Nodes_to_step-president">
+            <di:waypoint x="1015.0" y="120.0"/>
+            <di:waypoint x="1048.0" y="120.0"/>
+            <di:waypoint x="1048.0" y="400.0"/>
+            <di:waypoint x="1115.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="155.0" y="120.0"/>
+            <di:waypoint x="255.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="NOTIFY-step-collaborators-notification_to_ExclusiveGateway_NOTIFY-step-collaborators-notification"
+                          id="Edge_NOTIFY-step-collaborators-notification_to_ExclusiveGateway_NOTIFY-step-collaborators-notification">
+            <di:waypoint x="1875.0" y="680.0"/>
+            <di:waypoint x="1908.0" y="680.0"/>
+            <di:waypoint x="1908.0" y="680.0"/>
+            <di:waypoint x="1975.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-president_to_step-collaborators-notification"
+                          id="Edge_SIGN-step-president_to_step-collaborators-notification">
+            <di:waypoint x="1515.0" y="560.0"/>
+            <di:waypoint x="1548.0" y="560.0"/>
+            <di:waypoint x="1548.0" y="680.0"/>
+            <di:waypoint x="1615.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

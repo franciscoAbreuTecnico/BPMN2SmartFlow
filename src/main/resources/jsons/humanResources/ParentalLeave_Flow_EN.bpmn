@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_143cf5da-4f99-4919-993d-4a31764487f6"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Nucleo-de-Prestacao-de-Trabalho-Geral"
+               name="Nucleo-de-Prestacao-de-Trabalho-Geral">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-hr-processing</flowNodeRef>
+            <flowNodeRef>onSuccess-step-hr-processing-Set_Request_Outcome_Form</flowNodeRef>
+            <flowNodeRef>SIGN-step-hr-processing</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-hr-processing" name="The Human Resources Department">
+         <documentation id="documentation_30111065-b9dd-48d0-bbfe-e9d993568507">Processing by the Human Resources Department</documentation>
+         <incoming>START-start-event_to_step-hr-processing</incoming>
+         <outgoing>step-hr-processing_to_SIGN-step-hr-processing</outgoing>
+      </userTask>
+      <scriptTask id="onSuccess-step-hr-processing-Set_Request_Outcome_Form"
+                  name="Set Request Outcome Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_845"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L845"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-step-hr-processing_to_onSuccess-step-hr-processing-Set_Request_Outcome_Form</incoming>
+         <outgoing>onSuccess-step-hr-processing-Set_Request_Outcome_Form_to_SUCCESS</outgoing>
+      </scriptTask>
+      <serviceTask id="SIGN-step-hr-processing" name="Mark as Processed">
+         <incoming>step-hr-processing_to_SIGN-step-hr-processing</incoming>
+         <outgoing>SIGN-step-hr-processing_to_onSuccess-step-hr-processing-Set_Request_Outcome_Form</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Start Process">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-hr-processing</outgoing>
+      </serviceTask>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>onSuccess-step-hr-processing-Set_Request_Outcome_Form_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="step-hr-processing_to_SIGN-step-hr-processing"
+                    name=""
+                    sourceRef="step-hr-processing"
+                    targetRef="SIGN-step-hr-processing"/>
+      <sequenceFlow id="SIGN-step-hr-processing_to_onSuccess-step-hr-processing-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="SIGN-step-hr-processing"
+                    targetRef="onSuccess-step-hr-processing-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="START-start-event_to_step-hr-processing"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-hr-processing"/>
+      <sequenceFlow id="onSuccess-step-hr-processing-Set_Request_Outcome_Form_to_SUCCESS"
+                    name=""
+                    sourceRef="onSuccess-step-hr-processing-Set_Request_Outcome_Form"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="parental-leave-flow" name="parental-leave-flow">
+      <documentation id="documentation_665fe497-73c1-4e76-a8f2-41a37f64b84f">{name=parental-leave-flow, title={pt-PT=Processo de Pedido de Licença de Parentalidade, en-GB=Parental Leave Request Process}, description={pt-PT=Processo de Pedido de Licença de Parentalidade, en-GB=Parental Leave Request Process}, config={authorizationChainNodes={title={pt-PT=Envio de Notificação, en-GB=Send Notification}, description={pt-PT=Envio de notificação para o/a responsável, en-GB=Send notification to the person in charge}, comment=false, actions={NOTIFY={primary=true, to=SUCCESS, label={pt-PT=Enviar Notificação, en-GB=Send Notification}}}, actionProcessor={onEnterNode=[{flowProcessor=Send e-mail, template=email-notification-paternity, notifyFlowMembers=true, registered=true, sender=1977853914648083, parameters={startDate=startDate}}, {flowProcessor=Do Flow Action, flowAction=NOTIFY}]}, blockUndo=true}, actionProcessor={onSuccess=[{flowProcessor=Return Flow Approved To Request}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[], actionNodes=[{id=step-hr-processing, type=generic, comment=false, title={pt-PT=A Direção de Recursos Humanos, en-GB=The Human Resources Department}, description={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, commentLabel={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Marcar como Processado, en-GB=Mark as Processed}, id=SIGN-step-hr-processing, name=SIGN}], actionProcessor=[{applyOn=SIGN-step-hr-processing, flowProcessor=Set Request Outcome Form, outcomeFormValues={response={value=processed, label={pt-PT=O pedido foi registado., en-GB=The request has been registered.}}}, id=onSuccess-step-hr-processing-Set_Request_Outcome_Form, name=onSuccess}], queue=Nucleo-de-Prestacao-de-Trabalho-Geral, queueOrder=0}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="parental-leave-flow" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="255.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-hr-processing" id="Shape_step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="435.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="975.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onSuccess-step-hr-processing-Set_Request_Outcome_Form"
+                           id="Shape_onSuccess-step-hr-processing-Set_Request_Outcome_Form">
+            <dc:Bounds height="60.0" width="80.0" x="795.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-hr-processing"
+                           id="Shape_SIGN-step-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="615.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Prestacao-de-Trabalho-Geral"
+                           id="Shape_Nucleo-de-Prestacao-de-Trabalho-Geral">
+            <dc:Bounds height="120.0" width="950.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="120.0" width="980.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="step-hr-processing_to_SIGN-step-hr-processing"
+                          id="Edge_step-hr-processing_to_SIGN-step-hr-processing">
+            <di:waypoint x="515.0" y="120.0"/>
+            <di:waypoint x="615.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-hr-processing_to_onSuccess-step-hr-processing-Set_Request_Outcome_Form"
+                          id="Edge_SIGN-step-hr-processing_to_onSuccess-step-hr-processing-Set_Request_Outcome_Form">
+            <di:waypoint x="695.0" y="120.0"/>
+            <di:waypoint x="795.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-hr-processing"
+                          id="Edge_START-start-event_to_step-hr-processing">
+            <di:waypoint x="335.0" y="120.0"/>
+            <di:waypoint x="435.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onSuccess-step-hr-processing-Set_Request_Outcome_Form_to_SUCCESS"
+                          id="Edge_onSuccess-step-hr-processing-Set_Request_Outcome_Form_to_SUCCESS">
+            <di:waypoint x="875.0" y="120.0"/>
+            <di:waypoint x="908.0" y="120.0"/>
+            <di:waypoint x="908.0" y="120.0"/>
+            <di:waypoint x="975.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="155.0" y="120.0"/>
+            <di:waypoint x="255.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

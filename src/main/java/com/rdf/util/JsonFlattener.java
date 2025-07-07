@@ -3,6 +3,9 @@ package com.rdf.util;
 import java.io.File;
 import java.io.IOException;
 import java.text.Normalizer;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -17,11 +20,14 @@ public class JsonFlattener {
     private static final ObjectMapper mapper = new ObjectMapper()
         .enable(SerializationFeature.INDENT_OUTPUT);
 
+    private static final List<String> changedActionNodeIds = new ArrayList<>();
+
     /**
      * Main entry: read JSON, transform each actionNode, write "-converted.json".
      */
     public static String convert(String inputPath) throws IOException {
-        // mapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS, true);
+        changedActionNodeIds.clear(); // Reset list per file!
+
         JsonNode root = mapper.readTree(new File(inputPath));
 
         JsonNode flowTemplate = root.path("flowTemplate").path("config");
@@ -37,12 +43,49 @@ public class JsonFlattener {
             .path("config")
             .path("actionNodes");
 
+        // 1. Collect ordered IDs of all actionNodes after ID transformation
+        List<String> orderedIds = new ArrayList<>();
+        int nodeIdx = 0;
+        for (JsonNode n : actionNodes) {
+            String oldId = n.get("id").asText();
+            String newId = resolveId(oldId);
+            orderedIds.add(newId);
+
+            // Track if id changed
+            if (!oldId.equals(newId)) {
+                changedActionNodeIds.add(newId);
+            }
+            nodeIdx++;
+        }
+
+        // *** Compute unique queues and their first-appearance order ***
+        Map<String, Integer> queueFirstOrder = new LinkedHashMap<>();
+        int queueAppearanceIdx = 0;
+        for (JsonNode n : actionNodes) {
+            if (n.has("queue")) {
+                String sanitizedQueue = sanitizeQueue(n.get("queue").asText());
+                if (!queueFirstOrder.containsKey(sanitizedQueue)) {
+                    queueFirstOrder.put(sanitizedQueue, queueAppearanceIdx);
+                    queueAppearanceIdx++;
+                }
+            }
+        }
+
+        // 2. Update actionNodes with new IDs, flatten, and handle 'to' field rewriting
+        int index = 0;
         for (JsonNode n : actionNodes) {
             ObjectNode node = (ObjectNode) n;
 
-            // 1) actions → array
+            // --- [START] Transform 'id' field as required ---
+            if (node.has("id")) {
+                String newId = orderedIds.get(index);
+                node.put("id", newId);
+            }
+            // --- [END] Transform 'id' field as required ---
+
+            // 1) actions → array (now with 'to' rewriting)
             if (node.has("actions")) {
-                node.set("actions", flattenActions(node));
+                node.set("actions", flattenActionsAndRewriteTo(node, index, orderedIds));
             }
 
             // 2) actionProcessor → array
@@ -53,10 +96,19 @@ public class JsonFlattener {
             // 3) rewrite any button handlers
             rewriteButtonHandlers(node);
 
-            // 4) sanitize queue
+            // 4) sanitize queue and set **first-appearance queueOrder**
             if (node.has("queue")) {
-                node.put("queue", sanitizeQueue(node.get("queue").asText()));
+                String rawQueue = node.get("queue").asText();
+                String sanitizedQueue = sanitizeQueue(rawQueue);
+                node.put("queue", sanitizedQueue);
+
+                Integer qOrder = queueFirstOrder.get(sanitizedQueue);
+                if (qOrder != null) {
+                    node.put("queueOrder", qOrder);
+                }
             }
+
+            index++;
         }
 
         DefaultPrettyPrinter pp = new DefaultPrettyPrinter();
@@ -70,22 +122,33 @@ public class JsonFlattener {
     }
 
     /**
-     * Strip braces {{…}}, remove accents, turn any run of non-alphanumeric into single hyphens.
+     * Transform 'id' according to the following rules:
+     * - Replace any {{something-count}} with 0
+     * - For any other {{var}}, replace with "var.1"
+     * - For multiple variables, all are handled
      */
-    private static String sanitizeQueue(String raw) {
-        String s = raw.replaceAll("[\\{\\}]", "");
-        s = Normalizer.normalize(s, Normalizer.Form.NFD)
-                      .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-        s = s.replaceAll("[^\\p{Alnum}]+", "-")
-             .replaceAll("-+", "-")
-             .replaceAll("^-|-$", "");
-        return s;
+    private static String resolveId(String id) {
+        Pattern p = Pattern.compile("\\{\\{([^\\}]+)\\}\\}");
+        Matcher m = p.matcher(id);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            String var = m.group(1);
+            if (var.endsWith("count")) {
+                m.appendReplacement(sb, "0");
+            } else {
+                // transform {{step-3}} → step-3.1
+                m.appendReplacement(sb, var + ".1");
+            }
+        }
+        m.appendTail(sb);
+        return sb.toString();
     }
 
     /**
-     * Converts the 'actions' object -> array, adding 'id','name','parentId'.
+     * Converts the 'actions' object -> array, adding 'id','name','parentId',
+     * and rewriting 'to' field if needed.
      */
-    private static ArrayNode flattenActions(ObjectNode node) {
+    private static ArrayNode flattenActionsAndRewriteTo(ObjectNode node, int currentIndex, List<String> orderedIds) {
         ArrayNode out = mapper.createArrayNode();
         JsonNode actionsNode = node.get("actions");
         if (actionsNode != null && actionsNode.isObject()) {
@@ -98,8 +161,36 @@ public class JsonFlattener {
                 ObjectNode action = mapper.createObjectNode();
 
                 // copy all original props
-                original.fields()
-                        .forEachRemaining(f -> action.set(f.getKey(), f.getValue()));
+                original.fields().forEachRemaining(f -> action.set(f.getKey(), f.getValue()));
+
+                // rewrite 'to' field if necessary
+                if (action.has("to")) {
+                    String toVal = action.get("to").asText();
+
+                    // --- NEW: If {{go-step-X}}, replace with ["go-step-X-single", "go-step-X-multiple"]
+                    Pattern goStepPattern = Pattern.compile("\\{\\{go-step-(\\d+)\\}\\}");
+                    Matcher matcher = goStepPattern.matcher(toVal);
+                    if (matcher.matches()) {
+                        String step = matcher.group(1);
+                        ArrayNode arr = mapper.createArrayNode();
+                        arr.add("go-step-" + step + "-single");
+                        arr.add("go-step-" + step + "-multiple");
+                        action.set("to", arr);
+                    }
+                    // --- EXISTING: Handle next/next-step pattern
+                    else if ("{{next}}".equals(toVal) || "{{next-step}}".equals(toVal)) {
+                        String newTo;
+                        if (currentIndex + 1 < orderedIds.size()) {
+                            newTo = orderedIds.get(currentIndex + 1);
+                        } else if (currentIndex > 0) {
+                            newTo = orderedIds.get(currentIndex - 1);
+                        } else {
+                            newTo = toVal; // fallback (should never happen)
+                        }
+                        action.put("to", newTo);
+                    }
+                    // else leave as is
+                }
 
                 // new fields
                 String id = name + "-" + parentId;
@@ -111,6 +202,7 @@ public class JsonFlattener {
         }
         return out;
     }
+
 
     /**
      * Converts the 'actionProcessor' object -> array, adding 'id','name',
@@ -179,9 +271,19 @@ public class JsonFlattener {
             if (btn.has("handlers") && btn.get("handlers").has("action")) {
                 String act = btn.get("handlers").get("action").asText();
                 btn.withObject("handlers")
-                .put("action", act + "-" + parentId);
+                    .put("action", act + "-" + parentId);
             }
         }
+    }
+
+    private static String sanitizeQueue(String raw) {
+        String s = raw.replaceAll("[\\{\\}]", "");
+        s = Normalizer.normalize(s, Normalizer.Form.NFD)
+                      .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        s = s.replaceAll("[^\\p{Alnum}]+", "-")
+             .replaceAll("-+", "-")
+             .replaceAll("^-|-$", "");
+        return s;
     }
 
     private static void transformTitlesInForm(JsonNode node) {
@@ -218,4 +320,9 @@ public class JsonFlattener {
             }
         }
     }
+
+    public static List<String> getChangedActionNodeIds() {
+        return new ArrayList<>(changedActionNodeIds);
+    }
+
 }

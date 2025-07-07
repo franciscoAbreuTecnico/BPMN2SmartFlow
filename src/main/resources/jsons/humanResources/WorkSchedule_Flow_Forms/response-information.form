@@ -23,25 +23,6 @@
       "components" : [ {
         "type" : "datetime",
         "subtype" : "datetime",
-        "id" : "Field_startDate",
-        "key" : "startDate",
-        "dateLabel" : "Date",
-        "timeLabel" : "Time",
-        "timeSerializingFormat" : "utc_offset",
-        "timeInterval" : 15,
-        "use24h" : true,
-        "date" : false,
-        "time" : false,
-        "layout" : {
-          "row" : "Row_Field_startDate",
-          "columns" : null
-        },
-        "validate" : {
-          "required" : true
-        }
-      }, {
-        "type" : "datetime",
-        "subtype" : "datetime",
         "id" : "Field_effectiveDate",
         "key" : "effectiveDate",
         "dateLabel" : "Date",
@@ -53,6 +34,25 @@
         "time" : false,
         "layout" : {
           "row" : "Row_Field_effectiveDate",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : true
+        }
+      }, {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_startDate",
+        "key" : "startDate",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_startDate",
           "columns" : null
         },
         "validate" : {

@@ -121,7 +121,8 @@
               "id" : "onActionTransition-degree-conclusion-confirmation-Do_Flow_Action",
               "name" : "onActionTransition"
             }
-          ]
+          ],
+          "queueOrder" : 0
         },
         {
           "id" : "registry-code-and-diploma-supplement-request-creation",
@@ -182,7 +183,8 @@
               "name" : "onActionTransition"
             }
           ],
-          "blockUndo" : true
+          "blockUndo" : true,
+          "queueOrder" : 1
         },
         {
           "id" : "document-generation",
@@ -244,7 +246,8 @@
               "id" : "onActionTransition-document-generation-Generate_Document",
               "name" : "onActionTransition"
             }
-          ]
+          ],
+          "queueOrder" : 2
         },
         {
           "id" : "send-to-rector-office",
@@ -274,7 +277,8 @@
               "name" : "SEND_TO_RECTOR_OFFICE"
             }
           ],
-          "queue" : "academic-office-queue-Expedicao-Saida"
+          "queue" : "academic-office-queue-Expedicao-Saida",
+          "queueOrder" : 3
         },
         {
           "id" : "document-processing",
@@ -321,7 +325,8 @@
               "name" : "PROCESS"
             }
           ],
-          "queue" : "rectorate-academic-services"
+          "queue" : "rectorate-academic-services",
+          "queueOrder" : 4
         },
         {
           "id" : "document-reception",
@@ -351,7 +356,8 @@
               "name" : "RECEIVE"
             }
           ],
-          "queue" : "academic-office-queue-Expedicao-Entrada"
+          "queue" : "academic-office-queue-Expedicao-Entrada",
+          "queueOrder" : 5
         },
         {
           "id" : "presidential-signature",
@@ -377,7 +383,8 @@
               "name" : "SIGN"
             }
           ],
-          "queue" : "academic-office-queue-Assinatura-da-Presidencia"
+          "queue" : "academic-office-queue-Assinatura-da-Presidencia",
+          "queueOrder" : 6
         }
       ]
     }

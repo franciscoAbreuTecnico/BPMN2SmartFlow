@@ -1,0 +1,44 @@
+{
+  "id" : "Form_department-decision",
+  "type" : "default",
+  "schemaVersion" : 18,
+  "exporter" : {
+    "name" : "Camunda Modeler",
+    "version" : "5.36.1"
+  },
+  "executionPlatform" : "Camunda Platform",
+  "executionPlatformVersion" : "7.23.0",
+  "components" : [ {
+    "type" : "group",
+    "id" : "Page_Upload_Recommendation",
+    "key" : "page_Upload_Recommendation",
+    "label" : "Upload_Recommendation",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Recommendation",
+      "key" : "section_Recommendation",
+      "label" : "Recommendation",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "filepicker",
+        "id" : "Field_additionalDocument",
+        "key" : "additionalDocument",
+        "label" : "Additional Document",
+        "required" : false,
+        "readOnly" : false,
+        "accept" : ".pdf",
+        "maxFileSize" : "10MB"
+      }, {
+        "type" : "filepicker",
+        "id" : "Field_departmentDecision",
+        "key" : "departmentDecision",
+        "label" : "Department  Recommendation",
+        "required" : true,
+        "readOnly" : false,
+        "accept" : ".pdf",
+        "maxFileSize" : "10MB"
+      } ]
+    } ]
+  } ]
+}

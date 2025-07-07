@@ -133,7 +133,8 @@
               "id" : "onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer",
               "name" : "onActionTransition"
             }
-          ]
+          ],
+          "queueOrder" : 0
         },
         {
           "id" : "document-generation-and-signer-dispatch",
@@ -163,7 +164,8 @@
               "name" : "GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER"
             }
           ],
-          "queue" : "academic-office-queue-Assinatura-Eletronica"
+          "queue" : "academic-office-queue-Assinatura-Eletronica",
+          "queueOrder" : 1
         }
       ]
     }

@@ -21,34 +21,6 @@
       "label" : "Terms_and_Dates",
       "showOutline" : true,
       "components" : [ {
-        "type" : "radio",
-        "id" : "Field_wantToAssignDates",
-        "key" : "wantToAssignDates",
-        "label" : "Do you want to assign dates to the status?",
-        "required" : true,
-        "readOnly" : false,
-        "values" : [ {
-          "label" : "Yes",
-          "value" : 1
-        }, {
-          "label" : "No",
-          "value" : 0
-        } ]
-      }, {
-        "type" : "select",
-        "id" : "Field_startTerm",
-        "key" : "startTerm",
-        "label" : "Start Term",
-        "required" : true,
-        "readOnly" : false,
-        "values" : [ {
-          "value" : "paper-pusher-ist/semestersForStatutes",
-          "label" : {
-            "en-GB" : "paper-pusher-ist/semestersForStatutes",
-            "pt-PT" : "paper-pusher-ist/semestersForStatutes"
-          }
-        } ]
-      }, {
         "type" : "select",
         "id" : "Field_endTerm",
         "key" : "endTerm",
@@ -82,6 +54,34 @@
           "required" : true
         }
       }, {
+        "type" : "select",
+        "id" : "Field_startTerm",
+        "key" : "startTerm",
+        "label" : "Start Term",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "value" : "paper-pusher-ist/semestersForStatutes",
+          "label" : {
+            "en-GB" : "paper-pusher-ist/semestersForStatutes",
+            "pt-PT" : "paper-pusher-ist/semestersForStatutes"
+          }
+        } ]
+      }, {
+        "type" : "radio",
+        "id" : "Field_isTemporary",
+        "key" : "isTemporary",
+        "label" : "Are you assigning a temporary status?",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes",
+          "value" : 1
+        }, {
+          "label" : "No",
+          "value" : 0
+        } ]
+      }, {
         "type" : "datetime",
         "subtype" : "datetime",
         "id" : "Field_endDate",
@@ -102,9 +102,9 @@
         }
       }, {
         "type" : "radio",
-        "id" : "Field_isTemporary",
-        "key" : "isTemporary",
-        "label" : "Are you assigning a temporary status?",
+        "id" : "Field_wantToAssignDates",
+        "key" : "wantToAssignDates",
+        "label" : "Do you want to assign dates to the status?",
         "required" : true,
         "readOnly" : false,
         "values" : [ {

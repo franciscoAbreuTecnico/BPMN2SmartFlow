@@ -79,7 +79,8 @@
               "id" : "onActionTransition-step-administrator-Skip_Next_Nodes",
               "name" : "onActionTransition"
             }
-          ]
+          ],
+          "queueOrder" : 0
         },
         {
           "id" : "step-president",
@@ -121,7 +122,8 @@
           ],
           "queue" : "Presidencia-do-Instituto-Superior-Tecnico",
           "replaceTitleWithRole" : true,
-          "hr-final-authorization-step" : "true"
+          "hr-final-authorization-step" : "true",
+          "queueOrder" : 1
         },
         {
           "id" : "step-hr-processing",
@@ -151,7 +153,8 @@
               "name" : "SIGN"
             }
           ],
-          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral"
+          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral",
+          "queueOrder" : 2
         }
       ]
     }

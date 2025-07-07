@@ -98,7 +98,8 @@
               "name" : "onSuccess"
             }
           ],
-          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral"
+          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral",
+          "queueOrder" : 0
         }
       ]
     }

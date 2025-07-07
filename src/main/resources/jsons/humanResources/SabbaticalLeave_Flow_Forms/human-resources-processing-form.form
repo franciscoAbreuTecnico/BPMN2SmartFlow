@@ -16,166 +16,11 @@
     "showOutline" : true,
     "components" : [ {
       "type" : "group",
-      "id" : "Section_Processing_by_the_Human_Resources_Department",
-      "key" : "section_Processing_by_the_Human_Resources_Department",
-      "label" : "Processing_by_the_Human_Resources_Department",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "text",
-        "id" : "Field_justification",
-        "key" : "justification",
-        "label" : "Justification",
-        "text" : "Justification",
-        "required" : true,
-        "readOnly" : false
-      }, {
-        "type" : "radio",
-        "id" : "Field_inCondition",
-        "key" : "inCondition",
-        "label" : "Does the person meet the conditions to be granted sabbatical leave?",
-        "required" : true,
-        "readOnly" : false,
-        "values" : [ {
-          "label" : "Yes",
-          "value" : 1
-        }, {
-          "label" : "No",
-          "value" : 0
-        } ]
-      } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_Category",
-      "key" : "section_Category",
-      "label" : "Category",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "select",
-        "id" : "Field_category",
-        "key" : "category",
-        "label" : "Category",
-        "required" : true,
-        "readOnly" : false,
-        "multiple" : false,
-        "collapse" : false,
-        "allowOther" : false,
-        "values" : [ {
-          "value" : "associateProfessor",
-          "label" : {
-            "en-GB" : "Associate Professor",
-            "pt-PT" : "Professor(a) Associado/a"
-          }
-        }, {
-          "value" : "fullProfessor",
-          "label" : {
-            "en-GB" : "Full Professor",
-            "pt-PT" : "Professor(a) Catedrático/a"
-          }
-        }, {
-          "value" : "assistantProfessor",
-          "label" : {
-            "en-GB" : "Assistant Professor",
-            "pt-PT" : "Professor(a) Auxiliar"
-          }
-        } ]
-      }, {
-        "type" : "datetime",
-        "subtype" : "datetime",
-        "id" : "Field_categoryStartDate",
-        "key" : "categoryStartDate",
-        "dateLabel" : "Date",
-        "timeLabel" : "Time",
-        "timeSerializingFormat" : "utc_offset",
-        "timeInterval" : 15,
-        "use24h" : true,
-        "date" : false,
-        "time" : false,
-        "layout" : {
-          "row" : "Row_Field_categoryStartDate",
-          "columns" : null
-        },
-        "validate" : {
-          "required" : true
-        }
-      } ]
-    }, {
-      "type" : "group",
       "id" : "Section_Information_on_the_Previous_Sabbatical_Leave",
       "key" : "section_Information_on_the_Previous_Sabbatical_Leave",
       "label" : "Information_on_the_Previous_Sabbatical_Leave",
       "showOutline" : true,
       "components" : [ {
-        "type" : "datetime",
-        "subtype" : "datetime",
-        "id" : "Field_sabbaticalEndDate",
-        "key" : "sabbaticalEndDate",
-        "dateLabel" : "Date",
-        "timeLabel" : "Time",
-        "timeSerializingFormat" : "utc_offset",
-        "timeInterval" : 15,
-        "use24h" : true,
-        "date" : false,
-        "time" : false,
-        "layout" : {
-          "row" : "Row_Field_sabbaticalEndDate",
-          "columns" : null
-        },
-        "validate" : {
-          "required" : true
-        }
-      }, {
-        "type" : "datetime",
-        "subtype" : "datetime",
-        "id" : "Field_reportDeliveryDate",
-        "key" : "reportDeliveryDate",
-        "dateLabel" : "Date",
-        "timeLabel" : "Time",
-        "timeSerializingFormat" : "utc_offset",
-        "timeInterval" : 15,
-        "use24h" : true,
-        "date" : false,
-        "time" : false,
-        "layout" : {
-          "row" : "Row_Field_reportDeliveryDate",
-          "columns" : null
-        },
-        "validate" : {
-          "required" : true
-        }
-      }, {
-        "type" : "datetime",
-        "subtype" : "datetime",
-        "id" : "Field_sabbaticalStartDate",
-        "key" : "sabbaticalStartDate",
-        "dateLabel" : "Date",
-        "timeLabel" : "Time",
-        "timeSerializingFormat" : "utc_offset",
-        "timeInterval" : 15,
-        "use24h" : true,
-        "date" : false,
-        "time" : false,
-        "layout" : {
-          "row" : "Row_Field_sabbaticalStartDate",
-          "columns" : null
-        },
-        "validate" : {
-          "required" : true
-        }
-      }, {
-        "type" : "radio",
-        "id" : "Field_reportDelivery",
-        "key" : "reportDelivery",
-        "label" : "Has a report been delivered?",
-        "required" : true,
-        "readOnly" : false,
-        "values" : [ {
-          "label" : "Yes, a report was submitted.",
-          "value" : 1
-        }, {
-          "label" : "No, a report was not submitted.",
-          "value" : 0
-        } ]
-      }, {
         "type" : "select",
         "id" : "Field_previousSabbaticalOnSystem",
         "key" : "previousSabbaticalOnSystem",
@@ -206,16 +51,171 @@
             "pt-PT" : "Não, não foi concedida anteriormente uma licença sabática."
           }
         }, {
+          "value" : "previousLeave",
+          "label" : {
+            "en-GB" : "Yes, a sabbatical leave was granted previously.",
+            "pt-PT" : "Sim, foi concedida anteriormente uma licença sabática."
+          }
+        }, {
           "value" : "previousLeaveThroughSystem",
           "label" : {
             "en-GB" : "Yes, a sabbatical leave was previously granted through the system.",
             "pt-PT" : "Sim, foi concedida anteriormente uma licença sabática através do sistema."
           }
+        } ]
+      }, {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_reportDeliveryDate",
+        "key" : "reportDeliveryDate",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_reportDeliveryDate",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : true
+        }
+      }, {
+        "type" : "radio",
+        "id" : "Field_reportDelivery",
+        "key" : "reportDelivery",
+        "label" : "Has a report been delivered?",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes, a report was submitted.",
+          "value" : 1
         }, {
-          "value" : "previousLeave",
+          "label" : "No, a report was not submitted.",
+          "value" : 0
+        } ]
+      }, {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_sabbaticalEndDate",
+        "key" : "sabbaticalEndDate",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_sabbaticalEndDate",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : true
+        }
+      }, {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_sabbaticalStartDate",
+        "key" : "sabbaticalStartDate",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_sabbaticalStartDate",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : true
+        }
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Processing_by_the_Human_Resources_Department",
+      "key" : "section_Processing_by_the_Human_Resources_Department",
+      "label" : "Processing_by_the_Human_Resources_Department",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "radio",
+        "id" : "Field_inCondition",
+        "key" : "inCondition",
+        "label" : "Does the person meet the conditions to be granted sabbatical leave?",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes",
+          "value" : 1
+        }, {
+          "label" : "No",
+          "value" : 0
+        } ]
+      }, {
+        "type" : "text",
+        "id" : "Field_justification",
+        "key" : "justification",
+        "label" : "Justification",
+        "text" : "Justification",
+        "required" : true,
+        "readOnly" : false
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Category",
+      "key" : "section_Category",
+      "label" : "Category",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "datetime",
+        "subtype" : "datetime",
+        "id" : "Field_categoryStartDate",
+        "key" : "categoryStartDate",
+        "dateLabel" : "Date",
+        "timeLabel" : "Time",
+        "timeSerializingFormat" : "utc_offset",
+        "timeInterval" : 15,
+        "use24h" : true,
+        "date" : false,
+        "time" : false,
+        "layout" : {
+          "row" : "Row_Field_categoryStartDate",
+          "columns" : null
+        },
+        "validate" : {
+          "required" : true
+        }
+      }, {
+        "type" : "select",
+        "id" : "Field_category",
+        "key" : "category",
+        "label" : "Category",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "assistantProfessor",
           "label" : {
-            "en-GB" : "Yes, a sabbatical leave was granted previously.",
-            "pt-PT" : "Sim, foi concedida anteriormente uma licença sabática."
+            "en-GB" : "Assistant Professor",
+            "pt-PT" : "Professor(a) Auxiliar"
+          }
+        }, {
+          "value" : "associateProfessor",
+          "label" : {
+            "en-GB" : "Associate Professor",
+            "pt-PT" : "Professor(a) Associado/a"
+          }
+        }, {
+          "value" : "fullProfessor",
+          "label" : {
+            "en-GB" : "Full Professor",
+            "pt-PT" : "Professor(a) Catedrático/a"
           }
         } ]
       } ]

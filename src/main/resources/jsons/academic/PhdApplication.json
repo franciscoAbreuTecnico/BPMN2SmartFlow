@@ -2094,7 +2094,7 @@
           "queue": "Conselho Científico - Formação Avançada e a Investigação"
         },
         {
-          "id": "step-advisor-accept-0",
+          "id": "step-advisor-accept-{{advisor-count}}",
           "type": "generic",
           "comment": false,
           "title": {
@@ -2108,7 +2108,7 @@
           "actions": {
             "ACCEPT": {
               "primary": true,
-              "to": "step-degree-coordinator-evaluation",
+              "to": "{{next}}",
               "label": {
                 "pt-PT": "Aceitar Posição de Orientação",
                 "en-GB": "Accept Advisor Position"

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_7baf9a28-6686-4076-9b9f-b621170991ef"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1"/>
+      <serviceTask id="START-start-event" name="Iniciar Processo"/>
+   </process>
+   <collaboration id="early-return-work" name="early-return-work">
+      <documentation id="documentation_8990e5f1-9c5e-42d6-b5f4-64f8bb329400">{name=early-return-work, title={pt-PT=Processo de Comunicação de Regresso Antecipado ao Trabalho, en-GB=Communication of Early Return to Work Process}, description={pt-PT=Processo de Comunicação de Regresso Antecipado ao Trabalho, en-GB=Communication of Early Return to Work Process}, config={authorizationChainNodes={title={pt-PT=Envio de Notificação, en-GB=Send Notification}, description={pt-PT=Envio de notificação para o/a responsável, en-GB=Send notification to the person in charge}, comment=false, actions={NOTIFY={primary=true, to=SUCCESS, label={pt-PT=Enviar Notificação, en-GB=Send Notification}}}, actionProcessor={onEnterNode=[{flowProcessor=Send e-mail, template=email-notification-early-return-work, notifyFlowMembers=true, registered=true, sender=1977853914648083, parameters={reportForDutyDay=reportForDutyDay}}, {flowProcessor=Do Flow Action, flowAction=NOTIFY}]}, blockUndo=true}, actionProcessor={onSuccess=[{flowProcessor=Set Request Outcome Form, outcomeFormValues={response={value=processed, label={pt-PT=O pedido foi registado., en-GB=The request was registered.}}}}, {flowProcessor=Return Flow Approved To Request}], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[], actionNodes=[]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="early-return-work" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="-1.7976931348623157E308"
+                       width="-1.7976931348623157E308"
+                       x="1.7976931348623157E308"
+                       y="1.7976931348623157E308"/>
+         </bpmndi:BPMNShape>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

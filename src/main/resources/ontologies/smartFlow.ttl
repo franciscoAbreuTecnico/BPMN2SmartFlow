@@ -277,6 +277,13 @@ sf:sfName
     rdfs:range xsd:string ;
     rdfs:label "sfName" ;
     rdfs:comment "The descriptive name of the element." .
+
+sf:queueOrder
+    a               owl:DatatypeProperty ;
+    rdfs:domain     sf:Queue ;
+    rdfs:range      xsd:integer ;
+    rdfs:comment    "The zero-based position of this queue in the original JSON actionNodes array" .
+
 sf:nodeType a owl:DatatypeProperty ;
     rdfs:domain sf:ActionNode ;
     rdfs:range xsd:string ;

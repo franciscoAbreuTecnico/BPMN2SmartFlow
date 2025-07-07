@@ -65,7 +65,8 @@
               "name" : "SIGN"
             }
           ],
-          "queue" : "Nucleo-de-Prestacao-de-Trabalho-Geral"
+          "queue" : "Nucleo-de-Prestacao-de-Trabalho-Geral",
+          "queueOrder" : 0
         },
         {
           "id" : "step-upload-signed-service-provision-contract",
@@ -116,7 +117,8 @@
             }
           ],
           "queue" : "requester-username",
-          "blockUndo" : true
+          "blockUndo" : true,
+          "queueOrder" : 1
         }
       ]
     }

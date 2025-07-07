@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_811dd90d-cff3-4a6f-8f24-3962bd55eb97"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="academic-office-queue-Preenchimento-de-Informacao-Curricular"
+               name="academic-office-queue-Preenchimento-de-Informacao-Curricular">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>curricular-information-completion</flowNodeRef>
+            <flowNodeRef>onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer</flowNodeRef>
+            <flowNodeRef>REJECT-curricular-information-completion</flowNodeRef>
+            <flowNodeRef>COMPLETE_INFORMATION-curricular-information-completion</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_curricular-information-completion</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="academic-office-queue-Assinatura-Eletronica"
+               name="academic-office-queue-Assinatura-Eletronica">
+            <flowNodeRef>document-generation-and-signer-dispatch</flowNodeRef>
+            <flowNodeRef>GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="document-generation-and-signer-dispatch"
+                name="Document Generation and Dispatch to Signer">
+         <documentation id="documentation_bdec1b0d-0597-49ec-9d4f-44f3a2957ac3">Academic documents generation and dispatch to Signer</documentation>
+         <incoming>onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer_to_document-generation-and-signer-dispatch</incoming>
+         <outgoing>document-generation-and-signer-dispatch_to_GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch</outgoing>
+      </userTask>
+      <userTask id="curricular-information-completion"
+                name="Completion of the Curricular Information">
+         <documentation id="documentation_2e8d03de-36d0-4bf4-bc85-9e4be85a0cd2">Completion of the Curricular Information by the Academic Services</documentation>
+         <incoming>START-start-event_to_curricular-information-completion</incoming>
+         <outgoing>curricular-information-completion_to_ExclusiveGateway_curricular-information-completion</outgoing>
+      </userTask>
+      <scriptTask id="onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer"
+                  name="Generate Programmes and Workloads Documents and Send to Signer">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_790"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L790"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>COMPLETE_INFORMATION-curricular-information-completion_to_onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer</incoming>
+         <outgoing>onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer_to_document-generation-and-signer-dispatch</outgoing>
+      </scriptTask>
+      <serviceTask id="REJECT-curricular-information-completion" name="Reject">
+         <incoming>ExclusiveGateway_curricular-information-completion_to_REJECT-curricular-information-completion</incoming>
+         <outgoing>REJECT-curricular-information-completion_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch"
+                   name="Generate Documents and Send to Signer">
+         <incoming>document-generation-and-signer-dispatch_to_GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch</incoming>
+         <outgoing>GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="COMPLETE_INFORMATION-curricular-information-completion"
+                   name="Complete Curricular Information">
+         <incoming>ExclusiveGateway_curricular-information-completion_to_COMPLETE_INFORMATION-curricular-information-completion</incoming>
+         <outgoing>COMPLETE_INFORMATION-curricular-information-completion_to_onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Start Process">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_curricular-information-completion</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_curricular-information-completion"
+                        name="ExclusiveGateway_curricular-information-completion">
+         <incoming>curricular-information-completion_to_ExclusiveGateway_curricular-information-completion</incoming>
+         <outgoing>ExclusiveGateway_curricular-information-completion_to_REJECT-curricular-information-completion</outgoing>
+         <outgoing>ExclusiveGateway_curricular-information-completion_to_COMPLETE_INFORMATION-curricular-information-completion</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-curricular-information-completion_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="COMPLETE_INFORMATION-curricular-information-completion_to_onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer"
+                    name=""
+                    sourceRef="COMPLETE_INFORMATION-curricular-information-completion"
+                    targetRef="onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer"/>
+      <sequenceFlow id="document-generation-and-signer-dispatch_to_GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch"
+                    name=""
+                    sourceRef="document-generation-and-signer-dispatch"
+                    targetRef="GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch"/>
+      <sequenceFlow id="onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer_to_document-generation-and-signer-dispatch"
+                    name=""
+                    sourceRef="onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer"
+                    targetRef="document-generation-and-signer-dispatch"/>
+      <sequenceFlow id="curricular-information-completion_to_ExclusiveGateway_curricular-information-completion"
+                    name=""
+                    sourceRef="curricular-information-completion"
+                    targetRef="ExclusiveGateway_curricular-information-completion"/>
+      <sequenceFlow id="ExclusiveGateway_curricular-information-completion_to_REJECT-curricular-information-completion"
+                    name=""
+                    sourceRef="ExclusiveGateway_curricular-information-completion"
+                    targetRef="REJECT-curricular-information-completion"/>
+      <sequenceFlow id="START-start-event_to_curricular-information-completion"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="curricular-information-completion"/>
+      <sequenceFlow id="ExclusiveGateway_curricular-information-completion_to_COMPLETE_INFORMATION-curricular-information-completion"
+                    name=""
+                    sourceRef="ExclusiveGateway_curricular-information-completion"
+                    targetRef="COMPLETE_INFORMATION-curricular-information-completion"/>
+      <sequenceFlow id="GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch_to_SUCCESS"
+                    name=""
+                    sourceRef="GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="REJECT-curricular-information-completion_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-curricular-information-completion"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="programmes-and-workloads-certificate-flow"
+                  name="programmes-and-workloads-certificate-flow">
+      <documentation id="documentation_e14f8cc9-c085-486c-810a-ddc296769be0">{name=programmes-and-workloads-certificate-flow, title={pt-PT=Processo de Pedido de Certidão de Programas e Cargas Horárias, en-GB=Programmes and Workloads Certificate Request Process}, description={pt-PT=Processo de Pedido de Certidão de Programas e Cargas Horárias, en-GB=Programmes and Workloads Certificate Request Process}, config={actionProcessor={onCreate={flowProcessor=Skip Complete Curricular Information}, onSuccess={}, onFailure={flowProcessor=Return Flow Rejected To Request}, onActionTransition={}, onCancel={flowProcessor=Cancel Connected Requests}}, flowProcessors=[{handle=complete-curricular-information, flowProcessor=Create Complete Curricular Information Request From Flow, RequestType=Completar Informação Curricular, RequestQueue=Núcleo de Registo Académico, mapper={REGISTRATION=REGISTRATION, INCLUDE_ALL_UNITS=INCLUDE_ALL_UNITS, CURRICULAR_UNITS_INFO=CURRICULAR_UNITS}}], actionNodes=[{id=curricular-information-completion, type=withButtons, comment=false, title={pt-PT=Preenchimento da Informação Curricular, en-GB=Completion of the Curricular Information}, description={pt-PT=Preenchimento da Informação Curricular pelos Serviços Académicos, en-GB=Completion of the Curricular Information by the Academic Services}, commentLabel={pt-PT=Preenchimento da Informação Curricular pelos Serviços Académicos, en-GB=Completion of the Curricular Information by the Academic Services}, buttons=[{label={pt-PT=Rejeitar, en-GB=Reject}, handler=action:REJECT}, {primary=true, label={pt-PT=Preencher Informação Curricular, en-GB=Complete Curricular Information}, handler=process:complete-curricular-information}], actions=[{primary=true, to=document-generation-and-signer-dispatch, label={pt-PT=Completar Informação Curricular, en-GB=Complete Curricular Information}, id=COMPLETE_INFORMATION-curricular-information-completion, name=COMPLETE_INFORMATION}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-curricular-information-completion, name=REJECT}], blockUndo=true, queue=academic-office-queue-Preenchimento-de-Informacao-Curricular, actionProcessor=[{applyOn=COMPLETE_INFORMATION-curricular-information-completion, flowProcessor=Generate Programmes and Workloads Documents and Send to Signer, team=a474a698-6af4-4510-9745-4b2183af6dd7, template=b0b3274c-e6c6-4141-9293-3cef6945ec80, files={pt-PT={outcome-form-field=0.0.PROGRAMMES_AND_WORKLOADS_CERTIFICATE_PORTUGUESE, filenameProvider=Get Academic Document Filename, fileField=PROGRAMMES_AND_WORKLOADS_CERTIFICATE_PORTUGUESE, titleProvider=Get Academic Document Title, description=Certidão de Programas e Cargas Horárias - {{request}}}, en-GB={outcome-form-field=0.0.PROGRAMMES_AND_WORKLOADS_CERTIFICATE_ENGLISH, filenameProvider=Get Academic Document Filename, fileField=PROGRAMMES_AND_WORKLOADS_CERTIFICATE_ENGLISH, titleProvider=Get Academic Document Title, description=Programmes and Workloads Certificate - {{request}}}}, contentType=application/pdf, payloadProviders=Programmes and Workloads Papyrus Payload, requestQueues=[Área de Graduação - Assinatura Eletrónica, Área de Pós-Graduação - Assinatura Eletrónica, Área de Gestão de Recursos Humanos e Académicos do Taguspark - Assinatura Eletrónica], queue={Área de Graduação - Assinatura Eletrónica=FE90iguA, Área de Pós-Graduação - Assinatura Eletrónica=t9acHdLA, Área de Gestão de Recursos Humanos e Académicos do Taguspark - Assinatura Eletrónica=0exbMF0b}, signatureField=signatureField, flowAction=GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER, id=onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer, name=onActionTransition}], queueOrder=0}, {id=document-generation-and-signer-dispatch, type=generic, comment=false, title={pt-PT=Produção de Documentos e Envio para o Signer, en-GB=Document Generation and Dispatch to Signer}, description={pt-PT=Produção dos documentos académicos e envio para o Signer, en-GB=Academic documents generation and dispatch to Signer}, commentLabel={pt-PT=Produção dos documentos académicos e envio para o Signer, en-GB=Academic documents generation and dispatch to Signer}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Produzir Documentos e Enviar para o Signer, en-GB=Generate Documents and Send to Signer}, id=GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch, name=GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER}], queue=academic-office-queue-Assinatura-Eletronica, queueOrder=1}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="programmes-and-workloads-certificate-flow"
+                        id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="document-generation-and-signer-dispatch"
+                           id="Shape_document-generation-and-signer-dispatch">
+            <dc:Bounds height="60.0" width="80.0" x="1115.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="curricular-information-completion"
+                           id="Shape_curricular-information-completion">
+            <dc:Bounds height="60.0" width="80.0" x="435.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-curricular-information-completion"
+                           id="Shape_REJECT-curricular-information-completion">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="255.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch"
+                           id="Shape_GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch">
+            <dc:Bounds height="60.0" width="80.0" x="1295.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer"
+                           id="Shape_onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer">
+            <dc:Bounds height="60.0" width="80.0" x="935.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="COMPLETE_INFORMATION-curricular-information-completion"
+                           id="Shape_COMPLETE_INFORMATION-curricular-information-completion">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="957.5" y="262.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_curricular-information-completion"
+                           id="Shape_ExclusiveGateway_curricular-information-completion">
+            <dc:Bounds height="40.0" width="40.0" x="615.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="1475.0" y="382.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="academic-office-queue-Preenchimento-de-Informacao-Curricular"
+                           id="Shape_academic-office-queue-Preenchimento-de-Informacao-Curricular">
+            <dc:Bounds height="280.0" width="1450.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="academic-office-queue-Assinatura-Eletronica"
+                           id="Shape_academic-office-queue-Assinatura-Eletronica">
+            <dc:Bounds height="120.0" width="1450.0" x="90.0" y="340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="400.0" width="1480.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="COMPLETE_INFORMATION-curricular-information-completion_to_onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer"
+                          id="Edge_COMPLETE_INFORMATION-curricular-information-completion_to_onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer">
+            <di:waypoint x="835.0" y="120.0"/>
+            <di:waypoint x="935.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="document-generation-and-signer-dispatch_to_GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch"
+                          id="Edge_document-generation-and-signer-dispatch_to_GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch">
+            <di:waypoint x="1195.0" y="400.0"/>
+            <di:waypoint x="1295.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer_to_document-generation-and-signer-dispatch"
+                          id="Edge_onActionTransition-curricular-information-completion-Generate_Programmes_and_Workloads_Documents_and_Send_to_Signer_to_document-generation-and-signer-dispatch">
+            <di:waypoint x="1015.0" y="120.0"/>
+            <di:waypoint x="1048.0" y="120.0"/>
+            <di:waypoint x="1048.0" y="400.0"/>
+            <di:waypoint x="1115.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="curricular-information-completion_to_ExclusiveGateway_curricular-information-completion"
+                          id="Edge_curricular-information-completion_to_ExclusiveGateway_curricular-information-completion">
+            <di:waypoint x="515.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="615.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_curricular-information-completion_to_REJECT-curricular-information-completion"
+                          id="Edge_ExclusiveGateway_curricular-information-completion_to_REJECT-curricular-information-completion">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="688.0" y="120.0"/>
+            <di:waypoint x="688.0" y="280.0"/>
+            <di:waypoint x="755.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_curricular-information-completion"
+                          id="Edge_START-start-event_to_curricular-information-completion">
+            <di:waypoint x="335.0" y="120.0"/>
+            <di:waypoint x="435.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_curricular-information-completion_to_COMPLETE_INFORMATION-curricular-information-completion"
+                          id="Edge_ExclusiveGateway_curricular-information-completion_to_COMPLETE_INFORMATION-curricular-information-completion">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="755.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch_to_SUCCESS"
+                          id="Edge_GENERATE_DOCUMENTS_AND_SEND_TO_SIGNER-document-generation-and-signer-dispatch_to_SUCCESS">
+            <di:waypoint x="1375.0" y="400.0"/>
+            <di:waypoint x="1408.0" y="400.0"/>
+            <di:waypoint x="1408.0" y="400.0"/>
+            <di:waypoint x="1475.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-curricular-information-completion_to_FAILURE"
+                          id="Edge_REJECT-curricular-information-completion_to_FAILURE">
+            <di:waypoint x="835.0" y="280.0"/>
+            <di:waypoint x="868.0" y="280.0"/>
+            <di:waypoint x="868.0" y="280.0"/>
+            <di:waypoint x="957.5" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="155.0" y="120.0"/>
+            <di:waypoint x="255.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

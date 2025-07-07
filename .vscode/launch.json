@@ -5,6 +5,13 @@
         "type": "java",
         "name": "AppValidateSingle",
         "request": "launch",
+        "mainClass": "com.rdf.AppValidateSingle",
+        "projectName": "BPMN2SmartFlow"
+    },
+    {
+        "type": "java",
+        "name": "AppValidateSingle",
+        "request": "launch",
         "mainClass": "com.rdf.archived.AppValidateSingle",
         "projectName": "BPMN2SmartFlow"
     },

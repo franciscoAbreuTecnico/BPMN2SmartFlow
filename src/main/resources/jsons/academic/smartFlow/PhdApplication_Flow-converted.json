@@ -178,7 +178,8 @@
               "id" : "onEnterNode-step-1-a-request-letters-of-recommendation-Do_Flow_Action",
               "name" : "onEnterNode"
             }
-          ]
+          ],
+          "queueOrder" : 0
         },
         {
           "id" : "step-1-b-wait-for-letters-of-recommendation",
@@ -244,7 +245,8 @@
               "id" : "onEnterNode-step-1-b-wait-for-letters-of-recommendation-Do_Flow_Action_After_Time_Passes",
               "name" : "onEnterNode"
             }
-          ]
+          ],
+          "queueOrder" : 0
         },
         {
           "id" : "step-1-c-letters-of-recommendation-received",
@@ -280,7 +282,8 @@
               "name" : "CONCLUDE"
             }
           ],
-          "queue" : "Area-de-Pos-Graduacao-Geral"
+          "queue" : "Area-de-Pos-Graduacao-Geral",
+          "queueOrder" : 0
         },
         {
           "id" : "step-check-qualifications",
@@ -355,7 +358,8 @@
               "name" : "onActionTransition"
             }
           ],
-          "queue" : "Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao"
+          "queue" : "Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao",
+          "queueOrder" : 1
         },
         {
           "id" : "step-advisor-accept-0",
@@ -391,7 +395,8 @@
               "name" : "REJECT"
             }
           ],
-          "queue" : "advisor-queue"
+          "queue" : "advisor-queue",
+          "queueOrder" : 2
         },
         {
           "id" : "step-degree-coordinator-evaluation",
@@ -475,7 +480,8 @@
               "name" : "onActionTransition"
             }
           ],
-          "queue" : "degree-coordinator"
+          "queue" : "degree-coordinator",
+          "queueOrder" : 3
         },
         {
           "id" : "step-review-application",
@@ -543,7 +549,8 @@
               "id" : "onActionTransition-step-review-application-Terminate_Revision_Period",
               "name" : "onActionTransition"
             }
-          ]
+          ],
+          "queueOrder" : 4
         },
         {
           "id" : "step-protest",
@@ -620,7 +627,8 @@
               "id" : "onEnterNode-step-protest-Do_Flow_Action_After_Time_Passes",
               "name" : "onEnterNode"
             }
-          ]
+          ],
+          "queueOrder" : 4
         },
         {
           "id" : "step-degree-coordinator-evaluation-protest",
@@ -706,7 +714,8 @@
               "name" : "onActionTransition"
             }
           ],
-          "queue" : "degree-coordinator"
+          "queue" : "degree-coordinator",
+          "queueOrder" : 3
         },
         {
           "id" : "step-officialize",
@@ -742,7 +751,8 @@
               "name" : "REJECT"
             }
           ],
-          "queue" : "Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao"
+          "queue" : "Conselho-Cientifico-Formacao-Avancada-e-a-Investigacao",
+          "queueOrder" : 1
         }
       ]
     }

@@ -22,17 +22,17 @@
       "showOutline" : true,
       "components" : [ {
         "type" : "number",
-        "id" : "Field_insurancePerMonth",
-        "key" : "insurancePerMonth",
-        "label" : "insurancePerMonth",
+        "id" : "Field_totalInsurance",
+        "key" : "totalInsurance",
+        "label" : "totalInsurance",
         "required" : true,
         "readOnly" : false,
         "validate" : { }
       }, {
         "type" : "number",
-        "id" : "Field_socialSecurityPerMonth",
-        "key" : "socialSecurityPerMonth",
-        "label" : "socialSecurityPerMonth",
+        "id" : "Field_insurancePerMonth",
+        "key" : "insurancePerMonth",
+        "label" : "insurancePerMonth",
         "required" : true,
         "readOnly" : false,
         "validate" : { }
@@ -62,20 +62,13 @@
         "validate" : { }
       }, {
         "type" : "number",
-        "id" : "Field_totalInsurance",
-        "key" : "totalInsurance",
-        "label" : "totalInsurance",
+        "id" : "Field_socialSecurityPerMonth",
+        "key" : "socialSecurityPerMonth",
+        "label" : "socialSecurityPerMonth",
         "required" : true,
         "readOnly" : false,
         "validate" : { }
       } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_FFund_Allocation",
-      "key" : "section_FFund_Allocation",
-      "label" : "Reserve/Fund_Allocation",
-      "showOutline" : true,
-      "components" : [ ]
     }, {
       "type" : "group",
       "id" : "Section_Cost_Allocation",
@@ -99,12 +92,6 @@
             "pt-PT" : "Fundação para a Ciência e a Tecnologia (FCT)"
           }
         }, {
-          "value" : "ist",
-          "label" : {
-            "en-GB" : "Instituto Superior Técnico (IST)",
-            "pt-PT" : "Instituto Superior Técnico (IST)"
-          }
-        }, {
           "value" : "ani",
           "label" : {
             "en-GB" : "Agência Nacional de Inovação (ANI)",
@@ -115,6 +102,12 @@
           "label" : {
             "en-GB" : "European Union (EU)",
             "pt-PT" : "União Europeia (UE)"
+          }
+        }, {
+          "value" : "ist",
+          "label" : {
+            "en-GB" : "Instituto Superior Técnico (IST)",
+            "pt-PT" : "Instituto Superior Técnico (IST)"
           }
         } ]
       }, {
@@ -141,6 +134,13 @@
           }
         } ]
       } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_FFund_Allocation",
+      "key" : "section_FFund_Allocation",
+      "label" : "Reserve/Fund_Allocation",
+      "showOutline" : true,
+      "components" : [ ]
     } ]
   } ]
 }

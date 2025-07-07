@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
@@ -208,7 +210,7 @@ public class LayoutExampleMain {
             return map;
         }
 
-        public void layout(BpmnModelInstance mi, LayoutConfig cfg){
+        public void layout(BpmnModelInstance mi, LayoutConfig cfg, Map<Lane, Integer> laneOrderMap) {
             Process proc = mi.getModelElementsByType(Process.class)
                     .stream()
                     .findFirst()
@@ -216,7 +218,9 @@ public class LayoutExampleMain {
             if(proc==null) throw new IllegalStateException("Process_1 not found");
             LaneSet ls = proc.getChildElementsByType(LaneSet.class).stream().findFirst()
                     .orElseThrow(()->new IllegalStateException("No lanes"));
-            List<Lane> lanes = new ArrayList<>(ls.getLanes());
+            List<Lane> lanes = ls.getLanes().stream()
+                .sorted(Comparator.comparingInt(lane -> laneOrderMap.getOrDefault(lane, Integer.MAX_VALUE)))
+                .collect(Collectors.toList());
 
             Map<Lane,Map<FlowNode,LayoutData>> byLane = new LinkedHashMap<>();
             Map<Lane,Integer> maxC=new HashMap<>(), maxR=new HashMap<>();
@@ -508,11 +512,16 @@ public class LayoutExampleMain {
         createSequenceFlow(model,"startEvent_1","task_5","flow_10","Start>Purchase");
 
         LayoutConfig cfg = new LayoutConfig();
-        new AutoLayoutEngine().layout(model,cfg);
+        new AutoLayoutEngine().layout(model,cfg,
+                Map.of(
+                        sales, 0,
+                        finance, 1,
+                        purchase, 2
+                ));
 
         try(FileWriter w = new FileWriter("src/main/resources/output/bpmn/testDiagramLayout.bpmn")){
             w.write(Bpmn.convertToString(model));
-            System.out.println("▶ Wrote target/testDiagramLayout.bpmn");
+            System.out.println("Wrote target/testDiagramLayout.bpmn");
         }
     }
 

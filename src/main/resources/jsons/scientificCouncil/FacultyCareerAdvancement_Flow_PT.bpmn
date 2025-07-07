@@ -1,0 +1,1661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_1de49813-782f-4acd-9b53-a74cabd487a4"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="Sistema-FenixEdu" name="Sistema-FenixEdu">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>remove-expression-of-interest</flowNodeRef>
+            <flowNodeRef>go-step-5-multiple</flowNodeRef>
+            <flowNodeRef>step-1-multiple</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node</flowNodeRef>
+            <flowNodeRef>onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node</flowNodeRef>
+            <flowNodeRef>REJECT-step-1-multiple</flowNodeRef>
+            <flowNodeRef>REMOVE-remove-expression-of-interest</flowNodeRef>
+            <flowNodeRef>SIGN-step-1-multiple</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>SIGN-go-step-5-multiple</flowNodeRef>
+            <flowNodeRef>REJECT-go-step-5-multiple</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_go-step-5-multiple</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-1-multiple</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="department-queue-Comissao-de-Vagas"
+               name="department-queue-Comissao-de-Vagas">
+            <flowNodeRef>go-step-2</flowNodeRef>
+            <flowNodeRef>go-step-4</flowNodeRef>
+            <flowNodeRef>step-1-single</flowNodeRef>
+            <flowNodeRef>department-decision-go-step-4</flowNodeRef>
+            <flowNodeRef>go-step-5-single</flowNodeRef>
+            <flowNodeRef>submit-form-go-step-2</flowNodeRef>
+            <flowNodeRef>SIGN-go-step-2</flowNodeRef>
+            <flowNodeRef>SIGN-go-step-4</flowNodeRef>
+            <flowNodeRef>REJECT-go-step-5-single</flowNodeRef>
+            <flowNodeRef>REJECT-step-1-single</flowNodeRef>
+            <flowNodeRef>SIGN-go-step-5-single</flowNodeRef>
+            <flowNodeRef>SIGN-step-1-single</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_SIGN-go-step-4</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_go-step-5-single</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-1-single</flowNodeRef>
+         </lane>
+         <lane id="Conselho-Cientifico-Comissao-Valorizacao"
+               name="Conselho-Cientifico-Comissao-Valorizacao">
+            <flowNodeRef>step-8-archive</flowNodeRef>
+            <flowNodeRef>go-step-3-b</flowNodeRef>
+            <flowNodeRef>go-step-3-a</flowNodeRef>
+            <flowNodeRef>no-go-step-2</flowNodeRef>
+            <flowNodeRef>go-step-3-c</flowNodeRef>
+            <flowNodeRef>onActionTransition-no-go-step-2-Set_Request_Outcome_Form</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-8-archive-Set_Supervisor</flowNodeRef>
+            <flowNodeRef>onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-8-archive-Move_Queue</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-8-archive-Remove_Past_Queues</flowNodeRef>
+            <flowNodeRef>ARCHIVE-step-8-archive</flowNodeRef>
+            <flowNodeRef>SIGN-go-step-3-a</flowNodeRef>
+            <flowNodeRef>CONCLUDE-go-step-3-c</flowNodeRef>
+            <flowNodeRef>REVERT-go-step-3-c</flowNodeRef>
+            <flowNodeRef>CONCLUDE-go-step-3-b</flowNodeRef>
+            <flowNodeRef>SEND_TO_DEPARTMENT-no-go-step-2</flowNodeRef>
+            <flowNodeRef>ALL_RECEIVED-go-step-3-b</flowNodeRef>
+            <flowNodeRef>CONFIRM-no-go-step-2</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_ARCHIVE-step-8-archive</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_no-go-step-2</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_go-step-3-c</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_go-step-3-b</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+         <lane id="Conselho-Cientifico-Comissao-Valorizacao-Permanente"
+               name="Conselho-Cientifico-Comissao-Valorizacao-Permanente">
+            <flowNodeRef>go-step-6</flowNodeRef>
+            <flowNodeRef>step-7-communicate-result</flowNodeRef>
+            <flowNodeRef>no-go-step-6</flowNodeRef>
+            <flowNodeRef>onActionTransition-go-step-6-Set_Request_Outcome_Form</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request</flowNodeRef>
+            <flowNodeRef>onActionTransition-no-go-step-6-Do_Flow_Action</flowNodeRef>
+            <flowNodeRef>onActionTransition-no-go-step-6-Set_Request_Outcome_Form</flowNodeRef>
+            <flowNodeRef>onActionTransition-go-step-6-Do_Flow_Action</flowNodeRef>
+            <flowNodeRef>SIGN-go-step-6</flowNodeRef>
+            <flowNodeRef>REJECT-go-step-6</flowNodeRef>
+            <flowNodeRef>REMOVE-go-step-6</flowNodeRef>
+            <flowNodeRef>REJECT-no-go-step-6</flowNodeRef>
+            <flowNodeRef>REMOVE-no-go-step-6</flowNodeRef>
+            <flowNodeRef>SIGN-no-go-step-6</flowNodeRef>
+            <flowNodeRef>NOTIFY-step-7-communicate-result</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_no-go-step-6</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_go-step-6</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask camunda:formRef="department-recommendation-letters"
+                camunda:formRefBinding="latest"
+                id="go-step-2"
+                name="Indicação de Especialistas">
+         <documentation id="documentation_ad912646-74a0-4737-a41b-6a1c103dc6f7">Especialistas a propor para cartas de referência adicionais, para além dos indicados pelo proponente.</documentation>
+         <incoming>SIGN-step-1-single_to_go-step-2</incoming>
+         <incoming>SEND_TO_DEPARTMENT-no-go-step-2_to_go-step-2</incoming>
+         <incoming>onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_go-step-2</incoming>
+         <outgoing>go-step-2_to_submit-form-go-step-2</outgoing>
+      </userTask>
+      <userTask id="remove-expression-of-interest"
+                name="Retirar Manifestação de Interesse">
+         <documentation id="documentation_350d1407-46b1-4b4a-9b4e-8a3884452d1b">Retirar Manifestação de Interesse</documentation>
+         <incoming>onActionTransition-go-step-6-Do_Flow_Action_to_remove-expression-of-interest</incoming>
+         <incoming>onActionTransition-no-go-step-6-Do_Flow_Action_to_remove-expression-of-interest</incoming>
+         <outgoing>remove-expression-of-interest_to_REMOVE-remove-expression-of-interest</outgoing>
+      </userTask>
+      <userTask id="go-step-5-multiple" name="Confirmar Parecer">
+         <documentation id="documentation_946918a7-d42b-4d5a-9919-ffe4e8d3b531">O Departamento confirma o seu parecer</documentation>
+         <incoming>ExclusiveGateway_SIGN-go-step-4_to_go-step-5-multiple</incoming>
+         <outgoing>go-step-5-multiple_to_ExclusiveGateway_go-step-5-multiple</outgoing>
+      </userTask>
+      <userTask id="step-8-archive" name="Arquivar">
+         <documentation id="documentation_d284586b-7003-4514-b446-8876ea717e6f">Arquivar com o Administrador</documentation>
+         <incoming>onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request_to_step-8-archive</incoming>
+         <outgoing>step-8-archive_to_ARCHIVE-step-8-archive</outgoing>
+      </userTask>
+      <userTask camunda:formRef="department-decision"
+                camunda:formRefBinding="latest"
+                id="go-step-4"
+                name="Emitir Parecer">
+         <documentation id="documentation_5be0226a-a898-411b-9afa-bcba5eafa9a4">O Departamento emite o seu parecer</documentation>
+         <incoming>CONCLUDE-go-step-3-b_to_go-step-4</incoming>
+         <incoming>CONCLUDE-go-step-3-c_to_go-step-4</incoming>
+         <outgoing>go-step-4_to_department-decision-go-step-4</outgoing>
+      </userTask>
+      <userTask id="step-1-single" name="Apreciação de Early Go">
+         <documentation id="documentation_46f1a598-f4c8-415a-8950-eebf876a5a2a">Apreciação de Early Go pelas Comissões de Vagas do Departamento</documentation>
+         <outgoing>step-1-single_to_ExclusiveGateway_step-1-single</outgoing>
+      </userTask>
+      <userTask id="go-step-6" name="Resultado Final">
+         <documentation id="documentation_56a5a14c-d806-48bf-b8e5-06f364291559">O Conselho Científico toma a sua decisão</documentation>
+         <incoming>SIGN-go-step-5-single_to_go-step-6</incoming>
+         <incoming>onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_go-step-6</incoming>
+         <outgoing>go-step-6_to_ExclusiveGateway_go-step-6</outgoing>
+      </userTask>
+      <userTask id="step-1-multiple" name="Apreciação de Early Go">
+         <documentation id="documentation_00a30984-5674-4579-bcef-f99d145f03eb">Apreciação de Early Go pelas Comissões de Vagas dos Departamentos</documentation>
+         <incoming>START-start-event_to_step-1-multiple</incoming>
+         <outgoing>step-1-multiple_to_ExclusiveGateway_step-1-multiple</outgoing>
+      </userTask>
+      <userTask id="step-7-communicate-result" name="Comunicar Resultado Final">
+         <documentation id="documentation_a90a11ca-01e0-495f-a588-5beec4f6f9e7">O Conselho Científico comunica o resultado</documentation>
+         <incoming>onActionTransition-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result</incoming>
+         <incoming>onActionTransition-no-go-step-2-Set_Request_Outcome_Form_to_step-7-communicate-result</incoming>
+         <incoming>onActionTransition-no-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result</incoming>
+         <outgoing>step-7-communicate-result_to_NOTIFY-step-7-communicate-result</outgoing>
+      </userTask>
+      <userTask id="no-go-step-6" name="Resultado Final">
+         <documentation id="documentation_dcb470fd-9849-4918-be99-e4a5a1a6de9f">O Conselho Científico toma a sua decisão</documentation>
+         <incoming>onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-6</incoming>
+         <incoming>REJECT-go-step-5-single_to_no-go-step-6</incoming>
+         <outgoing>no-go-step-6_to_ExclusiveGateway_no-go-step-6</outgoing>
+      </userTask>
+      <userTask id="go-step-3-b" name="Aguardar Receção de Cartas">
+         <documentation id="documentation_f1526cff-cd4a-4e15-a726-5c0844ca5c9f">Aguardar Receção de Cartas</documentation>
+         <incoming>onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement_to_go-step-3-b</incoming>
+         <incoming>REVERT-go-step-3-c_to_go-step-3-b</incoming>
+         <outgoing>go-step-3-b_to_ExclusiveGateway_go-step-3-b</outgoing>
+      </userTask>
+      <userTask id="go-step-3-a" name="Solicitar Parecer a Especialistas">
+         <documentation id="documentation_7be4ce3e-cf6f-4700-8960-69bb70093d4f">Requerer parecer aos especialistas</documentation>
+         <incoming>SIGN-go-step-2_to_go-step-3-a</incoming>
+         <outgoing>go-step-3-a_to_SIGN-go-step-3-a</outgoing>
+      </userTask>
+      <userTask id="department-decision-go-step-4" name="Carregar Parecer">
+         <incoming>go-step-4_to_department-decision-go-step-4</incoming>
+         <outgoing>department-decision-go-step-4_to_SIGN-go-step-4</outgoing>
+      </userTask>
+      <userTask id="no-go-step-2" name="Não tem Early Go">
+         <documentation id="documentation_0c643c5b-2f6d-48c1-a0a3-191703dd9b72">Não tem Early Go</documentation>
+         <incoming>REJECT-step-1-single_to_no-go-step-2</incoming>
+         <incoming>onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-2</incoming>
+         <outgoing>no-go-step-2_to_ExclusiveGateway_no-go-step-2</outgoing>
+      </userTask>
+      <userTask id="go-step-3-c" name="Cartas Recebidas">
+         <documentation id="documentation_5abd6d51-78df-46fd-af68-e28047d6b4f9">Cartas Recebidas</documentation>
+         <incoming>ALL_RECEIVED-go-step-3-b_to_go-step-3-c</incoming>
+         <outgoing>go-step-3-c_to_ExclusiveGateway_go-step-3-c</outgoing>
+      </userTask>
+      <userTask id="go-step-5-single" name="Confirmar Parecer">
+         <documentation id="documentation_75301fb3-fe22-4ce5-87c4-bbd2891eb73c">O Departamento confirma o seu parecer</documentation>
+         <incoming>ExclusiveGateway_SIGN-go-step-4_to_go-step-5-single</incoming>
+         <outgoing>go-step-5-single_to_ExclusiveGateway_go-step-5-single</outgoing>
+      </userTask>
+      <userTask id="submit-form-go-step-2" name="Submeter formulário">
+         <incoming>go-step-2_to_submit-form-go-step-2</incoming>
+         <outgoing>submit-form-go-step-2_to_SIGN-go-step-2</outgoing>
+      </userTask>
+      <scriptTask id="onActionTransition-go-step-6-Set_Request_Outcome_Form"
+                  name="Set Request Outcome Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_845"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L845"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form</incoming>
+         <incoming>REJECT-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form</incoming>
+         <outgoing>onActionTransition-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request"
+                  name="Return Flow Approved To Request">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_415"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L415"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>NOTIFY-step-7-communicate-result_to_onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request</incoming>
+         <outgoing>onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request_to_step-8-archive</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"
+                  name="Create Parallel Subflows From Node">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_459"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L459"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node</incoming>
+         <incoming>REJECT-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node</incoming>
+         <outgoing>onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_go-step-2</outgoing>
+         <outgoing>onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-2</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-no-go-step-6-Do_Flow_Action"
+                  name="Do Flow Action">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_607"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L607"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>REMOVE-no-go-step-6_to_onActionTransition-no-go-step-6-Do_Flow_Action</incoming>
+         <outgoing>onActionTransition-no-go-step-6-Do_Flow_Action_to_remove-expression-of-interest</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-no-go-step-2-Set_Request_Outcome_Form"
+                  name="Set Request Outcome Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_845"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L845"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>CONFIRM-no-go-step-2_to_onActionTransition-no-go-step-2-Set_Request_Outcome_Form</incoming>
+         <outgoing>onActionTransition-no-go-step-2-Set_Request_Outcome_Form_to_step-7-communicate-result</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-8-archive-Set_Supervisor"
+                  name="Set Supervisor">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_407"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L407"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Set_Supervisor</incoming>
+         <outgoing>onActionTransition-step-8-archive-Set_Supervisor_to_SUCCESS</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-no-go-step-6-Set_Request_Outcome_Form"
+                  name="Set Request Outcome Form">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_845"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L845"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>REJECT-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form</incoming>
+         <incoming>SIGN-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form</incoming>
+         <outgoing>onActionTransition-no-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement"
+                  name="Init Recommendation Letters For Faculty Career Advancement">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_1144"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/servlet/PaperPusherISTServletContextListener.java#L1144"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-go-step-3-a_to_onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement</incoming>
+         <outgoing>onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement_to_go-step-3-b</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"
+                  name="Create Parallel Subflows From Node">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_459"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L459"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node</incoming>
+         <incoming>REJECT-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node</incoming>
+         <outgoing>onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_go-step-6</outgoing>
+         <outgoing>onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-6</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-8-archive-Move_Queue" name="Move Queue">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_601"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L601"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Move_Queue</incoming>
+         <outgoing>onActionTransition-step-8-archive-Move_Queue_to_SUCCESS</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-go-step-6-Do_Flow_Action" name="Do Flow Action">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_607"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L607"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>REMOVE-go-step-6_to_onActionTransition-go-step-6-Do_Flow_Action</incoming>
+         <outgoing>onActionTransition-go-step-6-Do_Flow_Action_to_remove-expression-of-interest</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-8-archive-Remove_Past_Queues"
+                  name="Remove Past Queues">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_400"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L400"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Remove_Past_Queues</incoming>
+         <outgoing>onActionTransition-step-8-archive-Remove_Past_Queues_to_SUCCESS</outgoing>
+      </scriptTask>
+      <serviceTask id="SIGN-go-step-2" name="Terminar submissão de referências">
+         <incoming>submit-form-go-step-2_to_SIGN-go-step-2</incoming>
+         <outgoing>SIGN-go-step-2_to_go-step-3-a</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-go-step-4" name="Carregar Parecer">
+         <incoming>department-decision-go-step-4_to_SIGN-go-step-4</incoming>
+         <outgoing>SIGN-go-step-4_to_ExclusiveGateway_SIGN-go-step-4</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-go-step-6" name="Favorável">
+         <incoming>ExclusiveGateway_go-step-6_to_SIGN-go-step-6</incoming>
+         <outgoing>SIGN-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-1-multiple" name="Sem Early Go">
+         <incoming>ExclusiveGateway_step-1-multiple_to_REJECT-step-1-multiple</incoming>
+         <outgoing>REJECT-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-go-step-5-single" name="Desfavorável">
+         <incoming>ExclusiveGateway_go-step-5-single_to_REJECT-go-step-5-single</incoming>
+         <outgoing>REJECT-go-step-5-single_to_no-go-step-6</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-go-step-6" name="Desfavorável">
+         <incoming>ExclusiveGateway_go-step-6_to_REJECT-go-step-6</incoming>
+         <outgoing>REJECT-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form</outgoing>
+      </serviceTask>
+      <serviceTask id="REMOVE-remove-expression-of-interest"
+                   name="Retirar Manifestação de Interesse">
+         <incoming>remove-expression-of-interest_to_REMOVE-remove-expression-of-interest</incoming>
+         <outgoing>REMOVE-remove-expression-of-interest_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="REMOVE-go-step-6" name="Retirar Manifestação de Interesse">
+         <incoming>ExclusiveGateway_go-step-6_to_REMOVE-go-step-6</incoming>
+         <outgoing>REMOVE-go-step-6_to_onActionTransition-go-step-6-Do_Flow_Action</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-1-multiple" name="Early Go">
+         <incoming>ExclusiveGateway_step-1-multiple_to_SIGN-step-1-multiple</incoming>
+         <outgoing>SIGN-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Iniciar Processo">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-1-multiple</outgoing>
+      </serviceTask>
+      <serviceTask id="ARCHIVE-step-8-archive" name="Arquivar">
+         <incoming>step-8-archive_to_ARCHIVE-step-8-archive</incoming>
+         <outgoing>ARCHIVE-step-8-archive_to_ExclusiveGateway_ARCHIVE-step-8-archive</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-no-go-step-6" name="Desfavorável">
+         <incoming>ExclusiveGateway_no-go-step-6_to_REJECT-no-go-step-6</incoming>
+         <outgoing>REJECT-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-1-single" name="Sem Early Go">
+         <incoming>ExclusiveGateway_step-1-single_to_REJECT-step-1-single</incoming>
+         <outgoing>REJECT-step-1-single_to_no-go-step-2</outgoing>
+      </serviceTask>
+      <serviceTask id="REMOVE-no-go-step-6" name="Retirar Manifestação de Interesse">
+         <incoming>ExclusiveGateway_no-go-step-6_to_REMOVE-no-go-step-6</incoming>
+         <outgoing>REMOVE-no-go-step-6_to_onActionTransition-no-go-step-6-Do_Flow_Action</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-go-step-3-a" name="Aguardar Receção de Cartas">
+         <incoming>go-step-3-a_to_SIGN-go-step-3-a</incoming>
+         <outgoing>SIGN-go-step-3-a_to_onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-go-step-5-multiple" name="Favorável">
+         <incoming>ExclusiveGateway_go-step-5-multiple_to_SIGN-go-step-5-multiple</incoming>
+         <outgoing>SIGN-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node</outgoing>
+      </serviceTask>
+      <serviceTask id="CONCLUDE-go-step-3-c" name="Terminar Receção de Cartas">
+         <incoming>ExclusiveGateway_go-step-3-c_to_CONCLUDE-go-step-3-c</incoming>
+         <outgoing>CONCLUDE-go-step-3-c_to_go-step-4</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-go-step-5-single" name="Favorável">
+         <incoming>ExclusiveGateway_go-step-5-single_to_SIGN-go-step-5-single</incoming>
+         <outgoing>SIGN-go-step-5-single_to_go-step-6</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-no-go-step-6" name="Favorável">
+         <incoming>ExclusiveGateway_no-go-step-6_to_SIGN-no-go-step-6</incoming>
+         <outgoing>SIGN-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form</outgoing>
+      </serviceTask>
+      <serviceTask id="REVERT-go-step-3-c" name="Reverter para Gerir Pedidos de Cartas">
+         <incoming>ExclusiveGateway_go-step-3-c_to_REVERT-go-step-3-c</incoming>
+         <outgoing>REVERT-go-step-3-c_to_go-step-3-b</outgoing>
+      </serviceTask>
+      <serviceTask id="CONCLUDE-go-step-3-b" name="Terminar Receção de Cartas">
+         <incoming>ExclusiveGateway_go-step-3-b_to_CONCLUDE-go-step-3-b</incoming>
+         <outgoing>CONCLUDE-go-step-3-b_to_go-step-4</outgoing>
+      </serviceTask>
+      <serviceTask id="SEND_TO_DEPARTMENT-no-go-step-2"
+                   name="Remeter ao Departamento para Indicação de Especialistas">
+         <incoming>ExclusiveGateway_no-go-step-2_to_SEND_TO_DEPARTMENT-no-go-step-2</incoming>
+         <outgoing>SEND_TO_DEPARTMENT-no-go-step-2_to_go-step-2</outgoing>
+      </serviceTask>
+      <serviceTask id="ALL_RECEIVED-go-step-3-b" name="Cartas Recebidas">
+         <incoming>ExclusiveGateway_go-step-3-b_to_ALL_RECEIVED-go-step-3-b</incoming>
+         <outgoing>ALL_RECEIVED-go-step-3-b_to_go-step-3-c</outgoing>
+      </serviceTask>
+      <serviceTask id="CONFIRM-no-go-step-2" name="Confirmar e Fechar Processo">
+         <incoming>ExclusiveGateway_no-go-step-2_to_CONFIRM-no-go-step-2</incoming>
+         <outgoing>CONFIRM-no-go-step-2_to_onActionTransition-no-go-step-2-Set_Request_Outcome_Form</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-go-step-5-multiple" name="Desfavorável">
+         <incoming>ExclusiveGateway_go-step-5-multiple_to_REJECT-go-step-5-multiple</incoming>
+         <outgoing>REJECT-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-1-single" name="Early Go">
+         <incoming>ExclusiveGateway_step-1-single_to_SIGN-step-1-single</incoming>
+         <outgoing>SIGN-step-1-single_to_go-step-2</outgoing>
+      </serviceTask>
+      <serviceTask id="NOTIFY-step-7-communicate-result" name="Comunicar Resultado Final">
+         <incoming>step-7-communicate-result_to_NOTIFY-step-7-communicate-result</incoming>
+         <outgoing>NOTIFY-step-7-communicate-result_to_onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_SIGN-go-step-4"
+                        name="ExclusiveGateway_SIGN-go-step-4">
+         <incoming>SIGN-go-step-4_to_ExclusiveGateway_SIGN-go-step-4</incoming>
+         <outgoing>ExclusiveGateway_SIGN-go-step-4_to_go-step-5-single</outgoing>
+         <outgoing>ExclusiveGateway_SIGN-go-step-4_to_go-step-5-multiple</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_ARCHIVE-step-8-archive"
+                        name="ExclusiveGateway_ARCHIVE-step-8-archive">
+         <incoming>ARCHIVE-step-8-archive_to_ExclusiveGateway_ARCHIVE-step-8-archive</incoming>
+         <outgoing>ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Remove_Past_Queues</outgoing>
+         <outgoing>ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Set_Supervisor</outgoing>
+         <outgoing>ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Move_Queue</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_no-go-step-6" name="ExclusiveGateway_no-go-step-6">
+         <incoming>no-go-step-6_to_ExclusiveGateway_no-go-step-6</incoming>
+         <outgoing>ExclusiveGateway_no-go-step-6_to_REJECT-no-go-step-6</outgoing>
+         <outgoing>ExclusiveGateway_no-go-step-6_to_SIGN-no-go-step-6</outgoing>
+         <outgoing>ExclusiveGateway_no-go-step-6_to_REMOVE-no-go-step-6</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_go-step-5-single"
+                        name="ExclusiveGateway_go-step-5-single">
+         <incoming>go-step-5-single_to_ExclusiveGateway_go-step-5-single</incoming>
+         <outgoing>ExclusiveGateway_go-step-5-single_to_REJECT-go-step-5-single</outgoing>
+         <outgoing>ExclusiveGateway_go-step-5-single_to_SIGN-go-step-5-single</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-1-single"
+                        name="ExclusiveGateway_step-1-single">
+         <incoming>step-1-single_to_ExclusiveGateway_step-1-single</incoming>
+         <outgoing>ExclusiveGateway_step-1-single_to_SIGN-step-1-single</outgoing>
+         <outgoing>ExclusiveGateway_step-1-single_to_REJECT-step-1-single</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_go-step-5-multiple"
+                        name="ExclusiveGateway_go-step-5-multiple">
+         <incoming>go-step-5-multiple_to_ExclusiveGateway_go-step-5-multiple</incoming>
+         <outgoing>ExclusiveGateway_go-step-5-multiple_to_REJECT-go-step-5-multiple</outgoing>
+         <outgoing>ExclusiveGateway_go-step-5-multiple_to_SIGN-go-step-5-multiple</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_go-step-6" name="ExclusiveGateway_go-step-6">
+         <incoming>go-step-6_to_ExclusiveGateway_go-step-6</incoming>
+         <outgoing>ExclusiveGateway_go-step-6_to_REMOVE-go-step-6</outgoing>
+         <outgoing>ExclusiveGateway_go-step-6_to_SIGN-go-step-6</outgoing>
+         <outgoing>ExclusiveGateway_go-step-6_to_REJECT-go-step-6</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_no-go-step-2" name="ExclusiveGateway_no-go-step-2">
+         <incoming>no-go-step-2_to_ExclusiveGateway_no-go-step-2</incoming>
+         <outgoing>ExclusiveGateway_no-go-step-2_to_SEND_TO_DEPARTMENT-no-go-step-2</outgoing>
+         <outgoing>ExclusiveGateway_no-go-step-2_to_CONFIRM-no-go-step-2</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_go-step-3-c" name="ExclusiveGateway_go-step-3-c">
+         <incoming>go-step-3-c_to_ExclusiveGateway_go-step-3-c</incoming>
+         <outgoing>ExclusiveGateway_go-step-3-c_to_REVERT-go-step-3-c</outgoing>
+         <outgoing>ExclusiveGateway_go-step-3-c_to_CONCLUDE-go-step-3-c</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_go-step-3-b" name="ExclusiveGateway_go-step-3-b">
+         <incoming>go-step-3-b_to_ExclusiveGateway_go-step-3-b</incoming>
+         <outgoing>ExclusiveGateway_go-step-3-b_to_CONCLUDE-go-step-3-b</outgoing>
+         <outgoing>ExclusiveGateway_go-step-3-b_to_ALL_RECEIVED-go-step-3-b</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-1-multiple"
+                        name="ExclusiveGateway_step-1-multiple">
+         <incoming>step-1-multiple_to_ExclusiveGateway_step-1-multiple</incoming>
+         <outgoing>ExclusiveGateway_step-1-multiple_to_SIGN-step-1-multiple</outgoing>
+         <outgoing>ExclusiveGateway_step-1-multiple_to_REJECT-step-1-multiple</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REMOVE-remove-expression-of-interest_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>onActionTransition-step-8-archive-Remove_Past_Queues_to_SUCCESS</incoming>
+         <incoming>onActionTransition-step-8-archive-Set_Supervisor_to_SUCCESS</incoming>
+         <incoming>onActionTransition-step-8-archive-Move_Queue_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="onActionTransition-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result"
+                    name=""
+                    sourceRef="onActionTransition-go-step-6-Set_Request_Outcome_Form"
+                    targetRef="step-7-communicate-result"/>
+      <sequenceFlow id="go-step-5-multiple_to_ExclusiveGateway_go-step-5-multiple"
+                    name=""
+                    sourceRef="go-step-5-multiple"
+                    targetRef="ExclusiveGateway_go-step-5-multiple"/>
+      <sequenceFlow id="SIGN-go-step-2_to_go-step-3-a"
+                    name=""
+                    sourceRef="SIGN-go-step-2"
+                    targetRef="go-step-3-a"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-5-single_to_REJECT-go-step-5-single"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-5-single"
+                    targetRef="REJECT-go-step-5-single"/>
+      <sequenceFlow id="CONCLUDE-go-step-3-b_to_go-step-4"
+                    name=""
+                    sourceRef="CONCLUDE-go-step-3-b"
+                    targetRef="go-step-4"/>
+      <sequenceFlow id="ExclusiveGateway_no-go-step-6_to_REJECT-no-go-step-6"
+                    name=""
+                    sourceRef="ExclusiveGateway_no-go-step-6"
+                    targetRef="REJECT-no-go-step-6"/>
+      <sequenceFlow id="ARCHIVE-step-8-archive_to_ExclusiveGateway_ARCHIVE-step-8-archive"
+                    name=""
+                    sourceRef="ARCHIVE-step-8-archive"
+                    targetRef="ExclusiveGateway_ARCHIVE-step-8-archive"/>
+      <sequenceFlow id="remove-expression-of-interest_to_REMOVE-remove-expression-of-interest"
+                    name=""
+                    sourceRef="remove-expression-of-interest"
+                    targetRef="REMOVE-remove-expression-of-interest"/>
+      <sequenceFlow id="ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Remove_Past_Queues"
+                    name=""
+                    sourceRef="ExclusiveGateway_ARCHIVE-step-8-archive"
+                    targetRef="onActionTransition-step-8-archive-Remove_Past_Queues"/>
+      <sequenceFlow id="go-step-3-a_to_SIGN-go-step-3-a"
+                    name=""
+                    sourceRef="go-step-3-a"
+                    targetRef="SIGN-go-step-3-a"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-6_to_REMOVE-go-step-6"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-6"
+                    targetRef="REMOVE-go-step-6"/>
+      <sequenceFlow id="ALL_RECEIVED-go-step-3-b_to_go-step-3-c"
+                    name=""
+                    sourceRef="ALL_RECEIVED-go-step-3-b"
+                    targetRef="go-step-3-c"/>
+      <sequenceFlow id="SIGN-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"
+                    name=""
+                    sourceRef="SIGN-step-1-multiple"
+                    targetRef="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"/>
+      <sequenceFlow id="REJECT-step-1-single_to_no-go-step-2"
+                    name=""
+                    sourceRef="REJECT-step-1-single"
+                    targetRef="no-go-step-2"/>
+      <sequenceFlow id="SIGN-go-step-5-single_to_go-step-6"
+                    name=""
+                    sourceRef="SIGN-go-step-5-single"
+                    targetRef="go-step-6"/>
+      <sequenceFlow id="go-step-3-b_to_ExclusiveGateway_go-step-3-b"
+                    name=""
+                    sourceRef="go-step-3-b"
+                    targetRef="ExclusiveGateway_go-step-3-b"/>
+      <sequenceFlow id="ExclusiveGateway_no-go-step-2_to_SEND_TO_DEPARTMENT-no-go-step-2"
+                    name=""
+                    sourceRef="ExclusiveGateway_no-go-step-2"
+                    targetRef="SEND_TO_DEPARTMENT-no-go-step-2"/>
+      <sequenceFlow id="ExclusiveGateway_no-go-step-6_to_SIGN-no-go-step-6"
+                    name=""
+                    sourceRef="ExclusiveGateway_no-go-step-6"
+                    targetRef="SIGN-no-go-step-6"/>
+      <sequenceFlow id="onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request_to_step-8-archive"
+                    name=""
+                    sourceRef="onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request"
+                    targetRef="step-8-archive"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-3-c_to_REVERT-go-step-3-c"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-3-c"
+                    targetRef="REVERT-go-step-3-c"/>
+      <sequenceFlow id="go-step-5-single_to_ExclusiveGateway_go-step-5-single"
+                    name=""
+                    sourceRef="go-step-5-single"
+                    targetRef="ExclusiveGateway_go-step-5-single"/>
+      <sequenceFlow id="onActionTransition-no-go-step-2-Set_Request_Outcome_Form_to_step-7-communicate-result"
+                    name=""
+                    sourceRef="onActionTransition-no-go-step-2-Set_Request_Outcome_Form"
+                    targetRef="step-7-communicate-result"/>
+      <sequenceFlow id="go-step-2_to_submit-form-go-step-2"
+                    name=""
+                    sourceRef="go-step-2"
+                    targetRef="submit-form-go-step-2"/>
+      <sequenceFlow id="submit-form-go-step-2_to_SIGN-go-step-2"
+                    name=""
+                    sourceRef="submit-form-go-step-2"
+                    targetRef="SIGN-go-step-2"/>
+      <sequenceFlow id="SIGN-step-1-single_to_go-step-2"
+                    name=""
+                    sourceRef="SIGN-step-1-single"
+                    targetRef="go-step-2"/>
+      <sequenceFlow id="REJECT-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"
+                    name=""
+                    sourceRef="REJECT-step-1-multiple"
+                    targetRef="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"/>
+      <sequenceFlow id="ExclusiveGateway_step-1-single_to_SIGN-step-1-single"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1-single"
+                    targetRef="SIGN-step-1-single"/>
+      <sequenceFlow id="go-step-6_to_ExclusiveGateway_go-step-6"
+                    name=""
+                    sourceRef="go-step-6"
+                    targetRef="ExclusiveGateway_go-step-6"/>
+      <sequenceFlow id="onActionTransition-step-8-archive-Remove_Past_Queues_to_SUCCESS"
+                    name=""
+                    sourceRef="onActionTransition-step-8-archive-Remove_Past_Queues"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-5-multiple_to_REJECT-go-step-5-multiple"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-5-multiple"
+                    targetRef="REJECT-go-step-5-multiple"/>
+      <sequenceFlow id="step-1-single_to_ExclusiveGateway_step-1-single"
+                    name=""
+                    sourceRef="step-1-single"
+                    targetRef="ExclusiveGateway_step-1-single"/>
+      <sequenceFlow id="ExclusiveGateway_SIGN-go-step-4_to_go-step-5-single"
+                    name=""
+                    sourceRef="ExclusiveGateway_SIGN-go-step-4"
+                    targetRef="go-step-5-single"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-3-b_to_CONCLUDE-go-step-3-b"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-3-b"
+                    targetRef="CONCLUDE-go-step-3-b"/>
+      <sequenceFlow id="SEND_TO_DEPARTMENT-no-go-step-2_to_go-step-2"
+                    name=""
+                    sourceRef="SEND_TO_DEPARTMENT-no-go-step-2"
+                    targetRef="go-step-2"/>
+      <sequenceFlow id="onActionTransition-go-step-6-Do_Flow_Action_to_remove-expression-of-interest"
+                    name=""
+                    sourceRef="onActionTransition-go-step-6-Do_Flow_Action"
+                    targetRef="remove-expression-of-interest"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+      <sequenceFlow id="NOTIFY-step-7-communicate-result_to_onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request"
+                    name=""
+                    sourceRef="NOTIFY-step-7-communicate-result"
+                    targetRef="onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request"/>
+      <sequenceFlow id="CONCLUDE-go-step-3-c_to_go-step-4"
+                    name=""
+                    sourceRef="CONCLUDE-go-step-3-c"
+                    targetRef="go-step-4"/>
+      <sequenceFlow id="ExclusiveGateway_step-1-multiple_to_SIGN-step-1-multiple"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1-multiple"
+                    targetRef="SIGN-step-1-multiple"/>
+      <sequenceFlow id="no-go-step-2_to_ExclusiveGateway_no-go-step-2"
+                    name=""
+                    sourceRef="no-go-step-2"
+                    targetRef="ExclusiveGateway_no-go-step-2"/>
+      <sequenceFlow id="onActionTransition-step-8-archive-Set_Supervisor_to_SUCCESS"
+                    name=""
+                    sourceRef="onActionTransition-step-8-archive-Set_Supervisor"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="no-go-step-6_to_ExclusiveGateway_no-go-step-6"
+                    name=""
+                    sourceRef="no-go-step-6"
+                    targetRef="ExclusiveGateway_no-go-step-6"/>
+      <sequenceFlow id="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_go-step-6"
+                    name=""
+                    sourceRef="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"
+                    targetRef="go-step-6"/>
+      <sequenceFlow id="go-step-4_to_department-decision-go-step-4"
+                    name=""
+                    sourceRef="go-step-4"
+                    targetRef="department-decision-go-step-4"/>
+      <sequenceFlow id="ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Set_Supervisor"
+                    name=""
+                    sourceRef="ExclusiveGateway_ARCHIVE-step-8-archive"
+                    targetRef="onActionTransition-step-8-archive-Set_Supervisor"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-5-multiple_to_SIGN-go-step-5-multiple"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-5-multiple"
+                    targetRef="SIGN-go-step-5-multiple"/>
+      <sequenceFlow id="onActionTransition-no-go-step-6-Do_Flow_Action_to_remove-expression-of-interest"
+                    name=""
+                    sourceRef="onActionTransition-no-go-step-6-Do_Flow_Action"
+                    targetRef="remove-expression-of-interest"/>
+      <sequenceFlow id="onActionTransition-no-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result"
+                    name=""
+                    sourceRef="onActionTransition-no-go-step-6-Set_Request_Outcome_Form"
+                    targetRef="step-7-communicate-result"/>
+      <sequenceFlow id="REMOVE-remove-expression-of-interest_to_FAILURE"
+                    name=""
+                    sourceRef="REMOVE-remove-expression-of-interest"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="step-7-communicate-result_to_NOTIFY-step-7-communicate-result"
+                    name=""
+                    sourceRef="step-7-communicate-result"
+                    targetRef="NOTIFY-step-7-communicate-result"/>
+      <sequenceFlow id="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-6"
+                    name=""
+                    sourceRef="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"
+                    targetRef="no-go-step-6"/>
+      <sequenceFlow id="ExclusiveGateway_no-go-step-6_to_REMOVE-no-go-step-6"
+                    name=""
+                    sourceRef="ExclusiveGateway_no-go-step-6"
+                    targetRef="REMOVE-no-go-step-6"/>
+      <sequenceFlow id="onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement_to_go-step-3-b"
+                    name=""
+                    sourceRef="onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement"
+                    targetRef="go-step-3-b"/>
+      <sequenceFlow id="ExclusiveGateway_no-go-step-2_to_CONFIRM-no-go-step-2"
+                    name=""
+                    sourceRef="ExclusiveGateway_no-go-step-2"
+                    targetRef="CONFIRM-no-go-step-2"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-5-single_to_SIGN-go-step-5-single"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-5-single"
+                    targetRef="SIGN-go-step-5-single"/>
+      <sequenceFlow id="REJECT-go-step-5-single_to_no-go-step-6"
+                    name=""
+                    sourceRef="REJECT-go-step-5-single"
+                    targetRef="no-go-step-6"/>
+      <sequenceFlow id="ExclusiveGateway_step-1-single_to_REJECT-step-1-single"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1-single"
+                    targetRef="REJECT-step-1-single"/>
+      <sequenceFlow id="REJECT-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="REJECT-no-go-step-6"
+                    targetRef="onActionTransition-no-go-step-6-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="SIGN-go-step-4_to_ExclusiveGateway_SIGN-go-step-4"
+                    name=""
+                    sourceRef="SIGN-go-step-4"
+                    targetRef="ExclusiveGateway_SIGN-go-step-4"/>
+      <sequenceFlow id="START-start-event_to_step-1-multiple"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-1-multiple"/>
+      <sequenceFlow id="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_go-step-2"
+                    name=""
+                    sourceRef="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"
+                    targetRef="go-step-2"/>
+      <sequenceFlow id="SIGN-go-step-3-a_to_onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement"
+                    name=""
+                    sourceRef="SIGN-go-step-3-a"
+                    targetRef="onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement"/>
+      <sequenceFlow id="onActionTransition-step-8-archive-Move_Queue_to_SUCCESS"
+                    name=""
+                    sourceRef="onActionTransition-step-8-archive-Move_Queue"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-2"
+                    name=""
+                    sourceRef="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"
+                    targetRef="no-go-step-2"/>
+      <sequenceFlow id="department-decision-go-step-4_to_SIGN-go-step-4"
+                    name=""
+                    sourceRef="department-decision-go-step-4"
+                    targetRef="SIGN-go-step-4"/>
+      <sequenceFlow id="SIGN-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="SIGN-go-step-6"
+                    targetRef="onActionTransition-go-step-6-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="step-8-archive_to_ARCHIVE-step-8-archive"
+                    name=""
+                    sourceRef="step-8-archive"
+                    targetRef="ARCHIVE-step-8-archive"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-3-c_to_CONCLUDE-go-step-3-c"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-3-c"
+                    targetRef="CONCLUDE-go-step-3-c"/>
+      <sequenceFlow id="REMOVE-no-go-step-6_to_onActionTransition-no-go-step-6-Do_Flow_Action"
+                    name=""
+                    sourceRef="REMOVE-no-go-step-6"
+                    targetRef="onActionTransition-no-go-step-6-Do_Flow_Action"/>
+      <sequenceFlow id="ExclusiveGateway_SIGN-go-step-4_to_go-step-5-multiple"
+                    name=""
+                    sourceRef="ExclusiveGateway_SIGN-go-step-4"
+                    targetRef="go-step-5-multiple"/>
+      <sequenceFlow id="CONFIRM-no-go-step-2_to_onActionTransition-no-go-step-2-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="CONFIRM-no-go-step-2"
+                    targetRef="onActionTransition-no-go-step-2-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-6_to_SIGN-go-step-6"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-6"
+                    targetRef="SIGN-go-step-6"/>
+      <sequenceFlow id="ExclusiveGateway_step-1-multiple_to_REJECT-step-1-multiple"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1-multiple"
+                    targetRef="REJECT-step-1-multiple"/>
+      <sequenceFlow id="REJECT-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="REJECT-go-step-6"
+                    targetRef="onActionTransition-go-step-6-Set_Request_Outcome_Form"/>
+      <sequenceFlow id="SIGN-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"
+                    name=""
+                    sourceRef="SIGN-go-step-5-multiple"
+                    targetRef="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"/>
+      <sequenceFlow id="REMOVE-go-step-6_to_onActionTransition-go-step-6-Do_Flow_Action"
+                    name=""
+                    sourceRef="REMOVE-go-step-6"
+                    targetRef="onActionTransition-go-step-6-Do_Flow_Action"/>
+      <sequenceFlow id="ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Move_Queue"
+                    name=""
+                    sourceRef="ExclusiveGateway_ARCHIVE-step-8-archive"
+                    targetRef="onActionTransition-step-8-archive-Move_Queue"/>
+      <sequenceFlow id="REJECT-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"
+                    name=""
+                    sourceRef="REJECT-go-step-5-multiple"
+                    targetRef="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"/>
+      <sequenceFlow id="REVERT-go-step-3-c_to_go-step-3-b"
+                    name=""
+                    sourceRef="REVERT-go-step-3-c"
+                    targetRef="go-step-3-b"/>
+      <sequenceFlow id="step-1-multiple_to_ExclusiveGateway_step-1-multiple"
+                    name=""
+                    sourceRef="step-1-multiple"
+                    targetRef="ExclusiveGateway_step-1-multiple"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-3-b_to_ALL_RECEIVED-go-step-3-b"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-3-b"
+                    targetRef="ALL_RECEIVED-go-step-3-b"/>
+      <sequenceFlow id="ExclusiveGateway_go-step-6_to_REJECT-go-step-6"
+                    name=""
+                    sourceRef="ExclusiveGateway_go-step-6"
+                    targetRef="REJECT-go-step-6"/>
+      <sequenceFlow id="go-step-3-c_to_ExclusiveGateway_go-step-3-c"
+                    name=""
+                    sourceRef="go-step-3-c"
+                    targetRef="ExclusiveGateway_go-step-3-c"/>
+      <sequenceFlow id="SIGN-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form"
+                    name=""
+                    sourceRef="SIGN-no-go-step-6"
+                    targetRef="onActionTransition-no-go-step-6-Set_Request_Outcome_Form"/>
+   </process>
+   <collaboration id="faculty-career-advancement" name="faculty-career-advancement">
+      <documentation id="documentation_e59e021b-f853-4b4b-a7a6-63faaf869cfd">{name=faculty-career-advancement, title={pt-PT=Processo de Manifestação de Interesse no Âmbito do Processo de Valorização, en-GB=Process of Expression of Interest in the Context of Faculty Career Advancement}, description={pt-PT=Processo de Avaliação de Manifestação de Interesse no Âmbito do Processo de Valorização, en-GB=Process of Evaluation of Expression of Interest in the Context of Faculty Career Advancement}, config={actionProcessor={onSuccess=[], onFailure=[], onActionTransition=[], onCancel={flowProcessor=Cancel Connected Requests}}, flowProcessors=[{handle=manage-reference-letter-requests, flowProcessor=Manage Reference Letters}, {handle=send-all-reference-letter-requests, flowProcessor=Send All Reference Letter Requests}], forms=[{id=department-recommendation-letters, title={pt-PT=Sugestões do Departamento para Cartas de Recomendação, en-GB=Department Suggestions for Letters of Recommendation}, form={pages=[{title={pt-PT=Sugestão_de_especialistas, en-GB=Suggestion_of_specialists}, sections=[{title={pt-PT=Referências, en-GB=References}, properties=[{field=departmentReferenceContacts, label={pt-PT=Sugestões para Escrever Pareceres, en-GB=Reference Contact Suggestions}, description={pt-PT=Sugerir um especialista externo e dois professores catedráticos/investigadores coordenadores do IST, que poderão ser de outras áreas disciplinares., en-GB=Suggest one external expert and two IST professors/coordinating researchers, who may be from other disciplinary areas.}, type=Array, required=true, min=3, max=3, properties=[{field=referenceName, type=Text, required=true, label={pt-PT=Nome, en-GB=Name}}, {field=referenceEmail, type=Text, inputType=email, required=true, label={pt-PT=Endereço de E-mail, en-GB=E-mail address}}, {field=referenceAffiliation, type=Text, required=true, label={pt-PT=Título/Instituição, en-GB=Title/Institution}}, {field=referenceLocale, type=Select, required=true, label={pt-PT=Idioma, en-GB=Language}, description={en-GB=Language of the e-mail to be sent., pt-PT=Idioma do e-mail a ser enviado.}, options=[{value=pt-PT, label={pt-PT=Português, en-GB=Portuguese}}, {value=en-GB, label={pt-PT=Inglês, en-GB=English}}]}]}]}]}]}}, {id=department-decision, title={pt-PT=Parecer do Departamento, en-GB=Decision of the Department}, form={pages=[{title={pt-PT=Carregar_Parecer, en-GB=Upload_Recommendation}, sections=[{title={pt-PT=Parecer, en-GB=Recommendation}, properties=[{type=File, field=departmentDecision, required=true, label={pt-PT=Parecer do Departamento, en-GB=Department  Recommendation}, allowedFileTypes=[.pdf], maxSizeMB=10}, {type=File, field=additionalDocument, required=false, label={pt-PT=Documento Adicional, en-GB=Additional Document}, allowedFileTypes=[.pdf], maxSizeMB=10}]}]}]}}], actionNodes=[{id=step-1-multiple, type=generic, comment=true, title={pt-PT=Apreciação de Early Go, en-GB=Early Go Analysis}, description={pt-PT=Apreciação de Early Go pelas Comissões de Vagas dos Departamentos, en-GB=Early Go Analysis by the Vacancy Committee of the Departments}, commentLabel={pt-PT=Informação da Comissão de Vagas/Presidente dos Departamentos, en-GB=Information from the Vacancy Committee/President of the Departments}, actions=[{primary=true, to=go-step-2, label={pt-PT=Early Go, en-GB=Early Go}, id=SIGN-step-1-multiple, name=SIGN}, {primary=false, to=no-go-step-2, label={pt-PT=Sem Early Go, en-GB=Without Early Go}, id=REJECT-step-1-multiple, name=REJECT}], queue=Sistema-FenixEdu, actionProcessor=[{flowProcessor=Create Parallel Subflows From Node, template=faculty-career-advancement-department-opinion, actionNodesProvider=Faculty Career Advancement Flow - Department Opinion Subflow, field=departments, id=onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node, name=onEnterNode}], queueOrder=0}, {id=step-1-single, type=generic, comment=true, title={pt-PT=Apreciação de Early Go, en-GB=Early Go Analysis}, description={pt-PT=Apreciação de Early Go pelas Comissões de Vagas do Departamento, en-GB=Early Go Analysis by the Vacancy Committee of the Department}, commentLabel={pt-PT=Informação da Comissão de Vagas/Presidente do Departamento, en-GB=Information from the Vacancy Committee/President of the Department}, actions=[{primary=true, to=go-step-2, label={pt-PT=Early Go, en-GB=Early Go}, id=SIGN-step-1-single, name=SIGN}, {primary=false, to=no-go-step-2, label={pt-PT=Sem Early Go, en-GB=Without Early Go}, id=REJECT-step-1-single, name=REJECT}], queue=department-queue-Comissao-de-Vagas, queueOrder=1}, {id=no-go-step-2, type=generic, comment=false, title={pt-PT=Não tem Early Go, en-GB=There is no Early Go}, description={pt-PT=Não tem Early Go, en-GB=There is no Early Go}, actions=[{primary=true, to=step-7-communicate-result, label={pt-PT=Confirmar e Fechar Processo, en-GB=Confirm and Close Process}, id=CONFIRM-no-go-step-2, name=CONFIRM}, {primary=false, to=go-step-2, label={pt-PT=Remeter ao Departamento para Indicação de Especialistas, en-GB=Send to Department for Specialists Proposal}, id=SEND_TO_DEPARTMENT-no-go-step-2, name=SEND_TO_DEPARTMENT}], actionProcessor=[{applyOn=CONFIRM-no-go-step-2, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=0, label={pt-PT=Sem Early Go., en-GB=Without Early Go.}}}, id=onActionTransition-no-go-step-2-Set_Request_Outcome_Form, name=onActionTransition}], queue=Conselho-Cientifico-Comissao-Valorizacao, queueOrder=2}, {id=go-step-2, type=withForms, comment=false, title={pt-PT=Indicação de Especialistas, en-GB=Indication of Specialists}, description={pt-PT=Especialistas a propor para cartas de referência adicionais, para além dos indicados pelo proponente., en-GB=Experts to be proposed for additional reference letters in addition to those nominated by the requester.}, buttons=[{id=submit-form-go-step-2, primary=true, label={pt-PT=Submeter formulário, en-GB=Submit form}, handlers={form=department-recommendation-letters, action=SIGN-go-step-2}}], actions=[{primary=true, to=go-step-3-a, label={pt-PT=Terminar submissão de referências, en-GB=Conclude submission of references}, id=SIGN-go-step-2, name=SIGN}], queue=department-queue-Comissao-de-Vagas, queueOrder=1}, {id=go-step-3-a, type=withButtons, comment=false, title={pt-PT=Solicitar Parecer a Especialistas, en-GB=Request Specialists’ Opinion}, description={pt-PT=Requerer parecer aos especialistas, en-GB=Request specialists opinion}, buttons=[{primary=false, label={pt-PT=Gerir Pedidos, en-GB=Manage Requests}, handler=process:manage-reference-letter-requests}, {primary=true, label={pt-PT=Enviar Todos os Pedidos de Cartas de Referência, en-GB=Send all Reference Letter Requests}, handler=process:send-all-reference-letter-requests}], actions=[{primary=true, to=go-step-3-b, label={pt-PT=Aguardar Receção de Cartas, en-GB=Await Reception of Letters}, id=SIGN-go-step-3-a, name=SIGN}], queue=Conselho-Cientifico-Comissao-Valorizacao, actionProcessor=[{applyOn=SIGN-go-step-3-a, flowProcessor=Init Recommendation Letters For Faculty Career Advancement, id=onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement, name=onEnterNode}], queueOrder=2}, {id=go-step-3-b, type=withButtons, comment=false, title={pt-PT=Aguardar Receção de Cartas, en-GB=Await Reception of Letters}, description={pt-PT=Aguardar Receção de Cartas, en-GB=Await Reception of Letters}, buttons=[{primary=true, label={pt-PT=Gerir Pedidos, en-GB=Manage Requests}, handler=process:manage-reference-letter-requests}, {primary=false, label={pt-PT=Terminar Receção de Cartas, en-GB=Conclude Reception of Letters}, handler=action:CONCLUDE}], actions=[{primary=false, to=go-step-4, label={pt-PT=Terminar Receção de Cartas, en-GB=Conclude Reception of Letters}, id=CONCLUDE-go-step-3-b, name=CONCLUDE}, {primary=true, to=go-step-3-c, label={pt-PT=Cartas Recebidas, en-GB=Letters Received}, id=ALL_RECEIVED-go-step-3-b, name=ALL_RECEIVED}], queue=Conselho-Cientifico-Comissao-Valorizacao, queueOrder=2}, {id=go-step-3-c, type=generic, comment=false, title={pt-PT=Cartas Recebidas, en-GB=Letters Received}, description={pt-PT=Cartas Recebidas, en-GB=Letters Received}, actions=[{primary=false, to=go-step-3-b, label={pt-PT=Reverter para Gerir Pedidos de Cartas, en-GB=Revert to Manage Letter Requests}, id=REVERT-go-step-3-c, name=REVERT}, {primary=true, to=go-step-4, label={pt-PT=Terminar Receção de Cartas, en-GB=Conclude Reception of Letters}, id=CONCLUDE-go-step-3-c, name=CONCLUDE}], queue=Conselho-Cientifico-Comissao-Valorizacao, queueOrder=2}, {id=go-step-4, type=withForms, comment=false, title={pt-PT=Emitir Parecer, en-GB=Issue Recommendation}, description={pt-PT=O Departamento emite o seu parecer, en-GB=The department issues its recommendation}, buttons=[{id=department-decision-go-step-4, primary=true, label={pt-PT=Carregar Parecer, en-GB=Upload Recommendation}, handlers={form=department-decision, action=SIGN-go-step-4}}], actions=[{primary=true, to=[go-step-5-single, go-step-5-multiple], label={pt-PT=Carregar Parecer, en-GB=Upload Recommendation}, id=SIGN-go-step-4, name=SIGN}], queue=department-queue-Comissao-de-Vagas, queueOrder=1}, {id=go-step-5-single, type=generic, comment=false, title={pt-PT=Confirmar Parecer, en-GB=Confirm Recommendation}, description={pt-PT=O Departamento confirma o seu parecer, en-GB=The department confirms its recommendation}, actions=[{primary=true, to=go-step-6, label={pt-PT=Favorável, en-GB=Favorable}, id=SIGN-go-step-5-single, name=SIGN}, {primary=false, to=no-go-step-6, label={pt-PT=Desfavorável, en-GB=Unfavorable}, id=REJECT-go-step-5-single, name=REJECT}], queue=department-queue-Comissao-de-Vagas, queueOrder=1}, {id=go-step-5-multiple, type=generic, comment=false, title={pt-PT=Confirmar Parecer, en-GB=Confirm Recommendation}, description={pt-PT=O Departamento confirma o seu parecer, en-GB=The department confirms its recommendation}, actions=[{primary=true, to=go-step-6, label={pt-PT=Favorável, en-GB=Favorable}, id=SIGN-go-step-5-multiple, name=SIGN}, {primary=false, to=no-go-step-6, label={pt-PT=Desfavorável, en-GB=Unfavorable}, id=REJECT-go-step-5-multiple, name=REJECT}], queue=Sistema-FenixEdu, actionProcessor=[{flowProcessor=Create Parallel Subflows From Node, template=faculty-career-advancement-department-confirmation, actionNodesProvider=Faculty Career Advancement Flow - Department Opinion Subflow, field=departments, id=onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node, name=onEnterNode}], queueOrder=0}, {id=no-go-step-6, type=generic, comment=false, title={pt-PT=Resultado Final, en-GB=Final Result}, description={pt-PT=O Conselho Científico toma a sua decisão, en-GB=The Scientific Council makes it decision}, actions=[{primary=false, to=remove-expression-of-interest, label={pt-PT=Retirar Manifestação de Interesse, en-GB=Remove Expression of Interest}, id=REMOVE-no-go-step-6, name=REMOVE}, {primary=false, to=step-7-communicate-result, label={pt-PT=Favorável, en-GB=Favorable}, id=SIGN-no-go-step-6, name=SIGN}, {primary=true, to=step-7-communicate-result, label={pt-PT=Desfavorável, en-GB=Unfavorable}, id=REJECT-no-go-step-6, name=REJECT}], actionProcessor=[{applyOn=SIGN-no-go-step-6, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=a, label={pt-PT=A comissão de vagas do CC considera que estão reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar., en-GB=The Scientific Council of IST considers that the conditions are met to propose the opening of a potential international competition in your disciplinary area.}}}, id=onActionTransition-no-go-step-6-Set_Request_Outcome_Form, name=onActionTransition}, {applyOn=REJECT-no-go-step-6, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=b, label={pt-PT=A comissão de vagas do CC considera que não estão ainda reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar., en-GB=The Scientific Council of IST considers that the conditions for proposing the opening of a potential international competition in your disciplinary area are not yet met.}}}, id=onActionTransition-no-go-step-6-Set_Request_Outcome_Form, name=onActionTransition}, {applyOn=REMOVE-no-go-step-6, flowProcessor=Do Flow Action, flowAction=REMOVE, id=onActionTransition-no-go-step-6-Do_Flow_Action, name=onActionTransition}], queue=Conselho-Cientifico-Comissao-Valorizacao-Permanente, queueOrder=3}, {id=go-step-6, type=generic, comment=false, title={pt-PT=Resultado Final, en-GB=Final Result}, description={pt-PT=O Conselho Científico toma a sua decisão, en-GB=The Scientific Council makes it decision}, actions=[{primary=true, to=step-7-communicate-result, label={pt-PT=Favorável, en-GB=Favorable}, id=SIGN-go-step-6, name=SIGN}, {primary=false, to=step-7-communicate-result, label={pt-PT=Desfavorável, en-GB=Unfavorable}, id=REJECT-go-step-6, name=REJECT}, {primary=false, to=remove-expression-of-interest, label={pt-PT=Retirar Manifestação de Interesse, en-GB=Remove Expression of Interest}, id=REMOVE-go-step-6, name=REMOVE}], actionProcessor=[{applyOn=SIGN-go-step-6, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=a, label={pt-PT=A comissão de vagas do CC considera que estão reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar., en-GB=The Scientific Council of IST considers that the conditions are met to propose the opening of a potential international competition in your disciplinary area.}}}, id=onActionTransition-go-step-6-Set_Request_Outcome_Form, name=onActionTransition}, {applyOn=REJECT-go-step-6, flowProcessor=Set Request Outcome Form, outcomeFormValues={decision={value=b, label={pt-PT=A comissão de vagas do CC considera que não estão ainda reunidas as condições para se propor a abertura de um eventual concurso internacional na sua área disciplinar., en-GB=The Scientific Council of IST considers that the conditions for proposing the opening of a potential international competition in your disciplinary area are not yet met.}}}, id=onActionTransition-go-step-6-Set_Request_Outcome_Form, name=onActionTransition}, {applyOn=REMOVE-go-step-6, flowProcessor=Do Flow Action, flowAction=REMOVE, id=onActionTransition-go-step-6-Do_Flow_Action, name=onActionTransition}], queue=Conselho-Cientifico-Comissao-Valorizacao-Permanente, queueOrder=3}, {id=step-7-communicate-result, type=generic, comment=false, title={pt-PT=Comunicar Resultado Final, en-GB=Inform of Final Result}, description={pt-PT=O Conselho Científico comunica o resultado, en-GB=The Scientific Council informs of the result}, actions=[{primary=true, to=step-8-archive, label={pt-PT=Comunicar Resultado Final, en-GB=Inform of Final Result}, id=NOTIFY-step-7-communicate-result, name=NOTIFY}], queue=Conselho-Cientifico-Comissao-Valorizacao-Permanente, actionProcessor=[{applyOn=NOTIFY-step-7-communicate-result, flowProcessor=Return Flow Approved To Request, id=onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request, name=onActionTransition}], queueOrder=3}, {id=step-8-archive, type=generic, comment=false, title={pt-PT=Arquivar, en-GB=Archive}, description={pt-PT=Arquivar com o Administrador, en-GB=Archive with the Administrator}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Arquivar, en-GB=Archive}, id=ARCHIVE-step-8-archive, name=ARCHIVE}], queue=Conselho-Cientifico-Comissao-Valorizacao, actionProcessor=[{flowProcessor=Remove Past Queues, id=onActionTransition-step-8-archive-Remove_Past_Queues, name=onActionTransition}, {flowProcessor=Set Supervisor, username=fenix, id=onActionTransition-step-8-archive-Set_Supervisor, name=onActionTransition}, {flowProcessor=Move Queue, flowQueue=Gestão Administrativa, id=onActionTransition-step-8-archive-Move_Queue, name=onActionTransition}], queueOrder=2}, {id=remove-expression-of-interest, type=generic, comment=false, title={pt-PT=Retirar Manifestação de Interesse, en-GB=Remove Expression of Interest}, description={pt-PT=Retirar Manifestação de Interesse, en-GB=Remove Expression of Interest}, actions=[{primary=true, to=FAILURE, label={pt-PT=Retirar Manifestação de Interesse, en-GB=Remove Expression of Interest}, id=REMOVE-remove-expression-of-interest, name=REMOVE}], queue=Sistema-FenixEdu, queueOrder=0}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="faculty-career-advancement" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="no-go-step-2" id="Shape_no-go-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-go-step-2" id="Shape_submit-form-go-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="1010.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-no-go-step-6-Do_Flow_Action"
+                           id="Shape_onActionTransition-no-go-step-6-Do_Flow_Action">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="2210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="go-step-3-a" id="Shape_go-step-3-a">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_go-step-3-b"
+                           id="Shape_ExclusiveGateway_go-step-3-b">
+            <dc:Bounds height="40.0" width="40.0" x="1940.0" y="1620.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-1-single" id="Shape_REJECT-step-1-single">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="850.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-go-step-5-single"
+                           id="Shape_REJECT-go-step-5-single">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="1330.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-go-step-6-Set_Request_Outcome_Form"
+                           id="Shape_onActionTransition-go-step-6-Set_Request_Outcome_Form">
+            <dc:Bounds height="60.0" width="80.0" x="1920.0" y="2530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_go-step-5-single"
+                           id="Shape_ExclusiveGateway_go-step-5-single">
+            <dc:Bounds height="40.0" width="40.0" x="1040.0" y="1180.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_go-step-5-multiple"
+                           id="Shape_ExclusiveGateway_go-step-5-multiple">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="260.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-1-multiple" id="Shape_SIGN-step-1-multiple">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="730.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"
+                           id="Shape_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="730.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-8-archive-Move_Queue"
+                           id="Shape_onActionTransition-step-8-archive-Move_Queue">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="department-decision-go-step-4"
+                           id="Shape_department-decision-go-step-4">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="1010.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_go-step-3-c"
+                           id="Shape_ExclusiveGateway_go-step-3-c">
+            <dc:Bounds height="40.0" width="40.0" x="2460.0" y="1620.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="go-step-6" id="Shape_go-step-6">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="2370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="go-step-2" id="Shape_go-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1010.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="410.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-no-go-step-6" id="Shape_SIGN-no-go-step-6">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="2370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-8-archive-Remove_Past_Queues"
+                           id="Shape_onActionTransition-step-8-archive-Remove_Past_Queues">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="go-step-3-b" id="Shape_go-step-3-b">
+            <dc:Bounds height="60.0" width="80.0" x="1740.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-no-go-step-2-Set_Request_Outcome_Form"
+                           id="Shape_onActionTransition-no-go-step-2-Set_Request_Outcome_Form">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="1450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_go-step-6"
+                           id="Shape_ExclusiveGateway_go-step-6">
+            <dc:Bounds height="40.0" width="40.0" x="1580.0" y="2380.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-go-step-6" id="Shape_SIGN-go-step-6">
+            <dc:Bounds height="60.0" width="80.0" x="1740.0" y="2530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request"
+                           id="Shape_onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request">
+            <dc:Bounds height="60.0" width="80.0" x="1740.0" y="2050.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="go-step-4" id="Shape_go-step-4">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="1010.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REVERT-go-step-3-c" id="Shape_REVERT-go-step-3-c">
+            <dc:Bounds height="60.0" width="80.0" x="2600.0" y="1770.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_no-go-step-6"
+                           id="Shape_ExclusiveGateway_no-go-step-6">
+            <dc:Bounds height="40.0" width="40.0" x="1040.0" y="2220.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="go-step-3-c" id="Shape_go-step-3-c">
+            <dc:Bounds height="60.0" width="80.0" x="2280.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ARCHIVE-step-8-archive" id="Shape_ARCHIVE-step-8-archive">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="1450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_ARCHIVE-step-8-archive"
+                           id="Shape_ExclusiveGateway_ARCHIVE-step-8-archive">
+            <dc:Bounds height="40.0" width="40.0" x="500.0" y="1460.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-go-step-5-single" id="Shape_SIGN-go-step-5-single">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="1170.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-go-step-5-multiple"
+                           id="Shape_SIGN-go-step-5-multiple">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-no-go-step-6-Set_Request_Outcome_Form"
+                           id="Shape_onActionTransition-no-go-step-6-Set_Request_Outcome_Form">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="2530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-1-multiple" id="Shape_step-1-multiple">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="570.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-1-multiple" id="Shape_REJECT-step-1-multiple">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="570.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONCLUDE-go-step-3-c" id="Shape_CONCLUDE-go-step-3-c">
+            <dc:Bounds height="60.0" width="80.0" x="2600.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="NOTIFY-step-7-communicate-result"
+                           id="Shape_NOTIFY-step-7-communicate-result">
+            <dc:Bounds height="60.0" width="80.0" x="1560.0" y="2050.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_SIGN-go-step-4"
+                           id="Shape_ExclusiveGateway_SIGN-go-step-4">
+            <dc:Bounds height="40.0" width="40.0" x="680.0" y="1180.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="422.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-go-step-6-Do_Flow_Action"
+                           id="Shape_onActionTransition-go-step-6-Do_Flow_Action">
+            <dc:Bounds height="60.0" width="80.0" x="1920.0" y="2690.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-1-multiple"
+                           id="Shape_ExclusiveGateway_step-1-multiple">
+            <dc:Bounds height="40.0" width="40.0" x="680.0" y="580.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="862.5" y="1782.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ALL_RECEIVED-go-step-3-b"
+                           id="Shape_ALL_RECEIVED-go-step-3-b">
+            <dc:Bounds height="60.0" width="80.0" x="2100.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REMOVE-no-go-step-6" id="Shape_REMOVE-no-go-step-6">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="2210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-go-step-5-multiple"
+                           id="Shape_REJECT-go-step-5-multiple">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="410.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SEND_TO_DEPARTMENT-no-go-step-2"
+                           id="Shape_SEND_TO_DEPARTMENT-no-go-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-1-single" id="Shape_step-1-single">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="850.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-8-archive-Set_Supervisor"
+                           id="Shape_onActionTransition-step-8-archive-Set_Supervisor">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1770.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="go-step-5-single" id="Shape_go-step-5-single">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="1170.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"
+                           id="Shape_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="410.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-8-archive" id="Shape_step-8-archive">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="1450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="no-go-step-6" id="Shape_no-go-step-6">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="2210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-go-step-2" id="Shape_SIGN-go-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1010.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-go-step-6" id="Shape_REJECT-go-step-6">
+            <dc:Bounds height="60.0" width="80.0" x="1740.0" y="2370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONCLUDE-go-step-3-b" id="Shape_CONCLUDE-go-step-3-b">
+            <dc:Bounds height="60.0" width="80.0" x="2100.0" y="1770.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="go-step-5-multiple" id="Shape_go-step-5-multiple">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="502.5" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-1-single" id="Shape_SIGN-step-1-single">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="1010.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-go-step-4" id="Shape_SIGN-go-step-4">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="1170.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement"
+                           id="Shape_onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement">
+            <dc:Bounds height="60.0" width="80.0" x="1560.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="CONFIRM-no-go-step-2" id="Shape_CONFIRM-no-go-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-7-communicate-result"
+                           id="Shape_step-7-communicate-result">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="2050.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="remove-expression-of-interest"
+                           id="Shape_remove-expression-of-interest">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REMOVE-remove-expression-of-interest"
+                           id="Shape_REMOVE-remove-expression-of-interest">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_no-go-step-2"
+                           id="Shape_ExclusiveGateway_no-go-step-2">
+            <dc:Bounds height="40.0" width="40.0" x="860.0" y="1460.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REMOVE-go-step-6" id="Shape_REMOVE-go-step-6">
+            <dc:Bounds height="60.0" width="80.0" x="1740.0" y="2690.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-1-single"
+                           id="Shape_ExclusiveGateway_step-1-single">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="860.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-go-step-3-a" id="Shape_SIGN-go-step-3-a">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="1610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-no-go-step-6" id="Shape_REJECT-no-go-step-6">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="2530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Sistema-FenixEdu" id="Shape_Sistema-FenixEdu">
+            <dc:Bounds height="760.0" width="2620.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="department-queue-Comissao-de-Vagas"
+                           id="Shape_department-queue-Comissao-de-Vagas">
+            <dc:Bounds height="600.0" width="2620.0" x="90.0" y="820.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Conselho-Cientifico-Comissao-Valorizacao"
+                           id="Shape_Conselho-Cientifico-Comissao-Valorizacao">
+            <dc:Bounds height="600.0" width="2620.0" x="90.0" y="1420.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Conselho-Cientifico-Comissao-Valorizacao-Permanente"
+                           id="Shape_Conselho-Cientifico-Comissao-Valorizacao-Permanente">
+            <dc:Bounds height="760.0" width="2620.0" x="90.0" y="2020.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="2720.0" width="2650.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result"
+                          id="Edge_onActionTransition-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result">
+            <di:waypoint x="2000.0" y="2560.0"/>
+            <di:waypoint x="2715.0" y="2560.0"/>
+            <di:waypoint x="2715.0" y="2130.0"/>
+            <di:waypoint x="1420.0" y="2130.0"/>
+            <di:waypoint x="1420.0" y="2110.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="go-step-5-multiple_to_ExclusiveGateway_go-step-5-multiple"
+                          id="Edge_go-step-5-multiple_to_ExclusiveGateway_go-step-5-multiple">
+            <di:waypoint x="200.0" y="280.0"/>
+            <di:waypoint x="233.0" y="280.0"/>
+            <di:waypoint x="233.0" y="280.0"/>
+            <di:waypoint x="320.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-go-step-2_to_go-step-3-a"
+                          id="Edge_SIGN-go-step-2_to_go-step-3-a">
+            <di:waypoint x="1100.0" y="1040.0"/>
+            <di:waypoint x="1133.0" y="1040.0"/>
+            <di:waypoint x="1133.0" y="1640.0"/>
+            <di:waypoint x="1200.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-5-single_to_REJECT-go-step-5-single"
+                          id="Edge_ExclusiveGateway_go-step-5-single_to_REJECT-go-step-5-single">
+            <di:waypoint x="1080.0" y="1200.0"/>
+            <di:waypoint x="1113.0" y="1200.0"/>
+            <di:waypoint x="1113.0" y="1360.0"/>
+            <di:waypoint x="1200.0" y="1360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONCLUDE-go-step-3-b_to_go-step-4"
+                          id="Edge_CONCLUDE-go-step-3-b_to_go-step-4">
+            <di:waypoint x="2180.0" y="1800.0"/>
+            <di:waypoint x="2715.0" y="1800.0"/>
+            <di:waypoint x="2715.0" y="1090.0"/>
+            <di:waypoint x="160.0" y="1090.0"/>
+            <di:waypoint x="160.0" y="1070.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_no-go-step-6_to_REJECT-no-go-step-6"
+                          id="Edge_ExclusiveGateway_no-go-step-6_to_REJECT-no-go-step-6">
+            <di:waypoint x="1080.0" y="2240.0"/>
+            <di:waypoint x="1113.0" y="2240.0"/>
+            <di:waypoint x="1113.0" y="2560.0"/>
+            <di:waypoint x="1200.0" y="2560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ARCHIVE-step-8-archive_to_ExclusiveGateway_ARCHIVE-step-8-archive"
+                          id="Edge_ARCHIVE-step-8-archive_to_ExclusiveGateway_ARCHIVE-step-8-archive">
+            <di:waypoint x="380.0" y="1480.0"/>
+            <di:waypoint x="413.0" y="1480.0"/>
+            <di:waypoint x="413.0" y="1480.0"/>
+            <di:waypoint x="500.0" y="1480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="remove-expression-of-interest_to_REMOVE-remove-expression-of-interest"
+                          id="Edge_remove-expression-of-interest_to_REMOVE-remove-expression-of-interest">
+            <di:waypoint x="200.0" y="120.0"/>
+            <di:waypoint x="300.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Remove_Past_Queues"
+                          id="Edge_ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Remove_Past_Queues">
+            <di:waypoint x="540.0" y="1480.0"/>
+            <di:waypoint x="573.0" y="1480.0"/>
+            <di:waypoint x="573.0" y="1960.0"/>
+            <di:waypoint x="660.0" y="1960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="go-step-3-a_to_SIGN-go-step-3-a"
+                          id="Edge_go-step-3-a_to_SIGN-go-step-3-a">
+            <di:waypoint x="1280.0" y="1640.0"/>
+            <di:waypoint x="1380.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-6_to_REMOVE-go-step-6"
+                          id="Edge_ExclusiveGateway_go-step-6_to_REMOVE-go-step-6">
+            <di:waypoint x="1620.0" y="2400.0"/>
+            <di:waypoint x="1653.0" y="2400.0"/>
+            <di:waypoint x="1653.0" y="2720.0"/>
+            <di:waypoint x="1740.0" y="2720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ALL_RECEIVED-go-step-3-b_to_go-step-3-c"
+                          id="Edge_ALL_RECEIVED-go-step-3-b_to_go-step-3-c">
+            <di:waypoint x="2180.0" y="1640.0"/>
+            <di:waypoint x="2280.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"
+                          id="Edge_SIGN-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node">
+            <di:waypoint x="920.0" y="760.0"/>
+            <di:waypoint x="1020.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-1-single_to_no-go-step-2"
+                          id="Edge_REJECT-step-1-single_to_no-go-step-2">
+            <di:waypoint x="560.0" y="880.0"/>
+            <di:waypoint x="593.0" y="880.0"/>
+            <di:waypoint x="593.0" y="1480.0"/>
+            <di:waypoint x="660.0" y="1480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-go-step-5-single_to_go-step-6"
+                          id="Edge_SIGN-go-step-5-single_to_go-step-6">
+            <di:waypoint x="1280.0" y="1200.0"/>
+            <di:waypoint x="1313.0" y="1200.0"/>
+            <di:waypoint x="1313.0" y="2400.0"/>
+            <di:waypoint x="1380.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="go-step-3-b_to_ExclusiveGateway_go-step-3-b"
+                          id="Edge_go-step-3-b_to_ExclusiveGateway_go-step-3-b">
+            <di:waypoint x="1820.0" y="1640.0"/>
+            <di:waypoint x="1853.0" y="1640.0"/>
+            <di:waypoint x="1853.0" y="1640.0"/>
+            <di:waypoint x="1940.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_no-go-step-2_to_SEND_TO_DEPARTMENT-no-go-step-2"
+                          id="Edge_ExclusiveGateway_no-go-step-2_to_SEND_TO_DEPARTMENT-no-go-step-2">
+            <di:waypoint x="900.0" y="1480.0"/>
+            <di:waypoint x="933.0" y="1480.0"/>
+            <di:waypoint x="933.0" y="1640.0"/>
+            <di:waypoint x="1020.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_no-go-step-6_to_SIGN-no-go-step-6"
+                          id="Edge_ExclusiveGateway_no-go-step-6_to_SIGN-no-go-step-6">
+            <di:waypoint x="1080.0" y="2240.0"/>
+            <di:waypoint x="1113.0" y="2240.0"/>
+            <di:waypoint x="1113.0" y="2400.0"/>
+            <di:waypoint x="1200.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request_to_step-8-archive"
+                          id="Edge_onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request_to_step-8-archive">
+            <di:waypoint x="1820.0" y="2080.0"/>
+            <di:waypoint x="2715.0" y="2080.0"/>
+            <di:waypoint x="2715.0" y="1530.0"/>
+            <di:waypoint x="160.0" y="1530.0"/>
+            <di:waypoint x="160.0" y="1510.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-3-c_to_REVERT-go-step-3-c"
+                          id="Edge_ExclusiveGateway_go-step-3-c_to_REVERT-go-step-3-c">
+            <di:waypoint x="2500.0" y="1640.0"/>
+            <di:waypoint x="2533.0" y="1640.0"/>
+            <di:waypoint x="2533.0" y="1800.0"/>
+            <di:waypoint x="2600.0" y="1800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="go-step-5-single_to_ExclusiveGateway_go-step-5-single"
+                          id="Edge_go-step-5-single_to_ExclusiveGateway_go-step-5-single">
+            <di:waypoint x="920.0" y="1200.0"/>
+            <di:waypoint x="953.0" y="1200.0"/>
+            <di:waypoint x="953.0" y="1200.0"/>
+            <di:waypoint x="1040.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-no-go-step-2-Set_Request_Outcome_Form_to_step-7-communicate-result"
+                          id="Edge_onActionTransition-no-go-step-2-Set_Request_Outcome_Form_to_step-7-communicate-result">
+            <di:waypoint x="1280.0" y="1480.0"/>
+            <di:waypoint x="1313.0" y="1480.0"/>
+            <di:waypoint x="1313.0" y="2080.0"/>
+            <di:waypoint x="1380.0" y="2080.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="go-step-2_to_submit-form-go-step-2"
+                          id="Edge_go-step-2_to_submit-form-go-step-2">
+            <di:waypoint x="740.0" y="1040.0"/>
+            <di:waypoint x="840.0" y="1040.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-go-step-2_to_SIGN-go-step-2"
+                          id="Edge_submit-form-go-step-2_to_SIGN-go-step-2">
+            <di:waypoint x="920.0" y="1040.0"/>
+            <di:waypoint x="1020.0" y="1040.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-1-single_to_go-step-2"
+                          id="Edge_SIGN-step-1-single_to_go-step-2">
+            <di:waypoint x="560.0" y="1040.0"/>
+            <di:waypoint x="660.0" y="1040.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node"
+                          id="Edge_REJECT-step-1-multiple_to_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node">
+            <di:waypoint x="920.0" y="600.0"/>
+            <di:waypoint x="953.0" y="600.0"/>
+            <di:waypoint x="953.0" y="760.0"/>
+            <di:waypoint x="1020.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1-single_to_SIGN-step-1-single"
+                          id="Edge_ExclusiveGateway_step-1-single_to_SIGN-step-1-single">
+            <di:waypoint x="360.0" y="880.0"/>
+            <di:waypoint x="393.0" y="880.0"/>
+            <di:waypoint x="393.0" y="1040.0"/>
+            <di:waypoint x="480.0" y="1040.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="go-step-6_to_ExclusiveGateway_go-step-6"
+                          id="Edge_go-step-6_to_ExclusiveGateway_go-step-6">
+            <di:waypoint x="1460.0" y="2400.0"/>
+            <di:waypoint x="1493.0" y="2400.0"/>
+            <di:waypoint x="1493.0" y="2400.0"/>
+            <di:waypoint x="1580.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-8-archive-Remove_Past_Queues_to_SUCCESS"
+                          id="Edge_onActionTransition-step-8-archive-Remove_Past_Queues_to_SUCCESS">
+            <di:waypoint x="740.0" y="1960.0"/>
+            <di:waypoint x="862.5" y="1960.0"/>
+            <di:waypoint x="862.5" y="1800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-5-multiple_to_REJECT-go-step-5-multiple"
+                          id="Edge_ExclusiveGateway_go-step-5-multiple_to_REJECT-go-step-5-multiple">
+            <di:waypoint x="360.0" y="280.0"/>
+            <di:waypoint x="393.0" y="280.0"/>
+            <di:waypoint x="393.0" y="440.0"/>
+            <di:waypoint x="480.0" y="440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-1-single_to_ExclusiveGateway_step-1-single"
+                          id="Edge_step-1-single_to_ExclusiveGateway_step-1-single">
+            <di:waypoint x="200.0" y="880.0"/>
+            <di:waypoint x="233.0" y="880.0"/>
+            <di:waypoint x="233.0" y="880.0"/>
+            <di:waypoint x="320.0" y="880.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_SIGN-go-step-4_to_go-step-5-single"
+                          id="Edge_ExclusiveGateway_SIGN-go-step-4_to_go-step-5-single">
+            <di:waypoint x="720.0" y="1200.0"/>
+            <di:waypoint x="840.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-3-b_to_CONCLUDE-go-step-3-b"
+                          id="Edge_ExclusiveGateway_go-step-3-b_to_CONCLUDE-go-step-3-b">
+            <di:waypoint x="1980.0" y="1640.0"/>
+            <di:waypoint x="2013.0" y="1640.0"/>
+            <di:waypoint x="2013.0" y="1800.0"/>
+            <di:waypoint x="2100.0" y="1800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SEND_TO_DEPARTMENT-no-go-step-2_to_go-step-2"
+                          id="Edge_SEND_TO_DEPARTMENT-no-go-step-2_to_go-step-2">
+            <di:waypoint x="1100.0" y="1640.0"/>
+            <di:waypoint x="2715.0" y="1640.0"/>
+            <di:waypoint x="2715.0" y="1090.0"/>
+            <di:waypoint x="700.0" y="1090.0"/>
+            <di:waypoint x="700.0" y="1070.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-go-step-6-Do_Flow_Action_to_remove-expression-of-interest"
+                          id="Edge_onActionTransition-go-step-6-Do_Flow_Action_to_remove-expression-of-interest">
+            <di:waypoint x="2000.0" y="2720.0"/>
+            <di:waypoint x="2715.0" y="2720.0"/>
+            <di:waypoint x="2715.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="177.5" y="440.0"/>
+            <di:waypoint x="300.0" y="440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="NOTIFY-step-7-communicate-result_to_onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request"
+                          id="Edge_NOTIFY-step-7-communicate-result_to_onActionTransition-step-7-communicate-result-Return_Flow_Approved_To_Request">
+            <di:waypoint x="1640.0" y="2080.0"/>
+            <di:waypoint x="1740.0" y="2080.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONCLUDE-go-step-3-c_to_go-step-4"
+                          id="Edge_CONCLUDE-go-step-3-c_to_go-step-4">
+            <di:waypoint x="2680.0" y="1640.0"/>
+            <di:waypoint x="2715.0" y="1640.0"/>
+            <di:waypoint x="2715.0" y="1090.0"/>
+            <di:waypoint x="160.0" y="1090.0"/>
+            <di:waypoint x="160.0" y="1070.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1-multiple_to_SIGN-step-1-multiple"
+                          id="Edge_ExclusiveGateway_step-1-multiple_to_SIGN-step-1-multiple">
+            <di:waypoint x="720.0" y="600.0"/>
+            <di:waypoint x="753.0" y="600.0"/>
+            <di:waypoint x="753.0" y="760.0"/>
+            <di:waypoint x="840.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="no-go-step-2_to_ExclusiveGateway_no-go-step-2"
+                          id="Edge_no-go-step-2_to_ExclusiveGateway_no-go-step-2">
+            <di:waypoint x="740.0" y="1480.0"/>
+            <di:waypoint x="773.0" y="1480.0"/>
+            <di:waypoint x="773.0" y="1480.0"/>
+            <di:waypoint x="860.0" y="1480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-8-archive-Set_Supervisor_to_SUCCESS"
+                          id="Edge_onActionTransition-step-8-archive-Set_Supervisor_to_SUCCESS">
+            <di:waypoint x="740.0" y="1800.0"/>
+            <di:waypoint x="773.0" y="1800.0"/>
+            <di:waypoint x="773.0" y="1800.0"/>
+            <di:waypoint x="862.5" y="1800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="no-go-step-6_to_ExclusiveGateway_no-go-step-6"
+                          id="Edge_no-go-step-6_to_ExclusiveGateway_no-go-step-6">
+            <di:waypoint x="920.0" y="2240.0"/>
+            <di:waypoint x="953.0" y="2240.0"/>
+            <di:waypoint x="953.0" y="2240.0"/>
+            <di:waypoint x="1040.0" y="2240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_go-step-6"
+                          id="Edge_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_go-step-6">
+            <di:waypoint x="740.0" y="440.0"/>
+            <di:waypoint x="773.0" y="440.0"/>
+            <di:waypoint x="773.0" y="2400.0"/>
+            <di:waypoint x="1380.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="go-step-4_to_department-decision-go-step-4"
+                          id="Edge_go-step-4_to_department-decision-go-step-4">
+            <di:waypoint x="200.0" y="1040.0"/>
+            <di:waypoint x="300.0" y="1040.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Set_Supervisor"
+                          id="Edge_ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Set_Supervisor">
+            <di:waypoint x="540.0" y="1480.0"/>
+            <di:waypoint x="573.0" y="1480.0"/>
+            <di:waypoint x="573.0" y="1800.0"/>
+            <di:waypoint x="660.0" y="1800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-5-multiple_to_SIGN-go-step-5-multiple"
+                          id="Edge_ExclusiveGateway_go-step-5-multiple_to_SIGN-go-step-5-multiple">
+            <di:waypoint x="360.0" y="280.0"/>
+            <di:waypoint x="480.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-no-go-step-6-Do_Flow_Action_to_remove-expression-of-interest"
+                          id="Edge_onActionTransition-no-go-step-6-Do_Flow_Action_to_remove-expression-of-interest">
+            <di:waypoint x="1460.0" y="2240.0"/>
+            <di:waypoint x="2715.0" y="2240.0"/>
+            <di:waypoint x="2715.0" y="170.0"/>
+            <di:waypoint x="160.0" y="170.0"/>
+            <di:waypoint x="160.0" y="150.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-no-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result"
+                          id="Edge_onActionTransition-no-go-step-6-Set_Request_Outcome_Form_to_step-7-communicate-result">
+            <di:waypoint x="1460.0" y="2560.0"/>
+            <di:waypoint x="1380.0" y="2560.0"/>
+            <di:waypoint x="1380.0" y="2080.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REMOVE-remove-expression-of-interest_to_FAILURE"
+                          id="Edge_REMOVE-remove-expression-of-interest_to_FAILURE">
+            <di:waypoint x="380.0" y="120.0"/>
+            <di:waypoint x="413.0" y="120.0"/>
+            <di:waypoint x="413.0" y="120.0"/>
+            <di:waypoint x="502.5" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-7-communicate-result_to_NOTIFY-step-7-communicate-result"
+                          id="Edge_step-7-communicate-result_to_NOTIFY-step-7-communicate-result">
+            <di:waypoint x="1460.0" y="2080.0"/>
+            <di:waypoint x="1560.0" y="2080.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-6"
+                          id="Edge_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-6">
+            <di:waypoint x="740.0" y="440.0"/>
+            <di:waypoint x="773.0" y="440.0"/>
+            <di:waypoint x="773.0" y="2240.0"/>
+            <di:waypoint x="840.0" y="2240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_no-go-step-6_to_REMOVE-no-go-step-6"
+                          id="Edge_ExclusiveGateway_no-go-step-6_to_REMOVE-no-go-step-6">
+            <di:waypoint x="1080.0" y="2240.0"/>
+            <di:waypoint x="1200.0" y="2240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement_to_go-step-3-b"
+                          id="Edge_onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement_to_go-step-3-b">
+            <di:waypoint x="1640.0" y="1640.0"/>
+            <di:waypoint x="1740.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_no-go-step-2_to_CONFIRM-no-go-step-2"
+                          id="Edge_ExclusiveGateway_no-go-step-2_to_CONFIRM-no-go-step-2">
+            <di:waypoint x="900.0" y="1480.0"/>
+            <di:waypoint x="1020.0" y="1480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-5-single_to_SIGN-go-step-5-single"
+                          id="Edge_ExclusiveGateway_go-step-5-single_to_SIGN-go-step-5-single">
+            <di:waypoint x="1080.0" y="1200.0"/>
+            <di:waypoint x="1200.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-go-step-5-single_to_no-go-step-6"
+                          id="Edge_REJECT-go-step-5-single_to_no-go-step-6">
+            <di:waypoint x="1280.0" y="1360.0"/>
+            <di:waypoint x="2715.0" y="1360.0"/>
+            <di:waypoint x="2715.0" y="2290.0"/>
+            <di:waypoint x="880.0" y="2290.0"/>
+            <di:waypoint x="880.0" y="2270.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1-single_to_REJECT-step-1-single"
+                          id="Edge_ExclusiveGateway_step-1-single_to_REJECT-step-1-single">
+            <di:waypoint x="360.0" y="880.0"/>
+            <di:waypoint x="480.0" y="880.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form"
+                          id="Edge_REJECT-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form">
+            <di:waypoint x="1280.0" y="2560.0"/>
+            <di:waypoint x="1380.0" y="2560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-go-step-4_to_ExclusiveGateway_SIGN-go-step-4"
+                          id="Edge_SIGN-go-step-4_to_ExclusiveGateway_SIGN-go-step-4">
+            <di:waypoint x="560.0" y="1200.0"/>
+            <di:waypoint x="593.0" y="1200.0"/>
+            <di:waypoint x="593.0" y="1200.0"/>
+            <di:waypoint x="680.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-1-multiple"
+                          id="Edge_START-start-event_to_step-1-multiple">
+            <di:waypoint x="380.0" y="440.0"/>
+            <di:waypoint x="413.0" y="440.0"/>
+            <di:waypoint x="413.0" y="600.0"/>
+            <di:waypoint x="480.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_go-step-2"
+                          id="Edge_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_go-step-2">
+            <di:waypoint x="1100.0" y="760.0"/>
+            <di:waypoint x="2715.0" y="760.0"/>
+            <di:waypoint x="2715.0" y="1090.0"/>
+            <di:waypoint x="700.0" y="1090.0"/>
+            <di:waypoint x="700.0" y="1070.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-go-step-3-a_to_onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement"
+                          id="Edge_SIGN-go-step-3-a_to_onEnterNode-go-step-3-a-Init_Recommendation_Letters_For_Faculty_Career_Advancement">
+            <di:waypoint x="1460.0" y="1640.0"/>
+            <di:waypoint x="1560.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-8-archive-Move_Queue_to_SUCCESS"
+                          id="Edge_onActionTransition-step-8-archive-Move_Queue_to_SUCCESS">
+            <di:waypoint x="740.0" y="1640.0"/>
+            <di:waypoint x="773.0" y="1640.0"/>
+            <di:waypoint x="773.0" y="1800.0"/>
+            <di:waypoint x="862.5" y="1800.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-2"
+                          id="Edge_onEnterNode-step-1-multiple-Create_Parallel_Subflows_From_Node_to_no-go-step-2">
+            <di:waypoint x="1100.0" y="760.0"/>
+            <di:waypoint x="2715.0" y="760.0"/>
+            <di:waypoint x="2715.0" y="1530.0"/>
+            <di:waypoint x="700.0" y="1530.0"/>
+            <di:waypoint x="700.0" y="1510.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="department-decision-go-step-4_to_SIGN-go-step-4"
+                          id="Edge_department-decision-go-step-4_to_SIGN-go-step-4">
+            <di:waypoint x="380.0" y="1040.0"/>
+            <di:waypoint x="413.0" y="1040.0"/>
+            <di:waypoint x="413.0" y="1200.0"/>
+            <di:waypoint x="480.0" y="1200.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form"
+                          id="Edge_SIGN-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form">
+            <di:waypoint x="1820.0" y="2560.0"/>
+            <di:waypoint x="1920.0" y="2560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-8-archive_to_ARCHIVE-step-8-archive"
+                          id="Edge_step-8-archive_to_ARCHIVE-step-8-archive">
+            <di:waypoint x="200.0" y="1480.0"/>
+            <di:waypoint x="300.0" y="1480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-3-c_to_CONCLUDE-go-step-3-c"
+                          id="Edge_ExclusiveGateway_go-step-3-c_to_CONCLUDE-go-step-3-c">
+            <di:waypoint x="2500.0" y="1640.0"/>
+            <di:waypoint x="2600.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REMOVE-no-go-step-6_to_onActionTransition-no-go-step-6-Do_Flow_Action"
+                          id="Edge_REMOVE-no-go-step-6_to_onActionTransition-no-go-step-6-Do_Flow_Action">
+            <di:waypoint x="1280.0" y="2240.0"/>
+            <di:waypoint x="1380.0" y="2240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_SIGN-go-step-4_to_go-step-5-multiple"
+                          id="Edge_ExclusiveGateway_SIGN-go-step-4_to_go-step-5-multiple">
+            <di:waypoint x="720.0" y="1200.0"/>
+            <di:waypoint x="2715.0" y="1200.0"/>
+            <di:waypoint x="2715.0" y="330.0"/>
+            <di:waypoint x="160.0" y="330.0"/>
+            <di:waypoint x="160.0" y="310.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="CONFIRM-no-go-step-2_to_onActionTransition-no-go-step-2-Set_Request_Outcome_Form"
+                          id="Edge_CONFIRM-no-go-step-2_to_onActionTransition-no-go-step-2-Set_Request_Outcome_Form">
+            <di:waypoint x="1100.0" y="1480.0"/>
+            <di:waypoint x="1200.0" y="1480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-6_to_SIGN-go-step-6"
+                          id="Edge_ExclusiveGateway_go-step-6_to_SIGN-go-step-6">
+            <di:waypoint x="1620.0" y="2400.0"/>
+            <di:waypoint x="1653.0" y="2400.0"/>
+            <di:waypoint x="1653.0" y="2560.0"/>
+            <di:waypoint x="1740.0" y="2560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1-multiple_to_REJECT-step-1-multiple"
+                          id="Edge_ExclusiveGateway_step-1-multiple_to_REJECT-step-1-multiple">
+            <di:waypoint x="720.0" y="600.0"/>
+            <di:waypoint x="840.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form"
+                          id="Edge_REJECT-go-step-6_to_onActionTransition-go-step-6-Set_Request_Outcome_Form">
+            <di:waypoint x="1820.0" y="2400.0"/>
+            <di:waypoint x="1853.0" y="2400.0"/>
+            <di:waypoint x="1853.0" y="2560.0"/>
+            <di:waypoint x="1920.0" y="2560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"
+                          id="Edge_SIGN-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node">
+            <di:waypoint x="560.0" y="280.0"/>
+            <di:waypoint x="593.0" y="280.0"/>
+            <di:waypoint x="593.0" y="440.0"/>
+            <di:waypoint x="660.0" y="440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REMOVE-go-step-6_to_onActionTransition-go-step-6-Do_Flow_Action"
+                          id="Edge_REMOVE-go-step-6_to_onActionTransition-go-step-6-Do_Flow_Action">
+            <di:waypoint x="1820.0" y="2720.0"/>
+            <di:waypoint x="1920.0" y="2720.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Move_Queue"
+                          id="Edge_ExclusiveGateway_ARCHIVE-step-8-archive_to_onActionTransition-step-8-archive-Move_Queue">
+            <di:waypoint x="540.0" y="1480.0"/>
+            <di:waypoint x="573.0" y="1480.0"/>
+            <di:waypoint x="573.0" y="1640.0"/>
+            <di:waypoint x="660.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node"
+                          id="Edge_REJECT-go-step-5-multiple_to_onEnterNode-go-step-5-multiple-Create_Parallel_Subflows_From_Node">
+            <di:waypoint x="560.0" y="440.0"/>
+            <di:waypoint x="660.0" y="440.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REVERT-go-step-3-c_to_go-step-3-b"
+                          id="Edge_REVERT-go-step-3-c_to_go-step-3-b">
+            <di:waypoint x="2680.0" y="1800.0"/>
+            <di:waypoint x="2715.0" y="1800.0"/>
+            <di:waypoint x="2715.0" y="1690.0"/>
+            <di:waypoint x="1780.0" y="1690.0"/>
+            <di:waypoint x="1780.0" y="1670.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-1-multiple_to_ExclusiveGateway_step-1-multiple"
+                          id="Edge_step-1-multiple_to_ExclusiveGateway_step-1-multiple">
+            <di:waypoint x="560.0" y="600.0"/>
+            <di:waypoint x="593.0" y="600.0"/>
+            <di:waypoint x="593.0" y="600.0"/>
+            <di:waypoint x="680.0" y="600.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-3-b_to_ALL_RECEIVED-go-step-3-b"
+                          id="Edge_ExclusiveGateway_go-step-3-b_to_ALL_RECEIVED-go-step-3-b">
+            <di:waypoint x="1980.0" y="1640.0"/>
+            <di:waypoint x="2100.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_go-step-6_to_REJECT-go-step-6"
+                          id="Edge_ExclusiveGateway_go-step-6_to_REJECT-go-step-6">
+            <di:waypoint x="1620.0" y="2400.0"/>
+            <di:waypoint x="1740.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="go-step-3-c_to_ExclusiveGateway_go-step-3-c"
+                          id="Edge_go-step-3-c_to_ExclusiveGateway_go-step-3-c">
+            <di:waypoint x="2360.0" y="1640.0"/>
+            <di:waypoint x="2393.0" y="1640.0"/>
+            <di:waypoint x="2393.0" y="1640.0"/>
+            <di:waypoint x="2460.0" y="1640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form"
+                          id="Edge_SIGN-no-go-step-6_to_onActionTransition-no-go-step-6-Set_Request_Outcome_Form">
+            <di:waypoint x="1280.0" y="2400.0"/>
+            <di:waypoint x="1313.0" y="2400.0"/>
+            <di:waypoint x="1313.0" y="2560.0"/>
+            <di:waypoint x="1380.0" y="2560.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_4db1bd98-91e1-4659-b266-bc5797140edb"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="department-queue-Comissao-de-Vagas"
+               name="department-queue-Comissao-de-Vagas">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-1</flowNodeRef>
+            <flowNodeRef>REJECT-step-1</flowNodeRef>
+            <flowNodeRef>SIGN-step-1</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-1</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask id="step-1" name="Opinion of the Department Vacancy Committee">
+         <documentation id="documentation_e8e0e9b9-0743-45fa-86f8-0e20de1c9a6d">Opinion of the Department Vacancy Committee</documentation>
+         <incoming>START-start-event_to_step-1</incoming>
+         <outgoing>step-1_to_ExclusiveGateway_step-1</outgoing>
+      </userTask>
+      <serviceTask id="REJECT-step-1" name="Negative Early Go Decision">
+         <incoming>ExclusiveGateway_step-1_to_REJECT-step-1</incoming>
+         <outgoing>REJECT-step-1_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-1" name="Positive Early Go Decision">
+         <incoming>ExclusiveGateway_step-1_to_SIGN-step-1</incoming>
+         <outgoing>SIGN-step-1_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Start Process">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-1</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_step-1" name="ExclusiveGateway_step-1">
+         <incoming>step-1_to_ExclusiveGateway_step-1</incoming>
+         <outgoing>ExclusiveGateway_step-1_to_REJECT-step-1</outgoing>
+         <outgoing>ExclusiveGateway_step-1_to_SIGN-step-1</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-step-1_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>SIGN-step-1_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="START-start-event_to_step-1"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-1"/>
+      <sequenceFlow id="ExclusiveGateway_step-1_to_REJECT-step-1"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1"
+                    targetRef="REJECT-step-1"/>
+      <sequenceFlow id="ExclusiveGateway_step-1_to_SIGN-step-1"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1"
+                    targetRef="SIGN-step-1"/>
+      <sequenceFlow id="REJECT-step-1_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-1"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="SIGN-step-1_to_SUCCESS"
+                    name=""
+                    sourceRef="SIGN-step-1"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+      <sequenceFlow id="step-1_to_ExclusiveGateway_step-1"
+                    name=""
+                    sourceRef="step-1"
+                    targetRef="ExclusiveGateway_step-1"/>
+   </process>
+   <collaboration id="faculty-career-advancement-department-opinion"
+                  name="faculty-career-advancement-department-opinion">
+      <documentation id="documentation_c25f08f9-8243-4947-b0f9-c2e9fb860796">{name=faculty-career-advancement-department-opinion, title={pt-PT=Processo de Manifestação de Interesse no Âmbito do Processo de Valorização - Parecer do Departamento, en-GB=Process of Expression of Interest in the Context of Faculty Career Advancement - Department Opinion}, description={pt-PT=Processo de Avaliação de Manifestação de Interesse no Âmbito do Processo de Valorização - Parecer do Departamento, en-GB=Process of Evaluation of Expression of Interest in the Context of Faculty Career Advancement - Department Opinion}, config={actionProcessor={onSuccess=[{flowProcessor=Continue Main Flow After All Subflows In Node Are Concluded}], onFailure=[{flowProcessor=Return Flow Rejected To Main Flow}], onActionTransition=[], onCancel=[]}, flowProcessors=[], forms=[], actionNodes=[{id=step-1, type=generic, comment=true, title={pt-PT=Parecer da Comissão de Vagas do Departamento, en-GB=Opinion of the Department Vacancy Committee}, description={pt-PT=Parecer da Comissão de Vagas do Departamento, en-GB=Opinion of the Department Vacancy Committee}, commentLabel={pt-PT=Parecer da comissão de vagas do departamento, en-GB=Opinion of the department vacancy committee}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Decisão Early Go Positiva, en-GB=Positive Early Go Decision}, id=SIGN-step-1, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Decisão Early Go Negativa, en-GB=Negative Early Go Decision}, id=REJECT-step-1, name=REJECT}], queue=department-queue-Comissao-de-Vagas, queueOrder=0}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="faculty-career-advancement-department-opinion"
+                        id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="255.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-1" id="Shape_REJECT-step-1">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="935.0" y="262.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-1" id="Shape_step-1">
+            <dc:Bounds height="60.0" width="80.0" x="435.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-1"
+                           id="Shape_ExclusiveGateway_step-1">
+            <dc:Bounds height="40.0" width="40.0" x="615.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="935.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-1" id="Shape_SIGN-step-1">
+            <dc:Bounds height="60.0" width="80.0" x="755.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="department-queue-Comissao-de-Vagas"
+                           id="Shape_department-queue-Comissao-de-Vagas">
+            <dc:Bounds height="280.0" width="910.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="280.0" width="940.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-1"
+                          id="Edge_START-start-event_to_step-1">
+            <di:waypoint x="335.0" y="120.0"/>
+            <di:waypoint x="435.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1_to_REJECT-step-1"
+                          id="Edge_ExclusiveGateway_step-1_to_REJECT-step-1">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="688.0" y="120.0"/>
+            <di:waypoint x="688.0" y="280.0"/>
+            <di:waypoint x="755.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1_to_SIGN-step-1"
+                          id="Edge_ExclusiveGateway_step-1_to_SIGN-step-1">
+            <di:waypoint x="655.0" y="120.0"/>
+            <di:waypoint x="755.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-1_to_FAILURE"
+                          id="Edge_REJECT-step-1_to_FAILURE">
+            <di:waypoint x="835.0" y="280.0"/>
+            <di:waypoint x="868.0" y="280.0"/>
+            <di:waypoint x="868.0" y="280.0"/>
+            <di:waypoint x="935.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-1_to_SUCCESS" id="Edge_SIGN-step-1_to_SUCCESS">
+            <di:waypoint x="835.0" y="120.0"/>
+            <di:waypoint x="868.0" y="120.0"/>
+            <di:waypoint x="868.0" y="120.0"/>
+            <di:waypoint x="935.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="155.0" y="120.0"/>
+            <di:waypoint x="255.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-1_to_ExclusiveGateway_step-1"
+                          id="Edge_step-1_to_ExclusiveGateway_step-1">
+            <di:waypoint x="515.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="548.0" y="120.0"/>
+            <di:waypoint x="615.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

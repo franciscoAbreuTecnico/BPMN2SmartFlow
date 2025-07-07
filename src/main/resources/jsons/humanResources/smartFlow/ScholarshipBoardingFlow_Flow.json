@@ -1164,7 +1164,7 @@
         "blockUndo" : false,
         "queue" : "Núcleo de Técnicos & Administrativos e Bolseiros - Geral"
       }, {
-        "id" : "step-3.1-fund-reservation",
+        "id" : "{{step-3}}-fund-reservation",
         "type" : "withForms",
         "comment" : false,
         "title" : {
@@ -1186,11 +1186,20 @@
             "form" : "fund-reservation",
             "action" : "RESERVE_FUNDS"
           }
+        }, {
+          "primary" : false,
+          "label" : {
+            "pt-PT" : "Mudar de Fila",
+            "en-GB" : "Change Queue"
+          },
+          "handlers" : {
+            "url" : "{{bennuApplicationUrl}}/fenixedu-smart-flow/flows/{{flowId}}/change-queue"
+          }
         } ],
         "actions" : {
           "RESERVE_FUNDS" : {
             "primary" : true,
-            "to" : "step-4-fund-allocation",
+            "to" : "{{next-step}}",
             "label" : {
               "pt-PT" : "Confirmar Reserva de Fundos",
               "en-GB" : "Confirm Fund Reservation"
@@ -1205,7 +1214,8 @@
           } ]
         },
         "queue" : "{{step3-queue}}",
-        "blockUndo" : false
+        "blockUndo" : false,
+        "queuesAllowedToChangeTo" : [ "Área de Contabilidade - Geral", "Núcleo de Execução Orçamental - Geral", "Núcleo de Contabilidade - Geral", "Direção de Projetos - Geral", "Área de Projetos Nacionais - Geral", "Núcleo de Execução de Projetos IC&DT - Geral", "Núcleo de Execução de Projetos de Cooperação Empresarial - Geral", "Área de Projetos Internacionais - Geral", "Núcleo de Execução de Projetos Internacionais - Geral", "Núcleo de Apoio Técnico à Gestão de Projetos - Geral" ]
       }, {
         "id" : "step-4-fund-allocation",
         "type" : "generic",

@@ -1297,7 +1297,8 @@
             }
           ],
           "blockUndo" : false,
-          "queue" : "scientific-advisor-queue"
+          "queue" : "scientific-advisor-queue",
+          "queueOrder" : 0
         },
         {
           "id" : "step-2-hr-processing",
@@ -1338,7 +1339,8 @@
             }
           ],
           "blockUndo" : false,
-          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral",
+          "queueOrder" : 1
         },
         {
           "id" : "step-3.1-fund-reservation",
@@ -1364,6 +1366,16 @@
                 "form" : "fund-reservation",
                 "action" : "RESERVE_FUNDS-step-3.1-fund-reservation"
               }
+            },
+            {
+              "primary" : false,
+              "label" : {
+                "pt-PT" : "Mudar de Fila",
+                "en-GB" : "Change Queue"
+              },
+              "handlers" : {
+                "url" : "{{bennuApplicationUrl}}/fenixedu-smart-flow/flows/{{flowId}}/change-queue"
+              }
             }
           ],
           "actions" : [
@@ -1388,7 +1400,20 @@
             }
           ],
           "queue" : "step3-queue",
-          "blockUndo" : false
+          "blockUndo" : false,
+          "queuesAllowedToChangeTo" : [
+            "Área de Contabilidade - Geral",
+            "Núcleo de Execução Orçamental - Geral",
+            "Núcleo de Contabilidade - Geral",
+            "Direção de Projetos - Geral",
+            "Área de Projetos Nacionais - Geral",
+            "Núcleo de Execução de Projetos IC&DT - Geral",
+            "Núcleo de Execução de Projetos de Cooperação Empresarial - Geral",
+            "Área de Projetos Internacionais - Geral",
+            "Núcleo de Execução de Projetos Internacionais - Geral",
+            "Núcleo de Apoio Técnico à Gestão de Projetos - Geral"
+          ],
+          "queueOrder" : 2
         },
         {
           "id" : "step-4-fund-allocation",
@@ -1436,7 +1461,8 @@
             "Núcleo de Contabilidade - Geral"
           ],
           "queue" : "Nucleo-de-Execucao-Orcamental-Geral",
-          "blockUndo" : false
+          "blockUndo" : false,
+          "queueOrder" : 3
         },
         {
           "id" : "step-5-sign-contract",
@@ -1477,7 +1503,8 @@
             }
           ],
           "blockUndo" : false,
-          "queue" : "Sistema-FenixEdu"
+          "queue" : "Sistema-FenixEdu",
+          "queueOrder" : 4
         }
       ]
     }

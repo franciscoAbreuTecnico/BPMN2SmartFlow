@@ -906,7 +906,8 @@
             }
           ],
           "blockUndo" : true,
-          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral",
+          "queueOrder" : 0
         },
         {
           "id" : "step-1",
@@ -955,7 +956,8 @@
               "name" : "onActionTransition"
             }
           ],
-          "actionIfRequesterIsQueueMember" : "SIGN"
+          "actionIfRequesterIsQueueMember" : "SIGN",
+          "queueOrder" : 1
         },
         {
           "id" : "step-2.1",
@@ -1036,7 +1038,8 @@
             }
           ],
           "queue" : "step2-queue",
-          "actionIfRequesterIsQueueMember" : "SIGN"
+          "actionIfRequesterIsQueueMember" : "SIGN",
+          "queueOrder" : 2
         },
         {
           "id" : "step-3.1-fund-reservation",
@@ -1073,6 +1076,16 @@
               "handlers" : {
                 "action" : "REJECT-step-3.1-fund-reservation"
               }
+            },
+            {
+              "primary" : false,
+              "label" : {
+                "pt-PT" : "Mudar de Fila",
+                "en-GB" : "Change Queue"
+              },
+              "handlers" : {
+                "url" : "{{bennuApplicationUrl}}/fenixedu-smart-flow/flows/{{flowId}}/change-queue"
+              }
             }
           ],
           "actions" : [
@@ -1105,7 +1118,20 @@
               "name" : "onActionTransition"
             }
           ],
-          "queue" : "step3-queue"
+          "queue" : "step3-queue",
+          "queuesAllowedToChangeTo" : [
+            "Área de Contabilidade - Geral",
+            "Núcleo de Execução Orçamental - Geral",
+            "Núcleo de Contabilidade - Geral",
+            "Direção de Projetos - Geral",
+            "Área de Projetos Nacionais - Geral",
+            "Núcleo de Execução de Projetos IC&DT - Geral",
+            "Núcleo de Execução de Projetos de Cooperação Empresarial - Geral",
+            "Área de Projetos Internacionais - Geral",
+            "Núcleo de Execução de Projetos Internacionais - Geral",
+            "Núcleo de Apoio Técnico à Gestão de Projetos - Geral"
+          ],
+          "queueOrder" : 3
         },
         {
           "id" : "step-4-fund-allocation",
@@ -1155,7 +1181,8 @@
             "Núcleo de Contabilidade - Geral"
           ],
           "queue" : "Nucleo-de-Execucao-Orcamental-Geral",
-          "blockUndo" : false
+          "blockUndo" : false,
+          "queueOrder" : 4
         },
         {
           "id" : "step-5-cc",
@@ -1197,7 +1224,8 @@
           ],
           "queue" : "Conselho-Cientifico-Comissao-Contratacao",
           "replaceTitleWithRole" : true,
-          "hr-final-authorization-step" : "true"
+          "hr-final-authorization-step" : "true",
+          "queueOrder" : 5
         },
         {
           "id" : "step-6-administrator",
@@ -1259,7 +1287,8 @@
               "id" : "onActionTransition-step-6-administrator-Skip_Next_Nodes",
               "name" : "onActionTransition"
             }
-          ]
+          ],
+          "queueOrder" : 6
         },
         {
           "id" : "step-7-president",
@@ -1314,7 +1343,8 @@
               "id" : "onActionTransition-step-7-president-Generate_Document",
               "name" : "onActionTransition"
             }
-          ]
+          ],
+          "queueOrder" : 7
         },
         {
           "id" : "step-8-publish-contest",
@@ -1351,7 +1381,8 @@
             }
           ],
           "blockUndo" : true,
-          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral",
+          "queueOrder" : 0
         },
         {
           "id" : "step-4-fund-undo-allocation",
@@ -1391,7 +1422,8 @@
             "Núcleo de Contabilidade - Geral"
           ],
           "queue" : "Nucleo-de-Execucao-Orcamental-Geral",
-          "blockUndo" : false
+          "blockUndo" : false,
+          "queueOrder" : 4
         },
         {
           "id" : "step-3.1-fund-undo-reservation",
@@ -1425,7 +1457,8 @@
               "name" : "onActionTransition"
             }
           ],
-          "queue" : "step3-queue-undo"
+          "queue" : "step3-queue-undo",
+          "queueOrder" : 8
         }
       ]
     }

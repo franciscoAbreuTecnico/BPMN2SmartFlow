@@ -1,0 +1,1250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_925eda63-56e6-42fc-9e58-0732b27ef0a2"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="step1-queue" name="step1-queue">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-1</flowNodeRef>
+            <flowNodeRef>REJECT-step-1</flowNodeRef>
+            <flowNodeRef>SIGN-step-1</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-1</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="Nucleo-de-Remuneracoes-e-Protecao-Social-Geral"
+               name="Nucleo-de-Remuneracoes-e-Protecao-Social-Geral">
+            <flowNodeRef>step-2</flowNodeRef>
+            <flowNodeRef>submit-form-step-2</flowNodeRef>
+            <flowNodeRef>reject-step-2</flowNodeRef>
+            <flowNodeRef>RESERVE_FUNDS-step-2</flowNodeRef>
+            <flowNodeRef>REJECT-step-2</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-2</flowNodeRef>
+            <flowNodeRef>FAILURE</flowNodeRef>
+         </lane>
+         <lane id="step3-queue" name="step3-queue">
+            <flowNodeRef>fund-reservation-form-step-3.1-fund-reservation</flowNodeRef>
+            <flowNodeRef>step-3.1-fund-reservation</flowNodeRef>
+            <flowNodeRef>reject-step-3.1-fund-reservation</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info</flowNodeRef>
+            <flowNodeRef>RESERVE_FUNDS-step-3.1-fund-reservation</flowNodeRef>
+            <flowNodeRef>REJECT-step-3.1-fund-reservation</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-3.1-fund-reservation</flowNodeRef>
+         </lane>
+         <lane id="Nucleo-de-Execucao-Orcamental-Geral"
+               name="Nucleo-de-Execucao-Orcamental-Geral">
+            <flowNodeRef>step-4-fund-allocation</flowNodeRef>
+            <flowNodeRef>step-4-fund-undo-allocation</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info</flowNodeRef>
+            <flowNodeRef>UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation</flowNodeRef>
+            <flowNodeRef>ALLOCATE_FUNDS-step-4-fund-allocation</flowNodeRef>
+            <flowNodeRef>REJECT-step-4-fund-allocation</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-4-fund-allocation</flowNodeRef>
+         </lane>
+         <lane id="Conselho-Cientifico-Comissao-Contratacao"
+               name="Conselho-Cientifico-Comissao-Contratacao">
+            <flowNodeRef>step-5-scientificCouncil</flowNodeRef>
+            <flowNodeRef>REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil</flowNodeRef>
+            <flowNodeRef>REJECT-step-5-scientificCouncil</flowNodeRef>
+            <flowNodeRef>SIGN-step-5-scientificCouncil</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-5-scientificCouncil</flowNodeRef>
+         </lane>
+         <lane id="requester-workplace-unit" name="requester-workplace-unit">
+            <flowNodeRef>review-documents-form-step-5-request-document-changes</flowNodeRef>
+            <flowNodeRef>step-5-request-document-changes</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-5-request-document-changes-Send_e-mail</flowNodeRef>
+            <flowNodeRef>onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes</flowNodeRef>
+            <flowNodeRef>FINISH_WAITING-step-5-request-document-changes</flowNodeRef>
+            <flowNodeRef>SUBMIT-step-5-request-document-changes</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_SUBMIT-step-5-request-document-changes</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-5-request-document-changes</flowNodeRef>
+         </lane>
+         <lane id="Presidencia-do-Instituto-Superior-Tecnico"
+               name="Presidencia-do-Instituto-Superior-Tecnico">
+            <flowNodeRef>step-6-administrator</flowNodeRef>
+            <flowNodeRef>onSuccess-step-6-administrator-Return_Flow_Approved_To_Request</flowNodeRef>
+            <flowNodeRef>SIGN-step-6-administrator</flowNodeRef>
+            <flowNodeRef>REJECT-step-6-administrator</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_step-6-administrator</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+         <lane id="step3-queue-undo" name="step3-queue-undo">
+            <flowNodeRef>step-3.1-fund-undo-reservation</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info</flowNodeRef>
+            <flowNodeRef>UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask camunda:formRef="cost-allocation"
+                camunda:formRefBinding="latest"
+                id="step-2"
+                name="Cost allocation">
+         <documentation id="documentation_531eaba7-cca9-4f1b-9990-04fa251b714c">Processing by the Human Resources Department</documentation>
+         <incoming>SIGN-step-1_to_step-2</incoming>
+         <outgoing>step-2_to_ExclusiveGateway_step-2</outgoing>
+      </userTask>
+      <userTask id="fund-reservation-form-step-3.1-fund-reservation"
+                name="Confirm Fund Reservation">
+         <incoming>ExclusiveGateway_step-3.1-fund-reservation_to_fund-reservation-form-step-3.1-fund-reservation</incoming>
+         <outgoing>fund-reservation-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation</outgoing>
+      </userTask>
+      <userTask id="review-documents-form-step-5-request-document-changes"
+                name="Review Documents">
+         <incoming>ExclusiveGateway_step-5-request-document-changes_to_review-documents-form-step-5-request-document-changes</incoming>
+         <outgoing>review-documents-form-step-5-request-document-changes_to_RESERVE_FUNDS-step-5-request-document-changes</outgoing>
+      </userTask>
+      <userTask id="submit-form-step-2" name="Cost allocation">
+         <incoming>ExclusiveGateway_step-2_to_submit-form-step-2</incoming>
+         <outgoing>submit-form-step-2_to_RESERVE_FUNDS-step-2</outgoing>
+      </userTask>
+      <userTask id="step-5-scientificCouncil" name="Scientific Council">
+         <documentation id="documentation_1224eca2-16ab-4452-9fe4-4f088970c2d8">Deliberation of the Scientific Council.</documentation>
+         <incoming>onEnterNode-step-5-request-document-changes-Send_e-mail_to_step-5-scientificCouncil</incoming>
+         <incoming>onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes_to_step-5-scientificCouncil</incoming>
+         <incoming>onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-scientificCouncil</incoming>
+         <outgoing>step-5-scientificCouncil_to_ExclusiveGateway_step-5-scientificCouncil</outgoing>
+      </userTask>
+      <userTask id="step-1" name="The Department President">
+         <documentation id="documentation_7915704f-426f-4ec2-90ef-ebc0d0760545">Deliberation of the presidente of the department.</documentation>
+         <incoming>START-start-event_to_step-1</incoming>
+         <outgoing>step-1_to_ExclusiveGateway_step-1</outgoing>
+      </userTask>
+      <userTask id="step-6-administrator"
+                name="The President of Instituto Superior Técnico">
+         <documentation id="documentation_3480cfa7-8320-4d3e-a081-88464dd778df">Dispatch by the President of Instituto Superior Técnico.</documentation>
+         <incoming>SIGN-step-5-scientificCouncil_to_step-6-administrator</incoming>
+         <outgoing>step-6-administrator_to_ExclusiveGateway_step-6-administrator</outgoing>
+      </userTask>
+      <userTask id="step-3.1-fund-undo-reservation" name="Undo Fund Allocation">
+         <documentation id="documentation_d292c5a6-01a0-490f-9a8c-d84f2f6a752b">Undo Budget Allocation</documentation>
+         <incoming>REJECT-step-3.1-fund-reservation_to_step-3.1-fund-undo-reservation</incoming>
+         <incoming>onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info_to_step-3.1-fund-undo-reservation</incoming>
+         <incoming>REJECT-step-4-fund-allocation_to_step-3.1-fund-undo-reservation</incoming>
+         <outgoing>step-3.1-fund-undo-reservation_to_UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation</outgoing>
+         <multiInstanceLoopCharacteristics id="multiInstanceLoopCharacteristics_46837c6c-ebe2-4f22-9838-282495a9cf17"
+                                           isSequential="false"/>
+      </userTask>
+      <userTask camunda:formRef="fund-reservation"
+                camunda:formRefBinding="latest"
+                id="step-3.1-fund-reservation"
+                name="Allocate Funds">
+         <documentation id="documentation_16dfc1d7-2208-4566-a56c-c33016eb9582">Budget Allocation to Ensure the Possibility of Payment</documentation>
+         <incoming>RESERVE_FUNDS-step-2_to_step-3.1-fund-reservation</incoming>
+         <outgoing>step-3.1-fund-reservation_to_ExclusiveGateway_step-3.1-fund-reservation</outgoing>
+         <multiInstanceLoopCharacteristics id="multiInstanceLoopCharacteristics_4ab867e9-aa49-4862-aa5b-3c890a367e00"
+                                           isSequential="false"/>
+      </userTask>
+      <userTask id="step-4-fund-allocation" name="Fund Allocation">
+         <documentation id="documentation_150d81e4-60b8-4e40-9bfa-4fc684c3808c">Budget Allocation to Ensure the Possibility of Payment</documentation>
+         <incoming>onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation</incoming>
+         <outgoing>step-4-fund-allocation_to_ExclusiveGateway_step-4-fund-allocation</outgoing>
+      </userTask>
+      <userTask id="step-4-fund-undo-allocation" name="Undo Fund Allocation">
+         <documentation id="documentation_5ad730ed-9134-4e85-b047-33ccc7a8165c">Undo Budget Allocation</documentation>
+         <incoming>REJECT-step-6-administrator_to_step-4-fund-undo-allocation</incoming>
+         <incoming>onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-undo-allocation</incoming>
+         <incoming>REJECT-step-5-scientificCouncil_to_step-4-fund-undo-allocation</incoming>
+         <outgoing>step-4-fund-undo-allocation_to_UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation</outgoing>
+      </userTask>
+      <userTask camunda:formRef="review-documents-form"
+                camunda:formRefBinding="latest"
+                id="step-5-request-document-changes"
+                name="Review Documents">
+         <documentation id="documentation_29c7bca0-f086-4fea-a5ca-ee45b9a8a60f">Complete e correct documentation</documentation>
+         <incoming>REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil_to_step-5-request-document-changes</incoming>
+         <outgoing>step-5-request-document-changes_to_ExclusiveGateway_step-5-request-document-changes</outgoing>
+      </userTask>
+      <userTask id="reject-step-3.1-fund-reservation" name="Reject">
+         <incoming>ExclusiveGateway_step-3.1-fund-reservation_to_reject-step-3.1-fund-reservation</incoming>
+         <outgoing>reject-step-3.1-fund-reservation_to_REJECT-step-3.1-fund-reservation</outgoing>
+      </userTask>
+      <userTask id="reject-step-2" name="Rejeitar">
+         <incoming>ExclusiveGateway_step-2_to_reject-step-2</incoming>
+         <outgoing>reject-step-2_to_REJECT-step-2</outgoing>
+      </userTask>
+      <scriptTask id="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                  name="Sync Funds Allocation Info">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_2086"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L2086"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info</incoming>
+         <outgoing>onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-scientificCouncil</outgoing>
+      </scriptTask>
+      <scriptTask id="onSuccess-step-6-administrator-Return_Flow_Approved_To_Request"
+                  name="Return Flow Approved To Request">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_415"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L415"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>SIGN-step-6-administrator_to_onSuccess-step-6-administrator-Return_Flow_Approved_To_Request</incoming>
+         <outgoing>onSuccess-step-6-administrator-Return_Flow_Approved_To_Request_to_SUCCESS</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info"
+                  name="Sync Funds Allocation Info">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_2086"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L2086"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation_to_onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info</incoming>
+         <outgoing>onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info_to_step-3.1-fund-undo-reservation</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-5-request-document-changes-Send_e-mail"
+                  name="Send e-mail">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_262"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L262"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail</incoming>
+         <incoming>ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail</incoming>
+         <outgoing>onEnterNode-step-5-request-document-changes-Send_e-mail_to_step-5-scientificCouncil</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                  name="Sync Funds Allocation Info">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_2086"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L2086"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info</incoming>
+         <outgoing>onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info"
+                  name="Sync Funds Allocation Info">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_2086"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L2086"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation_to_onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info</incoming>
+         <outgoing>onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-undo-allocation</outgoing>
+      </scriptTask>
+      <scriptTask id="onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"
+                  name="Do Flow Action After Time Passes">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_624"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-integration/src/main/java/org/fenixedu/smartForms/integration/RequestProcessors.java#L624"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes</incoming>
+         <incoming>ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes</incoming>
+         <outgoing>onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes_to_step-5-scientificCouncil</outgoing>
+      </scriptTask>
+      <serviceTask id="FINISH_WAITING-step-5-request-document-changes"
+                   name="No Additional Information was Provided">
+         <incoming>ExclusiveGateway_step-5-request-document-changes_to_FINISH_WAITING-step-5-request-document-changes</incoming>
+         <outgoing>FINISH_WAITING-step-5-request-document-changes_to_ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes</outgoing>
+      </serviceTask>
+      <serviceTask id="REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil"
+                   name="Request Changes do Documents">
+         <incoming>ExclusiveGateway_step-5-scientificCouncil_to_REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil</incoming>
+         <outgoing>REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil_to_step-5-request-document-changes</outgoing>
+      </serviceTask>
+      <serviceTask id="UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation"
+                   name="Confirm Undo Fund Reservation">
+         <incoming>step-3.1-fund-undo-reservation_to_UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation</incoming>
+         <outgoing>UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation_to_onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info</outgoing>
+      </serviceTask>
+      <serviceTask id="UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation"
+                   name="Confirm Undo Fund Allocation">
+         <incoming>step-4-fund-undo-allocation_to_UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation</incoming>
+         <outgoing>UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation_to_onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-1" name="Reject">
+         <incoming>ExclusiveGateway_step-1_to_REJECT-step-1</incoming>
+         <outgoing>REJECT-step-1_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-1" name="Authorise">
+         <incoming>ExclusiveGateway_step-1_to_SIGN-step-1</incoming>
+         <outgoing>SIGN-step-1_to_step-2</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-6-administrator" name="Authorise">
+         <incoming>ExclusiveGateway_step-6-administrator_to_SIGN-step-6-administrator</incoming>
+         <outgoing>SIGN-step-6-administrator_to_onSuccess-step-6-administrator-Return_Flow_Approved_To_Request</outgoing>
+      </serviceTask>
+      <serviceTask id="RESERVE_FUNDS-step-2" name="Reserve Funds">
+         <incoming>submit-form-step-2_to_RESERVE_FUNDS-step-2</incoming>
+         <outgoing>RESERVE_FUNDS-step-2_to_step-3.1-fund-reservation</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-2" name="Reject">
+         <incoming>reject-step-2_to_REJECT-step-2</incoming>
+         <outgoing>REJECT-step-2_to_FAILURE</outgoing>
+      </serviceTask>
+      <serviceTask id="ALLOCATE_FUNDS-step-4-fund-allocation"
+                   name="Confirm Fund Allocation">
+         <incoming>ExclusiveGateway_step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation</incoming>
+         <outgoing>ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-5-scientificCouncil" name="Reject">
+         <incoming>ExclusiveGateway_step-5-scientificCouncil_to_REJECT-step-5-scientificCouncil</incoming>
+         <outgoing>REJECT-step-5-scientificCouncil_to_step-4-fund-undo-allocation</outgoing>
+      </serviceTask>
+      <serviceTask id="RESERVE_FUNDS-step-3.1-fund-reservation"
+                   name="Confirm Fund Reservation">
+         <incoming>fund-reservation-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation</incoming>
+         <outgoing>RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-5-scientificCouncil" name="Authorise">
+         <incoming>ExclusiveGateway_step-5-scientificCouncil_to_SIGN-step-5-scientificCouncil</incoming>
+         <outgoing>SIGN-step-5-scientificCouncil_to_step-6-administrator</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-6-administrator" name="Reject">
+         <incoming>ExclusiveGateway_step-6-administrator_to_REJECT-step-6-administrator</incoming>
+         <outgoing>REJECT-step-6-administrator_to_step-4-fund-undo-allocation</outgoing>
+      </serviceTask>
+      <serviceTask id="RESERVE_FUNDS-step-5-request-document-changes"
+                   name="RESERVE_FUNDS-step-5-request-document-changes">
+         <incoming>review-documents-form-step-5-request-document-changes_to_RESERVE_FUNDS-step-5-request-document-changes</incoming>
+      </serviceTask>
+      <serviceTask id="SUBMIT-step-5-request-document-changes" name="Review Documents">
+         <incoming>ExclusiveGateway_step-5-request-document-changes_to_SUBMIT-step-5-request-document-changes</incoming>
+         <outgoing>SUBMIT-step-5-request-document-changes_to_ExclusiveGateway_SUBMIT-step-5-request-document-changes</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-4-fund-allocation" name="Reject">
+         <incoming>ExclusiveGateway_step-4-fund-allocation_to_REJECT-step-4-fund-allocation</incoming>
+         <outgoing>REJECT-step-4-fund-allocation_to_step-3.1-fund-undo-reservation</outgoing>
+      </serviceTask>
+      <serviceTask id="REJECT-step-3.1-fund-reservation" name="Reject">
+         <incoming>reject-step-3.1-fund-reservation_to_REJECT-step-3.1-fund-reservation</incoming>
+         <outgoing>REJECT-step-3.1-fund-reservation_to_step-3.1-fund-undo-reservation</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Start Process">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-1</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_step-3.1-fund-reservation"
+                        name="ExclusiveGateway_step-3.1-fund-reservation">
+         <incoming>step-3.1-fund-reservation_to_ExclusiveGateway_step-3.1-fund-reservation</incoming>
+         <outgoing>ExclusiveGateway_step-3.1-fund-reservation_to_fund-reservation-form-step-3.1-fund-reservation</outgoing>
+         <outgoing>ExclusiveGateway_step-3.1-fund-reservation_to_reject-step-3.1-fund-reservation</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-4-fund-allocation"
+                        name="ExclusiveGateway_step-4-fund-allocation">
+         <incoming>step-4-fund-allocation_to_ExclusiveGateway_step-4-fund-allocation</incoming>
+         <outgoing>ExclusiveGateway_step-4-fund-allocation_to_REJECT-step-4-fund-allocation</outgoing>
+         <outgoing>ExclusiveGateway_step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_SUBMIT-step-5-request-document-changes"
+                        name="ExclusiveGateway_SUBMIT-step-5-request-document-changes">
+         <incoming>SUBMIT-step-5-request-document-changes_to_ExclusiveGateway_SUBMIT-step-5-request-document-changes</incoming>
+         <outgoing>ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes</outgoing>
+         <outgoing>ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-2" name="ExclusiveGateway_step-2">
+         <incoming>step-2_to_ExclusiveGateway_step-2</incoming>
+         <outgoing>ExclusiveGateway_step-2_to_reject-step-2</outgoing>
+         <outgoing>ExclusiveGateway_step-2_to_submit-form-step-2</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes"
+                        name="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes">
+         <incoming>FINISH_WAITING-step-5-request-document-changes_to_ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes</incoming>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail</outgoing>
+         <outgoing>ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-5-request-document-changes"
+                        name="ExclusiveGateway_step-5-request-document-changes">
+         <incoming>step-5-request-document-changes_to_ExclusiveGateway_step-5-request-document-changes</incoming>
+         <outgoing>ExclusiveGateway_step-5-request-document-changes_to_SUBMIT-step-5-request-document-changes</outgoing>
+         <outgoing>ExclusiveGateway_step-5-request-document-changes_to_review-documents-form-step-5-request-document-changes</outgoing>
+         <outgoing>ExclusiveGateway_step-5-request-document-changes_to_FINISH_WAITING-step-5-request-document-changes</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-1" name="ExclusiveGateway_step-1">
+         <incoming>step-1_to_ExclusiveGateway_step-1</incoming>
+         <outgoing>ExclusiveGateway_step-1_to_SIGN-step-1</outgoing>
+         <outgoing>ExclusiveGateway_step-1_to_REJECT-step-1</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-6-administrator"
+                        name="ExclusiveGateway_step-6-administrator">
+         <incoming>step-6-administrator_to_ExclusiveGateway_step-6-administrator</incoming>
+         <outgoing>ExclusiveGateway_step-6-administrator_to_SIGN-step-6-administrator</outgoing>
+         <outgoing>ExclusiveGateway_step-6-administrator_to_REJECT-step-6-administrator</outgoing>
+      </exclusiveGateway>
+      <exclusiveGateway id="ExclusiveGateway_step-5-scientificCouncil"
+                        name="ExclusiveGateway_step-5-scientificCouncil">
+         <incoming>step-5-scientificCouncil_to_ExclusiveGateway_step-5-scientificCouncil</incoming>
+         <outgoing>ExclusiveGateway_step-5-scientificCouncil_to_REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil</outgoing>
+         <outgoing>ExclusiveGateway_step-5-scientificCouncil_to_SIGN-step-5-scientificCouncil</outgoing>
+         <outgoing>ExclusiveGateway_step-5-scientificCouncil_to_REJECT-step-5-scientificCouncil</outgoing>
+      </exclusiveGateway>
+      <endEvent id="FAILURE" name="FAILURE State">
+         <incoming>REJECT-step-2_to_FAILURE</incoming>
+         <incoming>REJECT-step-1_to_FAILURE</incoming>
+      </endEvent>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>onSuccess-step-6-administrator-Return_Flow_Approved_To_Request_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="ExclusiveGateway_step-3.1-fund-reservation_to_fund-reservation-form-step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-3.1-fund-reservation"
+                    targetRef="fund-reservation-form-step-3.1-fund-reservation"/>
+      <sequenceFlow id="step-3.1-fund-reservation_to_ExclusiveGateway_step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="step-3.1-fund-reservation"
+                    targetRef="ExclusiveGateway_step-3.1-fund-reservation"/>
+      <sequenceFlow id="UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation_to_onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info"
+                    name=""
+                    sourceRef="UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation"
+                    targetRef="onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info"/>
+      <sequenceFlow id="ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="ExclusiveGateway_SUBMIT-step-5-request-document-changes"
+                    targetRef="onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="ExclusiveGateway_step-3.1-fund-reservation_to_reject-step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-3.1-fund-reservation"
+                    targetRef="reject-step-3.1-fund-reservation"/>
+      <sequenceFlow id="ExclusiveGateway_step-1_to_SIGN-step-1"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1"
+                    targetRef="SIGN-step-1"/>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes"
+                    targetRef="onEnterNode-step-5-request-document-changes-Send_e-mail"/>
+      <sequenceFlow id="ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                    name=""
+                    sourceRef="ALLOCATE_FUNDS-step-4-fund-allocation"
+                    targetRef="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"/>
+      <sequenceFlow id="reject-step-2_to_REJECT-step-2"
+                    name=""
+                    sourceRef="reject-step-2"
+                    targetRef="REJECT-step-2"/>
+      <sequenceFlow id="RESERVE_FUNDS-step-2_to_step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="RESERVE_FUNDS-step-2"
+                    targetRef="step-3.1-fund-reservation"/>
+      <sequenceFlow id="step-5-scientificCouncil_to_ExclusiveGateway_step-5-scientificCouncil"
+                    name=""
+                    sourceRef="step-5-scientificCouncil"
+                    targetRef="ExclusiveGateway_step-5-scientificCouncil"/>
+      <sequenceFlow id="UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation_to_onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info"
+                    name=""
+                    sourceRef="UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation"
+                    targetRef="onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info"/>
+      <sequenceFlow id="onSuccess-step-6-administrator-Return_Flow_Approved_To_Request_to_SUCCESS"
+                    name=""
+                    sourceRef="onSuccess-step-6-administrator-Return_Flow_Approved_To_Request"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="ExclusiveGateway_step-2_to_reject-step-2"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-2"
+                    targetRef="reject-step-2"/>
+      <sequenceFlow id="REJECT-step-3.1-fund-reservation_to_step-3.1-fund-undo-reservation"
+                    name=""
+                    sourceRef="REJECT-step-3.1-fund-reservation"
+                    targetRef="step-3.1-fund-undo-reservation"/>
+      <sequenceFlow id="SIGN-step-1_to_step-2"
+                    name=""
+                    sourceRef="SIGN-step-1"
+                    targetRef="step-2"/>
+      <sequenceFlow id="step-4-fund-allocation_to_ExclusiveGateway_step-4-fund-allocation"
+                    name=""
+                    sourceRef="step-4-fund-allocation"
+                    targetRef="ExclusiveGateway_step-4-fund-allocation"/>
+      <sequenceFlow id="REJECT-step-2_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-2"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="ExclusiveGateway_step-5-request-document-changes_to_SUBMIT-step-5-request-document-changes"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-5-request-document-changes"
+                    targetRef="SUBMIT-step-5-request-document-changes"/>
+      <sequenceFlow id="step-3.1-fund-undo-reservation_to_UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation"
+                    name=""
+                    sourceRef="step-3.1-fund-undo-reservation"
+                    targetRef="UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation"/>
+      <sequenceFlow id="SUBMIT-step-5-request-document-changes_to_ExclusiveGateway_SUBMIT-step-5-request-document-changes"
+                    name=""
+                    sourceRef="SUBMIT-step-5-request-document-changes"
+                    targetRef="ExclusiveGateway_SUBMIT-step-5-request-document-changes"/>
+      <sequenceFlow id="REJECT-step-6-administrator_to_step-4-fund-undo-allocation"
+                    name=""
+                    sourceRef="REJECT-step-6-administrator"
+                    targetRef="step-4-fund-undo-allocation"/>
+      <sequenceFlow id="RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                    name=""
+                    sourceRef="RESERVE_FUNDS-step-3.1-fund-reservation"
+                    targetRef="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"/>
+      <sequenceFlow id="ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail"
+                    name=""
+                    sourceRef="ExclusiveGateway_SUBMIT-step-5-request-document-changes"
+                    targetRef="onEnterNode-step-5-request-document-changes-Send_e-mail"/>
+      <sequenceFlow id="fund-reservation-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="fund-reservation-form-step-3.1-fund-reservation"
+                    targetRef="RESERVE_FUNDS-step-3.1-fund-reservation"/>
+      <sequenceFlow id="onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-undo-allocation"
+                    name=""
+                    sourceRef="onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info"
+                    targetRef="step-4-fund-undo-allocation"/>
+      <sequenceFlow id="step-4-fund-undo-allocation_to_UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation"
+                    name=""
+                    sourceRef="step-4-fund-undo-allocation"
+                    targetRef="UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation"/>
+      <sequenceFlow id="REJECT-step-5-scientificCouncil_to_step-4-fund-undo-allocation"
+                    name=""
+                    sourceRef="REJECT-step-5-scientificCouncil"
+                    targetRef="step-4-fund-undo-allocation"/>
+      <sequenceFlow id="ExclusiveGateway_step-5-scientificCouncil_to_REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-5-scientificCouncil"
+                    targetRef="REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil"/>
+      <sequenceFlow id="review-documents-form-step-5-request-document-changes_to_RESERVE_FUNDS-step-5-request-document-changes"
+                    name=""
+                    sourceRef="review-documents-form-step-5-request-document-changes"
+                    targetRef="RESERVE_FUNDS-step-5-request-document-changes"/>
+      <sequenceFlow id="step-6-administrator_to_ExclusiveGateway_step-6-administrator"
+                    name=""
+                    sourceRef="step-6-administrator"
+                    targetRef="ExclusiveGateway_step-6-administrator"/>
+      <sequenceFlow id="REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil_to_step-5-request-document-changes"
+                    name=""
+                    sourceRef="REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil"
+                    targetRef="step-5-request-document-changes"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+      <sequenceFlow id="SIGN-step-6-administrator_to_onSuccess-step-6-administrator-Return_Flow_Approved_To_Request"
+                    name=""
+                    sourceRef="SIGN-step-6-administrator"
+                    targetRef="onSuccess-step-6-administrator-Return_Flow_Approved_To_Request"/>
+      <sequenceFlow id="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"
+                    name=""
+                    sourceRef="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes"
+                    targetRef="onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"/>
+      <sequenceFlow id="ExclusiveGateway_step-2_to_submit-form-step-2"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-2"
+                    targetRef="submit-form-step-2"/>
+      <sequenceFlow id="ExclusiveGateway_step-5-scientificCouncil_to_SIGN-step-5-scientificCouncil"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-5-scientificCouncil"
+                    targetRef="SIGN-step-5-scientificCouncil"/>
+      <sequenceFlow id="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation"
+                    name=""
+                    sourceRef="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                    targetRef="step-4-fund-allocation"/>
+      <sequenceFlow id="step-2_to_ExclusiveGateway_step-2"
+                    name=""
+                    sourceRef="step-2"
+                    targetRef="ExclusiveGateway_step-2"/>
+      <sequenceFlow id="START-start-event_to_step-1"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-1"/>
+      <sequenceFlow id="reject-step-3.1-fund-reservation_to_REJECT-step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="reject-step-3.1-fund-reservation"
+                    targetRef="REJECT-step-3.1-fund-reservation"/>
+      <sequenceFlow id="SIGN-step-5-scientificCouncil_to_step-6-administrator"
+                    name=""
+                    sourceRef="SIGN-step-5-scientificCouncil"
+                    targetRef="step-6-administrator"/>
+      <sequenceFlow id="REJECT-step-1_to_FAILURE"
+                    name=""
+                    sourceRef="REJECT-step-1"
+                    targetRef="FAILURE"/>
+      <sequenceFlow id="onEnterNode-step-5-request-document-changes-Send_e-mail_to_step-5-scientificCouncil"
+                    name=""
+                    sourceRef="onEnterNode-step-5-request-document-changes-Send_e-mail"
+                    targetRef="step-5-scientificCouncil"/>
+      <sequenceFlow id="submit-form-step-2_to_RESERVE_FUNDS-step-2"
+                    name=""
+                    sourceRef="submit-form-step-2"
+                    targetRef="RESERVE_FUNDS-step-2"/>
+      <sequenceFlow id="ExclusiveGateway_step-5-scientificCouncil_to_REJECT-step-5-scientificCouncil"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-5-scientificCouncil"
+                    targetRef="REJECT-step-5-scientificCouncil"/>
+      <sequenceFlow id="onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info_to_step-3.1-fund-undo-reservation"
+                    name=""
+                    sourceRef="onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info"
+                    targetRef="step-3.1-fund-undo-reservation"/>
+      <sequenceFlow id="ExclusiveGateway_step-1_to_REJECT-step-1"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-1"
+                    targetRef="REJECT-step-1"/>
+      <sequenceFlow id="ExclusiveGateway_step-4-fund-allocation_to_REJECT-step-4-fund-allocation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-4-fund-allocation"
+                    targetRef="REJECT-step-4-fund-allocation"/>
+      <sequenceFlow id="ExclusiveGateway_step-5-request-document-changes_to_review-documents-form-step-5-request-document-changes"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-5-request-document-changes"
+                    targetRef="review-documents-form-step-5-request-document-changes"/>
+      <sequenceFlow id="ExclusiveGateway_step-6-administrator_to_SIGN-step-6-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-6-administrator"
+                    targetRef="SIGN-step-6-administrator"/>
+      <sequenceFlow id="ExclusiveGateway_step-5-request-document-changes_to_FINISH_WAITING-step-5-request-document-changes"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-5-request-document-changes"
+                    targetRef="FINISH_WAITING-step-5-request-document-changes"/>
+      <sequenceFlow id="step-5-request-document-changes_to_ExclusiveGateway_step-5-request-document-changes"
+                    name=""
+                    sourceRef="step-5-request-document-changes"
+                    targetRef="ExclusiveGateway_step-5-request-document-changes"/>
+      <sequenceFlow id="ExclusiveGateway_step-6-administrator_to_REJECT-step-6-administrator"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-6-administrator"
+                    targetRef="REJECT-step-6-administrator"/>
+      <sequenceFlow id="onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes_to_step-5-scientificCouncil"
+                    name=""
+                    sourceRef="onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"
+                    targetRef="step-5-scientificCouncil"/>
+      <sequenceFlow id="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-scientificCouncil"
+                    name=""
+                    sourceRef="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                    targetRef="step-5-scientificCouncil"/>
+      <sequenceFlow id="ExclusiveGateway_step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation"
+                    name=""
+                    sourceRef="ExclusiveGateway_step-4-fund-allocation"
+                    targetRef="ALLOCATE_FUNDS-step-4-fund-allocation"/>
+      <sequenceFlow id="REJECT-step-4-fund-allocation_to_step-3.1-fund-undo-reservation"
+                    name=""
+                    sourceRef="REJECT-step-4-fund-allocation"
+                    targetRef="step-3.1-fund-undo-reservation"/>
+      <sequenceFlow id="step-1_to_ExclusiveGateway_step-1"
+                    name=""
+                    sourceRef="step-1"
+                    targetRef="ExclusiveGateway_step-1"/>
+      <sequenceFlow id="FINISH_WAITING-step-5-request-document-changes_to_ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes"
+                    name=""
+                    sourceRef="FINISH_WAITING-step-5-request-document-changes"
+                    targetRef="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes"/>
+   </process>
+   <collaboration id="specially-hired-faculty-contract"
+                  name="specially-hired-faculty-contract">
+      <documentation id="documentation_c73cafe8-953b-4f95-86da-9a5d5a415223">{name=specially-hired-faculty-contract, title={pt-PT=Processo de Proposta de Contrato de Pessoal Docente Especialmente Contratado, en-GB=Contract Proposal Process for Specially Hired Faculty}, description={pt-PT=Processo de Proposta de Contrato de Pessoal Docente Especialmente Contratado, en-GB=Contract Proposal Process for Specially Hired Faculty}, config={actionProcessor={onSuccess=[], onFailure=[{flowProcessor=Return Flow Rejected To Request}], onActionTransition=[], onCancel=[{flowProcessor=Cancel Connected Requests}]}, flowProcessors=[{handle=move-queue-plenary, flowProcessor=Move Queue, flowQueue=Plenário do Conselho Científico, url=https://fenix.tecnico.ulisboa.pt/fenixedu-smart-flow/flows/{{flowId}}/form-data}, {handle=revert-move-queue-plenary, flowProcessor=Move Queue, flowQueue=Conselho Científico, url=https://fenix.tecnico.ulisboa.pt/fenixedu-smart-flow/flows/{{flowId}}/form-data}], forms=[{id=cost-allocation, title={pt-PT=Imputação de custos, en-GB=Cost allocation}, form={pages=[{title={pt-PT=Informação_de_Encargos, en-GB=Charges_Information}, sections=[{title={pt-PT=Encargos_Definitivos, en-GB=Definitive_Costs}, properties=[{type=Quantity, field=salaryMonthlyBase, required=true, label={pt-PT=Remuneração Base Mensal (€), en-GB=Monthly Base Salary (€)}, min=0, step=0.01}, {type=Array, field=costsByYear, description={pt-PT=Indique os encargos suportados pelo(s) elemento(s) PEP(s) e a respective percentagem., en-GB=Indicate the costs suported by the PEP element(s) and the respective percentage.}, required=true, label={pt-PT=Ano Económico e Intervalo, en-GB=Economic Year and Interval}, labelAddElement={pt-PT=Adicionar Ano Económico, en-GB=Add Economic Year}, properties=[{type=Quantity, field=economicYear, required=true, label={pt-PT=Ano Económico para os Encargos, en-GB=Economic Year for the Costs}, inputType=plain, step=1, min=2023, max=2046}, {type=Composite, field=costInterval, required=true, description={pt-PT=Indique a data de início e fim dos encargos., en-GB=Indicate the start and end date of costs.}, properties=[{type=DateTime, field=costIntervalStartDate, required=true, date=true, time=false, label={pt-PT=Data de Início dos Encargos, en-GB=Begin Date of the Costs}}, {type=DateTime, field=costIntervalEndDate, required=true, date=true, time=false, label={pt-PT=Data de Fim dos Encargos, en-GB=End Date of the Costs}}]}, {type=Quantity, field=salaryBase, description={pt-PT=Indique o total da remuneração base no periodo., en-GB=Indicate the total base remuneration in the period.}, required=true, label={pt-PT=a. Remuneração Base para o Período (€), en-GB=a. Base Salary for the Period (€)}, min=0, step=0.01}, {type=Quantity, field=salaryFoodSubsidy, required=true, label={pt-PT=b. Subsídio de Alimentação (€), en-GB=b. Food Subsidy (€)}, min=0, step=0.01}, {type=Quantity, field=salaryVacationSubsidy, required=true, label={pt-PT=c. Subsídio de Férias (€), en-GB=c. Vacation Subsidy (€)}, min=0, step=0.01}, {type=Quantity, field=salaryChristmasSubsidy, required=true, label={pt-PT=d. Subsídio de Natal (€), en-GB=d. Christmas Subsidy (€)}, min=0, step=0.01}, {type=Composite, field=tsu, description={pt-PT=Indique a percentagem da taxa da TSU a aplicar no ano económico e o valor calculado sobre esta., en-GB=Indicate the TSU rate to be applied in the financial year and the value calculated on the rate.}, properties=[{type=Quantity, field=tsuPercentage, label={pt-PT=TSU (%), en-GB=TSU (%)}, min=0, step=0.01}, {type=Quantity, field=tsuValue, required=true, label={pt-PT=e. Valor da TSU (€), en-GB=e. TSU Value (€)}, min=0, step=0.01}]}, {type=Quantity, field=salarySubTotal, required=true, label={pt-PT=Sub-Total de encargos para o período (€), en-GB=Sub-Total of expenses for the period (€)}, description={pt-PT=Calculado sumando os campos a, b, c, d e e para o ano económico., en-GB=Calculated adding values a, b, c, d and e for the economic year.}, min=0, step=0.01}, {type=Composite, field=caducidade, properties=[{type=Quantity, field=caducidadeDay, required=true, label={pt-PT=Compensação por Caducidade em dias, en-GB=Compensation for termination in days}, min=0, step=0.01}, {type=Quantity, field=caducidadeValue, required=true, label={pt-PT=Valor de Caducidade (€), en-GB=Termination Value (€)}, min=0, step=0.01}]}, {type=Composite, field=unusedVacation, properties=[{type=Quantity, field=unusedVacationDay, required=true, label={pt-PT=Férias não gozadas em dias, en-GB=Unused Vacation in days}, min=0, step=0.01}, {type=Quantity, field=unusedVacationValue, required=true, label={pt-PT=Valor Férias Não Gozadas (€), en-GB=Value of Unused Vacation (€)}, min=0, step=0.01}]}, {type=Quantity, field=otherVacationSubsidy, required=true, label={pt-PT=Subsídio de férias vincendas (€), en-GB=Unused Vacation Subsidy (€)}, min=0, step=0.01}, {type=Composite, field=expiredVacation, properties=[{type=Quantity, field=expiredVacationDay, required=true, label={pt-PT=Férias Vincendas em dias, en-GB=Expired Vacation in days}, min=0, step=0.01}, {type=Quantity, field=expiredVacationValue, required=true, label={pt-PT=Valor Férias Vincendas (€), en-GB=Expired Vacation Value (€)}, min=0, step=0.01}]}, {type=Composite, field=otherTsu, description={pt-PT=Indique a percentagem da taxa da TSU a aplicar no ano económico e o valor calculado sobre esta., en-GB=Indicate the TSU rate to be applied in the financial year and the value calculated on the rate.}, properties=[{type=Quantity, field=otherTsuPercentage, label={pt-PT=Outro TSU (%), en-GB=Other TSU (%)}, min=0, step=0.01}, {type=Quantity, field=otherTsuValue, required=true, label={pt-PT=Valor Outro TSU (€), en-GB=Other TSU Value (€)}, min=0, step=0.01}]}, {type=Quantity, field=totalCosts, required=true, label={pt-PT=Total do Encargo para o Período (€), en-GB=Total Expenses for the Period (€)}, min=0, step=0.01}]}]}]}]}}, {id=fund-reservation, title={pt-PT=Reserva de Fundos, en-GB=Reserve Funds}, form={pages=[{title={pt-PT=Direção_de_Projetos_e_Execução_Orçamental, en-GB=Projects_and_Budget_Execution_Department}, sections=[{title={pt-PT=Reserva/Cabimento, en-GB=Reserve/Fund_Allocation}, properties=[{type=Array, field=reserveFundAllocationCommitments, required=true, label={pt-PT=Encargos Financeiros, en-GB=Financial Costs}, labelAddElement={pt-PT=Adicionar encargo financeiro, en-GB=Add financial cost}, properties=[{type=AsyncSelect, field=financerConfig, label={pt-PT=Elemento Financiador, en-GB=Funding Element}, required=true, allowOther=false, optionsProvider=/paper-pusher-ist/financeUnitFlowConfig/{{flowId}}/financers}, {type=Text, field=fundReservationNumber, required=false, label={pt-PT=Número de Reserva, en-GB=Fund Reservation Number}, multiline=false, inputType=plain}]}]}]}]}}, {id=fund-information, title={pt-PT=Informação Financeira Lida do SAP, en-GB=Financial Information from SAP}, form={pages=[{title={pt-PT=Reservas_e_Cabimentos, en-GB=Reservations_and_Fund_Allocation}, sections=[{title={pt-PT=Detalhes, en-GB=Details}, properties=[{type=Array, field=financialInformation, required=false, readonly=true, label={pt-PT=Informação do SAP, en-GB=Information from SAP}, properties=[{type=Text, field=documentType, required=false, readonly=true, label={pt-PT=Tipo de Documento, en-GB=Document Type}}, {type=Text, field=documentId, required=false, readonly=true, label={pt-PT=Número do Documento, en-GB=Document Number}}, {type=Text, field=operator, required=false, readonly=true, label={pt-PT=Operador, en-GB=Operator}}, {type=Text, field=entryDate, required=false, readonly=true, label={pt-PT=Data de Entrada, en-GB=Entry Date}}, {type=Text, field=documentDate, required=false, readonly=true, label={pt-PT=Data no Documento, en-GB=Date in Document}}, {type=Text, field=documentReleaseDate, required=false, readonly=true, label={pt-PT=Data de Lançamento no Documento, en-GB=Release Date in Document}}, {type=Array, field=documents, required=false, readonly=true, label={pt-PT=Documentos do SAP, en-GB=Documentos do SAP}, properties=[{type=Text, field=documentType, required=false, readonly=true, label={pt-PT=Tipo de Documento, en-GB=Document Type}}, {type=Text, field=documentId, required=false, readonly=true, label={pt-PT=Número do Documento, en-GB=Document Number}}, {type=Text, field=operator, required=false, readonly=true, label={pt-PT=Operador, en-GB=Operator}}, {type=Text, field=entryDate, required=false, readonly=true, label={pt-PT=Data de Entrada, en-GB=Entry Date}}, {type=Text, field=documentDate, required=false, readonly=true, label={pt-PT=Data no Documento, en-GB=Date in Document}}, {type=Text, field=documentReleaseDate, required=false, readonly=true, label={pt-PT=Data de Lançamento no Documento, en-GB=Release Date in Document}}, {type=Array, field=items, required=false, readonly=true, label={pt-PT=Itens do Documento, en-GB=Document Items}, properties=[{type=Text, field=value, required=false, readonly=true, label={pt-PT=Valor, en-GB=Value}}, {type=Text, field=description, required=false, readonly=true, label={pt-PT=Descrição, en-GB=Description}}, {type=Text, field=financialCentre, required=false, readonly=true, label={pt-PT=Centro Financeiro, en-GB=Financial Centre}}, {type=Text, field=funds, required=false, readonly=true, label={pt-PT=Fundos, en-GB=Funds}}, {type=Text, field=functionalArea, required=false, readonly=true, label={pt-PT=Área Funcional, en-GB=Functional Area}}, {type=Text, field=pepElement, required=false, readonly=true, label={pt-PT=Elemento PEP, en-GB=PEP Element}}, {type=Text, field=supplierName, required=false, readonly=true, label={pt-PT=Nome do Fornecedor, en-GB=Supplier Name}}, {type=Text, field=supplierTin, required=false, readonly=true, label={pt-PT=NIF do Fornecedor, en-GB=Supplier TIN}}, {type=Text, field=expiryDate, required=false, readonly=true, label={pt-PT=Data de Validade, en-GB=Expiry Date}}]}, {type=Array, field=documents, required=false, readonly=true, label={pt-PT=Documentos do SAP, en-GB=Documentos do SAP}, properties=[{type=Text, field=documentType, required=false, readonly=true, label={pt-PT=Tipo de Documento, en-GB=Document Type}}, {type=Text, field=documentId, required=false, readonly=true, label={pt-PT=Número do Documento, en-GB=Document Number}}, {type=Text, field=operator, required=false, readonly=true, label={pt-PT=Operador, en-GB=Operator}}, {type=Text, field=entryDate, required=false, readonly=true, label={pt-PT=Data de Entrada, en-GB=Entry Date}}, {type=Text, field=documentDate, required=false, readonly=true, label={pt-PT=Data no Documento, en-GB=Date in Document}}, {type=Text, field=documentReleaseDate, required=false, readonly=true, label={pt-PT=Data de Lançamento no Documento, en-GB=Release Date in Document}}, {type=Array, field=items, required=false, readonly=true, label={pt-PT=Itens do Documento, en-GB=Document Items}, properties=[{type=Text, field=value, required=false, readonly=true, label={pt-PT=Valor, en-GB=Value}}, {type=Text, field=description, required=false, readonly=true, label={pt-PT=Descrição, en-GB=Description}}, {type=Text, field=financialCentre, required=false, readonly=true, label={pt-PT=Centro Financeiro, en-GB=Financial Centre}}, {type=Text, field=funds, required=false, readonly=true, label={pt-PT=Fundos, en-GB=Funds}}, {type=Text, field=functionalArea, required=false, readonly=true, label={pt-PT=Área Funcional, en-GB=Functional Area}}, {type=Text, field=pepElement, required=false, readonly=true, label={pt-PT=Elemento PEP, en-GB=PEP Element}}, {type=Text, field=supplierName, required=false, readonly=true, label={pt-PT=Nome do Fornecedor, en-GB=Supplier Name}}, {type=Text, field=supplierTin, required=false, readonly=true, label={pt-PT=NIF do Fornecedor, en-GB=Supplier TIN}}, {type=Text, field=expiryDate, required=false, readonly=true, label={pt-PT=Data de Validade, en-GB=Expiry Date}}]}]}]}]}]}]}]}}], actionNodes=[{id=step-1, type=generic, comment=true, title={pt-PT=O/A Presidente do Departamento, en-GB=The Department President}, description={pt-PT=Parecer do/a presidente do departamento., en-GB=Deliberation of the presidente of the department.}, commentLabel={pt-PT=Parecer do/a presidente do departamento., en-GB=Deliberation of the presidente of the department.}, actions=[{primary=true, to=step-2, label={pt-PT=Autorizar, en-GB=Authorise}, id=SIGN-step-1, name=SIGN}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-1, name=REJECT}], queue=step1-queue, queueOrder=0}, {id=step-2, type=withForms, comment=false, title={pt-PT=Imputação de custos, en-GB=Cost allocation}, description={pt-PT=Processamento pela Direção de Recursos Humanos, en-GB=Processing by the Human Resources Department}, buttons=[{id=submit-form-step-2, primary=true, label={pt-PT=Imputação de custos, en-GB=Cost allocation}, handlers={form=cost-allocation, action=RESERVE_FUNDS-step-2}}, {id=reject-step-2, primary=false, label={pt-PT=Rejeitar, en-GB=Rejeitar}, handlers={action=REJECT-step-2}}], actions=[{primary=true, to=step-3.1-fund-reservation, label={pt-PT=Reservar Fundos, en-GB=Reserve Funds}, id=RESERVE_FUNDS-step-2, name=RESERVE_FUNDS}, {primary=false, to=FAILURE, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-2, name=REJECT}], queue=Nucleo-de-Remuneracoes-e-Protecao-Social-Geral, blockUndo=true, queueOrder=1}, {id=step-3.1-fund-reservation, type=withForms, comment=false, title={pt-PT=Reservar Fundos, en-GB=Allocate Funds}, description={pt-PT=Alocação de Verbas para Garantir a Possibilidade de Pagamento, en-GB=Budget Allocation to Ensure the Possibility of Payment}, buttons=[{id=fund-reservation-form-step-3.1-fund-reservation, primary=true, label={pt-PT=Confirmar Reserva de Fundos, en-GB=Confirm Fund Reservation}, handlers={form=fund-reservation, action=RESERVE_FUNDS-step-3.1-fund-reservation}}, {id=reject-step-3.1-fund-reservation, primary=false, label={pt-PT=Rejeitar, en-GB=Reject}, handlers={action=REJECT-step-3.1-fund-reservation}}], actions=[{primary=true, to=step-4-fund-allocation, label={pt-PT=Confirmar Reserva de Fundos, en-GB=Confirm Fund Reservation}, id=RESERVE_FUNDS-step-3.1-fund-reservation, name=RESERVE_FUNDS}, {primary=false, to=step-3.1-fund-undo-reservation, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-3.1-fund-reservation, name=REJECT}], actionProcessor=[{applyOn=RESERVE_FUNDS-step-3.1-fund-reservation, flowProcessor=Sync Funds Allocation Info, id=onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info, name=onActionTransition}], queue=step3-queue, queueOrder=2}, {id=step-4-fund-allocation, type=generic, comment=false, title={pt-PT=Cabimento de Fundos, en-GB=Fund Allocation}, description={pt-PT=Alocação de Verbas para Garantir a Possibilidade de Pagamento, en-GB=Budget Allocation to Ensure the Possibility of Payment}, actions=[{primary=true, to=step-5-scientificCouncil, label={pt-PT=Confirmar Alocação de Fundos, en-GB=Confirm Fund Allocation}, id=ALLOCATE_FUNDS-step-4-fund-allocation, name=ALLOCATE_FUNDS}, {primary=false, to=step-3.1-fund-undo-reservation, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-4-fund-allocation, name=REJECT}], actionProcessor=[{applyOn=ALLOCATE_FUNDS-step-4-fund-allocation, flowProcessor=Sync Funds Allocation Info, id=onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info, name=onActionTransition}], queuesAllowedToChangeTo=[Área de Contabilidade - Geral, Núcleo de Execução Orçamental - Geral, Núcleo de Contabilidade - Geral], queue=Nucleo-de-Execucao-Orcamental-Geral, blockUndo=false, queueOrder=3}, {id=step-5-scientificCouncil, type=withButtons, comment=true, title={pt-PT=Conselho Científico, en-GB=Scientific Council}, description={pt-PT=Deliberação do Conselho Científico., en-GB=Deliberation of the Scientific Council.}, commentLabel={pt-PT=Deliberação do Conselho Científico., en-GB=Deliberation of the Scientific Council.}, buttons=[{label={pt-PT=Enviar para Plenário, en-GB=Send to Plenary}, handler=process:move-queue-plenary}, {primary=true, label={pt-PT=Autorizar, en-GB=Authorise}, handler=action:SIGN}, {label={pt-PT=Requerer Revisão de Documentos, en-GB=Request Changes do Documents}, handler=action:REQUEST_REVIEW_DOCUMENTS}, {label={pt-PT=Rejeitar, en-GB=Reject}, handler=action:REJECT}, {label={pt-PT=Reverter envio para Plenário, en-GB=Revert Send to Plenary}, handler=process:revert-move-queue-plenary}], actions=[{primary=true, to=step-6-administrator, label={pt-PT=Autorizar, en-GB=Authorise}, id=SIGN-step-5-scientificCouncil, name=SIGN}, {primary=false, to=step-5-request-document-changes, label={pt-PT=Requerer Revisão de Documentos, en-GB=Request Changes do Documents}, id=REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil, name=REQUEST_REVIEW_DOCUMENTS}, {primary=false, to=step-4-fund-undo-allocation, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-5-scientificCouncil, name=REJECT}], queue=Conselho-Cientifico-Comissao-Contratacao, queueOrder=4}, {id=step-5-request-document-changes, type=withForms, comment=false, title={pt-PT=Rever Documentação, en-GB=Review Documents}, description={pt-PT=Completar e retificar documentação, en-GB=Complete e correct documentation}, buttons=[{id=review-documents-form-step-5-request-document-changes, primary=true, label={pt-PT=Rever Documentação, en-GB=Review Documents}, handlers={form=review-documents-form, action=RESERVE_FUNDS-step-5-request-document-changes}}], actions=[{primary=true, to=step-5-scientificCouncil, label={pt-PT=Rever Documentação, en-GB=Review Documents}, id=SUBMIT-step-5-request-document-changes, name=SUBMIT}, {primary=false, to=step-5-scientificCouncil, label={pt-PT=Nenhuma Informação Adicional Prestada, en-GB=No Additional Information was Provided}, id=FINISH_WAITING-step-5-request-document-changes, name=FINISH_WAITING}], queue=requester-workplace-unit, blockUndo=true, actionProcessor=[{flowProcessor=Send e-mail, template=email-request-pdec-document-revision, notifyFlowMembers=true, sender=1696378937945233, parameters={}, id=onEnterNode-step-5-request-document-changes-Send_e-mail, name=onEnterNode}, {flowProcessor=Do Flow Action After Time Passes, flowAction=FINISH_WAITING, user=fenix, when={plusWorkingDays=5}, id=onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes, name=onEnterNode}], queueOrder=5}, {id=step-6-administrator, type=generic, comment=true, title={pt-PT=O/A Presidente do Instituto Superior Técnico, en-GB=The President of Instituto Superior Técnico}, description={pt-PT=Despacho do/a Presidente do Instituto Superior Técnico., en-GB=Dispatch by the President of Instituto Superior Técnico.}, commentLabel={pt-PT=Despacho do/a Presidente do Instituto Superior Técnico., en-GB=Dispatch by the President of Instituto Superior Técnico.}, actions=[{primary=true, to=SUCCESS, label={pt-PT=Autorizar, en-GB=Authorise}, id=SIGN-step-6-administrator, name=SIGN}, {primary=false, to=step-4-fund-undo-allocation, label={pt-PT=Rejeitar, en-GB=Reject}, id=REJECT-step-6-administrator, name=REJECT}], queue=Presidencia-do-Instituto-Superior-Tecnico, actionProcessor=[{applyOn=SIGN-step-6-administrator, flowProcessor=Return Flow Approved To Request, id=onSuccess-step-6-administrator-Return_Flow_Approved_To_Request, name=onSuccess}], queueOrder=6}, {id=step-4-fund-undo-allocation, type=generic, comment=false, title={pt-PT=Libertar Cabimento de Fundos, en-GB=Undo Fund Allocation}, description={pt-PT=Cancelar Alocação de Verbas, en-GB=Undo Budget Allocation}, actions=[{primary=true, to=step-3.1-fund-undo-reservation, label={pt-PT=Confirmar Cancelamento de Alocação de Fundos, en-GB=Confirm Undo Fund Allocation}, id=UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation, name=UNDO_ALLOCATE_FUNDS}], actionProcessor=[{applyOn=UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation, flowProcessor=Sync Funds Allocation Info, id=onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info, name=onActionTransition}], queuesAllowedToChangeTo=[Área de Contabilidade - Geral, Núcleo de Execução Orçamental - Geral, Núcleo de Contabilidade - Geral], queue=Nucleo-de-Execucao-Orcamental-Geral, blockUndo=false, queueOrder=3}, {id=step-3.1-fund-undo-reservation, type=generic, comment=false, title={pt-PT=Libertar Reserva de Fundos, en-GB=Undo Fund Allocation}, description={pt-PT=Cancelar Alocação de Verbas, en-GB=Undo Budget Allocation}, actions=[{primary=true, to=step-4-fund-undo-allocation, label={pt-PT=Confirmar Cancelamento da Reserva de Fundos, en-GB=Confirm Undo Fund Reservation}, id=UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation, name=UNDO_RESERVE_FUNDS}], actionProcessor=[{applyOn=UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation, flowProcessor=Sync Funds Allocation Info, id=onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info, name=onActionTransition}], queue=step3-queue-undo, queueOrder=7}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="specially-hired-faculty-contract" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info"
+                           id="Shape_onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-4-fund-allocation"
+                           id="Shape_ExclusiveGateway_step-4-fund-allocation">
+            <dc:Bounds height="40.0" width="40.0" x="2800.0" y="940.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FAILURE" id="Shape_FAILURE">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="382.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="reject-step-2" id="Shape_reject-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-5-scientificCouncil"
+                           id="Shape_SIGN-step-5-scientificCouncil">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="1370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onSuccess-step-6-administrator-Return_Flow_Approved_To_Request"
+                           id="Shape_onSuccess-step-6-administrator-Return_Flow_Approved_To_Request">
+            <dc:Bounds height="60.0" width="80.0" x="1200.0" y="2250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-3.1-fund-reservation"
+                           id="Shape_ExclusiveGateway_step-3.1-fund-reservation">
+            <dc:Bounds height="40.0" width="40.0" x="1920.0" y="660.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-4-fund-undo-allocation"
+                           id="Shape_step-4-fund-undo-allocation">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                           id="Shape_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info">
+            <dc:Bounds height="60.0" width="80.0" x="2420.0" y="810.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-3.1-fund-undo-reservation"
+                           id="Shape_step-3.1-fund-undo-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="2420.0" y="2370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-2"
+                           id="Shape_ExclusiveGateway_step-2">
+            <dc:Bounds height="40.0" width="40.0" x="1220.0" y="380.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-1"
+                           id="Shape_ExclusiveGateway_step-1">
+            <dc:Bounds height="40.0" width="40.0" x="680.0" y="100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-3.1-fund-reservation"
+                           id="Shape_REJECT-step-3.1-fund-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="2240.0" y="650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-6-administrator"
+                           id="Shape_REJECT-step-6-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="2090.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-1" id="Shape_step-1">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="142.5" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info"
+                           id="Shape_onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info">
+            <dc:Bounds height="60.0" width="80.0" x="2780.0" y="2370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-6-administrator" id="Shape_step-6-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="2090.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="1402.5" y="2262.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                           id="Shape_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info">
+            <dc:Bounds height="60.0" width="80.0" x="3140.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-5-scientificCouncil"
+                           id="Shape_step-5-scientificCouncil">
+            <dc:Bounds height="60.0" width="80.0" x="120.0" y="1210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="review-documents-form-step-5-request-document-changes"
+                           id="Shape_review-documents-form-step-5-request-document-changes">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1810.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="RESERVE_FUNDS-step-3.1-fund-reservation"
+                           id="Shape_RESERVE_FUNDS-step-3.1-fund-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="2240.0" y="810.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-step-2" id="Shape_submit-form-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-5-scientificCouncil"
+                           id="Shape_ExclusiveGateway_step-5-scientificCouncil">
+            <dc:Bounds height="40.0" width="40.0" x="320.0" y="1220.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-2" id="Shape_REJECT-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="1560.0" y="530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-5-scientificCouncil"
+                           id="Shape_REJECT-step-5-scientificCouncil">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="1210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-5-request-document-changes"
+                           id="Shape_ExclusiveGateway_step-5-request-document-changes">
+            <dc:Bounds height="40.0" width="40.0" x="860.0" y="1660.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes"
+                           id="Shape_ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes">
+            <dc:Bounds height="40.0" width="40.0" x="1220.0" y="1660.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation"
+                           id="Shape_UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation">
+            <dc:Bounds height="60.0" width="80.0" x="300.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="reject-step-3.1-fund-reservation"
+                           id="Shape_reject-step-3.1-fund-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="2060.0" y="650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-1" id="Shape_SIGN-step-1">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-2" id="Shape_step-2">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-5-request-document-changes"
+                           id="Shape_step-5-request-document-changes">
+            <dc:Bounds height="60.0" width="80.0" x="660.0" y="1650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_step-6-administrator"
+                           id="Shape_ExclusiveGateway_step-6-administrator">
+            <dc:Bounds height="40.0" width="40.0" x="860.0" y="2100.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-4-fund-allocation" id="Shape_step-4-fund-allocation">
+            <dc:Bounds height="60.0" width="80.0" x="2600.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-1" id="Shape_REJECT-step-1">
+            <dc:Bounds height="60.0" width="80.0" x="840.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUBMIT-step-5-request-document-changes"
+                           id="Shape_SUBMIT-step-5-request-document-changes">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1970.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-6-administrator"
+                           id="Shape_SIGN-step-6-administrator">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="2250.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REJECT-step-4-fund-allocation"
+                           id="Shape_REJECT-step-4-fund-allocation">
+            <dc:Bounds height="60.0" width="80.0" x="2960.0" y="1090.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-5-request-document-changes-Send_e-mail"
+                           id="Shape_onEnterNode-step-5-request-document-changes-Send_e-mail">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="1810.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation"
+                           id="Shape_UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="2600.0" y="2370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="FINISH_WAITING-step-5-request-document-changes"
+                           id="Shape_FINISH_WAITING-step-5-request-document-changes">
+            <dc:Bounds height="60.0" width="80.0" x="1020.0" y="1650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="RESERVE_FUNDS-step-2" id="Shape_RESERVE_FUNDS-step-2">
+            <dc:Bounds height="60.0" width="80.0" x="1560.0" y="370.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="fund-reservation-form-step-3.1-fund-reservation"
+                           id="Shape_fund-reservation-form-step-3.1-fund-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="2060.0" y="810.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil"
+                           id="Shape_REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil">
+            <dc:Bounds height="60.0" width="80.0" x="480.0" y="1530.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-3.1-fund-reservation"
+                           id="Shape_step-3.1-fund-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="1740.0" y="650.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"
+                           id="Shape_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes">
+            <dc:Bounds height="60.0" width="80.0" x="1380.0" y="1970.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ALLOCATE_FUNDS-step-4-fund-allocation"
+                           id="Shape_ALLOCATE_FUNDS-step-4-fund-allocation">
+            <dc:Bounds height="60.0" width="80.0" x="2960.0" y="930.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_SUBMIT-step-5-request-document-changes"
+                           id="Shape_ExclusiveGateway_SUBMIT-step-5-request-document-changes">
+            <dc:Bounds height="40.0" width="40.0" x="1220.0" y="1980.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step1-queue" id="Shape_step1-queue">
+            <dc:Bounds height="280.0" width="3160.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Remuneracoes-e-Protecao-Social-Geral"
+                           id="Shape_Nucleo-de-Remuneracoes-e-Protecao-Social-Geral">
+            <dc:Bounds height="280.0" width="3160.0" x="90.0" y="340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step3-queue" id="Shape_step3-queue">
+            <dc:Bounds height="280.0" width="3160.0" x="90.0" y="620.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Execucao-Orcamental-Geral"
+                           id="Shape_Nucleo-de-Execucao-Orcamental-Geral">
+            <dc:Bounds height="280.0" width="3160.0" x="90.0" y="900.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Conselho-Cientifico-Comissao-Contratacao"
+                           id="Shape_Conselho-Cientifico-Comissao-Contratacao">
+            <dc:Bounds height="440.0" width="3160.0" x="90.0" y="1180.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="requester-workplace-unit"
+                           id="Shape_requester-workplace-unit">
+            <dc:Bounds height="440.0" width="3160.0" x="90.0" y="1620.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Presidencia-do-Instituto-Superior-Tecnico"
+                           id="Shape_Presidencia-do-Instituto-Superior-Tecnico">
+            <dc:Bounds height="280.0" width="3160.0" x="90.0" y="2060.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step3-queue-undo" id="Shape_step3-queue-undo">
+            <dc:Bounds height="120.0" width="3160.0" x="90.0" y="2340.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="2400.0" width="3190.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-3.1-fund-reservation_to_fund-reservation-form-step-3.1-fund-reservation"
+                          id="Edge_ExclusiveGateway_step-3.1-fund-reservation_to_fund-reservation-form-step-3.1-fund-reservation">
+            <di:waypoint x="1960.0" y="680.0"/>
+            <di:waypoint x="1993.0" y="680.0"/>
+            <di:waypoint x="1993.0" y="840.0"/>
+            <di:waypoint x="2060.0" y="840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-3.1-fund-reservation_to_ExclusiveGateway_step-3.1-fund-reservation"
+                          id="Edge_step-3.1-fund-reservation_to_ExclusiveGateway_step-3.1-fund-reservation">
+            <di:waypoint x="1820.0" y="680.0"/>
+            <di:waypoint x="1853.0" y="680.0"/>
+            <di:waypoint x="1853.0" y="680.0"/>
+            <di:waypoint x="1920.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation_to_onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info"
+                          id="Edge_UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation_to_onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info">
+            <di:waypoint x="2680.0" y="2400.0"/>
+            <di:waypoint x="2780.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="1260.0" y="2000.0"/>
+            <di:waypoint x="1380.0" y="2000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-3.1-fund-reservation_to_reject-step-3.1-fund-reservation"
+                          id="Edge_ExclusiveGateway_step-3.1-fund-reservation_to_reject-step-3.1-fund-reservation">
+            <di:waypoint x="1960.0" y="680.0"/>
+            <di:waypoint x="2060.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1_to_SIGN-step-1"
+                          id="Edge_ExclusiveGateway_step-1_to_SIGN-step-1">
+            <di:waypoint x="720.0" y="120.0"/>
+            <di:waypoint x="753.0" y="120.0"/>
+            <di:waypoint x="753.0" y="280.0"/>
+            <di:waypoint x="840.0" y="280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail">
+            <di:waypoint x="1260.0" y="1680.0"/>
+            <di:waypoint x="1293.0" y="1680.0"/>
+            <di:waypoint x="1293.0" y="1840.0"/>
+            <di:waypoint x="1380.0" y="1840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                          id="Edge_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info">
+            <di:waypoint x="3040.0" y="960.0"/>
+            <di:waypoint x="3140.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="reject-step-2_to_REJECT-step-2"
+                          id="Edge_reject-step-2_to_REJECT-step-2">
+            <di:waypoint x="1460.0" y="560.0"/>
+            <di:waypoint x="1560.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="RESERVE_FUNDS-step-2_to_step-3.1-fund-reservation"
+                          id="Edge_RESERVE_FUNDS-step-2_to_step-3.1-fund-reservation">
+            <di:waypoint x="1640.0" y="400.0"/>
+            <di:waypoint x="1673.0" y="400.0"/>
+            <di:waypoint x="1673.0" y="680.0"/>
+            <di:waypoint x="1740.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-5-scientificCouncil_to_ExclusiveGateway_step-5-scientificCouncil"
+                          id="Edge_step-5-scientificCouncil_to_ExclusiveGateway_step-5-scientificCouncil">
+            <di:waypoint x="200.0" y="1240.0"/>
+            <di:waypoint x="233.0" y="1240.0"/>
+            <di:waypoint x="233.0" y="1240.0"/>
+            <di:waypoint x="320.0" y="1240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation_to_onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info"
+                          id="Edge_UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation_to_onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info">
+            <di:waypoint x="380.0" y="960.0"/>
+            <di:waypoint x="480.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onSuccess-step-6-administrator-Return_Flow_Approved_To_Request_to_SUCCESS"
+                          id="Edge_onSuccess-step-6-administrator-Return_Flow_Approved_To_Request_to_SUCCESS">
+            <di:waypoint x="1280.0" y="2280.0"/>
+            <di:waypoint x="1313.0" y="2280.0"/>
+            <di:waypoint x="1313.0" y="2280.0"/>
+            <di:waypoint x="1402.5" y="2280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-2_to_reject-step-2"
+                          id="Edge_ExclusiveGateway_step-2_to_reject-step-2">
+            <di:waypoint x="1260.0" y="400.0"/>
+            <di:waypoint x="1293.0" y="400.0"/>
+            <di:waypoint x="1293.0" y="560.0"/>
+            <di:waypoint x="1380.0" y="560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-3.1-fund-reservation_to_step-3.1-fund-undo-reservation"
+                          id="Edge_REJECT-step-3.1-fund-reservation_to_step-3.1-fund-undo-reservation">
+            <di:waypoint x="2320.0" y="680.0"/>
+            <di:waypoint x="2353.0" y="680.0"/>
+            <di:waypoint x="2353.0" y="2400.0"/>
+            <di:waypoint x="2420.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-1_to_step-2" id="Edge_SIGN-step-1_to_step-2">
+            <di:waypoint x="920.0" y="280.0"/>
+            <di:waypoint x="953.0" y="280.0"/>
+            <di:waypoint x="953.0" y="400.0"/>
+            <di:waypoint x="1020.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-4-fund-allocation_to_ExclusiveGateway_step-4-fund-allocation"
+                          id="Edge_step-4-fund-allocation_to_ExclusiveGateway_step-4-fund-allocation">
+            <di:waypoint x="2680.0" y="960.0"/>
+            <di:waypoint x="2713.0" y="960.0"/>
+            <di:waypoint x="2713.0" y="960.0"/>
+            <di:waypoint x="2800.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-2_to_FAILURE"
+                          id="Edge_REJECT-step-2_to_FAILURE">
+            <di:waypoint x="1640.0" y="560.0"/>
+            <di:waypoint x="3255.0" y="560.0"/>
+            <di:waypoint x="3255.0" y="437.5"/>
+            <di:waypoint x="160.0" y="437.5"/>
+            <di:waypoint x="160.0" y="417.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-5-request-document-changes_to_SUBMIT-step-5-request-document-changes"
+                          id="Edge_ExclusiveGateway_step-5-request-document-changes_to_SUBMIT-step-5-request-document-changes">
+            <di:waypoint x="900.0" y="1680.0"/>
+            <di:waypoint x="933.0" y="1680.0"/>
+            <di:waypoint x="933.0" y="2000.0"/>
+            <di:waypoint x="1020.0" y="2000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-3.1-fund-undo-reservation_to_UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation"
+                          id="Edge_step-3.1-fund-undo-reservation_to_UNDO_RESERVE_FUNDS-step-3.1-fund-undo-reservation">
+            <di:waypoint x="2500.0" y="2400.0"/>
+            <di:waypoint x="2600.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SUBMIT-step-5-request-document-changes_to_ExclusiveGateway_SUBMIT-step-5-request-document-changes"
+                          id="Edge_SUBMIT-step-5-request-document-changes_to_ExclusiveGateway_SUBMIT-step-5-request-document-changes">
+            <di:waypoint x="1100.0" y="2000.0"/>
+            <di:waypoint x="1133.0" y="2000.0"/>
+            <di:waypoint x="1133.0" y="2000.0"/>
+            <di:waypoint x="1220.0" y="2000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-6-administrator_to_step-4-fund-undo-allocation"
+                          id="Edge_REJECT-step-6-administrator_to_step-4-fund-undo-allocation">
+            <di:waypoint x="1100.0" y="2120.0"/>
+            <di:waypoint x="3255.0" y="2120.0"/>
+            <di:waypoint x="3255.0" y="1010.0"/>
+            <di:waypoint x="160.0" y="1010.0"/>
+            <di:waypoint x="160.0" y="990.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                          id="Edge_RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info">
+            <di:waypoint x="2320.0" y="840.0"/>
+            <di:waypoint x="2420.0" y="840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail"
+                          id="Edge_ExclusiveGateway_SUBMIT-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Send_e-mail">
+            <di:waypoint x="1260.0" y="2000.0"/>
+            <di:waypoint x="1380.0" y="2000.0"/>
+            <di:waypoint x="1380.0" y="1840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="fund-reservation-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation"
+                          id="Edge_fund-reservation-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation">
+            <di:waypoint x="2140.0" y="840.0"/>
+            <di:waypoint x="2240.0" y="840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-undo-allocation"
+                          id="Edge_onActionTransition-step-3.1-fund-undo-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-undo-allocation">
+            <di:waypoint x="2860.0" y="2400.0"/>
+            <di:waypoint x="3255.0" y="2400.0"/>
+            <di:waypoint x="3255.0" y="1010.0"/>
+            <di:waypoint x="160.0" y="1010.0"/>
+            <di:waypoint x="160.0" y="990.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-4-fund-undo-allocation_to_UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation"
+                          id="Edge_step-4-fund-undo-allocation_to_UNDO_ALLOCATE_FUNDS-step-4-fund-undo-allocation">
+            <di:waypoint x="200.0" y="960.0"/>
+            <di:waypoint x="300.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-5-scientificCouncil_to_step-4-fund-undo-allocation"
+                          id="Edge_REJECT-step-5-scientificCouncil_to_step-4-fund-undo-allocation">
+            <di:waypoint x="560.0" y="1240.0"/>
+            <di:waypoint x="3255.0" y="1240.0"/>
+            <di:waypoint x="3255.0" y="1010.0"/>
+            <di:waypoint x="160.0" y="1010.0"/>
+            <di:waypoint x="160.0" y="990.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-5-scientificCouncil_to_REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil"
+                          id="Edge_ExclusiveGateway_step-5-scientificCouncil_to_REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil">
+            <di:waypoint x="360.0" y="1240.0"/>
+            <di:waypoint x="393.0" y="1240.0"/>
+            <di:waypoint x="393.0" y="1560.0"/>
+            <di:waypoint x="480.0" y="1560.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-6-administrator_to_ExclusiveGateway_step-6-administrator"
+                          id="Edge_step-6-administrator_to_ExclusiveGateway_step-6-administrator">
+            <di:waypoint x="740.0" y="2120.0"/>
+            <di:waypoint x="773.0" y="2120.0"/>
+            <di:waypoint x="773.0" y="2120.0"/>
+            <di:waypoint x="860.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil_to_step-5-request-document-changes"
+                          id="Edge_REQUEST_REVIEW_DOCUMENTS-step-5-scientificCouncil_to_step-5-request-document-changes">
+            <di:waypoint x="560.0" y="1560.0"/>
+            <di:waypoint x="593.0" y="1560.0"/>
+            <di:waypoint x="593.0" y="1680.0"/>
+            <di:waypoint x="660.0" y="1680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="177.5" y="120.0"/>
+            <di:waypoint x="300.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-6-administrator_to_onSuccess-step-6-administrator-Return_Flow_Approved_To_Request"
+                          id="Edge_SIGN-step-6-administrator_to_onSuccess-step-6-administrator-Return_Flow_Approved_To_Request">
+            <di:waypoint x="1100.0" y="2280.0"/>
+            <di:waypoint x="1200.0" y="2280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes"
+                          id="Edge_ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes_to_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes">
+            <di:waypoint x="1260.0" y="1680.0"/>
+            <di:waypoint x="1293.0" y="1680.0"/>
+            <di:waypoint x="1293.0" y="2000.0"/>
+            <di:waypoint x="1380.0" y="2000.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-2_to_submit-form-step-2"
+                          id="Edge_ExclusiveGateway_step-2_to_submit-form-step-2">
+            <di:waypoint x="1260.0" y="400.0"/>
+            <di:waypoint x="1380.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-5-scientificCouncil_to_SIGN-step-5-scientificCouncil"
+                          id="Edge_ExclusiveGateway_step-5-scientificCouncil_to_SIGN-step-5-scientificCouncil">
+            <di:waypoint x="360.0" y="1240.0"/>
+            <di:waypoint x="393.0" y="1240.0"/>
+            <di:waypoint x="393.0" y="1400.0"/>
+            <di:waypoint x="480.0" y="1400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation"
+                          id="Edge_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation">
+            <di:waypoint x="2500.0" y="840.0"/>
+            <di:waypoint x="2533.0" y="840.0"/>
+            <di:waypoint x="2533.0" y="960.0"/>
+            <di:waypoint x="2600.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-2_to_ExclusiveGateway_step-2"
+                          id="Edge_step-2_to_ExclusiveGateway_step-2">
+            <di:waypoint x="1100.0" y="400.0"/>
+            <di:waypoint x="1133.0" y="400.0"/>
+            <di:waypoint x="1133.0" y="400.0"/>
+            <di:waypoint x="1220.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-1"
+                          id="Edge_START-start-event_to_step-1">
+            <di:waypoint x="380.0" y="120.0"/>
+            <di:waypoint x="480.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="reject-step-3.1-fund-reservation_to_REJECT-step-3.1-fund-reservation"
+                          id="Edge_reject-step-3.1-fund-reservation_to_REJECT-step-3.1-fund-reservation">
+            <di:waypoint x="2140.0" y="680.0"/>
+            <di:waypoint x="2240.0" y="680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-5-scientificCouncil_to_step-6-administrator"
+                          id="Edge_SIGN-step-5-scientificCouncil_to_step-6-administrator">
+            <di:waypoint x="560.0" y="1400.0"/>
+            <di:waypoint x="593.0" y="1400.0"/>
+            <di:waypoint x="593.0" y="2120.0"/>
+            <di:waypoint x="660.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-1_to_FAILURE"
+                          id="Edge_REJECT-step-1_to_FAILURE">
+            <di:waypoint x="920.0" y="120.0"/>
+            <di:waypoint x="3255.0" y="120.0"/>
+            <di:waypoint x="3255.0" y="437.5"/>
+            <di:waypoint x="160.0" y="437.5"/>
+            <di:waypoint x="160.0" y="417.5"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-5-request-document-changes-Send_e-mail_to_step-5-scientificCouncil"
+                          id="Edge_onEnterNode-step-5-request-document-changes-Send_e-mail_to_step-5-scientificCouncil">
+            <di:waypoint x="1460.0" y="1840.0"/>
+            <di:waypoint x="3255.0" y="1840.0"/>
+            <di:waypoint x="3255.0" y="1290.0"/>
+            <di:waypoint x="160.0" y="1290.0"/>
+            <di:waypoint x="160.0" y="1270.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-step-2_to_RESERVE_FUNDS-step-2"
+                          id="Edge_submit-form-step-2_to_RESERVE_FUNDS-step-2">
+            <di:waypoint x="1460.0" y="400.0"/>
+            <di:waypoint x="1560.0" y="400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-5-scientificCouncil_to_REJECT-step-5-scientificCouncil"
+                          id="Edge_ExclusiveGateway_step-5-scientificCouncil_to_REJECT-step-5-scientificCouncil">
+            <di:waypoint x="360.0" y="1240.0"/>
+            <di:waypoint x="480.0" y="1240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info_to_step-3.1-fund-undo-reservation"
+                          id="Edge_onActionTransition-step-4-fund-undo-allocation-Sync_Funds_Allocation_Info_to_step-3.1-fund-undo-reservation">
+            <di:waypoint x="560.0" y="960.0"/>
+            <di:waypoint x="593.0" y="960.0"/>
+            <di:waypoint x="593.0" y="2400.0"/>
+            <di:waypoint x="2420.0" y="2400.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-1_to_REJECT-step-1"
+                          id="Edge_ExclusiveGateway_step-1_to_REJECT-step-1">
+            <di:waypoint x="720.0" y="120.0"/>
+            <di:waypoint x="840.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-4-fund-allocation_to_REJECT-step-4-fund-allocation"
+                          id="Edge_ExclusiveGateway_step-4-fund-allocation_to_REJECT-step-4-fund-allocation">
+            <di:waypoint x="2840.0" y="960.0"/>
+            <di:waypoint x="2873.0" y="960.0"/>
+            <di:waypoint x="2873.0" y="1120.0"/>
+            <di:waypoint x="2960.0" y="1120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-5-request-document-changes_to_review-documents-form-step-5-request-document-changes"
+                          id="Edge_ExclusiveGateway_step-5-request-document-changes_to_review-documents-form-step-5-request-document-changes">
+            <di:waypoint x="900.0" y="1680.0"/>
+            <di:waypoint x="933.0" y="1680.0"/>
+            <di:waypoint x="933.0" y="1840.0"/>
+            <di:waypoint x="1020.0" y="1840.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-6-administrator_to_SIGN-step-6-administrator"
+                          id="Edge_ExclusiveGateway_step-6-administrator_to_SIGN-step-6-administrator">
+            <di:waypoint x="900.0" y="2120.0"/>
+            <di:waypoint x="933.0" y="2120.0"/>
+            <di:waypoint x="933.0" y="2280.0"/>
+            <di:waypoint x="1020.0" y="2280.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-5-request-document-changes_to_FINISH_WAITING-step-5-request-document-changes"
+                          id="Edge_ExclusiveGateway_step-5-request-document-changes_to_FINISH_WAITING-step-5-request-document-changes">
+            <di:waypoint x="900.0" y="1680.0"/>
+            <di:waypoint x="1020.0" y="1680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-5-request-document-changes_to_ExclusiveGateway_step-5-request-document-changes"
+                          id="Edge_step-5-request-document-changes_to_ExclusiveGateway_step-5-request-document-changes">
+            <di:waypoint x="740.0" y="1680.0"/>
+            <di:waypoint x="773.0" y="1680.0"/>
+            <di:waypoint x="773.0" y="1680.0"/>
+            <di:waypoint x="860.0" y="1680.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-6-administrator_to_REJECT-step-6-administrator"
+                          id="Edge_ExclusiveGateway_step-6-administrator_to_REJECT-step-6-administrator">
+            <di:waypoint x="900.0" y="2120.0"/>
+            <di:waypoint x="1020.0" y="2120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes_to_step-5-scientificCouncil"
+                          id="Edge_onEnterNode-step-5-request-document-changes-Do_Flow_Action_After_Time_Passes_to_step-5-scientificCouncil">
+            <di:waypoint x="1460.0" y="2000.0"/>
+            <di:waypoint x="3255.0" y="2000.0"/>
+            <di:waypoint x="3255.0" y="1290.0"/>
+            <di:waypoint x="160.0" y="1290.0"/>
+            <di:waypoint x="160.0" y="1270.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-scientificCouncil"
+                          id="Edge_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-scientificCouncil">
+            <di:waypoint x="3220.0" y="960.0"/>
+            <di:waypoint x="3255.0" y="960.0"/>
+            <di:waypoint x="3255.0" y="1290.0"/>
+            <di:waypoint x="160.0" y="1290.0"/>
+            <di:waypoint x="160.0" y="1270.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation"
+                          id="Edge_ExclusiveGateway_step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation">
+            <di:waypoint x="2840.0" y="960.0"/>
+            <di:waypoint x="2960.0" y="960.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="REJECT-step-4-fund-allocation_to_step-3.1-fund-undo-reservation"
+                          id="Edge_REJECT-step-4-fund-allocation_to_step-3.1-fund-undo-reservation">
+            <di:waypoint x="3040.0" y="1120.0"/>
+            <di:waypoint x="3255.0" y="1120.0"/>
+            <di:waypoint x="3255.0" y="2450.0"/>
+            <di:waypoint x="2460.0" y="2450.0"/>
+            <di:waypoint x="2460.0" y="2430.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-1_to_ExclusiveGateway_step-1"
+                          id="Edge_step-1_to_ExclusiveGateway_step-1">
+            <di:waypoint x="560.0" y="120.0"/>
+            <di:waypoint x="593.0" y="120.0"/>
+            <di:waypoint x="593.0" y="120.0"/>
+            <di:waypoint x="680.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="FINISH_WAITING-step-5-request-document-changes_to_ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes"
+                          id="Edge_FINISH_WAITING-step-5-request-document-changes_to_ExclusiveGateway_FINISH_WAITING-step-5-request-document-changes">
+            <di:waypoint x="1100.0" y="1680.0"/>
+            <di:waypoint x="1133.0" y="1680.0"/>
+            <di:waypoint x="1133.0" y="1680.0"/>
+            <di:waypoint x="1220.0" y="1680.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

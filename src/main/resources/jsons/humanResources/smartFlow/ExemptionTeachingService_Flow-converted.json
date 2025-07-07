@@ -405,7 +405,8 @@
             }
           ],
           "blockUndo" : true,
-          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral"
+          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral",
+          "queueOrder" : 0
         },
         {
           "id" : "step-scientific-council",
@@ -446,7 +447,8 @@
             }
           ],
           "blockUndo" : true,
-          "queue" : "Conselho-Cientifico"
+          "queue" : "Conselho-Cientifico",
+          "queueOrder" : 1
         },
         {
           "id" : "step-administrator",
@@ -497,7 +499,8 @@
               "id" : "onActionTransition-step-administrator-Skip_Next_Nodes",
               "name" : "onActionTransition"
             }
-          ]
+          ],
+          "queueOrder" : 2
         },
         {
           "id" : "step-president",
@@ -539,7 +542,8 @@
           ],
           "queue" : "Presidencia-do-Instituto-Superior-Tecnico",
           "replaceTitleWithRole" : true,
-          "hr-final-authorization-step" : "true"
+          "hr-final-authorization-step" : "true",
+          "queueOrder" : 3
         },
         {
           "id" : "step-wait-exemption-service-reports",
@@ -579,7 +583,8 @@
               "name" : "onEnterNode"
             }
           ],
-          "blockUndo" : true
+          "blockUndo" : true,
+          "queueOrder" : 4
         },
         {
           "id" : "step-upload-exemption-service-reports",
@@ -623,7 +628,8 @@
               "name" : "SIGN"
             }
           ],
-          "queue" : "requester-username"
+          "queue" : "requester-username",
+          "queueOrder" : 5
         },
         {
           "id" : "step-hr-processing",
@@ -653,7 +659,8 @@
               "name" : "SIGN"
             }
           ],
-          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral"
+          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral",
+          "queueOrder" : 0
         }
       ]
     }

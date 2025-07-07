@@ -10,6 +10,276 @@
   "executionPlatformVersion" : "7.23.0",
   "components" : [ {
     "type" : "group",
+    "id" : "Page_Remote_Work_Evaluation",
+    "key" : "page_Remote_Work_Evaluation",
+    "label" : "Remote_Work_Evaluation",
+    "showOutline" : true,
+    "components" : [ {
+      "type" : "group",
+      "id" : "Section_Evaluation_of_the_Degree_of_Interaction",
+      "key" : "section_Evaluation_of_the_Degree_of_Interaction",
+      "label" : "Evaluation_of_the_Degree_of_Interaction",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_interactionOtherUsers",
+        "key" : "interactionOtherUsers",
+        "label" : "Degree of Interaction with Other Users, if Applicable",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "none",
+          "label" : {
+            "en-GB" : "None",
+            "pt-PT" : "Nenhum"
+          }
+        }, {
+          "value" : "average",
+          "label" : {
+            "en-GB" : "Average",
+            "pt-PT" : "Médio"
+          }
+        }, {
+          "value" : "total",
+          "label" : {
+            "en-GB" : "Total",
+            "pt-PT" : "Total"
+          }
+        }, {
+          "value" : "low",
+          "label" : {
+            "en-GB" : "Low",
+            "pt-PT" : "Baixo"
+          }
+        }, {
+          "value" : "high",
+          "label" : {
+            "en-GB" : "High",
+            "pt-PT" : "Alto"
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_interactionWithStudents",
+        "key" : "interactionWithStudents",
+        "label" : "Degree of Interaction with the Students, if Applicable",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "high",
+          "label" : {
+            "en-GB" : "High",
+            "pt-PT" : "Alto"
+          }
+        }, {
+          "value" : "none",
+          "label" : {
+            "en-GB" : "None",
+            "pt-PT" : "Nenhum"
+          }
+        }, {
+          "value" : "total",
+          "label" : {
+            "en-GB" : "Total",
+            "pt-PT" : "Total"
+          }
+        }, {
+          "value" : "low",
+          "label" : {
+            "en-GB" : "Low",
+            "pt-PT" : "Baixo"
+          }
+        }, {
+          "value" : "average",
+          "label" : {
+            "en-GB" : "Average",
+            "pt-PT" : "Médio"
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_interactionWithColleagues",
+        "key" : "interactionWithColleagues",
+        "label" : "Degree of Interaction with Colleagues",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "low",
+          "label" : {
+            "en-GB" : "Low",
+            "pt-PT" : "Baixo"
+          }
+        }, {
+          "value" : "high",
+          "label" : {
+            "en-GB" : "High",
+            "pt-PT" : "Alto"
+          }
+        }, {
+          "value" : "none",
+          "label" : {
+            "en-GB" : "None",
+            "pt-PT" : "Nenhum"
+          }
+        }, {
+          "value" : "average",
+          "label" : {
+            "en-GB" : "Average",
+            "pt-PT" : "Médio"
+          }
+        }, {
+          "value" : "total",
+          "label" : {
+            "en-GB" : "Total",
+            "pt-PT" : "Total"
+          }
+        } ]
+      }, {
+        "type" : "select",
+        "id" : "Field_interactionWithHierarchicalSuperiors",
+        "key" : "interactionWithHierarchicalSuperiors",
+        "label" : "Degree of Interaction with Hierarchical Superiors",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "high",
+          "label" : {
+            "en-GB" : "High",
+            "pt-PT" : "Alto"
+          }
+        }, {
+          "value" : "none",
+          "label" : {
+            "en-GB" : "None",
+            "pt-PT" : "Nenhum"
+          }
+        }, {
+          "value" : "low",
+          "label" : {
+            "en-GB" : "Low",
+            "pt-PT" : "Baixo"
+          }
+        }, {
+          "value" : "total",
+          "label" : {
+            "en-GB" : "Total",
+            "pt-PT" : "Total"
+          }
+        }, {
+          "value" : "average",
+          "label" : {
+            "en-GB" : "Average",
+            "pt-PT" : "Médio"
+          }
+        } ]
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Training",
+      "key" : "section_Training",
+      "label" : "Training",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "radio",
+        "id" : "Field_trainingQuestion",
+        "key" : "trainingQuestion",
+        "label" : "Have you received training?",
+        "required" : true,
+        "readOnly" : false,
+        "values" : [ {
+          "label" : "Yes",
+          "value" : 1
+        }, {
+          "label" : "No",
+          "value" : 0
+        } ]
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Global_Evaluation",
+      "key" : "section_Global_Evaluation",
+      "label" : "Global_Evaluation",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "select",
+        "id" : "Field_globalEvaluation",
+        "key" : "globalEvaluation",
+        "label" : "Qualitative Evaluation",
+        "required" : true,
+        "readOnly" : false,
+        "multiple" : false,
+        "collapse" : false,
+        "allowOther" : false,
+        "values" : [ {
+          "value" : "satisfied",
+          "label" : {
+            "en-GB" : "Satisfied",
+            "pt-PT" : "Satisfeito"
+          }
+        }, {
+          "value" : "unsatisfied",
+          "label" : {
+            "en-GB" : "Unsatisfied",
+            "pt-PT" : "Insatisfeito"
+          }
+        }, {
+          "value" : "completelySatisfied",
+          "label" : {
+            "en-GB" : "Completely Satisfied",
+            "pt-PT" : "Totalmente Satisfeito"
+          }
+        }, {
+          "value" : "veryUnsatisfied",
+          "label" : {
+            "en-GB" : "Very Unsatisfied",
+            "pt-PT" : "Muito Insatisfeito"
+          }
+        }, {
+          "value" : "verySatisfied",
+          "label" : {
+            "en-GB" : "Very Satisfied",
+            "pt-PT" : "Muito Satisfeito"
+          }
+        } ]
+      }, {
+        "type" : "text",
+        "id" : "Field_satisfactionJustification",
+        "key" : "satisfactionJustification",
+        "label" : "Justification for the Selected Satisfaction Level",
+        "text" : "Justification for the Selected Satisfaction Level",
+        "required" : true,
+        "readOnly" : false
+      } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Difficulties",
+      "key" : "section_Difficulties",
+      "label" : "Difficulties",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "text",
+        "id" : "Field_difficulties",
+        "key" : "difficulties",
+        "label" : "Difficulties Faced while Performing Tasks during Remote Work",
+        "text" : "Difficulties Faced while Performing Tasks during Remote Work",
+        "required" : true,
+        "readOnly" : false
+      } ]
+    } ]
+  }, {
+    "type" : "group",
     "id" : "Page_Remote_Work",
     "key" : "page_Remote_Work",
     "label" : "Remote_Work",
@@ -21,47 +291,6 @@
       "label" : "Remote_Work_Renewal",
       "showOutline" : true,
       "components" : [ {
-        "type" : "select",
-        "id" : "Field_daysOfWeek",
-        "key" : "daysOfWeek",
-        "label" : "Days of the Week in Remote Work",
-        "required" : true,
-        "readOnly" : false,
-        "multiple" : true,
-        "collapse" : false,
-        "allowOther" : false,
-        "values" : [ {
-          "value" : "monday",
-          "label" : {
-            "en-GB" : "Monday",
-            "pt-PT" : "Segunda-feira"
-          }
-        }, {
-          "value" : "wednesday",
-          "label" : {
-            "en-GB" : "Wednesday",
-            "pt-PT" : "Quarta-feira"
-          }
-        }, {
-          "value" : "tuesday",
-          "label" : {
-            "en-GB" : "Tuesday",
-            "pt-PT" : "Terça-feira"
-          }
-        }, {
-          "value" : "friday",
-          "label" : {
-            "en-GB" : "Friday",
-            "pt-PT" : "Sexta-feira"
-          }
-        }, {
-          "value" : "thursday",
-          "label" : {
-            "en-GB" : "Thursday",
-            "pt-PT" : "Quinta-feira"
-          }
-        } ]
-      }, {
         "type" : "radio",
         "id" : "Field_changeRemoteWorkDays",
         "key" : "changeRemoteWorkDays",
@@ -98,275 +327,46 @@
             "pt-PT" : "Sim"
           }
         } ]
-      } ]
-    } ]
-  }, {
-    "type" : "group",
-    "id" : "Page_Remote_Work_Evaluation",
-    "key" : "page_Remote_Work_Evaluation",
-    "label" : "Remote_Work_Evaluation",
-    "showOutline" : true,
-    "components" : [ {
-      "type" : "group",
-      "id" : "Section_Evaluation_of_the_Degree_of_Interaction",
-      "key" : "section_Evaluation_of_the_Degree_of_Interaction",
-      "label" : "Evaluation_of_the_Degree_of_Interaction",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "select",
-        "id" : "Field_interactionWithStudents",
-        "key" : "interactionWithStudents",
-        "label" : "Degree of Interaction with the Students, if Applicable",
-        "required" : true,
-        "readOnly" : false,
-        "multiple" : false,
-        "collapse" : false,
-        "allowOther" : false,
-        "values" : [ {
-          "value" : "none",
-          "label" : {
-            "en-GB" : "None",
-            "pt-PT" : "Nenhum"
-          }
-        }, {
-          "value" : "low",
-          "label" : {
-            "en-GB" : "Low",
-            "pt-PT" : "Baixo"
-          }
-        }, {
-          "value" : "total",
-          "label" : {
-            "en-GB" : "Total",
-            "pt-PT" : "Total"
-          }
-        }, {
-          "value" : "average",
-          "label" : {
-            "en-GB" : "Average",
-            "pt-PT" : "Médio"
-          }
-        }, {
-          "value" : "high",
-          "label" : {
-            "en-GB" : "High",
-            "pt-PT" : "Alto"
-          }
-        } ]
       }, {
         "type" : "select",
-        "id" : "Field_interactionOtherUsers",
-        "key" : "interactionOtherUsers",
-        "label" : "Degree of Interaction with Other Users, if Applicable",
+        "id" : "Field_daysOfWeek",
+        "key" : "daysOfWeek",
+        "label" : "Days of the Week in Remote Work",
         "required" : true,
         "readOnly" : false,
-        "multiple" : false,
+        "multiple" : true,
         "collapse" : false,
         "allowOther" : false,
         "values" : [ {
-          "value" : "none",
+          "value" : "monday",
           "label" : {
-            "en-GB" : "None",
-            "pt-PT" : "Nenhum"
+            "en-GB" : "Monday",
+            "pt-PT" : "Segunda-feira"
           }
         }, {
-          "value" : "low",
+          "value" : "friday",
           "label" : {
-            "en-GB" : "Low",
-            "pt-PT" : "Baixo"
+            "en-GB" : "Friday",
+            "pt-PT" : "Sexta-feira"
           }
         }, {
-          "value" : "total",
+          "value" : "wednesday",
           "label" : {
-            "en-GB" : "Total",
-            "pt-PT" : "Total"
+            "en-GB" : "Wednesday",
+            "pt-PT" : "Quarta-feira"
           }
         }, {
-          "value" : "high",
+          "value" : "thursday",
           "label" : {
-            "en-GB" : "High",
-            "pt-PT" : "Alto"
+            "en-GB" : "Thursday",
+            "pt-PT" : "Quinta-feira"
           }
         }, {
-          "value" : "average",
+          "value" : "tuesday",
           "label" : {
-            "en-GB" : "Average",
-            "pt-PT" : "Médio"
+            "en-GB" : "Tuesday",
+            "pt-PT" : "Terça-feira"
           }
-        } ]
-      }, {
-        "type" : "select",
-        "id" : "Field_interactionWithColleagues",
-        "key" : "interactionWithColleagues",
-        "label" : "Degree of Interaction with Colleagues",
-        "required" : true,
-        "readOnly" : false,
-        "multiple" : false,
-        "collapse" : false,
-        "allowOther" : false,
-        "values" : [ {
-          "value" : "none",
-          "label" : {
-            "en-GB" : "None",
-            "pt-PT" : "Nenhum"
-          }
-        }, {
-          "value" : "total",
-          "label" : {
-            "en-GB" : "Total",
-            "pt-PT" : "Total"
-          }
-        }, {
-          "value" : "average",
-          "label" : {
-            "en-GB" : "Average",
-            "pt-PT" : "Médio"
-          }
-        }, {
-          "value" : "low",
-          "label" : {
-            "en-GB" : "Low",
-            "pt-PT" : "Baixo"
-          }
-        }, {
-          "value" : "high",
-          "label" : {
-            "en-GB" : "High",
-            "pt-PT" : "Alto"
-          }
-        } ]
-      }, {
-        "type" : "select",
-        "id" : "Field_interactionWithHierarchicalSuperiors",
-        "key" : "interactionWithHierarchicalSuperiors",
-        "label" : "Degree of Interaction with Hierarchical Superiors",
-        "required" : true,
-        "readOnly" : false,
-        "multiple" : false,
-        "collapse" : false,
-        "allowOther" : false,
-        "values" : [ {
-          "value" : "high",
-          "label" : {
-            "en-GB" : "High",
-            "pt-PT" : "Alto"
-          }
-        }, {
-          "value" : "none",
-          "label" : {
-            "en-GB" : "None",
-            "pt-PT" : "Nenhum"
-          }
-        }, {
-          "value" : "average",
-          "label" : {
-            "en-GB" : "Average",
-            "pt-PT" : "Médio"
-          }
-        }, {
-          "value" : "total",
-          "label" : {
-            "en-GB" : "Total",
-            "pt-PT" : "Total"
-          }
-        }, {
-          "value" : "low",
-          "label" : {
-            "en-GB" : "Low",
-            "pt-PT" : "Baixo"
-          }
-        } ]
-      } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_Difficulties",
-      "key" : "section_Difficulties",
-      "label" : "Difficulties",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "text",
-        "id" : "Field_difficulties",
-        "key" : "difficulties",
-        "label" : "Difficulties Faced while Performing Tasks during Remote Work",
-        "text" : "Difficulties Faced while Performing Tasks during Remote Work",
-        "required" : true,
-        "readOnly" : false
-      } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_Global_Evaluation",
-      "key" : "section_Global_Evaluation",
-      "label" : "Global_Evaluation",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "select",
-        "id" : "Field_globalEvaluation",
-        "key" : "globalEvaluation",
-        "label" : "Qualitative Evaluation",
-        "required" : true,
-        "readOnly" : false,
-        "multiple" : false,
-        "collapse" : false,
-        "allowOther" : false,
-        "values" : [ {
-          "value" : "unsatisfied",
-          "label" : {
-            "en-GB" : "Unsatisfied",
-            "pt-PT" : "Insatisfeito"
-          }
-        }, {
-          "value" : "verySatisfied",
-          "label" : {
-            "en-GB" : "Very Satisfied",
-            "pt-PT" : "Muito Satisfeito"
-          }
-        }, {
-          "value" : "veryUnsatisfied",
-          "label" : {
-            "en-GB" : "Very Unsatisfied",
-            "pt-PT" : "Muito Insatisfeito"
-          }
-        }, {
-          "value" : "completelySatisfied",
-          "label" : {
-            "en-GB" : "Completely Satisfied",
-            "pt-PT" : "Totalmente Satisfeito"
-          }
-        }, {
-          "value" : "satisfied",
-          "label" : {
-            "en-GB" : "Satisfied",
-            "pt-PT" : "Satisfeito"
-          }
-        } ]
-      }, {
-        "type" : "text",
-        "id" : "Field_satisfactionJustification",
-        "key" : "satisfactionJustification",
-        "label" : "Justification for the Selected Satisfaction Level",
-        "text" : "Justification for the Selected Satisfaction Level",
-        "required" : true,
-        "readOnly" : false
-      } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_Training",
-      "key" : "section_Training",
-      "label" : "Training",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "radio",
-        "id" : "Field_trainingQuestion",
-        "key" : "trainingQuestion",
-        "label" : "Have you received training?",
-        "required" : true,
-        "readOnly" : false,
-        "values" : [ {
-          "label" : "Yes",
-          "value" : 1
-        }, {
-          "label" : "No",
-          "value" : 0
         } ]
       } ]
     } ]
@@ -377,6 +377,53 @@
     "label" : "Information_on_the_Completed_Tasks",
     "showOutline" : true,
     "components" : [ {
+      "type" : "group",
+      "id" : "Section_Methods_Used",
+      "key" : "section_Methods_Used",
+      "label" : "Methods_Used",
+      "showOutline" : true,
+      "components" : [ {
+        "type" : "number",
+        "id" : "Field_phone",
+        "key" : "phone",
+        "label" : "phone",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "text",
+        "id" : "Field_otherMethods",
+        "key" : "otherMethods",
+        "label" : "Other Communication Methods Used",
+        "text" : "Other Communication Methods Used",
+        "required" : false,
+        "readOnly" : false
+      }, {
+        "type" : "number",
+        "id" : "Field_chat",
+        "key" : "chat",
+        "label" : "chat",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "number",
+        "id" : "Field_other",
+        "key" : "other",
+        "label" : "other",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      }, {
+        "type" : "number",
+        "id" : "Field_email",
+        "key" : "email",
+        "label" : "email",
+        "required" : true,
+        "readOnly" : false,
+        "validate" : { }
+      } ]
+    }, {
       "type" : "group",
       "id" : "Section_Description_of_the_Tasks_Listed_in_the_Work_Plan",
       "key" : "section_Description_of_the_Tasks_Listed_in_the_Work_Plan",
@@ -409,6 +456,13 @@
       } ]
     }, {
       "type" : "group",
+      "id" : "Section_Period",
+      "key" : "section_Period",
+      "label" : "Period",
+      "showOutline" : true,
+      "components" : [ ]
+    }, {
+      "type" : "group",
       "id" : "Section_Platforms_and_Applications_Used",
       "key" : "section_Platforms_and_Applications_Used",
       "label" : "Platforms_and_Applications_Used",
@@ -422,60 +476,6 @@
         "required" : true,
         "readOnly" : false
       } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_Methods_Used",
-      "key" : "section_Methods_Used",
-      "label" : "Methods_Used",
-      "showOutline" : true,
-      "components" : [ {
-        "type" : "number",
-        "id" : "Field_chat",
-        "key" : "chat",
-        "label" : "chat",
-        "required" : true,
-        "readOnly" : false,
-        "validate" : { }
-      }, {
-        "type" : "text",
-        "id" : "Field_otherMethods",
-        "key" : "otherMethods",
-        "label" : "Other Communication Methods Used",
-        "text" : "Other Communication Methods Used",
-        "required" : false,
-        "readOnly" : false
-      }, {
-        "type" : "number",
-        "id" : "Field_phone",
-        "key" : "phone",
-        "label" : "phone",
-        "required" : true,
-        "readOnly" : false,
-        "validate" : { }
-      }, {
-        "type" : "number",
-        "id" : "Field_other",
-        "key" : "other",
-        "label" : "other",
-        "required" : true,
-        "readOnly" : false,
-        "validate" : { }
-      }, {
-        "type" : "number",
-        "id" : "Field_email",
-        "key" : "email",
-        "label" : "email",
-        "required" : true,
-        "readOnly" : false,
-        "validate" : { }
-      } ]
-    }, {
-      "type" : "group",
-      "id" : "Section_Period",
-      "key" : "section_Period",
-      "label" : "Period",
-      "showOutline" : true,
-      "components" : [ ]
     } ]
   } ]
 }

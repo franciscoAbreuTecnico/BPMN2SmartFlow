@@ -1087,5 +1087,49 @@
       } ]
     } ]
   },
-  "cost" : { }
+  "cost" : { },
+  "views" : [ {
+    "id" : "Default",
+    "columns" : [ {
+      "title" : {
+        "pt-PT" : "Submetido",
+        "en-GB" : "Submitted"
+      },
+      "type" : "Request Info",
+      "info" : "lockInstant"
+    }, {
+      "title" : {
+        "pt-PT" : "Aluno",
+        "en-GB" : "Student"
+      },
+      "type" : "Request Info",
+      "info" : "requester"
+    }, {
+      "title" : {
+        "pt-PT" : "Estado do Pedido",
+        "en-GB" : "Request State"
+      },
+      "type" : "Request State"
+    }, {
+      "title" : {
+        "pt-PT" : "Revisão",
+        "en-GB" : "Revision"
+      },
+      "type" : "Request Info",
+      "info" : "revisionDeadline"
+    }, {
+      "title" : {
+        "pt-PT" : "Estado do Processo",
+        "en-GB" : "Process State"
+      },
+      "type" : "Flow State From Request"
+    }, {
+      "title" : {
+        "pt-PT" : "Info.",
+        "en-GB" : "Info."
+      },
+      "type" : "Request Info",
+      "info" : "keywords"
+    } ]
+  } ]
 }

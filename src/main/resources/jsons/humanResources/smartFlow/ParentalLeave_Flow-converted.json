@@ -115,7 +115,8 @@
               "name" : "onSuccess"
             }
           ],
-          "queue" : "Nucleo-de-Prestacao-de-Trabalho-Geral"
+          "queue" : "Nucleo-de-Prestacao-de-Trabalho-Geral",
+          "queueOrder" : 0
         }
       ]
     }

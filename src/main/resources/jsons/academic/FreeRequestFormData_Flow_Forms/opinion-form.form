@@ -16,13 +16,6 @@
     "showOutline" : true,
     "components" : [ {
       "type" : "group",
-      "id" : "Section_Documents",
-      "key" : "section_Documents",
-      "label" : "Documents",
-      "showOutline" : true,
-      "components" : [ ]
-    }, {
-      "type" : "group",
       "id" : "Section_Opinion_and_Justification",
       "key" : "section_Opinion_and_Justification",
       "label" : "Opinion_and_Justification",
@@ -50,6 +43,13 @@
           "value" : 0
         } ]
       } ]
+    }, {
+      "type" : "group",
+      "id" : "Section_Documents",
+      "key" : "section_Documents",
+      "label" : "Documents",
+      "showOutline" : true,
+      "components" : [ ]
     } ]
   } ]
 }

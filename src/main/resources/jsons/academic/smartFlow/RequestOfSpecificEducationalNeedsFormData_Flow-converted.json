@@ -921,7 +921,8 @@
               "name" : "REJECT"
             }
           ],
-          "queue" : "Direcao-Academica"
+          "queue" : "Direcao-Academica",
+          "queueOrder" : 0
         },
         {
           "id" : "statute-assignation",
@@ -982,7 +983,8 @@
               "name" : "REJECT"
             }
           ],
-          "queue" : "Nucleo-de-Desenvolvimento-Academico"
+          "queue" : "Nucleo-de-Desenvolvimento-Academico",
+          "queueOrder" : 1
         },
         {
           "id" : "individual-plan-creation",
@@ -1042,7 +1044,8 @@
               "name" : "REJECT"
             }
           ],
-          "queue" : "Nucleo-de-Desenvolvimento-Academico"
+          "queue" : "Nucleo-de-Desenvolvimento-Academico",
+          "queueOrder" : 1
         },
         {
           "id" : "step-Student",
@@ -1091,7 +1094,8 @@
               "name" : "APPROVE"
             }
           ],
-          "queue" : "requester-username"
+          "queue" : "requester-username",
+          "queueOrder" : 2
         },
         {
           "id" : "step-pedagogic-council-Approval",
@@ -1158,7 +1162,8 @@
               "name" : "onEnterNode"
             }
           ],
-          "queue" : "Conselho-Pedagogico-supervisor"
+          "queue" : "Conselho-Pedagogico-supervisor",
+          "queueOrder" : 3
         },
         {
           "id" : "academic-affairs",
@@ -1225,7 +1230,8 @@
               "name" : "onEnterNode"
             }
           ],
-          "queue" : "Assuntos-Academicos"
+          "queue" : "Assuntos-Academicos",
+          "queueOrder" : 4
         }
       ]
     }

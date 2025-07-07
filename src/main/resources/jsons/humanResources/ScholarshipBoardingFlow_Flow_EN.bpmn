@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             exporter="Camunda Modeler"
+             exporterVersion="5.29.0"
+             id="definitions_02b0ac5d-7300-4b6a-8b0e-243840313366"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+   <process id="smart_flow_process" name="Smart Flow Process">
+      <laneSet id="LaneSet_1">
+         <lane id="scientific-advisor-queue" name="scientific-advisor-queue">
+            <flowNodeRef>start-node</flowNodeRef>
+            <flowNodeRef>step-1-work-plan</flowNodeRef>
+            <flowNodeRef>submit-form-step-1-work-plan</flowNodeRef>
+            <flowNodeRef>SIGN-step-1-work-plan</flowNodeRef>
+            <flowNodeRef>START-start-event</flowNodeRef>
+         </lane>
+         <lane id="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+               name="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral">
+            <flowNodeRef>step-2-hr-processing</flowNodeRef>
+            <flowNodeRef>submit-form-step-2-hr-processing</flowNodeRef>
+            <flowNodeRef>PROCESS-step-2-hr-processing</flowNodeRef>
+         </lane>
+         <lane id="step3-queue" name="step3-queue">
+            <flowNodeRef>step-3.1-fund-reservation</flowNodeRef>
+            <flowNodeRef>submit-form-step-3.1-fund-reservation</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info</flowNodeRef>
+            <flowNodeRef>RESERVE_FUNDS-step-3.1-fund-reservation</flowNodeRef>
+         </lane>
+         <lane id="Nucleo-de-Execucao-Orcamental-Geral"
+               name="Nucleo-de-Execucao-Orcamental-Geral">
+            <flowNodeRef>step-4-fund-allocation</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-4-fund-allocation-Change_Application_State</flowNodeRef>
+            <flowNodeRef>onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info</flowNodeRef>
+            <flowNodeRef>ALLOCATE_FUNDS-step-4-fund-allocation</flowNodeRef>
+            <flowNodeRef>ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation</flowNodeRef>
+         </lane>
+         <lane id="Sistema-FenixEdu" name="Sistema-FenixEdu">
+            <flowNodeRef>step-5-sign-contract</flowNodeRef>
+            <flowNodeRef>submit-form-step-5-sign-contract</flowNodeRef>
+            <flowNodeRef>SIGN-step-5-sign-contract</flowNodeRef>
+            <flowNodeRef>SUCCESS</flowNodeRef>
+         </lane>
+      </laneSet>
+      <startEvent id="start-node" name="Start Event">
+         <outgoing>start-node_to_START-start-event</outgoing>
+      </startEvent>
+      <userTask camunda:formRef="information-for-contract-form"
+                camunda:formRefBinding="latest"
+                id="step-2-hr-processing"
+                name="Information Processing">
+         <documentation id="documentation_1ac9bee2-8588-4ffa-84ed-195125e69398">Process Information and Register Information in SAP</documentation>
+         <incoming>SIGN-step-1-work-plan_to_step-2-hr-processing</incoming>
+         <outgoing>step-2-hr-processing_to_submit-form-step-2-hr-processing</outgoing>
+      </userTask>
+      <userTask camunda:formRef="contract"
+                camunda:formRefBinding="latest"
+                id="step-5-sign-contract"
+                name="Sign Contract">
+         <documentation id="documentation_84333385-5650-4dd2-804e-74e43505f3bd">Sign Contract</documentation>
+         <incoming>onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-sign-contract</incoming>
+         <incoming>onActionTransition-step-4-fund-allocation-Change_Application_State_to_step-5-sign-contract</incoming>
+         <outgoing>step-5-sign-contract_to_submit-form-step-5-sign-contract</outgoing>
+      </userTask>
+      <userTask camunda:formRef="work-plan"
+                camunda:formRefBinding="latest"
+                id="step-1-work-plan"
+                name="Work Planning">
+         <documentation id="documentation_b40f5433-1a93-4847-bdd2-82afc29519cf">Specification of the Work Plan</documentation>
+         <incoming>START-start-event_to_step-1-work-plan</incoming>
+         <outgoing>step-1-work-plan_to_submit-form-step-1-work-plan</outgoing>
+      </userTask>
+      <userTask id="submit-form-step-5-sign-contract" name="Sign Contract">
+         <incoming>step-5-sign-contract_to_submit-form-step-5-sign-contract</incoming>
+         <outgoing>submit-form-step-5-sign-contract_to_SIGN-step-5-sign-contract</outgoing>
+      </userTask>
+      <userTask camunda:formRef="fund-reservation"
+                camunda:formRefBinding="latest"
+                id="step-3.1-fund-reservation"
+                name="Allocate Funds">
+         <documentation id="documentation_03deb35f-8eb2-4b29-af0a-e86cb736ad08">Budget allocation to proceed with the contract</documentation>
+         <incoming>PROCESS-step-2-hr-processing_to_step-3.1-fund-reservation</incoming>
+         <outgoing>step-3.1-fund-reservation_to_submit-form-step-3.1-fund-reservation</outgoing>
+         <multiInstanceLoopCharacteristics id="multiInstanceLoopCharacteristics_ebc9e5f1-9949-4868-af32-0aac747bf746"
+                                           isSequential="false"/>
+      </userTask>
+      <userTask id="submit-form-step-1-work-plan" name="Plan">
+         <incoming>step-1-work-plan_to_submit-form-step-1-work-plan</incoming>
+         <outgoing>submit-form-step-1-work-plan_to_SIGN-step-1-work-plan</outgoing>
+      </userTask>
+      <userTask id="step-4-fund-allocation" name="Commit Funds">
+         <documentation id="documentation_14804c92-8c62-43b9-b9cf-d4570f8940fe">Commit Funds for contract formalization</documentation>
+         <incoming>onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation</incoming>
+         <outgoing>step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation</outgoing>
+      </userTask>
+      <userTask id="submit-form-step-3.1-fund-reservation"
+                name="Confirm Fund Reservation">
+         <incoming>step-3.1-fund-reservation_to_submit-form-step-3.1-fund-reservation</incoming>
+         <outgoing>submit-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation</outgoing>
+      </userTask>
+      <userTask id="submit-form-step-2-hr-processing" name="Process Information">
+         <incoming>step-2-hr-processing_to_submit-form-step-2-hr-processing</incoming>
+         <outgoing>submit-form-step-2-hr-processing_to_PROCESS-step-2-hr-processing</outgoing>
+      </userTask>
+      <scriptTask id="onActionTransition-step-4-fund-allocation-Change_Application_State"
+                  name="Change Application State">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_2107"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L2107"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Change_Application_State</incoming>
+         <outgoing>onActionTransition-step-4-fund-allocation-Change_Application_State_to_step-5-sign-contract</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                  name="Sync Funds Allocation Info">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_2086"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L2086"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info</incoming>
+         <outgoing>onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-sign-contract</outgoing>
+      </scriptTask>
+      <scriptTask id="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                  name="Sync Funds Allocation Info">
+         <extensionElements>
+            <camunda:properties>
+               <camunda:property name="LINK_2086"
+                                 value="https://repo.dsi.tecnico.ulisboa.pt/fenixedu/application/fenixedu-paper-pusher/-/blob/main/fenixedu-paper-pusher-ist/src/main/java/org/fenixedu/paperPusher/ist/RequestProcessors.java#L2086"/>
+            </camunda:properties>
+         </extensionElements>
+         <incoming>RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info</incoming>
+         <outgoing>onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation</outgoing>
+      </scriptTask>
+      <serviceTask id="SIGN-step-5-sign-contract" name="Sign Contract">
+         <incoming>submit-form-step-5-sign-contract_to_SIGN-step-5-sign-contract</incoming>
+         <outgoing>SIGN-step-5-sign-contract_to_SUCCESS</outgoing>
+      </serviceTask>
+      <serviceTask id="RESERVE_FUNDS-step-3.1-fund-reservation"
+                   name="Confirm Fund Reservation">
+         <incoming>submit-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation</incoming>
+         <outgoing>RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info</outgoing>
+      </serviceTask>
+      <serviceTask id="SIGN-step-1-work-plan" name="Plan">
+         <incoming>submit-form-step-1-work-plan_to_SIGN-step-1-work-plan</incoming>
+         <outgoing>SIGN-step-1-work-plan_to_step-2-hr-processing</outgoing>
+      </serviceTask>
+      <serviceTask id="PROCESS-step-2-hr-processing" name="Process Information">
+         <incoming>submit-form-step-2-hr-processing_to_PROCESS-step-2-hr-processing</incoming>
+         <outgoing>PROCESS-step-2-hr-processing_to_step-3.1-fund-reservation</outgoing>
+      </serviceTask>
+      <serviceTask id="ALLOCATE_FUNDS-step-4-fund-allocation"
+                   name="Confirm Fund Commitment">
+         <incoming>step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation</incoming>
+         <outgoing>ALLOCATE_FUNDS-step-4-fund-allocation_to_ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation</outgoing>
+      </serviceTask>
+      <serviceTask id="START-start-event" name="Start Process">
+         <incoming>start-node_to_START-start-event</incoming>
+         <outgoing>START-start-event_to_step-1-work-plan</outgoing>
+      </serviceTask>
+      <exclusiveGateway id="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation"
+                        name="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation">
+         <incoming>ALLOCATE_FUNDS-step-4-fund-allocation_to_ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation</incoming>
+         <outgoing>ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info</outgoing>
+         <outgoing>ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Change_Application_State</outgoing>
+      </exclusiveGateway>
+      <endEvent id="SUCCESS" name="SUCCESS State">
+         <incoming>SIGN-step-5-sign-contract_to_SUCCESS</incoming>
+      </endEvent>
+      <sequenceFlow id="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-sign-contract"
+                    name=""
+                    sourceRef="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                    targetRef="step-5-sign-contract"/>
+      <sequenceFlow id="PROCESS-step-2-hr-processing_to_step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="PROCESS-step-2-hr-processing"
+                    targetRef="step-3.1-fund-reservation"/>
+      <sequenceFlow id="SIGN-step-1-work-plan_to_step-2-hr-processing"
+                    name=""
+                    sourceRef="SIGN-step-1-work-plan"
+                    targetRef="step-2-hr-processing"/>
+      <sequenceFlow id="SIGN-step-5-sign-contract_to_SUCCESS"
+                    name=""
+                    sourceRef="SIGN-step-5-sign-contract"
+                    targetRef="SUCCESS"/>
+      <sequenceFlow id="step-2-hr-processing_to_submit-form-step-2-hr-processing"
+                    name=""
+                    sourceRef="step-2-hr-processing"
+                    targetRef="submit-form-step-2-hr-processing"/>
+      <sequenceFlow id="step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation"
+                    name=""
+                    sourceRef="step-4-fund-allocation"
+                    targetRef="ALLOCATE_FUNDS-step-4-fund-allocation"/>
+      <sequenceFlow id="START-start-event_to_step-1-work-plan"
+                    name=""
+                    sourceRef="START-start-event"
+                    targetRef="step-1-work-plan"/>
+      <sequenceFlow id="step-5-sign-contract_to_submit-form-step-5-sign-contract"
+                    name=""
+                    sourceRef="step-5-sign-contract"
+                    targetRef="submit-form-step-5-sign-contract"/>
+      <sequenceFlow id="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation"
+                    name=""
+                    sourceRef="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                    targetRef="step-4-fund-allocation"/>
+      <sequenceFlow id="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                    name=""
+                    sourceRef="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation"
+                    targetRef="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"/>
+      <sequenceFlow id="step-3.1-fund-reservation_to_submit-form-step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="step-3.1-fund-reservation"
+                    targetRef="submit-form-step-3.1-fund-reservation"/>
+      <sequenceFlow id="RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                    name=""
+                    sourceRef="RESERVE_FUNDS-step-3.1-fund-reservation"
+                    targetRef="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"/>
+      <sequenceFlow id="step-1-work-plan_to_submit-form-step-1-work-plan"
+                    name=""
+                    sourceRef="step-1-work-plan"
+                    targetRef="submit-form-step-1-work-plan"/>
+      <sequenceFlow id="ALLOCATE_FUNDS-step-4-fund-allocation_to_ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation"
+                    name=""
+                    sourceRef="ALLOCATE_FUNDS-step-4-fund-allocation"
+                    targetRef="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation"/>
+      <sequenceFlow id="onActionTransition-step-4-fund-allocation-Change_Application_State_to_step-5-sign-contract"
+                    name=""
+                    sourceRef="onActionTransition-step-4-fund-allocation-Change_Application_State"
+                    targetRef="step-5-sign-contract"/>
+      <sequenceFlow id="submit-form-step-2-hr-processing_to_PROCESS-step-2-hr-processing"
+                    name=""
+                    sourceRef="submit-form-step-2-hr-processing"
+                    targetRef="PROCESS-step-2-hr-processing"/>
+      <sequenceFlow id="submit-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation"
+                    name=""
+                    sourceRef="submit-form-step-3.1-fund-reservation"
+                    targetRef="RESERVE_FUNDS-step-3.1-fund-reservation"/>
+      <sequenceFlow id="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Change_Application_State"
+                    name=""
+                    sourceRef="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation"
+                    targetRef="onActionTransition-step-4-fund-allocation-Change_Application_State"/>
+      <sequenceFlow id="submit-form-step-5-sign-contract_to_SIGN-step-5-sign-contract"
+                    name=""
+                    sourceRef="submit-form-step-5-sign-contract"
+                    targetRef="SIGN-step-5-sign-contract"/>
+      <sequenceFlow id="submit-form-step-1-work-plan_to_SIGN-step-1-work-plan"
+                    name=""
+                    sourceRef="submit-form-step-1-work-plan"
+                    targetRef="SIGN-step-1-work-plan"/>
+      <sequenceFlow id="start-node_to_START-start-event"
+                    name=""
+                    sourceRef="start-node"
+                    targetRef="START-start-event"/>
+   </process>
+   <collaboration id="research-scholarship-boarding" name="research-scholarship-boarding">
+      <documentation id="documentation_0e782053-cd85-48c2-8b1b-0e348f90e0f5">{name=research-scholarship-boarding, title={pt-PT=Processo de Contratação para Bolsa de Investigação, en-GB=Research Scholarship Contract Process}, description={pt-PT=Processo de Contratação para Bolsa de Investigação, en-GB=Research Scholarship Contract Process}, config={actionProcessor={onSuccess=[], onFailure=[], onActionTransition=[], onCancel=[]}, flowProcessors=[], forms=[{id=work-plan, title={pt-PT=Plano de Trabalhos detalhado, en-GB=Detailed Work Plan}, form={pages=[{title={pt-PT=Plano_de_Trabalhos_Detalhado, en-GB=Detailed_Work_Plan}, sections=[{title={pt-PT=Plano_de_Trabalhos_Detalhado, en-GB=Detailed_Work_Plan}, properties=[{type=LocalizedText, field=workPlan, locales=[pt-PT, en-GB], label={pt-PT=Plano de Trabalhos Detalhado, en-GB=Detailed Work Plan}, required=true, multiline=true}]}]}]}}, {id=information-for-contract-form, title={pt-PT=Informação para a Elaboração do Contrato, en-GB=Information Required for the Drafting of the Contract}, form={pages=[{title={pt-PT=Informação_do_Candidato_a_Bolsa, en-GB=Scholarship_Applicant_Information}, sections=[{title={pt-PT=Dados_Pessoais, en-GB=Personal_Data}, properties=[{type=Text, field=tin, required=true, readonly=true, label={pt-PT=Número de Identificação Fiscal, en-GB=Tax Identification Number}}, {type=Text, field=address, required=true, readonly=true, label={pt-PT=Morada, en-GB=Address}}]}, {title={pt-PT=Dados_Bancários, en-GB=Bank_Data}, properties=[{field=iban, type=Text, required=true, label={pt-PT=IBAN - Número Internacional de Conta Bancária, en-GB=IBAN - International Bank Account Number}, readonly=true}, {field=swift, type=Text, required=true, label={pt-PT=SWIFT / BIC, en-GB=SWIFT / BIC}, readonly=true}]}, {title={pt-PT=Seguro_Social_Voluntário, en-GB=Voluntary_Social_Security}, description={pt-PT=Aplicável a bolsas com duração igual ou superior a 6 meses., en-GB=Applicable to scholarships with a duration of six months or longer.}, properties=[{type=Select, field=socialSecurity, readonly=true, required=true, collapse=false, allowOther=false, label={pt-PT=Adesão ao Seguro Social Voluntário, en-GB=Subscription to Voluntary Social Security}, options=[{value=yes, label={pt-PT=Declaro, nos termos do art.º 10º da Lei n.º 40/2004, de 18 de agosto, alterada e republicada pelo Decreto-Lei n.º 202/2012 de 27 de agosto, e do art.º 32.º do Regulamento de Bolsas de Investigação do IST, que não me encontro abrangido por qualquer regime de proteção social e que pretendo aderir ao regime do seguro social voluntário., en-GB=I hereby declare, in accordance with Article 10 of Law No. 40/2004 of 18 August, as amended and republished by Decree-Law No. 202/2012 of 27 August, and Article 32 of the IST Research Grant Regulations, that I am not covered by any social protection scheme and that I wish to join the voluntary social security scheme.}}, {value=no, label={pt-PT=Declaro que na presente data não pretendo aderir ao regime do seguro social voluntário, reservando o direito de o fazer durante a vigência da Bolsa., en-GB=I hereby declare that, at present, I do not wish to join the voluntary social security scheme, but I reserve the right to do so during the course of the Scholarship.}}]}]}, {title={pt-PT=Dados_Institucionais, en-GB=Institutional_Data}, properties=[{field=sapNumber, type=Text, required=true, label={pt-PT=Número de Identificação em SAP, en-GB=SAP Identification number}, readonly=true}]}]}, {title={pt-PT=Informação_da_Bolsa_de_Investigação, en-GB=Research_Scholarship_Information}, sections=[{title={pt-PT=Tipologia_e_Âmbito, en-GB=Type_and_Context}, properties=[{type=Text, field=reference, description={pt-PT=Referência, en-GB=Reference}, label={pt-PT=Referência, en-GB=Reference}, required=true, readonly=true}, {type=Select, field=researchScholarshipType, label={pt-PT=Tipo de Bolsa, en-GB=Scholarship Type}, required=true, multiple=false, collapse=true, allowOther=false, options=[{label={pt-PT=Iniciação à Investigação, en-GB=Research Initiation}, value=BII}, {label={pt-PT=Investigação, en-GB=Research}, value=BI}, {label={pt-PT=Investigação Pós-Doutoral, en-GB=Post-Doctoral Research}, value=BIPD}], readonly=true}, {type=Select, field=cycleType, label={pt-PT=Nível do Grau, en-GB=Graduation Level}, description={pt-PT=Destinado a estudantes inscritos em:, en-GB=Aimed at students registered in:}, required=true, multiple=false, collapse=true, allowOther=false, options=[{label={pt-PT=Curso não conferente de grau académico, en-GB=Non-degree Course}, value=CYCLE_0}, {label={pt-PT=Cursos de Mestrado, en-GB=Master Degrees}, value=CYCLE_2}, {label={pt-PT=Cursos de Doutoramento, en-GB=Doctoral Programmes}, value=CYCLE_3}], onlyIf={field=researchScholarshipType, negation=false, value={label={pt-PT=Investigação, en-GB=Research}, value=BI}}, readonly=true}, {type=Quantity, field=researchGrantMonthDuration, label={pt-PT=Duração Inicial da(s) Bolsa(s), en-GB=Initial Research Scholarship Duration}, description={pt-PT=Indique o número de meses da duração da bolsa (não inferior a 3 meses)., en-GB=State the number of months of the duration of the scholarship (not under 3 months).}, required=true, min=3, readonly=true}, {type=DateTime, field=researchGrantExpectedStart, required=true, date=true, time=false, label={pt-PT=Data Prevista para o Início do Contrato de Bolsa, en-GB=Expected Start Date of the Scholarship Contract}, readonly=true}]}]}, {title={pt-PT=Financiamento, en-GB=Funding}, sections=[{title={pt-PT=Imputação_de_Custos, en-GB=Cost_Allocation}, properties=[{type=Select, field=fundingEntity, label={pt-PT=Entidade Financiadora, en-GB=Funding Entity}, required=true, allowOther=false, collapse=true, multiple=false, options=[{label={pt-PT=Instituto Superior Técnico (IST), en-GB=Instituto Superior Técnico (IST)}, value=ist}, {label={pt-PT=Agência Nacional de Inovação (ANI), en-GB=Agência Nacional de Inovação (ANI)}, value=ani}, {label={pt-PT=Fundação para a Ciência e a Tecnologia (FCT), en-GB=Fundação para a Ciência e a Tecnologia (FCT)}, value=fct}, {label={pt-PT=União Europeia (UE), en-GB=European Union (EU)}, value=eu}], readonly=true}, {type=Select, field=operationalProgramme, label={pt-PT=Programa Operacional, en-GB=Operational Programme}, description={pt-PT=No caso do programa operacional não constar nas opções, contacte a DRH para adicionar o programa em falta., en-GB=If the operational programme does not appear as an option, contact HR to add the missing programme.}, required=false, allowOther=false, collapse=true, multiple=false, options=[{label={pt-PT=Plano de Recuperação e Resiliência (PRR), en-GB=Recovery and Resilience Plan (RRP)}, value=prr}, {label={pt-PT=Erasmus+, en-GB=Erasmus+}, value=erasmus+}], readonly=true}, {type=Array, field=financers, required=true, readonly=true, label={pt-PT=Unidades Pagadoras, en-GB=Paying Units}, labelAddElement={pt-PT=Adicionar unidade pagadora, en-GB=Add paying unit}, properties=[{type=AsyncSelect, field=financerUnit, label={pt-PT=Unidade Pagadora, en-GB=Paying Unit}, required=true, allowOther=false, optionsProvider=/paper-pusher-ist/financeUnit, readonly=true}, {type=Quantity, field=financerUnitPercentage, required=true, step=1, label={pt-PT=Percentagem a Financiar, en-GB=Percentage to Fund}, min=0, max=100, readonly=true}]}]}]}, {title={pt-PT=Informação_da_Bolsa_de_Investigação, en-GB=Research_Scholarship_Information}, sections=[{title={pt-PT=Vigência_da_Bolsa, en-GB=Scholarship_Term}, properties=[{type=Composite, field=scholarshipDuration, required=true, readonly=false, properties=[{type=DateTime, field=scholarshipStartDate, required=true, date=true, time=false, label={pt-PT=Data de Início, en-GB=Start Date}}, {type=DateTime, field=scholarshipEndDate, required=true, date=true, time=false, label={pt-PT=Data de Fim, en-GB=End Date}}]}]}]}, {title={pt-PT=Informação_de_Encargos, en-GB=Costs_Information}, sections=[{title={pt-PT=Remuneração_da_Bolsa, en-GB=Scholarship_Remuneration}, description={pt-PT=A bolsa de valor inferior não pode, com majoração, ultrapassar o valor de bolsa imediatamente superior., en-GB=A scholarship of a lower value cannot, with bonus, exceed the value of the next higher scholarship.}, properties=[{type=Quantity, field=monthlyRemuneration, label={pt-PT=Remuneração Mensal, en-GB=Monthly Remuneration}, step=0.01, required=true, readonly=true}]}, {title={pt-PT=Encargos_Definitivos, en-GB=Definitive_Costs}, properties=[{description={pt-PT=Indique os encargos suportados pelo(s) elemento(s) PEP(s) e a respetiva percentagem., en-GB=State the costs supported by the PEP element(s) and the respective percentage.}, field=costsByYear, label={pt-PT=Ano Económico e Intervalo, en-GB=Economic Year and Interval}, labelAddElement={pt-PT=Adicionar ano económico, en-GB=Add economic year}, properties=[{type=Quantity, field=economicYear, required=true, label={pt-PT=Ano Económico para os Encargos, en-GB=Economic Year for the Costs}, inputType=plain, step=1}, {type=Composite, required=true, label={pt-PT=Período dos Encargos, en-GB=Cost Interval}, description={pt-PT=Indique a data de início e fim dos encargos., en-GB=Specify the start and end dates for which the expenses apply.}, field=costInterval, properties=[{date=true, field=costIntervalStartDate, label={pt-PT=Data de Início dos Encargos, en-GB=Expenses Start Date}, required=true, time=false, type=DateTime}, {type=DateTime, field=costIntervalEndDate, required=true, date=true, time=false, label={pt-PT=Data de Fim dos Encargos, en-GB=Expenses End Date}}]}, {type=Quantity, field=researchGrantAmountTotal, label={pt-PT=Montante Total, en-GB=Total Amount}, description={pt-PT=Indique o valor total (Valor mensal da bolsa * N.º de meses * N.º de bolsas)., en-GB=State the total amount (Monthly scholarship remuneration * No of months * No of scholarships).}, required=true, step=0.01, readonly=false}, {type=Quantity, field=insurancePerMonth, label={pt-PT=Montante Mensal do Seguro de Acidentes Pessoais, en-GB=Monthly Cost of the Personal Accident Insurance}, description={pt-PT=Indique o valor mensal do seguro de acidentes pessoais., en-GB=State the monthly cost of personal accident insurance.}, required=true, step=0.01, readonly=false}, {type=Quantity, field=totalInsurance, label={pt-PT=Montante Total do Seguro de Acidentes Pessoais, en-GB=Total Cost of the Personal Accident Insurance}, description={pt-PT=Indique o valor total do seguro de acidentes pessoais (Valor mensal * N.º de meses * N.º de bolsas)., en-GB=State the total value of the personal accident insurance (Monthly value * No of months * No of scholarships).}, required=true, step=0.01, readonly=false}, {type=Quantity, field=socialSecurityPerMonth, label={pt-PT=Montante Mensal da Contribuição para o Seguro Social Voluntário, en-GB=Monthly Value of the Voluntary Social Security Contribution}, description={pt-PT=Indique o valor mensal da contribuição para o seguro social voluntário., en-GB=State the monthly value of voluntary social security contribution.}, required=true, step=0.01, readonly=false}, {type=Quantity, field=totalSocialSecurity, label={pt-PT=Montante Total da Contribuição para o Seguro Social Voluntário, en-GB=Total Amount of Voluntary Social Security Contribution}, description={pt-PT=Indique o valor total da contribuição para o seguro social voluntário (Valor mensal * N.º de meses * N.º de bolsas)., en-GB=State the total value of the voluntary social security contribution (Monthly value * No of months * No of scholarships).}, required=true, step=0.01, readonly=false}], required=true, type=Array}]}]}]}}, {id=fund-reservation, title={pt-PT=Reserva de Fundos para Bolsa de Investigação Científica, en-GB=Reserve Funds for Scientific Research Scholarship}, form={pages=[{title={pt-PT=Direção_de_Projetos_e_Execução_Orçamental, en-GB=Projects_and_Budget_Execution_Department}, sections=[{title={pt-PT=Informação_Financeira, en-GB=Financial_Information}, properties=[{type=Array, field=reserveFundAllocationCommitments, required=true, label={pt-PT=Reservas, en-GB=Reservations}, labelAddElement={pt-PT=Adicionar reserva, en-GB=Add reservation}, properties=[{type=AsyncSelect, field=financerConfig, label={pt-PT=Elemento Financiador, en-GB=Funding Element}, required=true, allowOther=false, optionsProvider=/paper-pusher-ist/financeUnitFlowConfig/{{flowId}}/financers}, {type=Text, field=fundReservationNumber, required=false, label={pt-PT=Número de Reserva, en-GB=Fund Reservation Number}, multiline=false, inputType=plain}]}]}]}]}}, {id=fund-information, title={pt-PT=Informação Financeira Lida do SAP, en-GB=Financial Information from SAP}, form={pages=[{title={pt-PT=Reservas_e_Cabimentos, en-GB=Reservations_and_Fund_Allocation}, sections=[{title={pt-PT=Detalhes, en-GB=Details}, properties=[{type=Array, field=financialInformation, required=false, readonly=true, label={pt-PT=Informação do SAP, en-GB=Information from SAP}, properties=[{type=Text, field=documentType, required=false, readonly=true, label={pt-PT=Tipo de Documento, en-GB=Document Type}}, {type=Text, field=documentId, required=false, readonly=true, label={pt-PT=Número do Documento, en-GB=Document Number}}, {type=Text, field=operator, required=false, readonly=true, label={pt-PT=Operador, en-GB=Operator}}, {type=Text, field=entryDate, required=false, readonly=true, label={pt-PT=Data de Entrada, en-GB=Entry Date}}, {type=Text, field=documentDate, required=false, readonly=true, label={pt-PT=Data no Documento, en-GB=Date in Document}}, {type=Text, field=documentReleaseDate, required=false, readonly=true, label={pt-PT=Data de Lançamento no Documento, en-GB=Release Date in Document}}, {type=Array, field=documents, required=false, readonly=true, label={pt-PT=Documentos do SAP, en-GB=Documentos do SAP}, properties=[{type=Text, field=documentType, required=false, readonly=true, label={pt-PT=Tipo de Documento, en-GB=Document Type}}, {type=Text, field=documentId, required=false, readonly=true, label={pt-PT=Número do Documento, en-GB=Document Number}}, {type=Text, field=operator, required=false, readonly=true, label={pt-PT=Operador, en-GB=Operator}}, {type=Text, field=entryDate, required=false, readonly=true, label={pt-PT=Data de Entrada, en-GB=Entry Date}}, {type=Text, field=documentDate, required=false, readonly=true, label={pt-PT=Data no Documento, en-GB=Date in Document}}, {type=Text, field=documentReleaseDate, required=false, readonly=true, label={pt-PT=Data de Lançamento no Documento, en-GB=Release Date in Document}}, {type=Array, field=items, required=false, readonly=true, label={pt-PT=Itens do Documento, en-GB=Document Items}, properties=[{type=Text, field=value, required=false, readonly=true, label={pt-PT=Valor, en-GB=Value}}, {type=Text, field=description, required=false, readonly=true, label={pt-PT=Descrição, en-GB=Description}}, {type=Text, field=financialCentre, required=false, readonly=true, label={pt-PT=Centro Financeiro, en-GB=Financial Centre}}, {type=Text, field=funds, required=false, readonly=true, label={pt-PT=Fundos, en-GB=Funds}}, {type=Text, field=functionalArea, required=false, readonly=true, label={pt-PT=Área Funcional, en-GB=Functional Area}}, {type=Text, field=pepElement, required=false, readonly=true, label={pt-PT=Elemento PEP, en-GB=PEP Element}}, {type=Text, field=supplierName, required=false, readonly=true, label={pt-PT=Nome do Fornecedor, en-GB=Supplier Name}}, {type=Text, field=supplierTin, required=false, readonly=true, label={pt-PT=NIF do Fornecedor, en-GB=Supplier TIN}}, {type=Text, field=expiryDate, required=false, readonly=true, label={pt-PT=Data de Validade, en-GB=Expiry Date}}]}, {type=Array, field=documents, required=false, readonly=true, label={pt-PT=Documentos do SAP, en-GB=Documentos do SAP}, properties=[{type=Text, field=documentType, required=false, readonly=true, label={pt-PT=Tipo de Documento, en-GB=Document Type}}, {type=Text, field=documentId, required=false, readonly=true, label={pt-PT=Número do Documento, en-GB=Document Number}}, {type=Text, field=operator, required=false, readonly=true, label={pt-PT=Operador, en-GB=Operator}}, {type=Text, field=entryDate, required=false, readonly=true, label={pt-PT=Data de Entrada, en-GB=Entry Date}}, {type=Text, field=documentDate, required=false, readonly=true, label={pt-PT=Data no Documento, en-GB=Date in Document}}, {type=Text, field=documentReleaseDate, required=false, readonly=true, label={pt-PT=Data de Lançamento no Documento, en-GB=Release Date in Document}}, {type=Array, field=items, required=false, readonly=true, label={pt-PT=Itens do Documento, en-GB=Document Items}, properties=[{type=Text, field=value, required=false, readonly=true, label={pt-PT=Valor, en-GB=Value}}, {type=Text, field=description, required=false, readonly=true, label={pt-PT=Descrição, en-GB=Description}}, {type=Text, field=financialCentre, required=false, readonly=true, label={pt-PT=Centro Financeiro, en-GB=Financial Centre}}, {type=Text, field=funds, required=false, readonly=true, label={pt-PT=Fundos, en-GB=Funds}}, {type=Text, field=functionalArea, required=false, readonly=true, label={pt-PT=Área Funcional, en-GB=Functional Area}}, {type=Text, field=pepElement, required=false, readonly=true, label={pt-PT=Elemento PEP, en-GB=PEP Element}}, {type=Text, field=supplierName, required=false, readonly=true, label={pt-PT=Nome do Fornecedor, en-GB=Supplier Name}}, {type=Text, field=supplierTin, required=false, readonly=true, label={pt-PT=NIF do Fornecedor, en-GB=Supplier TIN}}, {type=Text, field=expiryDate, required=false, readonly=true, label={pt-PT=Data de Validade, en-GB=Expiry Date}}]}]}]}]}, {type=Text, field=commitmentNumbers, required=false, readonly=true, label={pt-PT=Número(s) de Compromisso(s), en-GB=Commitment Number(s)}}]}]}]}}, {id=contract, title={pt-PT=Contrato, en-GB=Contract}, form={pages=[{title={pt-PT=Contrato, en-GB=Contract}, sections=[{title={pt-PT=Contrato, en-GB=Contract}, properties=[{type=File, field=signedContract, label={pt-PT=Contrato Assinado, en-GB=Signed Contract}, required=true, allowedFileTypes=[.pdf]}]}]}]}}], actionNodes=[{id=step-1-work-plan, type=withForms, comment=false, title={pt-PT=Planeamento do Trabalho, en-GB=Work Planning}, description={pt-PT=Definição do Plano de Trabalhos, en-GB=Specification of the Work Plan}, buttons=[{id=submit-form-step-1-work-plan, primary=true, label={pt-PT=Planear, en-GB=Plan}, handlers={form=work-plan, action=SIGN-step-1-work-plan}}], actions=[{primary=true, to=step-2-hr-processing, label={pt-PT=Planear, en-GB=Plan}, id=SIGN-step-1-work-plan, name=SIGN}], blockUndo=false, queue=scientific-advisor-queue, queueOrder=0}, {id=step-2-hr-processing, type=withForms, comment=false, title={pt-PT=Processamento de Informação, en-GB=Information Processing}, description={pt-PT=Processar Informação e Fazer Lançamentos em SAP, en-GB=Process Information and Register Information in SAP}, buttons=[{id=submit-form-step-2-hr-processing, primary=true, label={pt-PT=Processar Informação, en-GB=Process Information}, handlers={form=information-for-contract-form, action=PROCESS-step-2-hr-processing}}], actions=[{primary=true, to=step-3.1-fund-reservation, label={pt-PT=Processar Informação, en-GB=Process Information}, id=PROCESS-step-2-hr-processing, name=PROCESS}], blockUndo=false, queue=Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral, queueOrder=1}, {id=step-3.1-fund-reservation, type=withForms, comment=false, title={pt-PT=Reservar Fundos, en-GB=Allocate Funds}, description={pt-PT=Alocação de verbas para proceder à contratação, en-GB=Budget allocation to proceed with the contract}, buttons=[{id=submit-form-step-3.1-fund-reservation, primary=true, label={pt-PT=Confirmar Reserva de Fundos, en-GB=Confirm Fund Reservation}, handlers={form=fund-reservation, action=RESERVE_FUNDS-step-3.1-fund-reservation}}, {primary=false, label={pt-PT=Mudar de Fila, en-GB=Change Queue}, handlers={url={{bennuApplicationUrl}}/fenixedu-smart-flow/flows/{{flowId}}/change-queue}}], actions=[{primary=true, to=step-4-fund-allocation, label={pt-PT=Confirmar Reserva de Fundos, en-GB=Confirm Fund Reservation}, id=RESERVE_FUNDS-step-3.1-fund-reservation, name=RESERVE_FUNDS}], actionProcessor=[{applyOn=RESERVE_FUNDS-step-3.1-fund-reservation, flowProcessor=Sync Funds Allocation Info, useSupervisorParam=true, id=onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info, name=onActionTransition}], queue=step3-queue, blockUndo=false, queuesAllowedToChangeTo=[Área de Contabilidade - Geral, Núcleo de Execução Orçamental - Geral, Núcleo de Contabilidade - Geral, Direção de Projetos - Geral, Área de Projetos Nacionais - Geral, Núcleo de Execução de Projetos IC&amp;DT - Geral, Núcleo de Execução de Projetos de Cooperação Empresarial - Geral, Área de Projetos Internacionais - Geral, Núcleo de Execução de Projetos Internacionais - Geral, Núcleo de Apoio Técnico à Gestão de Projetos - Geral], queueOrder=2}, {id=step-4-fund-allocation, type=generic, comment=false, title={pt-PT=Comprometer Fundos, en-GB=Commit Funds}, description={pt-PT=Comprometer Fundos para a contratação, en-GB=Commit Funds for contract formalization}, actions=[{primary=true, to=step-5-sign-contract, label={pt-PT=Confirmar Compromisso de Fundos, en-GB=Confirm Fund Commitment}, id=ALLOCATE_FUNDS-step-4-fund-allocation, name=ALLOCATE_FUNDS}], actionProcessor=[{applyOn=ALLOCATE_FUNDS-step-4-fund-allocation, flowProcessor=Sync Funds Allocation Info, useSupervisorParam=true, id=onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info, name=onActionTransition}, {applyOn=ALLOCATE_FUNDS-step-4-fund-allocation, flowProcessor=Change Application State, state=FUNDS_COMMITTED, id=onActionTransition-step-4-fund-allocation-Change_Application_State, name=onActionTransition}], queuesAllowedToChangeTo=[Área de Contabilidade - Geral, Núcleo de Execução Orçamental - Geral, Núcleo de Contabilidade - Geral], queue=Nucleo-de-Execucao-Orcamental-Geral, blockUndo=false, queueOrder=3}, {id=step-5-sign-contract, type=withForms, comment=false, title={pt-PT=Assinatura do Contrato, en-GB=Sign Contract}, description={pt-PT=Assinatura do Contrato, en-GB=Sign Contract}, buttons=[{id=submit-form-step-5-sign-contract, primary=true, label={pt-PT=Assinar Contrato, en-GB=Sign Contract}, handlers={form=contract, action=SIGN-step-5-sign-contract}}], actions=[{primary=true, to=SUCCESS, label={pt-PT=Assinar Contrato, en-GB=Sign Contract}, id=SIGN-step-5-sign-contract, name=SIGN}], blockUndo=false, queue=Sistema-FenixEdu, queueOrder=4}]}}</documentation>
+      <participant id="smart_flow_participant"
+                   name="Smart Flow"
+                   processRef="smart_flow_process"/>
+   </collaboration>
+   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+      <bpmndi:BPMNPlane bpmnElement="research-scholarship-boarding" id="BPMNPlane_1">
+         <bpmndi:BPMNShape bpmnElement="ALLOCATE_FUNDS-step-4-fund-allocation"
+                           id="Shape_ALLOCATE_FUNDS-step-4-fund-allocation">
+            <dc:Bounds height="60.0" width="80.0" x="2415.0" y="450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-1-work-plan" id="Shape_SIGN-step-1-work-plan">
+            <dc:Bounds height="60.0" width="80.0" x="795.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-4-fund-allocation-Change_Application_State"
+                           id="Shape_onActionTransition-step-4-fund-allocation-Change_Application_State">
+            <dc:Bounds height="60.0" width="80.0" x="2735.0" y="450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-step-2-hr-processing"
+                           id="Shape_submit-form-step-2-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="1155.0" y="210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="RESERVE_FUNDS-step-3.1-fund-reservation"
+                           id="Shape_RESERVE_FUNDS-step-3.1-fund-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="1875.0" y="330.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="PROCESS-step-2-hr-processing"
+                           id="Shape_PROCESS-step-2-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="1335.0" y="210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-2-hr-processing" id="Shape_step-2-hr-processing">
+            <dc:Bounds height="60.0" width="80.0" x="975.0" y="210.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-4-fund-allocation" id="Shape_step-4-fund-allocation">
+            <dc:Bounds height="60.0" width="80.0" x="2235.0" y="450.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation"
+                           id="Shape_ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation">
+            <dc:Bounds height="40.0" width="40.0" x="2595.0" y="460.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-5-sign-contract" id="Shape_step-5-sign-contract">
+            <dc:Bounds height="60.0" width="80.0" x="2915.0" y="730.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SIGN-step-5-sign-contract"
+                           id="Shape_SIGN-step-5-sign-contract">
+            <dc:Bounds height="60.0" width="80.0" x="3275.0" y="730.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-step-1-work-plan"
+                           id="Shape_submit-form-step-1-work-plan">
+            <dc:Bounds height="60.0" width="80.0" x="615.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-3.1-fund-reservation"
+                           id="Shape_step-3.1-fund-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="1515.0" y="330.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                           id="Shape_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info">
+            <dc:Bounds height="60.0" width="80.0" x="2735.0" y="610.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="START-start-event" id="Shape_START-start-event">
+            <dc:Bounds height="60.0" width="80.0" x="255.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                           id="Shape_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info">
+            <dc:Bounds height="60.0" width="80.0" x="2055.0" y="330.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-step-5-sign-contract"
+                           id="Shape_submit-form-step-5-sign-contract">
+            <dc:Bounds height="60.0" width="80.0" x="3095.0" y="730.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="start-node" id="Shape_start-node">
+            <dc:Bounds height="35.0" width="35.0" x="120.0" y="102.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step-1-work-plan" id="Shape_step-1-work-plan">
+            <dc:Bounds height="60.0" width="80.0" x="435.0" y="90.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="submit-form-step-3.1-fund-reservation"
+                           id="Shape_submit-form-step-3.1-fund-reservation">
+            <dc:Bounds height="60.0" width="80.0" x="1695.0" y="330.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="SUCCESS" id="Shape_SUCCESS">
+            <dc:Bounds height="35.0" width="35.0" x="3455.0" y="742.5"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="scientific-advisor-queue"
+                           id="Shape_scientific-advisor-queue">
+            <dc:Bounds height="120.0" width="3430.0" x="90.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+                           id="Shape_Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral">
+            <dc:Bounds height="120.0" width="3430.0" x="90.0" y="180.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="step3-queue" id="Shape_step3-queue">
+            <dc:Bounds height="120.0" width="3430.0" x="90.0" y="300.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Nucleo-de-Execucao-Orcamental-Geral"
+                           id="Shape_Nucleo-de-Execucao-Orcamental-Geral">
+            <dc:Bounds height="280.0" width="3430.0" x="90.0" y="420.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Sistema-FenixEdu" id="Shape_Sistema-FenixEdu">
+            <dc:Bounds height="120.0" width="3430.0" x="90.0" y="700.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="smart_flow_participant" id="Shape_smart_flow_participant">
+            <dc:Bounds height="760.0" width="3460.0" x="60.0" y="60.0"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-sign-contract"
+                          id="Edge_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info_to_step-5-sign-contract">
+            <di:waypoint x="2815.0" y="640.0"/>
+            <di:waypoint x="2848.0" y="640.0"/>
+            <di:waypoint x="2848.0" y="760.0"/>
+            <di:waypoint x="2915.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="PROCESS-step-2-hr-processing_to_step-3.1-fund-reservation"
+                          id="Edge_PROCESS-step-2-hr-processing_to_step-3.1-fund-reservation">
+            <di:waypoint x="1415.0" y="240.0"/>
+            <di:waypoint x="1448.0" y="240.0"/>
+            <di:waypoint x="1448.0" y="360.0"/>
+            <di:waypoint x="1515.0" y="360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-1-work-plan_to_step-2-hr-processing"
+                          id="Edge_SIGN-step-1-work-plan_to_step-2-hr-processing">
+            <di:waypoint x="875.0" y="120.0"/>
+            <di:waypoint x="908.0" y="120.0"/>
+            <di:waypoint x="908.0" y="240.0"/>
+            <di:waypoint x="975.0" y="240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SIGN-step-5-sign-contract_to_SUCCESS"
+                          id="Edge_SIGN-step-5-sign-contract_to_SUCCESS">
+            <di:waypoint x="3355.0" y="760.0"/>
+            <di:waypoint x="3388.0" y="760.0"/>
+            <di:waypoint x="3388.0" y="760.0"/>
+            <di:waypoint x="3455.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-2-hr-processing_to_submit-form-step-2-hr-processing"
+                          id="Edge_step-2-hr-processing_to_submit-form-step-2-hr-processing">
+            <di:waypoint x="1055.0" y="240.0"/>
+            <di:waypoint x="1155.0" y="240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation"
+                          id="Edge_step-4-fund-allocation_to_ALLOCATE_FUNDS-step-4-fund-allocation">
+            <di:waypoint x="2315.0" y="480.0"/>
+            <di:waypoint x="2415.0" y="480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="START-start-event_to_step-1-work-plan"
+                          id="Edge_START-start-event_to_step-1-work-plan">
+            <di:waypoint x="335.0" y="120.0"/>
+            <di:waypoint x="435.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-5-sign-contract_to_submit-form-step-5-sign-contract"
+                          id="Edge_step-5-sign-contract_to_submit-form-step-5-sign-contract">
+            <di:waypoint x="2995.0" y="760.0"/>
+            <di:waypoint x="3095.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation"
+                          id="Edge_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info_to_step-4-fund-allocation">
+            <di:waypoint x="2135.0" y="360.0"/>
+            <di:waypoint x="2168.0" y="360.0"/>
+            <di:waypoint x="2168.0" y="480.0"/>
+            <di:waypoint x="2235.0" y="480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info"
+                          id="Edge_ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Sync_Funds_Allocation_Info">
+            <di:waypoint x="2635.0" y="480.0"/>
+            <di:waypoint x="2668.0" y="480.0"/>
+            <di:waypoint x="2668.0" y="640.0"/>
+            <di:waypoint x="2735.0" y="640.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-3.1-fund-reservation_to_submit-form-step-3.1-fund-reservation"
+                          id="Edge_step-3.1-fund-reservation_to_submit-form-step-3.1-fund-reservation">
+            <di:waypoint x="1595.0" y="360.0"/>
+            <di:waypoint x="1695.0" y="360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info"
+                          id="Edge_RESERVE_FUNDS-step-3.1-fund-reservation_to_onActionTransition-step-3.1-fund-reservation-Sync_Funds_Allocation_Info">
+            <di:waypoint x="1955.0" y="360.0"/>
+            <di:waypoint x="2055.0" y="360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="step-1-work-plan_to_submit-form-step-1-work-plan"
+                          id="Edge_step-1-work-plan_to_submit-form-step-1-work-plan">
+            <di:waypoint x="515.0" y="120.0"/>
+            <di:waypoint x="615.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ALLOCATE_FUNDS-step-4-fund-allocation_to_ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation"
+                          id="Edge_ALLOCATE_FUNDS-step-4-fund-allocation_to_ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation">
+            <di:waypoint x="2495.0" y="480.0"/>
+            <di:waypoint x="2528.0" y="480.0"/>
+            <di:waypoint x="2528.0" y="480.0"/>
+            <di:waypoint x="2595.0" y="480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="onActionTransition-step-4-fund-allocation-Change_Application_State_to_step-5-sign-contract"
+                          id="Edge_onActionTransition-step-4-fund-allocation-Change_Application_State_to_step-5-sign-contract">
+            <di:waypoint x="2815.0" y="480.0"/>
+            <di:waypoint x="2848.0" y="480.0"/>
+            <di:waypoint x="2848.0" y="760.0"/>
+            <di:waypoint x="2915.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-step-2-hr-processing_to_PROCESS-step-2-hr-processing"
+                          id="Edge_submit-form-step-2-hr-processing_to_PROCESS-step-2-hr-processing">
+            <di:waypoint x="1235.0" y="240.0"/>
+            <di:waypoint x="1335.0" y="240.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation"
+                          id="Edge_submit-form-step-3.1-fund-reservation_to_RESERVE_FUNDS-step-3.1-fund-reservation">
+            <di:waypoint x="1775.0" y="360.0"/>
+            <di:waypoint x="1875.0" y="360.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Change_Application_State"
+                          id="Edge_ExclusiveGateway_ALLOCATE_FUNDS-step-4-fund-allocation_to_onActionTransition-step-4-fund-allocation-Change_Application_State">
+            <di:waypoint x="2635.0" y="480.0"/>
+            <di:waypoint x="2735.0" y="480.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-step-5-sign-contract_to_SIGN-step-5-sign-contract"
+                          id="Edge_submit-form-step-5-sign-contract_to_SIGN-step-5-sign-contract">
+            <di:waypoint x="3175.0" y="760.0"/>
+            <di:waypoint x="3275.0" y="760.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="submit-form-step-1-work-plan_to_SIGN-step-1-work-plan"
+                          id="Edge_submit-form-step-1-work-plan_to_SIGN-step-1-work-plan">
+            <di:waypoint x="695.0" y="120.0"/>
+            <di:waypoint x="795.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="start-node_to_START-start-event"
+                          id="Edge_start-node_to_START-start-event">
+            <di:waypoint x="155.0" y="120.0"/>
+            <di:waypoint x="255.0" y="120.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

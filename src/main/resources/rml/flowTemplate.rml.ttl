@@ -1200,4 +1200,12 @@
     rr:predicate  sf:sfName ;
     rr:objectMap  [ rml:reference "queue" ] ;
   ] ;
+
+  rr:predicateObjectMap [
+    rr:predicate sf:queueOrder ;
+    rr:objectMap [
+      rml:reference "queueOrder" ;
+      rr:datatype    xsd:integer ;
+    ] ;
+  ] ;
 .

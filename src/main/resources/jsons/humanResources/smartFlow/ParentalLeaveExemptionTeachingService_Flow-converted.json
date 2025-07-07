@@ -194,7 +194,8 @@
             }
           ],
           "blockUndo" : true,
-          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral"
+          "queue" : "Nucleo-de-Tecnicos-Administrativos-e-Bolseiros-Geral",
+          "queueOrder" : 0
         },
         {
           "id" : "step-hr-processing",
@@ -241,7 +242,8 @@
               "name" : "onSuccess"
             }
           ],
-          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral"
+          "queue" : "Nucleo-de-Docentes-e-Investigadores-Geral",
+          "queueOrder" : 1
         }
       ]
     }

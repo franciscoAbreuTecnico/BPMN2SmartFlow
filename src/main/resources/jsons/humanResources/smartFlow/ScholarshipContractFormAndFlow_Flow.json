@@ -837,7 +837,7 @@
         },
         "actionIfRequesterIsQueueMember" : "SIGN"
       }, {
-        "id" : "step-2.1",
+        "id" : "{{step-2}}",
         "type" : "generic",
         "comment" : true,
         "title" : {
@@ -855,7 +855,7 @@
         "actions" : {
           "SIGN" : {
             "primary" : true,
-            "to" : "step-3.1-fund-reservation",
+            "to" : "{{next-step}}",
             "label" : {
               "pt-PT" : "Autorizar",
               "en-GB" : "Authorise"
@@ -911,7 +911,7 @@
         "queue" : "{{step2-queue}}",
         "actionIfRequesterIsQueueMember" : "SIGN"
       }, {
-        "id" : "step-3.1-fund-reservation",
+        "id" : "{{step-3}}-fund-reservation",
         "type" : "withForms",
         "comment" : false,
         "title" : {
@@ -943,11 +943,20 @@
           "handlers" : {
             "action" : "REJECT"
           }
+        }, {
+          "primary" : false,
+          "label" : {
+            "pt-PT" : "Mudar de Fila",
+            "en-GB" : "Change Queue"
+          },
+          "handlers" : {
+            "url" : "{{bennuApplicationUrl}}/fenixedu-smart-flow/flows/{{flowId}}/change-queue"
+          }
         } ],
         "actions" : {
           "RESERVE_FUNDS" : {
             "primary" : true,
-            "to" : "step-4-fund-allocation",
+            "to" : "{{next-step}}",
             "label" : {
               "pt-PT" : "Confirmar Reserva de Fundos",
               "en-GB" : "Confirm Fund Reservation"
@@ -968,7 +977,8 @@
             "flowProcessor" : "Sync Funds Allocation Info"
           } ]
         },
-        "queue" : "{{step3-queue}}"
+        "queue" : "{{step3-queue}}",
+        "queuesAllowedToChangeTo" : [ "Área de Contabilidade - Geral", "Núcleo de Execução Orçamental - Geral", "Núcleo de Contabilidade - Geral", "Direção de Projetos - Geral", "Área de Projetos Nacionais - Geral", "Núcleo de Execução de Projetos IC&DT - Geral", "Núcleo de Execução de Projetos de Cooperação Empresarial - Geral", "Área de Projetos Internacionais - Geral", "Núcleo de Execução de Projetos Internacionais - Geral", "Núcleo de Apoio Técnico à Gestão de Projetos - Geral" ]
       }, {
         "id" : "step-4-fund-allocation",
         "type" : "generic",
@@ -1209,7 +1219,7 @@
         "queue" : "Núcleo de Execução Orçamental - Geral",
         "blockUndo" : false
       }, {
-        "id" : "step-3.1-fund-undo-reservation",
+        "id" : "{{step-3}}-fund-undo-reservation",
         "type" : "generic",
         "comment" : false,
         "title" : {
@@ -1223,7 +1233,7 @@
         "actions" : {
           "UNDO_RESERVE_FUNDS" : {
             "primary" : true,
-            "to" : "step-4-fund-undo-allocation",
+            "to" : "{{next-step}}",
             "label" : {
               "pt-PT" : "Confirmar Cancelamento da Reserva de Fundos",
               "en-GB" : "Confirm Undo Fund Reservation"
